@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>forgeVidhya · Programs preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Sora:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+/* Mirror of Programs.css for standalone visual verification.
+   The React component in src/ is the source of truth; keep them in sync. */
+:root{ --blue:#00bfff; --blue-deep:#0080bf; --fire:#ff9500; --ink:#0a0f14;
+  --muted:#5b6570; --line:rgba(10,15,20,.08);
+  --grad:linear-gradient(135deg,#00bfff 0%,#00bfff 45%,#ff9500 100%); }
+*{box-sizing:border-box}
+body{margin:0;background:#f7fafc;font-family:Sora,system-ui,sans-serif;color:var(--ink)}
+.fv-programs{max-width:1120px;margin:0 auto;padding:72px 24px 96px;text-align:center}
+.fv-programs__eyebrow{font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;letter-spacing:.22em;font-size:13px;color:var(--blue-deep);margin:0 0 12px}
+.fv-programs__title{font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:clamp(28px,5vw,44px);line-height:1.08;margin:0 auto 16px;max-width:16ch}
+.fv-grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.fv-programs__lede{color:var(--muted);font-size:clamp(15px,2vw,17px);line-height:1.6;max-width:52ch;margin:0 auto}
+.fv-bubble-stage{display:flex;flex-direction:column;align-items:center;gap:18px;margin:56px 0 8px}
+.fv-bubble{position:relative;width:210px;height:210px;border:none;border-radius:50%;cursor:pointer;background:radial-gradient(circle at 50% 38%,#66d9ff 0%,#00bfff 55%,#0080bf 100%);box-shadow:0 18px 50px rgba(0,191,255,.45),inset 0 -12px 30px rgba(0,64,96,.35);color:#fff;font-family:'Space Grotesk',system-ui,sans-serif;transition:transform .25s ease,box-shadow .25s ease;animation:fv-float 5s ease-in-out infinite}
+.fv-bubble:hover{transform:translateY(-6px) scale(1.03)}
+.fv-bubble:focus-visible{outline:3px solid var(--fire);outline-offset:4px}
+.fv-bubble__glow{position:absolute;inset:-6px;border-radius:50%;background:var(--grad);filter:blur(22px);opacity:.55;z-index:-1}
+.fv-bubble__label{font-size:22px;font-weight:700;line-height:1.15;text-shadow:0 2px 8px rgba(0,40,64,.4)}
+.fv-bubble__hint{color:var(--muted);font-size:14px;margin:0}
+@keyframes fv-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.fv-cards.is-hidden{display:none}
+.fv-cards.is-revealed{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:48px;text-align:left}
+.fv-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px 24px 28px;box-shadow:0 10px 30px rgba(10,15,20,.06);position:relative;overflow:hidden;animation:fv-rise .5s cubic-bezier(.2,.7,.2,1) both}
+.fv-card::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--accent),var(--fire))}
+.fv-card__top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.fv-card__index{font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:15px;color:var(--accent)}
+.fv-card__count{font-size:12px;font-weight:600;color:var(--muted);background:rgba(0,191,255,.08);border-radius:999px;padding:4px 10px}
+.fv-card__title{font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:21px;margin:0 0 8px}
+.fv-card__tagline{color:var(--muted);font-size:14px;line-height:1.5;margin:0 0 18px}
+.fv-card__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.fv-track{display:flex;flex-direction:column;gap:3px;padding-left:14px;border-left:2px solid var(--line)}
+.fv-track__title{font-weight:600;font-size:14.5px}
+.fv-track__summary{font-size:13px;color:var(--muted);line-height:1.45}
+.fv-track__meta{font-size:11.5px;font-weight:600;color:var(--blue-deep)}
+@keyframes fv-rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.fv-programs__reset{margin-top:34px}
+.fv-textbtn{background:none;border:none;cursor:pointer;font-family:Sora,system-ui,sans-serif;font-size:14px;font-weight:600;color:var(--blue-deep);padding:8px 12px;border-radius:10px}
+.fv-textbtn:hover{background:rgba(0,191,255,.08)}
+@media (max-width:900px){.fv-cards.is-revealed{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<section class="fv-programs">
+  <p class="fv-programs__eyebrow">PROGRAMS</p>
+  <h2 class="fv-programs__title">Pick the forge that <span class="fv-grad">fits your fire.</span></h2>
+  <p class="fv-programs__lede">Everything we teach lives in three forges. Tap the bubble to reveal them — every field ends with a real shipped project.</p>
+
+  <div class="fv-bubble-stage" id="stage">
+    <button type="button" class="fv-bubble" id="bubble" aria-expanded="false" aria-controls="cards">
+      <span class="fv-bubble__glow" aria-hidden="true"></span>
+      <span class="fv-bubble__label">Explore<br/>the forge</span>
+    </button>
+    <p class="fv-bubble__hint">Tap to reveal the 3 tracks</p>
+  </div>
+
+  <div id="cards" class="fv-cards is-hidden" aria-live="polite"></div>
+  <div class="fv-programs__reset" id="resetWrap" style="display:none">
+    <button type="button" class="fv-textbtn" id="reset">← Collapse the forge</button>
+  </div>
+</section>
+
+<script>
+const DATA = [
+  { id:'ai-tech', name:'AI & Tech', accent:'#00BFFF',
+    tagline:'Start fast — from no-code automation to production AI, and raw ideas into shipped things.',
+    tracks:[
+      {title:'AI Automation Fundamentals', summary:'Replace repetitive work with autonomous AI agents.', level:'Beginner-friendly', length:'6 weeks'},
+      {title:'AI Production Engineering', summary:'Take AI demos from prototype to reliable real-world systems.', level:'Intermediate', length:'8 weeks'},
+      {title:'Imagination to Life with AI', summary:'Turn your ideas into apps, art, and products — no team required.', level:'All levels', length:'5 weeks'},
+    ]},
+  { id:'core-engineering', name:'Core Engineering', accent:'#0080BF',
+    tagline:'The full stack of a real machine — intelligence, senses, skeleton, body, and power.',
+    tracks:[
+      {title:'Applied AI & Artificial Intelligence', summary:'Using AI to solve real problems, not just passing exams.'},
+      {title:'Embedded Systems & IoT', summary:'The nervous system — sensing and reacting to the physical world.'},
+      {title:'CAD Design & Digital Manufacturing', summary:'The skeleton — turning ideas into manufacturable parts.'},
+      {title:'Robotics & Mechatronics', summary:'The body — making machines move with purpose.'},
+      {title:'Renewable Energy & Electric Mobility', summary:'The power — clean energy and the vehicles it drives.'},
+    ]},
+  { id:'non-engineering', name:'Non-Engineering', accent:'#FF9500',
+    tagline:'The stuff no syllabus teaches — money, leverage, and holding your own in any room.',
+    tracks:[
+      {title:'How to Negotiate Terms in an Interview', summary:'Walk in knowing your worth and walk out with a better offer.'},
+      {title:'How to Manage Expenses', summary:'Make your money outlast the month — budgeting that actually sticks.'},
+      {title:'How to Invest Using AI Tools (a special formula)', summary:'A repeatable, educational framework for using AI tools to research smarter investing decisions.'},
+      {title:"How to Not Play the 'Pick Me' Game in the Real World", summary:'Build real leverage and self-respect instead of chasing approval.'},
+    ]},
+];
+
+const cards = document.getElementById('cards');
+const stage = document.getElementById('stage');
+const bubble = document.getElementById('bubble');
+const resetWrap = document.getElementById('resetWrap');
+
+function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+function reveal(){
+  cards.innerHTML = DATA.map((cat,i)=>`
+    <article class="fv-card" style="--accent:${cat.accent};animation-delay:${i*90}ms">
+      <div class="fv-card__top">
+        <span class="fv-card__index">${String(i+1).padStart(2,'0')}</span>
+        <span class="fv-card__count">${cat.tracks.length} tracks</span>
+      </div>
+      <h3 class="fv-card__title">${esc(cat.name)}</h3>
+      <p class="fv-card__tagline">${esc(cat.tagline)}</p>
+      <ul class="fv-card__list">
+        ${cat.tracks.map(t=>`
+          <li class="fv-track">
+            <span class="fv-track__title">${esc(t.title)}</span>
+            <span class="fv-track__summary">${esc(t.summary)}</span>
+            ${(t.level||t.length)?`<span class="fv-track__meta">${esc([t.level,t.length].filter(Boolean).join(' · '))}</span>`:''}
+          </li>`).join('')}
+      </ul>
+    </article>`).join('');
+  cards.classList.remove('is-hidden'); cards.classList.add('is-revealed');
+  stage.style.display='none'; resetWrap.style.display='block';
+  bubble.setAttribute('aria-expanded','true');
+}
+function collapse(){
+  cards.classList.add('is-hidden'); cards.classList.remove('is-revealed');
+  cards.innerHTML=''; stage.style.display='flex'; resetWrap.style.display='none';
+  bubble.setAttribute('aria-expanded','false');
+}
+bubble.addEventListener('click', reveal);
+document.getElementById('reset').addEventListener('click', collapse);
+</script>
+</body>
+</html>

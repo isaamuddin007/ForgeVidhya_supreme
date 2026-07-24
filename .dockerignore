@@ -1,0 +1,21 @@
+# Security note: prevents secrets, deps, and local artifacts from leaking into
+# the Docker build context / image layers.
+node_modules
+**/node_modules
+.env
+.env.*
+!.env.example
+logs
+**/logs
+uploads
+**/uploads
+.git
+.gitignore
+Dockerfile
+*.log
+coverage
+dist
+build
+.vscode
+.idea
+.DS_Store

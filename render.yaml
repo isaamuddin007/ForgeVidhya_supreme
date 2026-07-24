@@ -1,0 +1,85 @@
+# =============================================================================
+# render.yaml — forgeVidhya deployment (Render Blueprint)
+# Deploys the Express API as a web service and the React SPA as a static site.
+#
+# HOW TO USE:
+#   1. Push this repo to GitHub.
+#   2. Render Dashboard -> New -> Blueprint -> pick this repo.
+#   3. Render reads this file and creates both services.
+#   4. Fill the `sync: false` env vars (secrets) in the dashboard — Render never
+#      reads secrets from the repo.
+#
+# Security note: All secrets use `sync: false` so they live ONLY in Render's
+# encrypted env store, never in git. See DEPLOYMENT.md for the full runbook.
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # Backend API (Express + MongoDB)
+  # ---------------------------------------------------------------------------
+  - type: web
+    name: forgevidhya-api
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm ci --omit=dev
+    startCommand: node server.js
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: TRUST_PROXY
+        value: "1" # Render terminates TLS at a proxy -> needed for Secure cookies + req.ip
+      # Secrets — set these in the Render dashboard (sync:false = not in git):
+      - key: MONGO_URI
+        sync: false # mongodb+srv://forgevidhya_app:<pwd>@cluster/forgevidhya (readWrite user only)
+      - key: JWT_ACCESS_SECRET
+        sync: false # openssl rand -base64 48
+      - key: JWT_REFRESH_SECRET
+        sync: false # openssl rand -base64 48 (DIFFERENT value)
+      - key: ACCESS_TOKEN_TTL
+        value: 15m
+      - key: REFRESH_TOKEN_TTL
+        value: 7d
+      - key: BCRYPT_SALT_ROUNDS
+        value: "12"
+      # CLIENT_ORIGIN must equal the deployed frontend URL (set after first deploy):
+      - key: CLIENT_ORIGIN
+        sync: false # e.g. https://forgevidhya-web.onrender.com  OR  https://forgevidhya.in
+      - key: COOKIE_DOMAIN
+        sync: false # omit/blank unless frontend+API share a parent domain (e.g. forgevidhya.in)
+
+  # ---------------------------------------------------------------------------
+  # Frontend SPA (React + Vite, served as static files)
+  # ---------------------------------------------------------------------------
+  - type: web
+    name: forgevidhya-web
+    runtime: static
+    plan: free
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    autoDeploy: true
+    # SPA fallback: serve index.html for client-side routes (/programs, etc.).
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      # Baked in at build time. Point at the API service's public URL:
+      - key: VITE_API_URL
+        sync: false # e.g. https://forgevidhya-api.onrender.com/api
+    headers:
+      # Defense-in-depth security headers on the static host.
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin

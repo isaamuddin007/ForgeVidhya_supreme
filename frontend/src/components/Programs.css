@@ -1,0 +1,244 @@
+/**
+ * frontend/src/components/Programs.css
+ * Styles for the Programs section. Matches the live site's tokens:
+ *   headings = Space Grotesk, body = Sora, forge gradient = #00BFFF -> #FF9500.
+ *
+ * Fonts: add this to index.html <head> for the exact webfonts (optional; the
+ * system-ui fallback keeps layout intact if fonts are blocked by CSP):
+ *   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Sora:wght@400;600&display=swap" rel="stylesheet">
+ */
+
+.fv-programs {
+  --blue: #00bfff;
+  --blue-deep: #0080bf;
+  --fire: #ff9500;
+  --ink: #0a0f14;
+  --muted: #5b6570;
+  --card-bg: #ffffff;
+  --line: rgba(10, 15, 20, 0.08);
+  --grad: linear-gradient(135deg, #00bfff 0%, #00bfff 45%, #ff9500 100%);
+
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 72px 24px 96px;
+  font-family: Sora, system-ui, sans-serif;
+  color: var(--ink);
+  text-align: center;
+}
+
+/* ---- Header ---- */
+.fv-programs__eyebrow {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  font-size: 13px;
+  color: var(--blue-deep);
+  margin: 0 0 12px;
+}
+.fv-programs__title {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(28px, 5vw, 44px);
+  line-height: 1.08;
+  margin: 0 auto 16px;
+  max-width: 16ch;
+}
+.fv-grad {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.fv-programs__lede {
+  color: var(--muted);
+  font-size: clamp(15px, 2vw, 17px);
+  line-height: 1.6;
+  max-width: 52ch;
+  margin: 0 auto;
+}
+
+/* ---- The forge bubble ---- */
+.fv-bubble-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  margin: 56px 0 8px;
+}
+.fv-bubble {
+  position: relative;
+  width: 210px;
+  height: 210px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  background: radial-gradient(circle at 50% 38%, #66d9ff 0%, #00bfff 55%, #0080bf 100%);
+  box-shadow:
+    0 18px 50px rgba(0, 191, 255, 0.45),
+    inset 0 -12px 30px rgba(0, 64, 96, 0.35);
+  color: #fff;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  animation: fv-float 5s ease-in-out infinite;
+}
+.fv-bubble:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow:
+    0 26px 60px rgba(0, 191, 255, 0.55),
+    inset 0 -12px 30px rgba(0, 64, 96, 0.35);
+}
+.fv-bubble:focus-visible {
+  outline: 3px solid var(--fire);
+  outline-offset: 4px;
+}
+.fv-bubble__glow {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: var(--grad);
+  filter: blur(22px);
+  opacity: 0.55;
+  z-index: -1;
+}
+.fv-bubble__label {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.15;
+  text-shadow: 0 2px 8px rgba(0, 40, 64, 0.4);
+}
+.fv-bubble__hint {
+  color: var(--muted);
+  font-size: 14px;
+  margin: 0;
+}
+
+@keyframes fv-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ---- The 3 category cards ---- */
+.fv-cards.is-hidden { display: none; }
+.fv-cards.is-revealed {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-top: 48px;
+  text-align: left;
+}
+.fv-card {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 26px 24px 28px;
+  box-shadow: 0 10px 30px rgba(10, 15, 20, 0.06);
+  position: relative;
+  overflow: hidden;
+  animation: fv-rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+/* Accent bar per category, tinted by --accent from the data. */
+.fv-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--accent), var(--fire));
+}
+.fv-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.fv-card__index {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--accent);
+}
+.fv-card__count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  background: rgba(0, 191, 255, 0.08);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+.fv-card__title {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 21px;
+  margin: 0 0 8px;
+}
+.fv-card__tagline {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 18px;
+}
+.fv-card__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.fv-track {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-left: 14px;
+  border-left: 2px solid var(--line);
+}
+.fv-track__title {
+  font-weight: 600;
+  font-size: 14.5px;
+  color: var(--ink);
+}
+.fv-track__summary {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.fv-track__meta {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--blue-deep);
+  letter-spacing: 0.02em;
+}
+
+@keyframes fv-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Collapse control ---- */
+.fv-programs__reset { margin-top: 34px; }
+.fv-textbtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: Sora, system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--blue-deep);
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+.fv-textbtn:hover { background: rgba(0, 191, 255, 0.08); }
+.fv-textbtn:focus-visible { outline: 2px solid var(--fire); outline-offset: 2px; }
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .fv-cards.is-revealed { grid-template-columns: 1fr; }
+}
+
+/* Respect reduced-motion preferences. */
+@media (prefers-reduced-motion: reduce) {
+  .fv-bubble { animation: none; }
+  .fv-card { animation: none; }
+  .fv-bubble, .fv-bubble:hover { transition: none; }
+}

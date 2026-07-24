@@ -1,0 +1,61 @@
+# =============================================================================
+# forgeVidhya .gitignore
+# Security note: Keeps secrets, dependencies, user uploads, and logs out of git.
+# =============================================================================
+
+# Secrets & env
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.p12
+
+# Dependencies
+node_modules/
+**/node_modules/
+.pnp/
+.pnp.js
+
+# User uploads (sketch-to-DWG images, etc.)
+uploads/
+**/uploads/
+tmp/
+
+# Logs
+logs/
+**/logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+dist/
+build/
+**/dist/
+**/build/
+.next/
+out/
+.vite/
+
+# Coverage & tests
+coverage/
+.nyc_output/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+
+# Caches
+.cache/
+.eslintcache
+.parcel-cache/
+
+# Local editor/agent settings
+.claude/settings.local.json
