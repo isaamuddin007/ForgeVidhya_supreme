@@ -63,3 +63,7 @@ Thumbs.db
 # Rork / Expo tooling
 .expo
 .rork
+
+# web/ uses bun.lock as its canonical lockfile — don't track a competing
+# npm lockfile there (backend/ is an npm project and keeps its own).
+web/package-lock.json
