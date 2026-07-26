@@ -115,6 +115,60 @@ export const services: Service[] = [
 ];
 
 // ============================================================
+// Program categories — the grouped view revealed by the "Explore programs"
+// button on the Services page. AI & Core-Engineering items deep-link to the
+// existing service / engineering-field anchors on that page; the
+// non-engineering items are life-skill workshops (no dedicated pages yet).
+// ============================================================
+
+export type ProgramCategory = {
+  id: string;
+  title: string;
+  icon: string; // lucide icon name
+  blurb: string;
+  items: { label: string; to?: string }[];
+};
+
+export const programCategories: ProgramCategory[] = [
+  {
+    id: "ai-and-tech",
+    title: "AI & Tech",
+    icon: "Sparkles",
+    blurb: "Build with AI from day one.",
+    items: [
+      { label: "AI Automation Fundamentals", to: "/services#ai-automation-fundamentals" },
+      { label: "AI Production Engineering", to: "/services#ai-production-engineering" },
+      { label: "Imagination to Life with AI", to: "/services#imagination-to-life" },
+    ],
+  },
+  {
+    id: "core-engineering",
+    title: "Core Engineering",
+    icon: "Cog",
+    blurb: "Hardware, systems, and the physical world.",
+    items: [
+      { label: "Applied AI & Artificial Intelligence", to: "/services#field-applied-ai-intelligence" },
+      { label: "Embedded Systems & IoT", to: "/services#field-embedded-systems-iot" },
+      { label: "CAD Design & Digital Manufacturing", to: "/services#field-cad-digital-manufacturing" },
+      { label: "Robotics & Mechatronics", to: "/services#field-robotics-mechatronics" },
+      { label: "Renewable Energy & Electric Mobility", to: "/services#field-renewable-energy-mobility" },
+    ],
+  },
+  {
+    id: "non-engineering",
+    title: "Non-Engineering",
+    icon: "Compass",
+    blurb: "Real-world skills school never taught you.",
+    items: [
+      { label: "How to negotiate terms in an interview" },
+      { label: "How to manage your expenses" },
+      { label: "How to invest in AI tools using a special formula" },
+      { label: "How to not play the pick me please in the real world" },
+    ],
+  },
+];
+
+// ============================================================
 // Engineering catalog — broader than AI (7 fields)
 // Each field expands (magic reveal) to show its topics + sample project.
 // ============================================================

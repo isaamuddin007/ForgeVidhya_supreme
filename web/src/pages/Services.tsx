@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight,
+  ChevronDown,
   Workflow,
   Cog,
   Sparkles,
@@ -20,6 +22,7 @@ import { MagicReveal } from "@/components/MagicReveal";
 import {
   services,
   engineeringFields,
+  programCategories,
   type Service,
   type EngineeringField,
 } from "@/lib/site";
@@ -216,6 +219,82 @@ function ServiceCard({ s, index }: { s: Service; index: number }) {
   );
 }
 
+/**
+ * ProgramExplorer — a single "Explore programs" button that reveals three
+ * category cards (AI & Tech, Core Engineering, Non-Engineering). Self-contained
+ * state so it doesn't touch the page component. Cards stagger in via framer.
+ */
+function ProgramExplorer() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div className="flex justify-center">
+        <button
+          type="button"
+          onClick={() => setOpen((o) => !o)}
+          aria-expanded={open}
+          className="inline-flex items-center gap-2 rounded-xl bg-forge-gradient px-6 py-3.5 text-base font-semibold text-white shadow-forge transition-transform hover:scale-[1.03] active:scale-95"
+        >
+          {open ? "Hide programs" : "Explore programs"}
+          <ChevronDown className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`} />
+        </button>
+      </div>
+
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="program-categories"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="mt-8 grid gap-6 md:grid-cols-3">
+              {programCategories.map((cat, i) => (
+                <motion.div
+                  key={cat.id}
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.05 + i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex h-full flex-col rounded-3xl border border-border/60 glass-card p-6 shadow-forge sm:p-7"
+                >
+                  <span className="grid h-12 w-12 place-items-center rounded-2xl bg-forge-gradient text-white shadow-forge">
+                    <Icon name={cat.icon} size={22} />
+                  </span>
+                  <h3 className="mt-4 font-display text-xl font-bold">{cat.title}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{cat.blurb}</p>
+                  <ul className="mt-5 space-y-2.5">
+                    {cat.items.map((item) => (
+                      <li key={item.label}>
+                        {item.to ? (
+                          <Link
+                            to={item.to}
+                            className="group flex items-start gap-2 text-sm font-medium text-foreground transition-colors hover:text-primary"
+                          >
+                            <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-primary transition-transform group-hover:translate-x-1" />
+                            <span>{item.label}</span>
+                          </Link>
+                        ) : (
+                          <span className="flex items-start gap-2 text-sm font-medium text-foreground">
+                            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-forge-gradient" />
+                            <span>{item.label}</span>
+                          </span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 export default function Services() {
   return (
     <Layout>
@@ -245,6 +324,11 @@ export default function Services() {
             </p>
           </FadeIn>
         </div>
+      </section>
+
+      {/* Programs by category — the button reveals 3 category cards */}
+      <section className="pt-10">
+        <ProgramExplorer />
       </section>
 
       {/* Quick nav chips */}
