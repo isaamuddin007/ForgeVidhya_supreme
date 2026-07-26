@@ -59,3 +59,7 @@ Thumbs.db
 
 # Local editor/agent settings
 .claude/settings.local.json
+
+# Rork / Expo tooling
+.expo
+.rork

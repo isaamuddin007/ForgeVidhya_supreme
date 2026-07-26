@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://forgevidhya.example.com/sitemap.xml
+
+# Block legal admin-style paths if added later
+Disallow: /api/
