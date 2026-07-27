@@ -121,12 +121,17 @@ export const services: Service[] = [
 // non-engineering items are life-skill workshops (no dedicated pages yet).
 // ============================================================
 
+export type CategoryProgram = { title: string; blurb: string };
+
 export type ProgramCategory = {
-  id: string;
+  id: "ai-and-tech" | "core-engineering" | "non-tech";
   title: string;
   icon: string; // lucide icon name
   blurb: string;
-  items: { label: string; to?: string }[];
+  /** Glow gradient (brand hex) for the floating chooser card. */
+  from: string;
+  to: string;
+  programs: CategoryProgram[];
 };
 
 export const programCategories: ProgramCategory[] = [
@@ -135,10 +140,12 @@ export const programCategories: ProgramCategory[] = [
     title: "AI & Tech",
     icon: "Sparkles",
     blurb: "Build with AI from day one.",
-    items: [
-      { label: "AI Automation Fundamentals", to: "/services#ai-automation-fundamentals" },
-      { label: "AI Production Engineering", to: "/services#ai-production-engineering" },
-      { label: "Imagination to Life with AI", to: "/services#imagination-to-life" },
+    from: "#00bfff",
+    to: "#0080bf",
+    programs: [
+      { title: "AI Automation Fundamentals", blurb: "Replace repetitive work with autonomous AI agents." },
+      { title: "AI Production Engineering", blurb: "Take AI demos from prototype to reliable real-world systems." },
+      { title: "Imagination to Life with AI", blurb: "Turn your ideas into apps, art, and products — no team required." },
     ],
   },
   {
@@ -146,24 +153,28 @@ export const programCategories: ProgramCategory[] = [
     title: "Core Engineering",
     icon: "Cog",
     blurb: "Hardware, systems, and the physical world.",
-    items: [
-      { label: "Applied AI & Artificial Intelligence", to: "/services#field-applied-ai-intelligence" },
-      { label: "Embedded Systems & IoT", to: "/services#field-embedded-systems-iot" },
-      { label: "CAD Design & Digital Manufacturing", to: "/services#field-cad-digital-manufacturing" },
-      { label: "Robotics & Mechatronics", to: "/services#field-robotics-mechatronics" },
-      { label: "Renewable Energy & Electric Mobility", to: "/services#field-renewable-energy-mobility" },
+    from: "#ff9500",
+    to: "#cc7700",
+    programs: [
+      { title: "Applied AI & Artificial Intelligence", blurb: "Using AI to solve real problems, not just passing exams." },
+      { title: "Embedded Systems & IoT", blurb: "The nervous system — sensing and reacting to the physical world." },
+      { title: "CAD Design & Digital Manufacturing", blurb: "The skeleton — turning ideas into manufacturable parts." },
+      { title: "Robotics & Mechatronics", blurb: "The body — making machines move with purpose." },
+      { title: "Renewable Energy & Electric Mobility", blurb: "The power — clean energy and the vehicles it drives." },
     ],
   },
   {
-    id: "non-engineering",
-    title: "Non-Engineering",
+    id: "non-tech",
+    title: "Non-Tech",
     icon: "Compass",
     blurb: "Real-world skills school never taught you.",
-    items: [
-      { label: "How to negotiate terms in an interview" },
-      { label: "How to manage your expenses" },
-      { label: "How to invest in AI tools using a special formula" },
-      { label: "How to not play the pick me please in the real world" },
+    from: "#00bfff",
+    to: "#ff9500",
+    programs: [
+      { title: "How to negotiate terms in an interview", blurb: "Ask for what you're worth — and get it." },
+      { title: "How to manage your expenses", blurb: "Make your first income actually last." },
+      { title: "How to invest in AI tools using a special formula", blurb: "A simple formula for spending on AI that pays back." },
+      { title: "How to not play the pick me please in the real world", blurb: "Build real leverage instead of chasing approval." },
     ],
   },
 ];

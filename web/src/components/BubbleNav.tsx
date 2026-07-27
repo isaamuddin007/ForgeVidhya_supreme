@@ -17,6 +17,7 @@ import {
 import { useTheme } from "@/components/theme-provider";
 import { useSound } from "@/components/sound-provider";
 import { SiteSearch } from "@/components/SiteSearch";
+import { ProgramChooser } from "@/components/ProgramChooser";
 import { cn } from "@/lib/utils";
 
 type Bubble = {
@@ -135,6 +136,7 @@ export function BubbleNav() {
   const { theme, toggleTheme } = useTheme();
   const { muted, toggleMuted, playBlub } = useSound();
   const [open, setOpen] = useState(false);
+  const [chooserOpen, setChooserOpen] = useState(false);
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -145,7 +147,20 @@ export function BubbleNav() {
     setOpen(false);
   };
 
+  // The Programs bubble opens the floating category chooser instead of
+  // navigating; picking a card there routes to the filtered Programs page.
+  const handleBubble = (href: string) => {
+    if (href === "/services") {
+      playBlub();
+      setChooserOpen(true);
+      setOpen(false);
+      return;
+    }
+    go(href);
+  };
+
   return (
+    <>
     <div className="pointer-events-none fixed inset-x-0 top-0 z-50">
       <div className="mx-auto flex max-w-7xl items-start justify-between px-4 pt-5 sm:px-6 lg:px-8">
         {/* left: brand logo */}
@@ -216,7 +231,7 @@ export function BubbleNav() {
             bubble={b}
             index={i}
             active={isActive(b.href)}
-            onNavigate={go}
+            onNavigate={handleBubble}
           />
         ))}
       </div>
@@ -236,12 +251,15 @@ export function BubbleNav() {
                 bubble={b}
                 index={i}
                 active={isActive(b.href)}
-                onNavigate={go}
+                onNavigate={handleBubble}
               />
             ))}
           </motion.div>
         )}
       </AnimatePresence>
     </div>
+
+    <ProgramChooser open={chooserOpen} onClose={() => setChooserOpen(false)} />
+    </>
   );
 }
