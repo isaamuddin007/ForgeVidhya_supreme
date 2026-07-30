@@ -58,6 +58,10 @@ interface AuthContextType {
   error: string | null;
   /** Start sign-in. "google" redirects to the backend OAuth entrypoint. */
   signIn: (provider: "google" | "apple") => void;
+  /** Email/password sign-in. Resolves true on success. */
+  loginWithPassword: (email: string, password: string) => Promise<boolean>;
+  /** Create an email/password account. Resolves true on success. */
+  register: (name: string, email: string, password: string) => Promise<boolean>;
   /** Store a JWT (from the OAuth callback) and set the user. */
   login: (token: string) => void;
   /** Clear the token + user (and best-effort backend session teardown). */
@@ -123,6 +127,55 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     window.location.href = `${API_URL}/auth/google`;
   }, []);
 
+  // Shared POST for /auth/register and /auth/login. On success the backend
+  // returns { token }; we store it (login) and the user is signed in.
+  const submitCredentials = useCallback(
+    async (path: string, body: Record<string, string>): Promise<boolean> => {
+      setIsSigningIn(true);
+      setError(null);
+      try {
+        const res = await fetch(`${API_URL}${path}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(body),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          const msg =
+            data?.errors?.[0]?.message ||
+            data?.message ||
+            `Request failed (${res.status})`;
+          setError(msg);
+          return false;
+        }
+        if (data.token) {
+          login(data.token);
+          return true;
+        }
+        setError("Unexpected response from the server.");
+        return false;
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Network error — is the API running?");
+        return false;
+      } finally {
+        setIsSigningIn(false);
+      }
+    },
+    [login]
+  );
+
+  const loginWithPassword = useCallback(
+    (email: string, password: string) => submitCredentials("/auth/login", { email, password }),
+    [submitCredentials]
+  );
+
+  const register = useCallback(
+    (name: string, email: string, password: string) =>
+      submitCredentials("/auth/register", { name, email, password }),
+    [submitCredentials]
+  );
+
   return (
     <AuthContext.Provider
       value={{
@@ -132,6 +185,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated: user !== null,
         error,
         signIn,
+        loginWithPassword,
+        register,
         login,
         logout,
         signOut: logout,

@@ -44,8 +44,17 @@ function AppleMark() {
  * as a guest. When signed in, shows a small account chip with sign-out.
  */
 export function SignInGate() {
-  const { user, isLoading, isSigningIn, error, signIn, signOut, clearError } =
-    useAuth();
+  const {
+    user,
+    isLoading,
+    isSigningIn,
+    error,
+    signIn,
+    loginWithPassword,
+    register,
+    signOut,
+    clearError,
+  } = useAuth();
   const { playBlub } = useSound();
   const location = useLocation();
   const [guest, setGuest] = useState<boolean>(() => {
@@ -55,6 +64,19 @@ export function SignInGate() {
       return false;
     }
   });
+  const [mode, setMode] = useState<"signin" | "register">("signin");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const submitCredentials = async (e: React.FormEvent) => {
+    e.preventDefault();
+    playBlub();
+    if (mode === "register") await register(name, email, password);
+    else await loginWithPassword(email, password);
+    // On success the user becomes set and the gate closes; on failure the
+    // context `error` renders above the form.
+  };
 
   // Never block the OAuth landing route.
   if (location.pathname === "/auth/callback") return null;
@@ -143,6 +165,76 @@ export function SignInGate() {
                   <AppleMark />
                   Sign in with Apple
                 </button>
+
+                {/* divider */}
+                <div className="my-1 flex items-center gap-3 text-[11px] font-medium uppercase tracking-wider text-muted-foreground/70">
+                  <span className="h-px flex-1 bg-border" />
+                  or
+                  <span className="h-px flex-1 bg-border" />
+                </div>
+
+                {/* email / password */}
+                <form onSubmit={submitCredentials} className="flex flex-col gap-2.5 text-left">
+                  {mode === "register" && (
+                    <input
+                      type="text"
+                      required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Full name"
+                      autoComplete="name"
+                      className="h-11 rounded-xl border border-border bg-background px-3.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                    />
+                  )}
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Email"
+                    autoComplete="email"
+                    className="h-11 rounded-xl border border-border bg-background px-3.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                  />
+                  <input
+                    type="password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password"
+                    autoComplete={mode === "register" ? "new-password" : "current-password"}
+                    className="h-11 rounded-xl border border-border bg-background px-3.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                  />
+                  {mode === "register" && (
+                    <p className="text-[11px] leading-snug text-muted-foreground">
+                      8+ characters with upper, lower, a number, and a symbol.
+                    </p>
+                  )}
+                  <button
+                    type="submit"
+                    disabled={isSigningIn}
+                    className="h-11 rounded-xl bg-forge-gradient font-semibold text-white shadow-forge transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60"
+                  >
+                    {isSigningIn
+                      ? "Please wait…"
+                      : mode === "register"
+                        ? "Create account"
+                        : "Sign in"}
+                  </button>
+                </form>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    clearError();
+                    setMode((m) => (m === "signin" ? "register" : "signin"));
+                  }}
+                  className="text-xs font-medium text-primary underline-offset-4 transition-colors hover:underline"
+                >
+                  {mode === "signin"
+                    ? "New here? Create an account"
+                    : "Have an account? Sign in"}
+                </button>
+
                 <button
                   type="button"
                   onClick={continueAsGuest}

@@ -16,10 +16,29 @@
  */
 
 const passport = require('../config/passport');
+const User = require('../models/User');
 const { signToken } = require('../middleware/authMiddleware');
 const logger = require('../utils/logger');
 
 const CLIENT_URL = process.env.CLIENT_URL || process.env.CLIENT_ORIGIN || 'http://localhost:8080';
+const isProd = process.env.NODE_ENV === 'production';
+
+// httpOnly cookie fallback for the JWT (the SPA primarily reads it from the body
+// and stores it in localStorage; the cookie helps same-site/server-side callers).
+const tokenCookie = {
+  httpOnly: true,
+  secure: isProd,
+  sameSite: isProd ? 'strict' : 'lax',
+  domain: process.env.COOKIE_DOMAIN || undefined,
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days, matches the JWT
+  path: '/',
+};
+
+// Shape a user for the response body (never includes the password hash).
+const publicUser = (u) => ({ id: u.id, email: u.email, name: u.name, avatar: u.avatar });
+
+// Uniform credentials error — never reveal whether the email exists.
+const INVALID_CREDS = { success: false, message: 'Invalid email or password' };
 
 /**
  * GET /auth/google
@@ -53,14 +72,58 @@ const googleCallback = (req, res, next) => {
 };
 
 /**
- * POST /auth/login
- * Email/password sign-in — stubbed for now (Google is the live path).
+ * POST /auth/register
+ * Create an email/password account. Validation (registerRules) runs first.
+ * Issues a JWT immediately so the user is signed in on success.
  */
-const login = (req, res) => {
-  return res.status(501).json({
-    success: false,
-    message: 'Email/password login is not implemented yet. Please sign in with Google.',
-  });
+const register = async (req, res, next) => {
+  try {
+    const { name, email, password } = req.body;
+
+    const existing = await User.findByEmail(email);
+    if (existing) {
+      // 409 at signup is acceptable; it doesn't leak a login oracle.
+      logger.security('REGISTER_DUPLICATE', { ip: req.ip });
+      return res.status(409).json({ success: false, message: 'Email is already registered' });
+    }
+
+    const user = await User.createWithPassword({ name, email, password });
+    const token = signToken(user);
+    res.cookie('token', token, tokenCookie);
+    logger.info('New user via email/password', { userId: user.id });
+    return res.status(201).json({ success: true, token, user: publicUser(user) });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * POST /auth/login
+ * Email/password sign-in. Uniform error on any failure (no user-enumeration).
+ */
+const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findByEmailWithPassword(email);
+    // Missing user OR a Google-only account (no password) -> same generic error.
+    if (!user || !user.password) {
+      logger.security('LOGIN_FAILED', { ip: req.ip, reason: 'no_credential' });
+      return res.status(401).json(INVALID_CREDS);
+    }
+
+    const ok = await User.verifyPassword(password, user.password);
+    if (!ok) {
+      logger.security('LOGIN_FAILED', { ip: req.ip, reason: 'bad_password' });
+      return res.status(401).json(INVALID_CREDS);
+    }
+
+    const token = signToken(user);
+    res.cookie('token', token, tokenCookie);
+    return res.json({ success: true, token, user: publicUser(user) });
+  } catch (err) {
+    next(err);
+  }
 };
 
 /**
@@ -83,4 +146,4 @@ const logout = (req, res) => {
   return res.json({ success: true, message: 'Logged out' });
 };
 
-module.exports = { googleAuth, googleCallback, login, logout };
+module.exports = { googleAuth, googleCallback, register, login, logout };

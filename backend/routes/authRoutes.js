@@ -15,15 +15,17 @@
 const express = require('express');
 const router = express.Router();
 
-const { googleAuth, googleCallback, login, logout } = require('../controllers/authController');
+const { googleAuth, googleCallback, register, login, logout } = require('../controllers/authController');
 const { protect, loginLimiter } = require('../middleware/authMiddleware');
+const { registerRules, loginRules } = require('../middleware/validationMiddleware');
 
 // Google OAuth
 router.get('/google', googleAuth);
 router.get('/google/callback', googleCallback);
 
-// Email/password (stub) + session teardown
-router.post('/login', loginLimiter, login);
+// Email/password
+router.post('/register', loginLimiter, registerRules, register);
+router.post('/login', loginLimiter, loginRules, login);
 router.post('/logout', logout);
 
 // Convenience: echo the authenticated user (SPA can verify its token).
