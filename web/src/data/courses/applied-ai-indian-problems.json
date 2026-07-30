@@ -1,0 +1,2230 @@
+{
+  "slug": "applied-ai-indian-problems",
+  "title": "Applied AI for Indian Problems",
+  "tagline": "Impact is the metric, accuracy is a proxy — build AI that solves real problems on a student budget.",
+  "modules": [
+    {
+      "number": "1",
+      "title": "Problem → Data → Model → Impact",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Most student AI projects run this loop backwards: they start with a model they want to use, find a dataset that fits it, invent a problem that justifies the dataset, and never reach impact at all. The order in the title is not a preference. Each stage constrains the next, and reversing them produces work that is technically correct and practically useless."
+        },
+        {
+          "type": "p",
+          "text": "┌───────────┐ ┌───────────┐ ┌───────────┐ ┌───────────┐"
+        },
+        {
+          "type": "p",
+          "text": "├───────────┤ ├───────────┤ ├───────────┤ ├───────────┤"
+        },
+        {
+          "type": "p",
+          "text": "│ Whose │ │ Does it │ │ Simplest │ │ Did the │"
+        },
+        {
+          "type": "p",
+          "text": "│ decision? │ │ exist? │ │ thing │ │ decision │"
+        },
+        {
+          "type": "p",
+          "text": "│ What │ │ Can I get │ │ that │ │ actually │"
+        },
+        {
+          "type": "p",
+          "text": "│ changes? │ │ it fairly?│ │ clears │ │ change? │"
+        },
+        {
+          "type": "p",
+          "text": "│ Cost of │ │ Does it │ │ the bar? │ │ For whom? │"
+        },
+        {
+          "type": "p",
+          "text": "│ error? │ │ look like │ │ │ │ At what │"
+        },
+        {
+          "type": "p",
+          "text": "│ │ │ the field?│ │ │ │ cost? │"
+        },
+        {
+          "type": "p",
+          "text": "└───────────┘ └───────────┘ └───────────┘ └───────────┘"
+        },
+        {
+          "type": "p",
+          "text": "▲ │"
+        },
+        {
+          "type": "p",
+          "text": "└────────────────────────────────────────────────────────┘"
+        },
+        {
+          "type": "p",
+          "text": "what you learn in the field redefines the problem"
+        },
+        {
+          "type": "p",
+          "text": "(this arrow is the project — the rest is one lap)"
+        },
+        {
+          "type": "p",
+          "text": "Figure 1.1 — The return arrow is the whole discipline. A project that never loops back has not been tested against reality; it has only been tested against a test set."
+        }
+      ],
+      "topics": [
+        {
+          "id": "applied-ai-indian-problems-1-1",
+          "number": "1.1",
+          "title": "The four stages, and how each one fails",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Stage       The question it answers                     ‘Done’ looks like                        How it fails\nProblem\nData        Who makes a decision today, with            One sentence naming a person, a          Stated as a technology wish (‘apply deep learning\nModel       what information, and what does             decision, and a cost — with no           to agriculture’) instead of a decision\nImpact      a wrong decision cost them?                 technology in it\n            Does data that resembles the                A dataset, its licence, and an honest    Using a clean public dataset that looks nothing like\n            deployment conditions exist, and            written note on how it differs from the  the real input — the most common failure in this\n            may I lawfully and fairly use it?           field                                    entire guide\n            What is the simplest thing that             A baseline beaten by a measurable        Starting from the largest architecture and\n            clears the decision threshold?              margin, and a size/latency budget that   optimising a metric nobody acts on\n                                                        fits the device\n            Did the decision change, for                A before/after measurement on the        Skipped entirely. Replaced by an accuracy figure\n            whom, and was that change worth             decision itself, plus an adoption        and a demo video\n            its cost?                                   number"
+            },
+            {
+              "type": "p",
+              "text": "The one-sentence problem statement"
+            },
+            {
+              "type": "p",
+              "text": "Write it in this exact shape before anything else, and delete every technology word: ‘[Person] currently decides [decision] using [information], and gets it wrong [how often], which costs [what].’"
+            },
+            {
+              "type": "p",
+              "text": "‘A smallholder cotton farmer in Vidarbha decides which pesticide to buy by asking the input dealer who sells it to him, is wrong often enough that resistance is now widespread, and each wrong spray costs about ₹1,800 plus a lost week.’ That sentence tells you the data you need, the accuracy bar, the interface, the language, and the failure you must avoid. ‘Build a crop disease CNN’ tells you none of it."
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-1-2",
+          "number": "1.2",
+          "title": "Three case studies",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Two that worked, described in terms of the loop, and one instructive failure. Details are illustrative composites of publicly documented deployment patterns; the structure is what matters, not the specific organisation."
+            },
+            {
+              "type": "p",
+              "text": "CASE STUDY — Chest X-ray screening for tuberculosis"
+            },
+            {
+              "type": "p",
+              "text": "Health · the pattern behind India’s AI-assisted TB screening programmes"
+            },
+            {
+              "type": "p",
+              "text": "PROBLEM India carries a large share of the world’s TB burden and a great deal of it is undiagnosed. In a district screening camp, a technician takes chest X-rays faster than the one available radiologist can read them. The binding constraint is not imaging, it is reading capacity."
+            },
+            {
+              "type": "p",
+              "text": "DATA Chest radiographs with radiologist labels, plus confirmed microbiological outcomes. The critical design choice is that the images come from the same class of portable machine used in camps, not from tertiary hospital scanners."
+            },
+            {
+              "type": "p",
+              "text": "MODEL A classifier that triages: ‘likely normal’ versus ‘needs a human read’. It is deliberately tuned for high sensitivity and tolerated low precision, because the cost of a missed case is enormous and the cost of a false alarm is one radiologist minute."
+            },
+            {
+              "type": "pre",
+              "text": "IMPACT   The measured outcome is not AUC. It is: how many more people were screened per radiologist-day, and how\n         many confirmed cases were started on treatment who otherwise would not have been."
+            },
+            {
+              "type": "p",
+              "text": "What to take from this: The model does not diagnose. It allocates scarce human attention. That is the most common shape of a genuinely useful AI system in a resource-constrained setting, and it is why the operating threshold matters more than the architecture."
+            },
+            {
+              "type": "p",
+              "text": "CASE STUDY — Speech interfaces for Indian languages"
+            },
+            {
+              "type": "p",
+              "text": "Language · the AI4Bharat and Bhashini pattern"
+            },
+            {
+              "type": "pre",
+              "text": "PROBLEM  A scheme beneficiary who cannot read comfortably in any script, and does not speak English, cannot use a\n         form-based government portal. The service exists; access does not."
+            },
+            {
+              "type": "p",
+              "text": "DATA Speech and text corpora across dozens of Indian languages, deliberately collected across dialects, ages and recording conditions — because a model trained only on urban, educated, studio-quality Hindi fails on exactly the population it was built for."
+            },
+            {
+              "type": "pre",
+              "text": "MODEL    ASR and translation models, increasingly small enough to run at the edge so that a patchy connection does not\n         mean no service.\nIMPACT   Measured as task completion by people who could not complete the task before — not as word error rate,\n         though WER is what you tune."
+            },
+            {
+              "type": "p",
+              "text": "What to take from this: Data collection was the project. When your users are underrepresented in every existing dataset, gathering representative data is not preparation for the work; it is the majority of the work."
+            },
+            {
+              "type": "p",
+              "text": "CASE STUDY — The attendance system nobody used"
+            },
+            {
+              "type": "p",
+              "text": "Failure · a composite of a very common college and workplace project"
+            },
+            {
+              "type": "pre",
+              "text": "PROBLEM  Never actually stated. The real motivation was ‘face recognition is impressive’. The proctor was not consulted,\n         and roll-call was not measured as a bottleneck."
+            },
+            {
+              "type": "p",
+              "text": "DATA Enrolment photos taken indoors, one per student, well lit, front-facing."
+            },
+            {
+              "type": "p",
+              "text": "MODEL A face-recognition pipeline reporting 97% accuracy on a held-out split of those same photos."
+            },
+            {
+              "type": "p",
+              "text": "IMPACT In the corridor it failed on masks, spectacles, backlight from the doorway, and darker skin tones — unevenly. Marking one student absent wrongly cost more trust than the system saved in time. It was quietly abandoned in three weeks, and the biometric data sat on a shared drive."
+            },
+            {
+              "type": "p",
+              "text": "What to take from this: Three separate lessons: the problem was never validated, the test set shared the capture conditions of the training set so 97% measured nothing, and the error was unevenly distributed across students — which turns a technical shortcoming into a fairness problem. Chapter 7 returns to this."
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-1-3",
+          "number": "1.3",
+          "title": "Making impact measurable",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "‘Impact’ becomes rigorous the moment you write down the counterfactual: what would have happened anyway, without you. Fill this in before you build, because afterwards you will unconsciously choose the comparison that flatters your work."
+            },
+            {
+              "type": "p",
+              "text": "THE IMPACT LEDGER - fill in before writing code, revisit after the pilot"
+            },
+            {
+              "type": "pre",
+              "text": "DECISION       Which single decision does this change?\n               \"Whether to spray, and with what.\""
+            },
+            {
+              "type": "p",
+              "text": "BASELINE How is it made today, and how well? Measure this. Guessing the baseline is how projects claim improvements that do not exist. \"Dealer's recommendation. Correct roughly 6 times in 10"
+            },
+            {
+              "type": "p",
+              "text": "by expert review of 50 past cases.\""
+            },
+            {
+              "type": "p",
+              "text": "BAR What accuracy makes the system worth using at all?"
+            },
+            {
+              "type": "p",
+              "text": "Usually the baseline plus a margin - not 99%."
+            },
+            {
+              "type": "p",
+              "text": "\"Must beat 60% by enough to matter: target 80%, and it must"
+            },
+            {
+              "type": "p",
+              "text": "say 'I don't know' rather than guess wrong.\""
+            },
+            {
+              "type": "p",
+              "text": "COUNTERFACTUAL What happens to this decision if I do nothing? \"Unchanged. Extension officers visit twice a season.\""
+            },
+            {
+              "type": "pre",
+              "text": "ADOPTION       Who has to change behaviour, and what would make them?\n               \"The farmer must trust it over a person he has known for"
+            },
+            {
+              "type": "p",
+              "text": "ten years. Output must be in Marathi, name a specific product, and admit uncertainty.\""
+            },
+            {
+              "type": "p",
+              "text": "COST OF ERROR False positive: wasted spray, ~Rs 1,800 + resistance False negative: crop loss, potentially ~Rs 20,000/acre -&gt; These are NOT symmetric, so accuracy is the wrong"
+            },
+            {
+              "type": "p",
+              "text": "metric. Optimise recall on the expensive class."
+            },
+            {
+              "type": "pre",
+              "text": "MEASUREMENT    What number, collected how, tells me it worked?\n               \"Of 40 pilot farmers: how many used it, how many followed"
+            },
+            {
+              "type": "p",
+              "text": "it, and what did an agronomist say about those decisions.\""
+            },
+            {
+              "type": "p",
+              "text": "The last two boxes are where most projects die. If the costs of the two error types differ by 10×, a single accuracy figure is actively misleading"
+            },
+            {
+              "type": "p",
+              "text": "DO THIS NOW — Write the ledger for a problem you can actually observe"
+            },
+            {
+              "type": "p",
+              "text": "Forty-five minutes. Pick something you can physically go and watch someone do."
+            },
+            {
+              "type": "p",
+              "text": "1 Choose a decision made repeatedly by someone you have access to — a lab assistant, a librarian, a shopkeeper, a hostel warden, a farmer in your family. Not a global problem; a local one."
+            },
+            {
+              "type": "p",
+              "text": "2 Go and watch it happen at least twice. Do not interview from your desk. Note what information they use and what they do when they are unsure."
+            },
+            {
+              "type": "p",
+              "text": "3 Write the one-sentence problem statement from §1.1 with zero technology words in it. 4 Fill in all seven boxes of the impact ledger. Where you do not know the baseline, write ‘UNMEASURED’ in capitals — that is"
+            },
+            {
+              "type": "p",
+              "text": "now the first task of your project."
+            },
+            {
+              "type": "p",
+              "text": "5 Compute the ratio between your two error costs. If it is greater than about three, write down which metric you will actually optimise, and why it is not accuracy."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "2",
+      "title": "Choosing Models for Constrained Environments",
+      "intro": [
+        {
+          "type": "p",
+          "text": "The model-selection decision is not ‘which architecture is most accurate’. It is ‘what fits inside the deployment envelope’ — the connectivity, the device, the latency budget, the privacy constraint and the cost per inference at real volume. Accuracy is chosen last, from whatever survives that filter."
+        }
+      ],
+      "topics": [
+        {
+          "id": "applied-ai-indian-problems-2-1",
+          "number": "2.1",
+          "title": "The seven constraints",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Constraint The question Why it matters in an Indian deployment"
+            },
+            {
+              "type": "pre",
+              "text": "Connectivity   Will there be a usable connection at     A field at the edge of a village, a basement lab, a moving vehicle. ‘Mostly\n               the moment of the decision?              online’ means offline exactly when it counts\nLatency        How long may the user wait before        Under ~1s for interactive use. A round trip on a weak 4G link can exceed that\n               the interaction breaks?                  before the model has done anything\nPrivacy        Does the raw input have to leave the     Faces, voices, health records, children’s data. On-device inference is a legal\n               device?                                  and ethical strategy, not just a technical one (§7.4)\nConstraint      The question                                  Why it matters in an Indian deployment\nCost at volume  What does inference cost once it is\n                50,000 calls a month, not 50?                 Cloud APIs are free during your demo and expensive at scale. Model this before,\nDevice          What is the worst phone or board this         not after\n                must run on?\nPower           Is it plugged in, battery, or solar?          Assume a sub-₹10,000 Android with 3–4 GB RAM and little free storage, not\n                                                              your laptop\nUpdate          How will you fix the model after it is\ncadence         deployed?                                     Continuous inference drains a phone in hours. Duty-cycle it or move it to a\n                                                              board"
+            },
+            {
+              "type": "p",
+              "text": "A cloud model updates instantly. Ten thousand phones with an embedded model do not"
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-2-2",
+          "number": "2.2",
+          "title": "The four deployment shapes",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "                                                              ┌──────────────┐\n┌────────────────┐              ┌────────────────┐            │ one box in │        ┌───────────┐\n                                                              │ the building │\n│ MCU / low-end │               │ phone app,            │     │ (Pi 5, mini │       │ HTTP call │\n│ phone, TFLite │               │ TFLite / ONNX │                  │ PC, Jetson) │  │ to a   │\n                                                              └──────────────┘\n│ Micro          │              │ quantised             │                           │ hosted │\n                                                               LAN only\n│ &lt; 1 MB         │           │ 2 - 30 MB                │   10 - 100 ms          │ model        │\n                                                               electricity only\n└────────────────┘              └────────────────┘             updates: easy        └───────────┘\n                                                               e.g. lab sensor\noffline always                  offline always                 anomaly detection    needs network"
+            },
+            {
+              "type": "p",
+              "text": "~ms latency 10 - 300 ms 200 ms - 3 s"
+            },
+            {
+              "type": "p",
+              "text": "no per-use cost no per-use cost per-call cost"
+            },
+            {
+              "type": "p",
+              "text": "updates: hard updates: app store updates: instant"
+            },
+            {
+              "type": "p",
+              "text": "e.g. vibration e.g. crop disease e.g. translation,"
+            },
+            {
+              "type": "p",
+              "text": "threshold on ESP32 classifier in the field document parsing"
+            },
+            {
+              "type": "p",
+              "text": "Figure 2.1 — Projects 1 and 3 in this guide land in B and C. Reach for D only when the task genuinely needs a large model and the network is genuinely reliable."
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-2-3",
+          "number": "2.3",
+          "title": "Choosing, in order",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "1 Can a rule do it? A threshold, a lookup, a regex, a checksum. Free, instant, explainable, testable. Project 2 is mostly rules, and it is a better product for it."
+            },
+            {
+              "type": "p",
+              "text": "2 Can a classical model do it? Logistic regression, gradient boosting, isolation forest. Kilobytes, milliseconds, and they run anywhere. For tabular and sensor data these usually beat deep learning at a fraction of the cost — Project 3 relies on this."
+            },
+            {
+              "type": "p",
+              "text": "3 Can a small pretrained model do it? MobileNet-class vision models and MiniLM-class sentence encoders are tens of megabytes and run on a mid-range phone. This tier covers most student projects that genuinely need learning."
+            },
+            {
+              "type": "p",
+              "text": "4 Do you actually need a large model? Open-ended language, translation, complex documents, reasoning over text. Then use a cloud API — and design for the network being absent: queue the request, degrade gracefully, cache aggressively."
+            },
+            {
+              "type": "p",
+              "text": "Quantisation is the cheapest win available"
+            },
+            {
+              "type": "p",
+              "text": "Converting a float32 model to int8 typically cuts size by roughly 4× and speeds up CPU inference substantially, usually for a small accuracy cost — often a fraction of a percent for image classification. On a constrained device this trade is almost always correct. Do it with TensorFlow Lite’s post-training quantisation before you consider a smaller architecture, and always re-measure accuracy on your own field test set afterwards, not on the benchmark split."
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-2-4",
+          "number": "2.4",
+          "title": "The cost crossover",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The argument between ‘just call an API’ and ‘ship it on the device’ is usually settled by arithmetic rather than by taste. Work it out before you choose."
+            },
+            {
+              "type": "pre",
+              "text": "CLOUD      = calls_per_month x cost_per_call + engineering_time\nON-DEVICE  = one_time_device_cost + (larger build effort, ~2-4x)"
+            },
+            {
+              "type": "p",
+              "text": "+ update_cost_per_release"
+            },
+            {
+              "type": "p",
+              "text": "WORKED EXAMPLE - crop advisory, 300 farmers, 8 photos each per month = 2,400 calls"
+            },
+            {
+              "type": "p",
+              "text": "Cloud vision API at ~Rs 0.12 per call -&gt; Rs 288 / month, Rs 3,456 / year"
+            },
+            {
+              "type": "p",
+              "text": "Plus: fails whenever the field has no signal, which is when it is used."
+            },
+            {
+              "type": "p",
+              "text": "On-device TFLite model in the same app -&gt; Rs 0 per inference, forever Plus: works with the phone in aeroplane mode. Costs you two extra weeks"
+            },
+            {
+              "type": "p",
+              "text": "of build time and a slower path to fixing a bad model."
+            },
+            {
+              "type": "p",
+              "text": "VERDICT: on-device. Not because it is cheaper - Rs 3,456/year is nothing - but because the connectivity constraint decides it. Cost was never the binding constraint here, and noticing that is the actual skill."
+            },
+            {
+              "type": "p",
+              "text": "SECOND EXAMPLE - translating 40 government circulars a month into Marathi"
+            },
+            {
+              "type": "pre",
+              "text": "Cloud LLM API                                           -&gt; a few hundred rupees a month\nOn-device translation model                             -&gt; weeks of work, worse quality"
+            },
+            {
+              "type": "p",
+              "text": "VERDICT: cloud. Low volume, office wi-fi, no privacy constraint on public documents, and quality matters more than latency. Same framework, opposite answer."
+            },
+            {
+              "type": "p",
+              "text": "Run this calculation for your own project and write down which constraint is actually binding. It is rarely the one you assumed"
+            },
+            {
+              "type": "p",
+              "text": "DO THIS NOW — Fit your model to the envelope"
+            },
+            {
+              "type": "p",
+              "text": "Thirty minutes. Do this before you download a single dataset."
+            },
+            {
+              "type": "p",
+              "text": "1 Write the seven constraints from §2.1 for your project, with numbers where you can. ‘Unknown’ is an acceptable answer and a task."
+            },
+            {
+              "type": "p",
+              "text": "2 Name the worst device that must run it. Find its RAM and storage. If you do not know, ask three people what phone they use — that is your real target, not yours."
+            },
+            {
+              "type": "p",
+              "text": "3 Pick a deployment shape from Figure 2.1 and write one sentence defending it against the neighbouring option. 4 Run the cost crossover for 10× your expected volume. If the answer flips, note the volume at which it flips — that is your"
+            },
+            {
+              "type": "p",
+              "text": "scaling trigger."
+            },
+            {
+              "type": "p",
+              "text": "5 Set an explicit budget before training anything: maximum model size in MB, maximum latency in ms, minimum accuracy. Any model that misses the first two is disqualified regardless of the third."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "3",
+      "title": "Getting Data on a Student Budget",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Data work is not preparation for the project. In applied AI it usually is the project — sixty to eighty per cent of the hours, and almost all of the difference between something that works in the field and something that only works in your notebook."
+        }
+      ],
+      "topics": [
+        {
+          "id": "applied-ai-indian-problems-3-1",
+          "number": "3.1",
+          "title": "The sourcing hierarchy",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "1 Reuse what already exists inside the institution. Your library has a catalogue export. Your lab has maintenance registers. Your department has years of attendance and marks. This is the fastest, cheapest and most realistic data you will ever get — and asking for it teaches you the consent and access conversation you will have for the rest of your career."
+            },
+            {
+              "type": "p",
+              "text": "2 Public open datasets. Free and immediate, but almost always collected under conditions unlike yours. Use them to prototype and to pretrain, never to validate."
+            },
+            {
+              "type": "p",
+              "text": "3 Partner with someone who has the problem. A nearby FPO, a hospital department, a workshop, a school. They have data and the deployment context. Offer them something concrete in return — a dashboard, a digitised register."
+            },
+            {
+              "type": "p",
+              "text": "4 Collect it yourself. Slowest, most expensive in hours, and the only way to get data that matches deployment conditions. Even 200 self-collected field images are worth more for validation than 50,000 lab images."
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-3-2",
+          "number": "3.2",
+          "title": "Where to look, in India",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Source What is there Watch for"
+            },
+            {
+              "type": "pre",
+              "text": "data.gov.in (Open    Central and state datasets: agriculture, health, Government Open Data Licence – India. Many files are stale or\nGovernment Data\nPlatform)            education, transport, census                    inconsistently formatted; check the update date"
+            },
+            {
+              "type": "p",
+              "text": "Bhuvan (ISRO) Satellite imagery, land use, thematic maps for Registration needed for some layers; check resolution suits your"
+            },
+            {
+              "type": "p",
+              "text": "Indian geographies question"
+            },
+            {
+              "type": "pre",
+              "text": "AI4Bharat / Bhashini Corpora and models for Indian languages —       Coverage varies sharply by language; check your target language\n                                     speech, text, translation       is real, not nominal"
+            },
+            {
+              "type": "p",
+              "text": "Agmarknet Daily mandi arrivals and prices by commodity Gaps on holidays; market names are not standardised across"
+            },
+            {
+              "type": "p",
+              "text": "and market years"
+            },
+            {
+              "type": "pre",
+              "text": "Kaggle, Hugging      General ML datasets including PlantVillage and Licences are frequently wrong or missing. Verify provenance\nFace, UCI, Zenodo\n                     many Indian scrapes                             before you rely on it\nICAR, ICRISAT, KVK   Agronomic data, trial results, crop calendars,  Often PDF tables rather than machine-readable files. Budget\npublications         advisories                                      extraction time\nNFHS, NSSO, Census Large-scale health, consumption and               Sampling design matters. Do not treat survey weights as optional\n                                     demographic survey microdata\nYour own phone       The only source guaranteed to match your        Consent, metadata discipline, and storage. See §3.4 and Chapter\n                     deployment conditions                           7"
+            },
+            {
+              "type": "p",
+              "text": "Before downloading anything, find and record the licence. ‘It was on the internet’ is not a licence, and a project you cannot publish or hand over is worth much less than one you can."
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-3-3",
+          "number": "3.3",
+          "title": "Collecting your own data for almost nothing",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The equipment is a phone. The discipline is everything. What separates a usable self-collected dataset from a folder of photos is a written capture protocol, decided before you start and followed by everyone."
+            },
+            {
+              "type": "p",
+              "text": "CAPTURE PROTOCOL - write this, print it, hand it to everyone collecting"
+            },
+            {
+              "type": "p",
+              "text": "One leaf, photographed once, from ~30 cm, leaf filling most of the frame."
+            },
+            {
+              "type": "p",
+              "text": "DELIBERATE VARIATION (this is the part people skip)"
+            },
+            {
+              "type": "p",
+              "text": "Vary on purpose, and record which is which:"
+            },
+            {
+              "type": "p",
+              "text": "time of day morning / midday / evening -&gt; lighting"
+            },
+            {
+              "type": "p",
+              "text": "weather clear / overcast / after rain -&gt; colour, wetness"
+            },
+            {
+              "type": "p",
+              "text": "device at least 3 different phone models -&gt; sensor differences"
+            },
+            {
+              "type": "p",
+              "text": "background soil, hand, other leaves, sky -&gt; prevents the model"
+            },
+            {
+              "type": "p",
+              "text": "learning the background"
+            },
+            {
+              "type": "p",
+              "text": "collector at least 3 different people -&gt; framing habits"
+            },
+            {
+              "type": "p",
+              "text": "A dataset that varies on none of these teaches the model to recognise"
+            },
+            {
+              "type": "p",
+              "text": "your phone and your afternoon, not the disease."
+            },
+            {
+              "type": "p",
+              "text": "sample_id | timestamp | village/plot | crop | variety | device_model | collector_id | ground_truth_label | who_labelled_it | confidence_of_labeller (high/medium/low)"
+            },
+            {
+              "type": "p",
+              "text": "Names, phone numbers, faces, or precise home coordinates - unless you genuinely need them, have written consent, and have read Chapter 7. Plot-level location rounded to the village is almost always enough."
+            },
+            {
+              "type": "p",
+              "text": "The collector_id and device_model fields look like bureaucracy until §3.6, when they become the only way to split your data honestly"
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-3-4",
+          "number": "3.4",
+          "title": "Cleaning: an eight-step pass",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• 1. Deduplicate — by content hash for files, by natural key for rows. The same photo in train and test inflates your score and teaches you nothing."
+            },
+            {
+              "type": "p",
+              "text": "• 2. Fix types and units — dates to ISO-8601, one currency unit, one temperature scale. Decide whether 1.25 L means lakh or litres once, in writing."
+            },
+            {
+              "type": "p",
+              "text": "• 3. Separate missing from zero — a blank sensor reading is not 0°C. Encode them differently or your model will learn that the sensor failing means it is cold."
+            },
+            {
+              "type": "p",
+              "text": "• 4. Range-check every numeric column — humidity above 100, a CGPA of 87, a future timestamp. Print the min and max of every column and read them."
+            },
+            {
+              "type": "p",
+              "text": "• 5. Normalise categories — ‘Tomato’, ‘tomato’, ‘TOMATO ’, ‘Tamatar’ are four classes to a computer and one to you."
+            },
+            {
+              "type": "p",
+              "text": "• 6. Handle class imbalance explicitly — decide now between resampling, class weights or a changed metric. Do not discover it from a confusion matrix later."
+            },
+            {
+              "type": "p",
+              "text": "• 7. Quarantine, never silently drop — rejected rows go to a file you inspect. The rejects are often where the interesting failures live."
+            },
+            {
+              "type": "p",
+              "text": "• 8. Write down what you did — every cleaning decision is a modelling decision. An undocumented pipeline is irreproducible by definition, including by you in March."
+            },
+            {
+              "type": "p",
+              "text": "THE CLEANING PASS AS A NOTEBOOK - run it, read the output, do not skip step 0"
+            },
+            {
+              "type": "p",
+              "text": "import pandas as pd, hashlib"
+            },
+            {
+              "type": "p",
+              "text": "df = pd.read_csv(\"raw.csv\", encoding=\"utf-8\", dtype=str) # read as text first, # then convert deliberately"
+            },
+            {
+              "type": "p",
+              "text": "# 0. LOOK AT IT. Ten random rows, by eye. Do this before anything else. print(df.sample(10).to_string())"
+            },
+            {
+              "type": "p",
+              "text": "# 1. duplicates - by natural key, and by file hash for images print(\"dupe rows:\", df.duplicated(subset=[\"sample_id\"]).sum()) df = df.drop_duplicates(subset=[\"sample_id\"], keep=\"first\")"
+            },
+            {
+              "type": "p",
+              "text": "# 2. types and units, one column at a time, explicitly"
+            },
+            {
+              "type": "p",
+              "text": "df[\"ts\"] = pd.to_datetime(df[\"ts\"], format=\"%d/%m/%Y %H:%M\", errors=\"coerce\")"
+            },
+            {
+              "type": "p",
+              "text": "df[\"temp_c\"] = pd.to_numeric(df[\"temp_c\"], errors=\"coerce\")"
+            },
+            {
+              "type": "pre",
+              "text": "# 3. missing is not zero        # read this table properly, every run\nprint(df.isna().sum())"
+            },
+            {
+              "type": "p",
+              "text": "# 4. range checks - print min/max of EVERY numeric column and look print(df.describe().T[[\"min\", \"max\"]]) bad = df[(df.temp_c &lt; -10) | (df.temp_c &gt; 80)]"
+            },
+            {
+              "type": "p",
+              "text": "# 5. normalise categories df[\"crop\"] = (df[\"crop\"].str.strip().str.lower()"
+            },
+            {
+              "type": "p",
+              "text": ".replace({\"tamatar\": \"tomato\", \"tomatoes\": \"tomato\"})) print(df[\"crop\"].value_counts()) # look for near-duplicate category names"
+            },
+            {
+              "type": "p",
+              "text": "# 6. class balance - decide the response now, in writing print(df[\"label\"].value_counts(normalize=True))"
+            },
+            {
+              "type": "p",
+              "text": "# 7. quarantine, never silently drop bad.to_csv(\"quarantine.csv\", index=False) df = df.drop(bad.index)"
+            },
+            {
+              "type": "p",
+              "text": "# 8. write down what you did, and how much you lost print(f\"kept {len(df)} of {len(pd.read_csv('raw.csv'))} rows\")"
+            },
+            {
+              "type": "p",
+              "text": "Steps 0, 4 and 7 are the ones that catch real problems. Printing describe() and actually reading it has saved more projects than any modelling technique"
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-3-5",
+          "number": "3.5",
+          "title": "Labelling without a budget",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "You do not need a labelling vendor. You need a written label guideline and a measured agreement rate. The guideline is a one-page document defining every class, with a positive example, a negative example, and an explicit rule for the ambiguous cases — because the ambiguous cases are where two labellers silently diverge and quietly poison the dataset."
+            },
+            {
+              "type": "p",
+              "text": "THE TWO-LABELLER PROTOCOL - half a day, transforms dataset quality"
+            },
+            {
+              "type": "p",
+              "text": "1. Write the label guideline. One page. Include: class definitions, one clear example each, at least three hard cases with the correct answer, and a mandatory \"unclear\" option."
+            },
+            {
+              "type": "p",
+              "text": "2. Two people independently label the SAME 100 samples. No discussion."
+            },
+            {
+              "type": "p",
+              "text": "3. Compute agreement. Raw agreement is misleading when classes are imbalanced, so compute Cohen's kappa:"
+            },
+            {
+              "type": "p",
+              "text": "kappa = (p_observed - p_chance) / (1 - p_chance)"
+            },
+            {
+              "type": "p",
+              "text": "from sklearn.metrics import cohen_kappa_score k = cohen_kappa_score(labels_a, labels_b)"
+            },
+            {
+              "type": "p",
+              "text": "Rough reading: &lt; 0.4 the guideline is broken, not the labellers 0.4-0.6 usable for prototyping, risky for deployment 0.6-0.8 good &gt; 0.8 strong"
+            },
+            {
+              "type": "p",
+              "text": "4. Sit together, go through every disagreement, and REVISE THE GUIDELINE. Do not just settle the label. The disagreement is information about your class definitions."
+            },
+            {
+              "type": "p",
+              "text": "5. Re-run on a fresh 100. If kappa did not move, your classes may not be separable from this data at all - which is a genuine finding and far better learned now than after training."
+            },
+            {
+              "type": "p",
+              "text": "TOOLS Label Studio (open source, runs locally, images/text/audio/time series) - CVAT for bounding boxes - a shared spreadsheet is completely acceptable for under ~500 tabular rows."
+            },
+            {
+              "type": "p",
+              "text": "If a human expert and another human expert cannot agree on the label, no model will learn it. Kappa is the cheapest reality check in applied machine learning"
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-3-6",
+          "number": "3.6",
+          "title": "Splitting data honestly — the mistake that inflates every score",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "A random train/test split is wrong for almost every applied project, and it is the single most common reason a 98% model fails in the field. If you photographed 40 leaves from one plot on one afternoon, a random split puts near-identical images on both sides. Your test set is then measuring memorisation, not generalisation."
+            },
+            {
+              "type": "p",
+              "text": "Split by the thing that will differ at deployment Split by group, not by row. If the model will meet new farms, hold out entire farms. New devices — hold out entire devices. New days — hold out later days (and never let the future leak into training for time series). New students, new machines, new districts: same rule. In scikit-learn this is GroupShuffleSplit or GroupKFold with your collector_id, plot_id or device_model as the group. Your score will drop, often sharply. That drop is not damage — it is the first honest number your project has produced."
+            },
+            {
+              "type": "p",
+              "text": "DO THIS NOW — Build a small, honest dataset One weekend. This dataset will be more useful to you than any download. 1 Write your capture protocol and your one-page label guideline before collecting anything. 2 Collect 150–200 samples with deliberate variation across at least three devices, three collectors and two times of day."
+            },
+            {
+              "type": "p",
+              "text": "Record every metadata field. 3 Run the eight-step cleaning pass. Keep the quarantine file and look at it. 4 Run the two-labeller protocol on 100 samples. Report your kappa. Revise the guideline at least once. 5 Split by group, not randomly. Write one sentence stating which group you held out and why that matches deployment. 6 Write a five-line datasheet: who collected it, when, where, under what consent, and what it is not representative of. That"
+            },
+            {
+              "type": "p",
+              "text": "last line is the most valuable one."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "4",
+      "title": "Project 1 — Crop Disease Classifier",
+      "intro": [
+        {
+          "type": "p",
+          "text": "You will build a classifier that scores about 99% and then prove, with a controlled experiment, that a large part of that number is fraudulent. This is the most important exercise in the guide, and it takes an afternoon."
+        }
+      ],
+      "topics": [
+        {
+          "id": "applied-ai-indian-problems-4-1",
+          "number": "4.1",
+          "title": "Problem first",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The decision: a farmer, standing in a field, deciding whether this leaf indicates a problem serious enough to act on, and if so what to buy. The baseline: ask a neighbour or the input dealer who sells the pesticide. The cost of error: asymmetric — an unnecessary spray costs money and accelerates resistance; a missed infection can cost a season."
+            },
+            {
+              "type": "p",
+              "text": "Notice what this implies before any model exists: the output must be in the local language, must run without a connection, must map to a specific action rather than a Latin disease name, and must be allowed to say ‘I am not sure, ask someone’. A classifier with no abstain option is the wrong shape for this problem regardless of its accuracy."
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-4-2",
+          "number": "4.2",
+          "title": "The dataset, and its honest description",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "PlantVillage is the standard free starting point: over 54,000 leaf images across roughly 38 crop–disease classes. Mohanty and colleagues (2016) reported around 99.35% accuracy on a held-out split of it, and the field has been building on that number ever since. Three things about it that you must know before you use it:"
+            },
+            {
+              "type": "p",
+              "text": "• The images are laboratory captures. Detached leaves, uniform background, controlled lighting. Real input is a leaf on a plant, in sun or shade, partly occluded, with soil and other foliage behind it."
+            },
+            {
+              "type": "p",
+              "text": "• Accuracy collapses off-distribution. The same 2016 work reported accuracy falling to roughly 31% when models trained on it were tested on field images — a gap repeatedly reproduced since."
+            },
+            {
+              "type": "p",
+              "text": "• The crop list is not India’s crop list. It is heavy on apple, grape, tomato and potato. Rice, wheat, cotton, sugarcane, groundnut, pulses and millets — which is most of Indian agriculture by area — are largely absent or thin. A model trained on it is not a crop disease classifier for India; it is a tomato-and-grape classifier that has never seen a paddy field."
+            },
+            {
+              "type": "p",
+              "text": "The experiment that proves your model is cheating Noyan (2022), Uncovering bias in the PlantVillage dataset, ran a beautifully simple test: train a classifier on a fraction of the background only — no leaf, no lesion, just the region around it. It reached roughly 49% accuracy on a task where random guessing gives about 2.6%. There is no disease information in a patch of background. The model was reading capture artefacts — subtle correlations between how each class was photographed and which class it was. Any model trained on this dataset is using that shortcut too. Reproducing this is step one of your project, not an optional extra."
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-4-3",
+          "number": "4.3",
+          "title": "Build it — no code required",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "# Step What good looks like"
+            },
+            {
+              "type": "pre",
+              "text": "1 Download PlantVillage; pick 3–4 classes of            Fewer classes, done honestly, beats 38 classes done carelessly\n     one crop"
+            },
+            {
+              "type": "p",
+              "text": "2 Hold out a group before you touch anything Not a random split. Hold out whole classes of capture if you can else"
+            },
+            {
+              "type": "p",
+              "text": "3 Open a no-code image classifier that exports You can train and export without writing code, and get a mobile-ready file TFLite (Google’s Teachable Machine is the standard free option)"
+            },
+            {
+              "type": "p",
+              "text": "4 Upload the classes, train, read the reported It will be very high. Write the number down and do not believe it yet accuracy"
+            },
+            {
+              "type": "p",
+              "text": "5 Run the background test. Crop the centre If accuracy is far above 1/n, your dataset leaks. Record both numbers"
+            },
+            {
+              "type": "p",
+              "text": "out of every image, keep only a border strip,"
+            },
+            {
+              "type": "p",
+              "text": "retrain on those"
+            },
+            {
+              "type": "pre",
+              "text": "6 Export the quantised TFLite model; check              Should be a few MB. Compare against your §2.4 budget\n     the file size                                      Different phone, different light, background included. This is your real test set"
+            },
+            {
+              "type": "p",
+              "text": "7 Go outside and photograph 30 real leaves on real plants"
+            },
+            {
+              "type": "p",
+              "text": "8 Score the model on those 30 Expect a large drop. This number, not step 4’s, is your project’s headline"
+            },
+            {
+              "type": "p",
+              "text": "THE BACKGROUND-ONLY DIAGNOSTIC - the notebook, described"
+            },
+            {
+              "type": "p",
+              "text": "1 For every image, mask out the centre 60% (where the leaf is) and keep only the outer frame. You can do this in ~10 lines with PIL:"
+            },
+            {
+              "type": "p",
+              "text": "w, h = img.size img.paste((0, 0, 0), (int(.2*w), int(.2*h), int(.8*w), int(.8*h)))"
+            },
+            {
+              "type": "p",
+              "text": "2 Retrain the same classifier on these mutilated images, same split."
+            },
+            {
+              "type": "p",
+              "text": "3 Compare three numbers, and put all three in your report:"
+            },
+            {
+              "type": "pre",
+              "text": "full-image accuracy on the held-out split               e.g. 0.99\nbackground-only accuracy                                e.g. 0.45\nrandom-guess baseline (1 / number of classes)           e.g. 0.25"
+            },
+            {
+              "type": "p",
+              "text": "background-only ~= random -&gt; your dataset is probably clean background-only &gt;&gt; random -&gt; the gap is the size of the shortcut your model is exploiting"
+            },
+            {
+              "type": "p",
+              "text": "5 Now the real test: 30 photos you took yourself, in a field, on a different phone. Report accuracy on those separately and prominently."
+            },
+            {
+              "type": "p",
+              "text": "Not \"we achieved 99.2% accuracy\". \"We achieved 99.2% on the PlantVillage held-out split, 45% using backgrounds alone (random = 25%), and 38% on 30 field photographs. The gap between the first and third number is the finding.\""
+            },
+            {
+              "type": "p",
+              "text": "A student who reports all three numbers has understood more about machine learning than one who reports 99.2% and stops"
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-4-4",
+          "number": "4.4",
+          "title": "Making it actually useful",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Add an abstain class. Train a ‘not a leaf / unclear’ class using blurry photos, hands, soil and sky. Then threshold: below the confidence cut, the app says ‘unclear, try again or ask an extension officer’. This single change does more for field usefulness than any architecture choice."
+            },
+            {
+              "type": "p",
+              "text": "• Collect field data and fine-tune. Two hundred real photographs, split by plot, will improve field performance more than another 50,000 lab images."
+            },
+            {
+              "type": "p",
+              "text": "• Output an action, not a diagnosis. ‘Early blight — likely’ is not usable. ‘Looks like early blight. Common at this stage. Confirm with your KVK before spraying; here is the number.’ is."
+            },
+            {
+              "type": "p",
+              "text": "• Local language, spoken if possible. If your user reads uncomfortably, text-only output excludes exactly the person you built it for. See §7.4."
+            },
+            {
+              "type": "p",
+              "text": "• Log every prediction with the photo and the outcome, with consent. That is your next training set and your only drift detector."
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-4-5",
+          "number": "4.5",
+          "title": "Fine-tuning on 200 field images",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Once you have your own field photographs, you do not train from scratch — you have far too little data. You take a model that already knows what edges, textures and leaves look like, and retrain only its last layer or two. This is transfer learning, and it is the single most useful technique for constrained projects."
+            },
+            {
+              "type": "p",
+              "text": "FINE-TUNING RECIPE - 200 field images, a laptop or free Colab GPU"
+            },
+            {
+              "type": "pre",
+              "text": "BACKBONE  Start from MobileNetV3-Small or EfficientNet-Lite0, pretrained\n          on ImageNet. Both quantise cleanly to a few MB (see 2.3)."
+            },
+            {
+              "type": "p",
+              "text": "FREEZE Freeze all convolutional layers. Train only the new head. With 200 images, unfreezing the whole network will overfit within a couple of epochs, whatever the training curve says."
+            },
+            {
+              "type": "p",
+              "text": "SPLIT GroupShuffleSplit on plot_id. Never random. (3.6)"
+            },
+            {
+              "type": "p",
+              "text": "AUGMENT Aggressively, and in ways that mimic real variation: random crop, horizontal flip, +/- 30% brightness, +/- 15 degrees rotation, mild blur, JPEG compression"
+            },
+            {
+              "type": "p",
+              "text": "Do NOT augment in ways the field never produces (vertical flips of leaves, extreme hue shifts). Fake variation teaches fake invariance."
+            },
+            {
+              "type": "p",
+              "text": "CLASS WEIGHTS If your rarest disease has 12 images and the commonest has 90, pass class weights or the model will simply predict the majority and report a fine-looking accuracy."
+            },
+            {
+              "type": "p",
+              "text": "STOP EARLY Watch validation loss on the held-out PLOTS. Stop when it stops falling, not when the epoch count looks tidy."
+            },
+            {
+              "type": "p",
+              "text": "THEN Re-run the field test from 4.3 step 8. Compare against the PlantVillage-only model. Report both numbers side by side - that comparison is the actual result of your project."
+            },
+            {
+              "type": "p",
+              "text": "Two hundred images that match deployment conditions will usually beat fifty thousand that do not. This is the most counter-intuitive economics in applied machine learning"
+            },
+            {
+              "type": "p",
+              "text": "DO THIS NOW — Report three numbers, not one An afternoon. The deliverable is a one-page honest evaluation. 1 Build the classifier on 3–4 classes and record the held-out accuracy. 2 Run the background-only diagnostic. Record that accuracy and the random baseline. 3 Photograph 30 real leaves outdoors, on a phone that is not the one in your dataset. Score the model on them. 4 Write the three-number sentence from the notebook above. Then write one paragraph on why the third number is what it"
+            },
+            {
+              "type": "p",
+              "text": "is. 5 Add the abstain class and re-run the field test. Report how many of the 30 it now correctly refuses to answer — and treat a"
+            },
+            {
+              "type": "p",
+              "text": "correct refusal as a success, not a failure."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "5",
+      "title": "Project 2 — Library Book Locator",
+      "intro": [
+        {
+          "type": "p",
+          "text": "A student needs a book and cannot find it. This project is here to teach the discipline that Chapter 2 argued for: the best version of this system is about eighty per cent deterministic code, and adding a neural network to the parts that do not need one makes it slower, costlier and worse."
+        }
+      ],
+      "topics": [
+        {
+          "id": "applied-ai-indian-problems-5-1",
+          "number": "5.1",
+          "title": "Problem first",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The decision: a student in the library deciding where to physically walk. The baseline: the existing OPAC terminal, which fails on typos, on transliterated titles, on ‘the green book Professor Rao mentioned’, and which returns a call number without telling anyone where that is. The real metric: not search accuracy — time from question to book in hand, and the fraction of searches that end in a librarian being asked."
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-5-2",
+          "number": "5.2",
+          "title": "Four lanes, cheapest first",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "query ──▶ [normalise: trim, lowercase, strip punctuation, detect digits]"
+            },
+            {
+              "type": "p",
+              "text": "│"
+            },
+            {
+              "type": "p",
+              "text": "├─ looks like an ISBN? ──▶ LANE 1 checksum validate ──▶ exact catalogue"
+            },
+            {
+              "type": "p",
+              "text": "│ (arithmetic, 0 ms) lookup"
+            },
+            {
+              "type": "p",
+              "text": "│ │"
+            },
+            {
+              "type": "p",
+              "text": "│ └─ invalid checksum? ──▶ LANE 2"
+            },
+            {
+              "type": "p",
+              "text": "│ single-digit repair / OCR"
+            },
+            {
+              "type": "p",
+              "text": "│ confusion fix (0/O, 1/l, 5/S)"
+            },
+            {
+              "type": "p",
+              "text": "│"
+            },
+            {
+              "type": "p",
+              "text": "├─ exact title match? ────▶ direct hit (dict lookup, 0 ms)"
+            },
+            {
+              "type": "p",
+              "text": "│"
+            },
+            {
+              "type": "p",
+              "text": "├─ close title? ─────────▶ LANE 3 fuzzy match, rapidfuzz"
+            },
+            {
+              "type": "p",
+              "text": "│ + transliteration variants (~5 ms)"
+            },
+            {
+              "type": "p",
+              "text": "│"
+            },
+            {
+              "type": "p",
+              "text": "└─ vague / descriptive? ──▶ LANE 4 semantic search over"
+            },
+            {
+              "type": "p",
+              "text": "title+subject embeddings (~50 ms)"
+            },
+            {
+              "type": "p",
+              "text": "│"
+            },
+            {
+              "type": "p",
+              "text": "▼"
+            },
+            {
+              "type": "p",
+              "text": "[rank, merge, deduplicate] ──▶ [call number ──▶ AISLE / RACK / SHELF map] ──▶ answer"
+            },
+            {
+              "type": "p",
+              "text": "▲"
+            },
+            {
+              "type": "p",
+              "text": "└── this join is what students actually needed"
+            },
+            {
+              "type": "p",
+              "text": "Figure 5.1 — Only Lane 4 is machine learning, and it handles the smallest share of queries. Building Lane 4 first is the classic mistake."
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-5-3",
+          "number": "5.3",
+          "title": "Lanes 1 and 2 — ISBN, which is pure arithmetic",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "def isbn_clean(s: str) -&gt; str: \"\"\"Keep digits and a trailing X. Fix common OCR confusions first.\"\"\" s = s.upper().replace(\"O\", \"0\").replace(\"I\", \"1\").replace(\"L\", \"1\") return \"\".join(c for c in s if c.isdigit() or c == \"X\")"
+            },
+            {
+              "type": "p",
+              "text": "def isbn10_valid(s: str) -&gt; bool:"
+            },
+            {
+              "type": "p",
+              "text": "d = isbn_clean(s)"
+            },
+            {
+              "type": "p",
+              "text": "if len(d) != 10:"
+            },
+            {
+              "type": "p",
+              "text": "return False"
+            },
+            {
+              "type": "p",
+              "text": "total = sum((10 if c == \"X\" else int(c)) * (10 - i) for i, c in enumerate(d))"
+            },
+            {
+              "type": "p",
+              "text": "return total % 11 == 0 # weights 10,9,...,1 ; X counts as 10"
+            },
+            {
+              "type": "p",
+              "text": "def isbn13_valid(s: str) -&gt; bool:"
+            },
+            {
+              "type": "p",
+              "text": "d = isbn_clean(s)"
+            },
+            {
+              "type": "p",
+              "text": "if len(d) != 13 or not d.isdigit():"
+            },
+            {
+              "type": "p",
+              "text": "return False"
+            },
+            {
+              "type": "p",
+              "text": "total = sum(int(c) * (1 if i % 2 == 0 else 3) for i, c in enumerate(d))"
+            },
+            {
+              "type": "p",
+              "text": "return total % 10 == 0 # alternating weights 1,3,1,3,..."
+            },
+            {
+              "type": "p",
+              "text": "def isbn10_to_13(s: str) -&gt; str | None:"
+            },
+            {
+              "type": "p",
+              "text": "d = isbn_clean(s)"
+            },
+            {
+              "type": "p",
+              "text": "if len(d) != 10:"
+            },
+            {
+              "type": "p",
+              "text": "return None"
+            },
+            {
+              "type": "p",
+              "text": "core = \"978\" + d[:9] # drop the old check digit, re-prefix"
+            },
+            {
+              "type": "p",
+              "text": "chk = (10 - sum(int(c) * (1 if i % 2 == 0 else 3)"
+            },
+            {
+              "type": "p",
+              "text": "for i, c in enumerate(core)) % 10) % 10"
+            },
+            {
+              "type": "p",
+              "text": "return core + str(chk)"
+            },
+            {
+              "type": "p",
+              "text": "def isbn_repair(s: str) -&gt; list[str]:"
+            },
+            {
+              "type": "p",
+              "text": "\"\"\"Lane 2: one mistyped or misread digit. Returns every valid candidate.\"\"\""
+            },
+            {
+              "type": "p",
+              "text": "d = isbn_clean(s)"
+            },
+            {
+              "type": "p",
+              "text": "if len(d) not in (10, 13):"
+            },
+            {
+              "type": "p",
+              "text": "return []"
+            },
+            {
+              "type": "p",
+              "text": "out = []"
+            },
+            {
+              "type": "p",
+              "text": "for i in range(len(d)):"
+            },
+            {
+              "type": "p",
+              "text": "for r in \"0123456789X\" if len(d) == 10 else \"0123456789\":"
+            },
+            {
+              "type": "p",
+              "text": "if r == d[i]:"
+            },
+            {
+              "type": "p",
+              "text": "continue"
+            },
+            {
+              "type": "p",
+              "text": "cand = d[:i] + r + d[i + 1:]"
+            },
+            {
+              "type": "p",
+              "text": "if (len(d) == 10 and isbn10_valid(cand)) or \\"
+            },
+            {
+              "type": "p",
+              "text": "(len(d) == 13 and isbn13_valid(cand)):"
+            },
+            {
+              "type": "p",
+              "text": "out.append(cand)"
+            },
+            {
+              "type": "p",
+              "text": "return out # usually 0 or 1 - present it as \"did you mean\""
+            },
+            {
+              "type": "p",
+              "text": "# Enrichment: for any valid ISBN not in your catalogue, the Open Library API # returns title, authors, publisher and cover at # https://openlibrary.org/isbn/{isbn}.json # Free, no key. Cache every response - never call it twice for the same ISBN. Zero machine learning, zero latency, zero cost, and it correctly handles the majority of real lookups. Verify these functions against a known-good ISBN before trusting them"
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-5-4",
+          "number": "5.4",
+          "title": "Lane 3 — fuzzy titles, and the transliteration problem",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Indian library queries break generic fuzzy matching in a specific way: the same title is romanised inconsistently. Gaban, Ghaban; Godaan, Godan; Premchand, Prem Chand. Handle it with a normalisation pass before scoring, not by hoping the fuzzy matcher copes."
+            },
+            {
+              "type": "p",
+              "text": "from rapidfuzz import process, fuzz import re"
+            },
+            {
+              "type": "p",
+              "text": "def normalise_title(t: str) -&gt; str:"
+            },
+            {
+              "type": "p",
+              "text": "t = t.lower().strip()"
+            },
+            {
+              "type": "p",
+              "text": "t = re.sub(r\"[^a-z0-9\\s]\", \" \", t)"
+            },
+            {
+              "type": "p",
+              "text": "t = re.sub(r\"\\b(the|a|an|of|and|in|on)\\b\", \" \", t) # stopwords"
+            },
+            {
+              "type": "p",
+              "text": "# collapse romanisation variants: double vowels, aspirates, common endings"
+            },
+            {
+              "type": "p",
+              "text": "t = re.sub(r\"aa|ā\", \"a\", t)"
+            },
+            {
+              "type": "p",
+              "text": "t = re.sub(r\"ee|ii|ī\", \"i\", t)"
+            },
+            {
+              "type": "p",
+              "text": "t = re.sub(r\"oo|ū\", \"u\", t)"
+            },
+            {
+              "type": "p",
+              "text": "t = re.sub(r\"kh|gh|ch|jh|th|dh|ph|bh\", lambda m: m.group(0)[0], t)"
+            },
+            {
+              "type": "p",
+              "text": "t = re.sub(r\"\\s+\", \" \", t)"
+            },
+            {
+              "type": "p",
+              "text": "return t.strip()"
+            },
+            {
+              "type": "p",
+              "text": "CATALOGUE = {normalise_title(r[\"title\"]): r for r in rows} # build once"
+            },
+            {
+              "type": "p",
+              "text": "def find_by_title(q: str, limit: int = 5):"
+            },
+            {
+              "type": "p",
+              "text": "nq = normalise_title(q)"
+            },
+            {
+              "type": "p",
+              "text": "if nq in CATALOGUE: # exact after normalisation"
+            },
+            {
+              "type": "p",
+              "text": "return [(CATALOGUE[nq], 100)]"
+            },
+            {
+              "type": "p",
+              "text": "hits = process.extract(nq, CATALOGUE.keys(),"
+            },
+            {
+              "type": "p",
+              "text": "scorer=fuzz.token_set_ratio, limit=limit)"
+            },
+            {
+              "type": "p",
+              "text": "return [(CATALOGUE[k], score) for k, score, _ in hits if score &gt;= 70]"
+            },
+            {
+              "type": "p",
+              "text": "# Threshold discipline: &gt;= 90 show as \"found\", 70-89 show as \"did you mean\", # &lt; 70 fall through to Lane 4. Tune these on your own 100-query test set, # not on intuition."
+            },
+            {
+              "type": "p",
+              "text": "token_set_ratio is chosen deliberately: it handles word reordering and partial titles, which is how students actually half-remember books"
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-5-5",
+          "number": "5.5",
+          "title": "Lane 4 — the only part that is AI",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "For ‘the book about signals with the blue cover’, string matching cannot help. Embed the title, subject headings and a short description for every book once, store the vectors, and compare the query against them by cosine similarity. A MiniLM-class sentence encoder is roughly 80 MB, runs on a laptop CPU, and needs no API. For a catalogue under a few hundred thousand books, plain NumPy is fast enough — you do not need a vector database, and installing one is the same error as reaching for a CNN in §5.3."
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-5-6",
+          "number": "5.6",
+          "title": "The part that actually solves the problem",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "A call number is not a location Every OPAC returns 621.3822 RAM. Almost none tell you that this means Aisle 7, Rack C, third shelf from the top, west side. Building that mapping is unglamorous — one afternoon walking the stacks with a notebook, producing a CSV of call-number ranges to physical locations — and it is very likely the single highest-impact component of this entire project. This is the recurring lesson: the bottleneck is rarely where the interesting computer science is. Go and watch someone fail to find a book, and you will find the bottleneck in ten minutes."
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-5-7",
+          "number": "5.7",
+          "title": "Evaluating it like an engineer",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Metric How to measure Target"
+            },
+            {
+              "type": "pre",
+              "text": "Top-1 / Top-3      Collect 100 real queries from actual students; label the Top-3 above 90% before you deploy anything\naccuracy           correct book by hand\nLane distribution  Log which lane answered each query                      If Lane 4 is answering under 10%, that is correct, not a\n                                                                           failure"
+            },
+            {
+              "type": "p",
+              "text": "Time to book in hand Stopwatch, 10 students, with and without the tool This is the impact metric. Everything else is a proxy"
+            },
+            {
+              "type": "p",
+              "text": "Librarian escalations Count ‘had to ask someone’ per week, before and after A fall here is the clearest evidence the system works"
+            },
+            {
+              "type": "p",
+              "text": "DO THIS NOW — Ship it to ten real students A week. Deploy as a mobile-friendly web page on the library wi-fi. 1 Get the catalogue export as CSV. Ask the librarian directly — this conversation is part of the project. 2 Build Lanes 1–3 only. Measure top-3 accuracy on 100 real queries collected from students at the issue counter. 3 Walk the stacks and build the call-number-to-shelf CSV. Time yourself. 4 Add Lane 4 only if your logs show queries that Lanes 1–3 genuinely cannot serve. Justify it with a number. 5 Run the stopwatch test with ten students. Report time-to-book, not accuracy, as your headline result — and note how"
+            },
+            {
+              "type": "p",
+              "text": "differently that number makes people react."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "6",
+      "title": "Project 3 — Anomaly Detection for Lab Equipment",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Every previous project had labels. This one does not, and that is the normal condition in industrial settings: the machine has failed twice in five years, so you have two positive examples. This chapter is about what you do then."
+        }
+      ],
+      "topics": [
+        {
+          "id": "applied-ai-indian-problems-6-1",
+          "number": "6.1",
+          "title": "Problem first",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The decision: a lab technician deciding whether a machine needs attention before it fails during someone’s experiment. The baseline: it runs until it breaks, or a scheduled service happens whether or not it was needed. The costs: a missed fault destroys a week of someone’s samples and takes the machine out for a month waiting on a part; a false alarm costs one technician’s half hour."
+            },
+            {
+              "type": "p",
+              "text": "Pick a machine that runs regularly and has a physical signature: a centrifuge, a compressor, a lathe, a vacuum pump, a hot-air oven, a water chiller. Rotating and heating equipment is ideal because bearings, belts, imbalance and blocked airflow all announce themselves through vibration, current draw and temperature long before anything visible happens."
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-6-2",
+          "number": "6.2",
+          "title": "Why this is anomaly detection, not classification",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The label scarcity trap Classification needs examples of every class. You have thousands of hours of ‘normal’ and almost no examples of ‘about to fail’ — and you certainly cannot break the department’s centrifuge to collect more. So you invert the problem: model what normal looks like, and flag departures from it. This changes everything downstream. You cannot report accuracy, precision or recall in the usual way, because you have no labelled positives to compute them against. §6.6 is about how to evaluate honestly anyway — and it is the part of this project that will teach you the most."
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-6-3",
+          "number": "6.3",
+          "title": "Hardware, under ₹3,000 — or ₹0",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Component Rough cost What it sees Note"
+            },
+            {
+              "type": "p",
+              "text": "ESP32 dev board ₹400–700 — Wi-Fi built in; logs to a server or SD card"
+            },
+            {
+              "type": "pre",
+              "text": "MPU6050 (accel/gyro)  ₹150–300  Vibration, imbalance, bearing  Mount rigidly to the chassis. Loose mounting ruins the\n                                wear                           signal\nSCT-013 clamp CT      ₹600–900  Current draw, load, stalling   Non-invasive — clamps around the live wire, no rewiring\nsensor                ₹100–250\n                                Temperature, ambient humidity Motor casing temperature is a strong early signal\nDS18B20 or DHT22\nSound sensor / mic    ₹150–300  Bearing whine, belt slip       Noisy lab environments make this the least reliable\nmodule                                                         channel\nJumpers, enclosure,   ₹300–500  —                              Budget for a real enclosure. Electrical safety is not\nsupply                                                         optional near mains equipment"
+            },
+            {
+              "type": "p",
+              "text": "Zero-budget alternative: use a public condition-monitoring dataset (NASA bearing data, MIMII machine sound, or any industrial time-series set on Kaggle or Zenodo) and follow the identical method. You lose the deployment experience but keep all of the modelling and evaluation work."
+            },
+            {
+              "type": "p",
+              "text": "Before you attach anything to lab equipment"
+            },
+            {
+              "type": "p",
+              "text": "Get written permission from the person responsible for the machine, and have someone qualified check any connection near mains power. A current clamp is non-invasive by design — use one rather than breaking into wiring. If the equipment is under warranty or under a service contract, attaching sensors may void it. Ask first; this is a five-minute conversation that protects a semester of work."
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-6-4",
+          "number": "6.4",
+          "title": "Collecting a baseline",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "SAMPLE RATE Vibration wants 100+ Hz to be meaningful. Current and temperature are fine at 1 Hz. Store raw where you can afford it; you cannot recover a frequency you never sampled."
+            },
+            {
+              "type": "p",
+              "text": "BASELINE Two weeks of ordinary operation, uninterrupted. This is your definition of \"normal\" and everything depends on it. If the machine was already faulty during these two weeks, you have taught the model that the fault is normal."
+            },
+            {
+              "type": "p",
+              "text": "ANNOTATE Keep a paper log next to the machine. Every entry: timestamp | who used it | what for | anything unusual (noise, smell, heat, vibration, error code, restart)"
+            },
+            {
+              "type": "p",
+              "text": "These handwritten notes become your only ground truth."
+            },
+            {
+              "type": "p",
+              "text": "Ambient temperature, time of day, which experiment was running, mains voltage if you can. A \"3 a.m. anomaly\" that is really a voltage dip is a lesson worth learning from data rather than from a wasted week."
+            },
+            {
+              "type": "p",
+              "text": "Do not model raw samples. Model 10-second windows: mean, std, min, max, RMS, peak-to-peak, dominant frequency (via FFT), spectral energy in bands, rate of change vs the previous window Roughly 10-20 features per window is plenty."
+            },
+            {
+              "type": "p",
+              "text": "The paper log is the most important item in this list and the one most likely to be skipped"
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-6-5",
+          "number": "6.5",
+          "title": "The method ladder — climb it in order",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "import numpy as np, pandas as pd from sklearn.ensemble import IsolationForest from sklearn.preprocessing import StandardScaler"
+            },
+            {
+              "type": "p",
+              "text": "# ---- RUNG 1: fixed thresholds. Free, explainable, catches gross faults."
+            },
+            {
+              "type": "p",
+              "text": "# Do this first. It will find real problems and it costs nothing."
+            },
+            {
+              "type": "p",
+              "text": "LIMITS = {\"temp_c\": (5, 65), \"current_a\": (0.2, 9.0), \"vib_rms\": (0, 2.5)}"
+            },
+            {
+              "type": "p",
+              "text": "def rung1_threshold(row): for col, (lo, hi) in LIMITS.items(): if not lo &lt;= row[col] &lt;= hi: return True, f\"{col}={row[col]:.2f} outside [{lo}, {hi}]\" return False, \"\""
+            },
+            {
+              "type": "p",
+              "text": "# ---- RUNG 2: rolling z-score. Adapts to slow drift; catches sudden change."
+            },
+            {
+              "type": "p",
+              "text": "def rung2_zscore(series: pd.Series, window: int = 720, k: float = 4.0):"
+            },
+            {
+              "type": "p",
+              "text": "\"\"\"window = 720 windows of 10 s = 2 hours of context.\"\"\""
+            },
+            {
+              "type": "p",
+              "text": "mu = series.rolling(window, min_periods=60).mean()"
+            },
+            {
+              "type": "p",
+              "text": "sd = series.rolling(window, min_periods=60).std()"
+            },
+            {
+              "type": "p",
+              "text": "z = (series - mu) / sd.replace(0, np.nan)"
+            },
+            {
+              "type": "p",
+              "text": "return z.abs() &gt; k, z # k=4 is conservative; tune on YOUR alarm budget"
+            },
+            {
+              "type": "p",
+              "text": "# ---- RUNG 3: multivariate. Catches combinations that look fine alone -"
+            },
+            {
+              "type": "p",
+              "text": "# normal temperature AND normal current, but never together."
+            },
+            {
+              "type": "p",
+              "text": "FEATS = [\"temp_c\", \"current_a\", \"vib_rms\", \"vib_peak\", \"dom_freq\"]"
+            },
+            {
+              "type": "p",
+              "text": "def rung3_isolation_forest(train_df, live_df, contamination=0.01): scaler = StandardScaler().fit(train_df[FEATS]) model = IsolationForest(n_estimators=200, contamination=contamination, random_state=42).fit(scaler.transform(train_df[FEATS])) scores = model.score_samples(scaler.transform(live_df[FEATS])) # lower = odder threshold = np.percentile( model.score_samples(scaler.transform(train_df[FEATS])), 100 * contamination) return scores &lt; threshold, scores"
+            },
+            {
+              "type": "p",
+              "text": "# ---- RUNG 4: autoencoder on windows. Only if rungs 1-3 demonstrably fail."
+            },
+            {
+              "type": "p",
+              "text": "# Reconstruction error becomes the anomaly score. Needs more data, more"
+            },
+            {
+              "type": "p",
+              "text": "# tuning, and is far harder to explain to the technician who must act"
+            },
+            {
+              "type": "p",
+              "text": "# on it. Explainability is not a luxury when a human has to trust the"
+            },
+            {
+              "type": "p",
+              "text": "# alarm at 2 a.m."
+            },
+            {
+              "type": "p",
+              "text": "# ---- ALWAYS: require persistence before alarming. def confirm(flags: pd.Series, need: int = 3, of: int = 5) -&gt; pd.Series:"
+            },
+            {
+              "type": "p",
+              "text": "\"\"\"Alarm only if `need` of the last `of` windows were flagged. This one line typically removes most single-sample false alarms.\"\"\""
+            },
+            {
+              "type": "p",
+              "text": "return flags.rolling(of).sum() &gt;= need"
+            },
+            {
+              "type": "p",
+              "text": "Rungs 1 and 2 will solve more real problems than rung 4. Climb only when the rung below has demonstrably failed on your data"
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-6-6",
+          "number": "6.6",
+          "title": "Evaluating without labels — and the alarm fatigue arithmetic",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "You cannot compute recall without positives. You can still be rigorous:"
+            },
+            {
+              "type": "p",
+              "text": "• Precision@k with human review. Take the 20 highest-scoring anomalies of the week to the technician and ask, one by one: was anything actually different? Their answers are your only ground truth. Ten of twenty confirmed is a real, reportable number."
+            },
+            {
+              "type": "p",
+              "text": "• Injected-fault testing. Safely and reversibly create a known abnormality — add a small imbalance mass, partially block an air intake, run a heavier load — and measure whether and how quickly you detect it. This is the closest thing to a labelled positive you will get, and it is defensible."
+            },
+            {
+              "type": "p",
+              "text": "• Detection latency. When something did go wrong, how far in advance did the score start rising? Even one hour of warning is a genuine result."
+            },
+            {
+              "type": "p",
+              "text": "• Alarm rate per day. Fix this as a budget before tuning — for example ‘at most two alarms per week’ — and choose your threshold to meet it."
+            },
+            {
+              "type": "p",
+              "text": "Suppose: 1 reading per minute = 1,440 readings/day"
+            },
+            {
+              "type": "p",
+              "text": "true anomalies are rare ~ 1 in 1,000 readings"
+            },
+            {
+              "type": "p",
+              "text": "your detector has 90% sensitivity and a 1% false-positive rate"
+            },
+            {
+              "type": "pre",
+              "text": "True anomalies per day          = 1,440 / 1,000             = 1.44\nCorrectly caught                = 1.44 x 0.90               = 1.30\nFalse alarms per day            = 1,440 x 0.01              = 14.40"
+            },
+            {
+              "type": "p",
+              "text": "So more than nine out of ten alarms are false. Within two weeks the technician stops looking at them, and your detection rate in practice becomes zero regardless of what the model can do."
+            },
+            {
+              "type": "p",
+              "text": "To reach 50% precision you need the false-positive rate near 0.09% - roughly a TENFOLD reduction. Ways to get it:"
+            },
+            {
+              "type": "p",
+              "text": "- persistence: require 3 of the last 5 windows (usually the biggest win) - separate thresholds per operating mode (idle / running / spin-up) - suppress during known events (startup, scheduled cleaning) - one alarm per episode, not one per window"
+            },
+            {
+              "type": "p",
+              "text": "THE LESSON: for rare events, a \"99% accurate\" detector can be operationally useless. Base rates decide whether a system is worth deploying, and they are arithmetic you can do before you build anything."
+            },
+            {
+              "type": "p",
+              "text": "Do this calculation for your own event rate on day one. It frequently changes the project"
+            },
+            {
+              "type": "p",
+              "text": "DO THIS NOW — Two weeks of normal, then break something safely 1 Get written permission. Choose one machine and one failure mode you can describe in a sentence. 2 Log two weeks of ordinary operation with the paper log running alongside. 3 Implement rungs 1 and 2 only. Count how many alarms per day they produce. If it is more than your budget, fix the"
+            },
+            {
+              "type": "p",
+              "text": "threshold before adding any model. 4 Do the alarm arithmetic for your measured event rate. Write down the precision you can expect. 5 Inject a safe, reversible fault. Measure whether you caught it and how long it took. Report detection latency, not accuracy. 6 Show the top 20 anomalies of the week to the technician and record how many were real. That number is your result."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "7",
+      "title": "Bias and Privacy, Concretely",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Ethics in applied AI is not a paragraph at the end of the report. It is a set of design decisions taken early — what you collect, from whom, under what consent, and who bears the cost when the system is wrong. Taken late, they are unfixable."
+        }
+      ],
+      "topics": [
+        {
+          "id": "applied-ai-indian-problems-7-1",
+          "number": "7.1",
+          "title": "Five kinds of bias, and where you have already met them",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Type What it is Where it appeared in this guide"
+            },
+            {
+              "type": "pre",
+              "text": "Capture bias     The model learns how the data was          PlantVillage backgrounds alone reaching ~49% where chance is 2.6%\n                 collected, not what it contains            (§4.2)\nRepresentation   Groups that matter in deployment are       Rice, cotton, millets and pulses largely missing from the crop dataset\nbias             absent or thin in the data                 (§4.2)\nLabel bias       The labels encode a labeller’s assumptions Why §3.5 measures kappa instead of trusting one annotator\n                 rather than ground truth\nDeployment bias  Used for a purpose or population it was    A tomato model deployed on paddy; a lab model deployed in a field\n                 never validated on\nFeedback-loop    The system’s outputs shape the data it is  Flag a farm often, get more data from it, flag it more (§8.5)\nbias             later retrained on"
+            },
+            {
+              "type": "p",
+              "text": "The version that matters in India is usually representation. A model trained on urban, English-speaking, high-end-smartphone users will underperform for rural, non-English, low-end-device users — and device quality is a reliable proxy for income. The failure is not random; it lands hardest on the people the project was usually justified by helping. That is the specific pattern to watch for."
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-7-2",
+          "number": "7.2",
+          "title": "The five-line datasheet",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Every dataset you build or use gets this, in the repository, before modelling. It takes ten minutes and is the difference between a dataset someone can safely reuse and one they cannot."
+            },
+            {
+              "type": "p",
+              "text": "DATASHEET - put this in a README next to the data"
+            },
+            {
+              "type": "p",
+              "text": "1. WHAT &amp; WHY What this contains and the specific question it was"
+            },
+            {
+              "type": "p",
+              "text": "collected to answer."
+            },
+            {
+              "type": "p",
+              "text": "2. HOW &amp; WHO Who collected it, when, where, with what devices, under"
+            },
+            {
+              "type": "p",
+              "text": "what protocol. Include the collectors, not just the tools."
+            },
+            {
+              "type": "p",
+              "text": "3. CONSENT What people were told, in which language, and how consent"
+            },
+            {
+              "type": "p",
+              "text": "was recorded. If no humans are in it, say so explicitly."
+            },
+            {
+              "type": "p",
+              "text": "The honest limits. \"All images are from two plots in one"
+            },
+            {
+              "type": "p",
+              "text": "district, in one season, on three phone models. It is not"
+            },
+            {
+              "type": "p",
+              "text": "representative of other regions, seasons, crop varieties,"
+            },
+            {
+              "type": "p",
+              "text": "or camera types.\""
+            },
+            {
+              "type": "p",
+              "text": "5. KNOWN PROBLEMS Class imbalance, mislabelled ranges, sensor drift, gaps."
+            },
+            {
+              "type": "p",
+              "text": "Anything you would want to be told."
+            },
+            {
+              "type": "p",
+              "text": "Line 4 is the one that gets skipped and the one that prevents the most harm. A dataset without a datasheet is a liability you are handing to whoever inherits your project"
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-7-3",
+          "number": "7.3",
+          "title": "Privacy where literacy cannot be assumed",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Standard consent practice assumes a person who can read a notice, understand what data processing means, and decline without cost. In a village survey, a hospital queue, or a scheme enrolment camp, none of those may hold. A thumbprint on an English form is consent theatre: legally decorative, ethically empty."
+            },
+            {
+              "type": "p",
+              "text": "• Explain verbally, in their language, in plain terms. Three sentences: what you are collecting, what you will do with it, and what happens if they say no. If you cannot say it in three sentences, your design is too complicated to consent to."
+            },
+            {
+              "type": "p",
+              "text": "• Record the consent in the same medium as the conversation. A short audio recording of a verbal consent, with the person’s agreement to being recorded, is more honest and more defensible than a signature on a document nobody read."
+            },
+            {
+              "type": "p",
+              "text": "• Make refusal visibly costless. If the person believes their scheme benefit, medical care or grade depends on agreeing, they have not consented. Say plainly, before asking: ‘this changes nothing about what you receive’."
+            },
+            {
+              "type": "p",
+              "text": "• Watch for proxy consent. A husband consenting for a wife, an employer for a worker, a teacher for a student, a village head for a household. Convenient, common, and not consent."
+            },
+            {
+              "type": "p",
+              "text": "• Minimise so that consent matters less. The strongest privacy design is not collecting the data. You almost never need a name, a phone number or a face. Use a random ID; process on-device; store aggregates and discard the raw."
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-7-4",
+          "number": "7.4",
+          "title": "The DPDP Act applies to your college project",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "India’s Digital Personal Data Protection Act, 2023 received assent in August 2023, and the DPDP Rules were notified on 13 November 2025 with obligations phased in through to 2027. It applies broadly to anyone processing the digital personal data of people in India — there is no student exemption for a project that collects farmers’ phone numbers or patients’ photographs. The practical implications for work at your scale:"
+            },
+            {
+              "type": "p",
+              "text": "• Notice and purpose limitation. Tell people what you are collecting and why, and then use it only for that. Repurposing a dataset collected for one study into a different project needs fresh consent."
+            },
+            {
+              "type": "p",
+              "text": "• Consent must be free, specific, informed and unambiguous, and withdrawable. Build a way to delete someone’s data before you collect anyone’s."
+            },
+            {
+              "type": "p",
+              "text": "• Children’s data attracts stricter obligations. If your project touches school students, treat this as a hard constraint and get institutional guidance."
+            },
+            {
+              "type": "p",
+              "text": "• Security and breach handling are obligations, not good practice. A dataset of faces on an unsecured shared drive — the attendance project in §1.2 — is now a compliance failure as well as an ethical one."
+            },
+            {
+              "type": "p",
+              "text": "• Penalties are substantial (up to ₹250 crore for serious security failures), and while enforcement is aimed at organisations rather than students, your college and any partner organisation are exposed through you. This is not legal advice — check the current position and ask your institution before collecting personal data."
+            },
+            {
+              "type": "pre",
+              "text": "CHECKLIST — Before you collect a single record           □ Identifiers replaced by random IDs where possible\n□ I can state the purpose in one sentence                □ I know where the raw data will be stored, and who can\n□ I have listed every field and justified each one\n                                                             reach it\n□ I have removed every field I cannot justify            □ There is a written deletion process\n□ Consent is verbal, in their language, and recorded     □ A named person is responsible after I graduate\n□ I said clearly that refusing costs them nothing        □ Institutional approval obtained where required\n□ No proxy consent — the person themself agreed          □ The datasheet is written before collection, not after\nCHECKLIST — Before it touches a real user                □ Users are told they are seeing a machine’s output\n□ Error costs measured separately for each direction     □ There is a route to complain that reaches a person\n□ Performance reported per subgroup, not just overall    □ Failures are logged and someone reviews them weekly\n□ The worst-off subgroup is named in the report          □ Off-switch exists and has been tested\n□ The system can say ‘I don’t know’                      □ Nothing irreversible happens without human confirmation\n□ Output is in the user’s language and reading level     □ I have written down who is harmed if this is wrong\n□ A human can override, and knows how"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "8",
+      "title": "The Deployment Pathway",
+      "intro": [
+        {
+          "type": "p",
+          "text": "A notebook that works on your laptop is roughly ten per cent of a deployment. The remaining ninety per cent is the seven stages below, and each one has an exit criterion you should not cross without."
+        },
+        {
+          "type": "pre",
+          "text": "Stage         What it is                                 Exit criterion — do not proceed until\n1. Notebook                                              You can rerun it top to bottom on a clean kernel and get the same numbers\n2. Script     Exploration, training, first results       It runs from the command line on a machine that is not yours, with no\n                                                         manual steps\n3. Service    Notebook converted to a file with          It rejects malformed input gracefully and logs every call\n              arguments and a config\n4. Shadow                                                One to two weeks of live predictions logged, and you have read a sample by\n              Wrapped behind a function, API or app;     hand\n5. Pilot      inputs validated                           You have sat with each of them while they used it"
+        },
+        {
+          "type": "p",
+          "text": "6. Monitored Runs on live data, output recorded, Drift and volume alerts fire correctly when you deliberately trigger them rollout nobody sees it 7. Handover Five real users, closely watched, with an off-switch"
+        },
+        {
+          "type": "p",
+          "text": "Wider release with metrics and alerts"
+        },
+        {
+          "type": "pre",
+          "text": "              Someone else can run, fix and switch it    A person who is not you has done all three, unaided, from your\n              off                                        documentation"
+        }
+      ],
+      "topics": [
+        {
+          "id": "applied-ai-indian-problems-8-1",
+          "number": "8.1",
+          "title": "Shadow mode is the stage everyone skips",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Run it silently against reality first In shadow mode the system receives real inputs and produces real outputs, and those outputs go nowhere except a log. Nobody acts on them. You then compare them against what actually happened, or against what the human decided. This is where you discover that 30% of incoming photographs are of the wrong crop, that the sensor disconnects every Tuesday when the lab is cleaned, that half the queries are for books the library does not own. None of these appear in a test set. All of them are cheap to find here and expensive to find in stage 5."
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-8-2",
+          "number": "8.2",
+          "title": "What to log, from stage 3 onwards",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "ONE STRUCTURED LINE PER PREDICTION - JSON, one object per line"
+            },
+            {
+              "type": "p",
+              "text": "{\"ts\": \"2026-07-28T09:14:03+05:30\","
+            },
+            {
+              "type": "p",
+              "text": "\"request_id\": \"a91f...\", # unique, for tracing and idempotency"
+            },
+            {
+              "type": "p",
+              "text": "\"input_ref\": \"img/2026/07/8831\", # pointer, NOT the raw personal data"
+            },
+            {
+              "type": "p",
+              "text": "\"model_version\": \"cropv3-int8\", # pin it: \"which model said this?\""
+            },
+            {
+              "type": "p",
+              "text": "\"prediction\": \"early_blight\","
+            },
+            {
+              "type": "p",
+              "text": "\"confidence\": 0.71,"
+            },
+            {
+              "type": "p",
+              "text": "\"path\": \"model\", # or \"rule\", \"abstained\", \"cached\""
+            },
+            {
+              "type": "p",
+              "text": "\"latency_ms\": 240,"
+            },
+            {
+              "type": "p",
+              "text": "\"outcome\": null} # filled in later if you ever learn it"
+            },
+            {
+              "type": "p",
+              "text": "model_version the only way to answer \"did it get worse after Tuesday?\""
+            },
+            {
+              "type": "p",
+              "text": "confidence lets you tune the abstain threshold from real data"
+            },
+            {
+              "type": "p",
+              "text": "path tells you how much work the model is actually doing"
+            },
+            {
+              "type": "p",
+              "text": "outcome the field that makes retraining possible. Design the way"
+            },
+            {
+              "type": "p",
+              "text": "you will collect it BEFORE you deploy, or you never will."
+            },
+            {
+              "type": "p",
+              "text": "Logs are not debugging output. They are the dataset for version two, and the only evidence you will have when someone asks why the system said something"
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-8-3",
+          "number": "8.3",
+          "title": "Designing the five-user pilot",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Five is the right number. Enough to see patterns, few enough to sit with each one. Twenty users you never watch teaches you less than five you do."
+            },
+            {
+              "type": "p",
+              "text": "• Watch, do not survey. Sit beside them. Say nothing. Note every hesitation and every place they do something you did not anticipate. Where they pause is where your interface is wrong."
+            },
+            {
+              "type": "p",
+              "text": "• Measure the decision, not the click. Did they act differently? Did the action turn out better? Usage is a proxy; the decision is the point."
+            },
+            {
+              "type": "p",
+              "text": "• Ask the two questions that get honest answers: ‘When did you not trust it?’ and ‘What did you do instead?’ Both assume failure and so give people permission to be candid."
+            },
+            {
+              "type": "p",
+              "text": "• Have a visible off-switch and tell them about it. Trust rises when people know they can stop it."
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-8-4",
+          "number": "8.4",
+          "title": "Monitoring after launch",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Watch             Signal that something is wrong           Check\n                                                           Compare this week’s feature summary against the training set. New\nInput drift       The distribution of incoming data has    season, new phone model, new machine\n                  shifted                                  Weekly. Often the earliest warning you will get\nConfidence drift  Mean confidence falling, or abstentions  A crash and a viral spike look identical in the outcome metric\n                  rising                                   The single best quality signal you have. Log every override with a\n                                                           reason\nVolume            Sudden rise or fall in requests          Monthly, by district, device, language, crop, machine — whatever your\n                                                           groups are\nOverride rate     Humans disagreeing with the system more\n                  often\nSubgroup          Degradation concentrated in one group\nperformance"
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-8-5",
+          "number": "8.5",
+          "title": "When it works in the notebook and fails in the field",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Symptom Most likely cause What to do"
+            },
+            {
+              "type": "pre",
+              "text": "Great test score, poor  Random split instead of group split, or Re-split by group (§3.6); run the background diagnostic (§4.3)\nfield performance       capture bias\nAccuracy fine overall,  Failures concentrated in one subgroup Break performance down by device, language, region, crop, operator\nusers complain          or one common input type\nconstantly"
+            },
+            {
+              "type": "p",
+              "text": "Model is confident and No abstain option, and confidence was Add an abstain class; set the threshold from real logged confidences"
+            },
+            {
+              "type": "p",
+              "text": "wrong never calibrated"
+            },
+            {
+              "type": "p",
+              "text": "Worked in the pilot, Drift — new season, new equipment, Compare current input statistics against training; retrain on recent logs degraded over months new user behaviour"
+            },
+            {
+              "type": "p",
+              "text": "Alarms ignored by the Base rate too low for the false-positive Require persistence, one alarm per episode, and set an alarm budget"
+            },
+            {
+              "type": "p",
+              "text": "people meant to act rate (§6.6)"
+            },
+            {
+              "type": "pre",
+              "text": "Users quietly stop      It solved a problem they did not have, Go back and watch them work. Usually the answer is in the first ten\nusing it\n                        or added a step                        minutes\nCannot reproduce a      The input that caused it was never     Log input references, model version and confidence for every call\nreported failure        logged                                 (§8.2)\nIt broke and nobody     No alerting on volume or failure rate  Alert on absence of predictions, not only on errors\nnoticed for two weeks"
+            },
+            {
+              "type": "p",
+              "text": "Rows 1 and 6 account for the large majority of failed student deployments, and both are decided long before any code is written."
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-8-5-2",
+          "number": "8.5",
+          "title": "Handover, or the project dies at convocation",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Most student deployments end when the student leaves. If the work was worth doing, that is a real loss to the people using it. Four artefacts prevent it: a README stating what it does and how to run it; a runbook covering what breaks and what to do; the datasheet from §7.2; and a named owner who has run it once themselves while you watched. If you cannot find an owner, that is important information about whether the problem was real — and it is better to learn it now than for users to learn it in October."
+            },
+            {
+              "type": "p",
+              "text": "DO THIS NOW — Get one project to stage 5 Two to three weeks. Pick whichever of the three projects is closest to working. 1 Convert the notebook to a script with arguments. Run it on a friend’s machine. 2 Add structured logging exactly as in §8.2, including the empty outcome field. 3 Run shadow mode for one week on real inputs. Read fifty logged predictions by hand and write down every surprise. 4 Fix what shadow mode found. Expect this to take longer than building the model did. 5 Run the pilot with five real users. Sit with each of them. Ask the two questions. 6 Write the README, the runbook and the datasheet, and find a named owner. Then write one honest paragraph on whether"
+            },
+            {
+              "type": "p",
+              "text": "the decision actually got better — including if it did not."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "A",
+      "title": "Reference",
+      "intro": [],
+      "topics": [
+        {
+          "id": "applied-ai-indian-problems-A-1",
+          "number": "A.1",
+          "title": "The free toolchain",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Need                  Free option                              Note\n                                                               Free GPU with session limits. Save to Drive constantly — sessions\nNotebooks /           Google Colab, Kaggle Notebooks           disconnect\ntraining                                                       Trains in the browser, exports TFLite. Verify it still exists and exports what\n                                                               you need before planning around it\nNo-code image         Teachable Machine or equivalent          Label Studio handles images, text, audio and time series in one tool\nmodels\n                                                               Isolation Forest, gradient boosting, kappa, GroupKFold — all of Chapter 3\nLabelling             Label Studio (self-hosted), CVAT,        and 6 lives here\n                      LabelImg                                 ~80 MB, CPU-only, no API key. Enough for Chapter 5’s Lane 4\n                                                               Much faster than fuzzywuzzy, same interface\nClassical ML          scikit-learn\nEmbeddings            sentence-transformers (MiniLM class)\nFuzzy matching        rapidfuzz\nNeed             Free option                              Note\n                                                          Post-training int8 quantisation is the first thing to try (§2.3)\nOn-device        TensorFlow Lite, ONNX Runtime\ninference                                                 Log to SD as well as wi-fi. Networks fail; SD cards mostly do not\n                                                          For Chapter 5, the library’s own LAN is often the right answer\nSensors / firmware ESP32 + Arduino IDE or MicroPython\n                                                          Commit the label guideline and the datasheet, not just the code\nHosting a small  Hugging Face Spaces, Render, a\nservice          college server"
+            },
+            {
+              "type": "p",
+              "text": "Version control Git + GitHub"
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-A-2",
+          "number": "A.2",
+          "title": "A twelve-week plan",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Weeks Focus Deliverable"
+            },
+            {
+              "type": "p",
+              "text": "1 Chapter 1. Observe a real decision twice; A one-sentence problem statement with no technology in it"
+            },
+            {
+              "type": "p",
+              "text": "write the impact ledger"
+            },
+            {
+              "type": "p",
+              "text": "2 Chapter 2. Constraints, deployment shape, A written size, latency and accuracy budget"
+            },
+            {
+              "type": "p",
+              "text": "cost crossover"
+            },
+            {
+              "type": "p",
+              "text": "3–4 Chapter 3. Collect 200 samples; label with two A small honest dataset with a datasheet and a group-wise split"
+            },
+            {
+              "type": "p",
+              "text": "people; measure kappa"
+            },
+            {
+              "type": "p",
+              "text": "5–6 Project 1, including the background The three-number evaluation Top-3 accuracy on 100 real queries and a stopwatch result diagnostic and field test"
+            },
+            {
+              "type": "p",
+              "text": "7–8 Project 2, Lanes 1–3, plus the shelf map"
+            },
+            {
+              "type": "pre",
+              "text": "9–10       Project 3: baseline logging, rungs 1–2, alarm  Detection latency on an injected fault\n           arithmetic"
+            },
+            {
+              "type": "p",
+              "text": "11 Chapter 7. Datasheet and both checklists on A completed pre-deployment checklist with real answers"
+            },
+            {
+              "type": "p",
+              "text": "your best project"
+            },
+            {
+              "type": "p",
+              "text": "12 Chapter 8. Shadow mode, then five users A pilot report saying whether the decision improved"
+            }
+          ]
+        },
+        {
+          "id": "applied-ai-indian-problems-A-3",
+          "number": "A.3",
+          "title": "Glossary",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "                 The model learns how data was collected rather than what it shows\n Term            Holding out whole farms, devices or days instead of random rows\n Capture bias    Test information reaching training; the usual cause of impossible scores\n Group split     Agreement between two labellers, corrected for chance\n Leakage         Storing weights in int8 instead of float32 — ~4× smaller, faster\n Cohen’s kappa   TensorFlow’s format for running models on phones and small boards\n Quantisation    A legal way for a model to say ‘I don’t know’ instead of guessing\n TFLite          Running live and logging output that nobody acts on\n Abstain class   Real-world input distribution moving away from the training distribution\n Shadow mode     How common the event is; it decides whether a detector is usable\n Drift           Of your k highest-scoring alerts, how many a human confirms\n Base rate       A short document stating a dataset’s origin, consent and limits\n Precision@k     What would have happened without your system\n Datasheet       India’s Digital Personal Data Protection Act, 2023, with Rules of 2025\n Counterfactual\n DPDP"
+            },
+            {
+              "type": "p",
+              "text": "Sources for the specific claims in this guide. PlantVillage scale and the 99.35% / ~31% lab-to-field gap: Mohanty, Hughes & Salathé (2016). The background-only diagnostic reaching ~49% against a 2.6% chance baseline: Noyan, Uncovering bias in the PlantVillage dataset (arXiv:2206.04374, 2022). India’s data protection framework: the Digital Personal Data Protection Act, 2023, and the DPDP Rules notified by MeitY on 13 November 2025, with phased compliance running to 2027. Everything else here is method rather than citation."
+            },
+            {
+              "type": "p",
+              "text": "And a last word on metrics. Every number in this guide — accuracy, kappa, precision@k, detection latency — is a proxy. The thing they are proxies for is whether a person made a better decision than they would have without you. When a proxy and the real thing disagree, the proxy is wrong. Most of the professional skill in applied AI is noticing that moment and being willing to report it."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

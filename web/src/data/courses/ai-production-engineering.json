@@ -1,0 +1,1932 @@
+{
+  "slug": "ai-production-engineering",
+  "title": "AI Production Engineering",
+  "tagline": "Take AI demos from prototype to reliable real-world systems — production means it still works on Sunday night.",
+  "modules": [
+    {
+      "number": "1",
+      "title": "Prototype AI Versus Production AI",
+      "intro": [
+        {
+          "type": "p",
+          "text": "A prototype answers ‘can this be done?’. A production system answers ‘will this still be right on a Tuesday in April when nobody is watching?’ Almost everything that makes the second hard is invisible in the first."
+        }
+      ],
+      "topics": [
+        {
+          "id": "ai-production-engineering-1-1",
+          "number": "1.1",
+          "title": "The five differences",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Prototype Production"
+            },
+            {
+              "type": "pre",
+              "text": "Reliability  Runs when you run it. A crash is an                 Runs unattended for months. Must restart itself, survive power cuts, and fail into\n             inconvenience you fix in the moment                 a safe, obvious state rather than a silent wrong one\nMonitoring   You look at the output because you are              Nobody is looking. The system must report that it is alive, and something must\n             sitting there                                       alert when it stops — silence must not look like success\nScaling      One camera, one machine, your laptop                Six cameras, three shifts, two plants. Throughput, contention and cost become\n                                                                 real constraints\nMaintenance  You retrain when you feel like it\n                                                                 The world drifts — new supplier, new lighting, new part. Retraining is a\nOwnership    You understand it because you built it              scheduled process with tests, versioning and a rollback path"
+            },
+            {
+              "type": "p",
+              "text": "A shift technician who has never seen Python must be able to tell whether it is working, restart it, and know who to call"
+            },
+            {
+              "type": "p",
+              "text": "A working definition of production-ready"
+            },
+            {
+              "type": "p",
+              "text": "A system is production-ready when all six of these are true. Not five."
+            },
+            {
+              "type": "p",
+              "text": "1. It starts automatically after a power cut, with no human intervention. 2. It reports a heartbeat, and someone is alerted when the heartbeat stops. 3. Its outputs are logged with enough context to reconstruct any decision weeks later. 4. A named person is responsible for it and knows they are. 5. There is a documented way to roll back to the previous model in under an hour. 6. Someone who is not you has operated it, unaided, from the written instructions."
+            }
+          ]
+        },
+        {
+          "id": "ai-production-engineering-1-2",
+          "number": "1.2",
+          "title": "Where production systems actually fail",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Ra Failure                                       Why it dominates                         Prevention\nnk\n                                                                                          Monitor input statistics, not just outputs (§2.5). Fix\n1 Input drift — the camera moved, The model is unchanged and still                        the camera mechanically"
+            },
+            {
+              "type": "p",
+              "text": "the lighting changed, the confident. Accuracy falls with no error"
+            },
+            {
+              "type": "p",
+              "text": "supplier changed the finish message anywhere"
+            },
+            {
+              "type": "pre",
+              "text": "2 Silent stoppage — the process                  No alerts looks identical to no problems. Heartbeat plus alert-on-absence (§1.1). This is the\n        died and nobody noticed\n                                                 Often discovered days later              highest-value twenty lines in the guide\n3 Operator abandonment — too                     A technically working system with a      Tune the threshold to the alarm budget, not to the\n        many false alarms, so people             real-world detection rate of zero        F1 score (§4.4)\n        stop looking\n4 Environment rot — an OS                        Works on your machine, then stops        Pin every version. Containerise or freeze the\n        update, a library upgrade, a             working on the same machine              environment (§2.4)\n        changed path"
+            },
+            {
+              "type": "p",
+              "text": "5 Power and reboot — the machine Common in plants with unstable supply systemd with restart-always, and test it by pulling"
+            },
+            {
+              "type": "p",
+              "text": "restarts and the service does not the plug"
+            },
+            {
+              "type": "p",
+              "text": "6 The model is wrong Genuinely last Fix the five above before touching the model"
+            },
+            {
+              "type": "p",
+              "text": "This ordering comes from watching deployments fail. It is close to the inverse of where teams spend their attention, which is almost entirely on row 6."
+            },
+            {
+              "type": "p",
+              "text": "GOTCHA — The 97% model that caught nothing for three weeks"
+            },
+            {
+              "type": "p",
+              "text": "Symptom, cause and fix — a composite of a very common failure"
+            },
+            {
+              "type": "p",
+              "text": "WHAT WAS “The defect detection has not flagged anything since the second week of the month.” The team assumed REPORTED quality had improved."
+            },
+            {
+              "type": "p",
+              "text": "WHAT WAS A cleaning contractor had nudged the camera mount by about fifteen degrees. The model was still running, still HAPPENING confident, and now looking mostly at a conveyor belt edge."
+            },
+            {
+              "type": "pre",
+              "text": "WHY          The only monitoring was the defect count, and a falling defect count looks like good news. Nothing watched the\nNOBODY       input.\nNOTICED\n             A locked, pinned camera mount — mechanical, not software. Then a daily reference-image check: photograph a\nTHE FIX, IN  fixed marker in frame, compare against a stored baseline, alert on deviation. Then an alert if the defect rate\nORDER        moves outside a band in either direction."
+            },
+            {
+              "type": "p",
+              "text": "THE GENERAL Monitor the input distribution, and alert on both directions of change. A metric that only alarms when"
+            },
+            {
+              "type": "p",
+              "text": "LESSON it goes up will never tell you the system has gone blind."
+            },
+            {
+              "type": "p",
+              "text": "What to take from this: Every production AI system needs at least one check that does not depend on the model being right. A fixed reference marker in the frame costs nothing and catches an entire class of silent failure."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "2",
+      "title": "MLOps Without a Platform Team",
+      "intro": [
+        {
+          "type": "p",
+          "text": "You do not need a feature store, a model registry product or a Kubernetes cluster. You need to answer four questions at any moment: which data, which model, is it better than the last one, and how do I go back."
+        }
+      ],
+      "topics": [
+        {
+          "id": "ai-production-engineering-2-1",
+          "number": "2.1",
+          "title": "The lifecycle, and the minimum viable version of each stage",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "▲ │"
+            },
+            {
+              "type": "p",
+              "text": "└──────────────────── RETRAIN ◀──────────────────────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "-------------------------------------------------------------------"
+            },
+            {
+              "type": "p",
+              "text": "DATA DVC + S3 + lineage DB a manifest file with SHA-256"
+            },
+            {
+              "type": "p",
+              "text": "graph hashes, committed to git (2.2)"
+            },
+            {
+              "type": "pre",
+              "text": "TRAIN        experiment tracking                 a training script that writes a\n             platform, hyperparameter            run folder: config, metrics,\n             sweeps                              model, git commit, date\nTEST         CI pipeline with model              a golden set + a plain pytest\n             validation gates                    file that FAILS the build (2.3)\nPACKAGE      container registry,                 an ONNX or TFLite file plus a\n             model server                        model_card.json manifest (2.4)\nDEPLOY       Kubernetes, canary                  a systemd service, an atomic\n             controller, service mesh            symlink swap, and a rollback\n                                                 command (chapter 6)\nMONITOR observability platform                   a JSONL log, a heartbeat, and\n                                                 input-drift stats (2.5)"
+            },
+            {
+              "type": "p",
+              "text": "The right-hand column is not a compromise. For one plant, six cameras and one engineer, it is the CORRECT architecture - it has fewer moving parts, no vendor dependency, and a technician can understand all of it."
+            },
+            {
+              "type": "p",
+              "text": "Figure 2.1 — Adopt the left-hand column only when the right-hand column has demonstrably failed you. Most factory deployments never need to"
+            }
+          ]
+        },
+        {
+          "id": "ai-production-engineering-2-2",
+          "number": "2.2",
+          "title": "Data versioning with a text file",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The requirement is not a tool. It is being able to say, in six months: this model was trained on exactly these 4,182 images, and here is proof none of them has changed. A hash manifest in git does that completely."
+            },
+            {
+              "type": "p",
+              "text": "# Build a manifest of every training image with its content hash. find data/train -type f \\( -name '*.jpg' -o -name '*.png' \\) \\"
+            },
+            {
+              "type": "p",
+              "text": "| sort | xargs sha256sum &gt; manifests/train_v3.sha256"
+            },
+            {
+              "type": "p",
+              "text": "wc -l manifests/train_v3.sha256 # 4182 data/train/..."
+            },
+            {
+              "type": "p",
+              "text": "git add manifests/train_v3.sha256"
+            },
+            {
+              "type": "p",
+              "text": "git commit -m \"dataset v3: +412 images from line 2, Mar-Apr\""
+            },
+            {
+              "type": "p",
+              "text": "# Later - verify NOTHING has changed since that commit: sha256sum -c manifests/train_v3.sha256 --quiet &amp;&amp; echo \"dataset intact\""
+            },
+            {
+              "type": "p",
+              "text": "# What changed between two dataset versions? diff &lt;(cut -d' ' -f3- manifests/train_v2.sha256 | sort) \\"
+            },
+            {
+              "type": "p",
+              "text": "&lt;(cut -d' ' -f3- manifests/train_v3.sha256 | sort)"
+            },
+            {
+              "type": "p",
+              "text": "# ---- store the DATA itself somewhere cheap and immutable. # Object storage, an external drive, anything - but WRITE ONCE. # The manifest is what makes the store trustworthy; the store is # just bytes."
+            },
+            {
+              "type": "p",
+              "text": "# ---- and record the link from model to data, in the run folder:"
+            },
+            {
+              "type": "p",
+              "text": "runs/2026-04-12_1530/"
+            },
+            {
+              "type": "p",
+              "text": "config.yaml hyperparameters, augmentations, seed"
+            },
+            {
+              "type": "p",
+              "text": "metrics.json accuracy on golden set, per-class breakdown"
+            },
+            {
+              "type": "p",
+              "text": "model.onnx the artefact that will actually be deployed"
+            },
+            {
+              "type": "p",
+              "text": "dataset.sha256 COPY of the manifest used for this run"
+            },
+            {
+              "type": "p",
+              "text": "git_commit.txt the exact code commit"
+            },
+            {
+              "type": "p",
+              "text": "notes.md what you changed and why"
+            },
+            {
+              "type": "p",
+              "text": "This folder is the whole experiment tracking system. It costs nothing, it survives your laptop dying, and it answers every audit question a customer or a regulator will ask."
+            },
+            {
+              "type": "p",
+              "text": "The copy of the manifest inside the run folder is the important detail. It means the run is self-describing even if the repository history is later rewritten"
+            }
+          ]
+        },
+        {
+          "id": "ai-production-engineering-2-3",
+          "number": "2.3",
+          "title": "Model testing that actually gates a release",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Accuracy on a random split tells you almost nothing about production behaviour. Four test categories, all of which should run automatically and fail loudly:"
+            },
+            {
+              "type": "p",
+              "text": "# tests/test_model.py - run this before ANY deployment. import json, numpy as np, onnxruntime as ort, pytest"
+            },
+            {
+              "type": "p",
+              "text": "sess = ort.InferenceSession(\"model.onnx\", providers=[\"CPUExecutionProvider\"]) GOLDEN = json.load(open(\"tests/golden_set.json\")) # 50-200 hand-labelled"
+            },
+            {
+              "type": "p",
+              "text": "def predict(img): return sess.run(None, {\"input\": img})[0]"
+            },
+            {
+              "type": "p",
+              "text": "# 1. PERFORMANCE - never allow a regression against the CURRENT model def test_beats_baseline():"
+            },
+            {
+              "type": "p",
+              "text": "acc = accuracy_on(GOLDEN) baseline = json.load(open(\"models/current/metrics.json\"))[\"golden_acc\"] assert acc &gt;= baseline - 0.02, f\"regression: {acc:.3f} vs {baseline:.3f}\""
+            },
+            {
+              "type": "p",
+              "text": "# 2. INVARIANCE - the answer must NOT change for changes that do not matter @pytest.mark.parametrize(\"shift\", [(0,3), (3,0), (-3,-3)]) def test_translation_invariance(shift):"
+            },
+            {
+              "type": "p",
+              "text": "for img, label in GOLDEN[:20]: assert predict(img).argmax() == predict(translate(img, shift)).argmax()"
+            },
+            {
+              "type": "p",
+              "text": "def test_brightness_invariance(): # a factory's lighting is not constant. If +-15% brightness flips # the prediction, this model will fail on a cloudy afternoon. for img, label in GOLDEN[:20]: for k in (0.85, 1.15): assert predict(img).argmax() == predict(img * k).argmax()"
+            },
+            {
+              "type": "p",
+              "text": "# 3. DIRECTIONAL - the answer MUST change when it should def test_defect_detected():"
+            },
+            {
+              "type": "p",
+              "text": "for img, label in GOLDEN: if label == \"defect\": assert predict(img).argmax() == DEFECT_CLASS"
+            },
+            {
+              "type": "p",
+              "text": "# 4. OPERATIONAL - it must be fast enough and small enough to deploy def test_latency_budget():"
+            },
+            {
+              "type": "p",
+              "text": "t = time_n_inferences(100) assert t / 100 &lt; 0.20, f\"too slow for 5 fps: {t/100*1000:.0f} ms\""
+            },
+            {
+              "type": "p",
+              "text": "def test_model_size(): import os; assert os.path.getsize(\"model.onnx\") &lt; 50e6"
+            },
+            {
+              "type": "p",
+              "text": "Test 2 is the one people never write and the one that predicts field failure best. If a 15% brightness change flips your prediction, the model has learned the lighting, not the defect"
+            }
+          ]
+        },
+        {
+          "id": "ai-production-engineering-2-4",
+          "number": "2.4",
+          "title": "Packaging: freeze everything",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "# Export to ONNX - portable, fast on CPU, no framework at runtime python -c \" import torch, torchvision m = torch.load('model.pt', map_location='cpu'); m.eval() torch.onnx.export(m, torch.randn(1,3,224,224), 'model.onnx',"
+            },
+            {
+              "type": "p",
+              "text": "input_names=['input'], output_names=['output'], opset_version=17, dynamic_axes=None)\""
+            },
+            {
+              "type": "p",
+              "text": "# Verify it loads and matches the original before you trust it python -c \" import onnx, onnxruntime as ort onnx.checker.check_model(onnx.load('model.onnx')) print(ort.InferenceSession('model.onnx').get_inputs()[0].shape)\""
+            },
+            {
+              "type": "p",
+              "text": "# Quantise to int8 - roughly 4x smaller, faster on CPU, small accuracy cost. # ALWAYS re-run tests/test_model.py afterwards. Always. python -m onnxruntime.quantization.preprocess --input model.onnx \\"
+            },
+            {
+              "type": "p",
+              "text": "--output model_prep.onnx python -c \" from onnxruntime.quantization import quantize_dynamic, QuantType quantize_dynamic('model_prep.onnx','model_int8.onnx',weight_type=QuantType.QUInt8)\""
+            },
+            {
+              "type": "p",
+              "text": "# PIN THE ENVIRONMENT. 'pip install onnxruntime' six months from now"
+            },
+            {
+              "type": "p",
+              "text": "# installs a different version with different behaviour."
+            },
+            {
+              "type": "p",
+              "text": "pip freeze &gt; requirements.lock # exact versions, committed"
+            },
+            {
+              "type": "p",
+              "text": "pip install --no-deps -r requirements.lock"
+            },
+            {
+              "type": "p",
+              "text": "# model_card.json - travels WITH the model, always {"
+            },
+            {
+              "type": "p",
+              "text": "\"name\": \"defect_v3\", \"created\": \"2026-04-12\", \"format\": \"onnx-int8\", \"input\": {\"shape\": [1,3,224,224], \"layout\": \"NCHW\", \"range\": [0,1]}, \"classes\": [\"ok\", \"scratch\", \"dent\", \"unclear\"], \"golden_accuracy\": 0.941, \"latency_ms_p95\": 118, \"trained_on\": \"manifests/train_v3.sha256\", \"git_commit\": \"a91f3c2\", \"known_limits\": \"validated on line 2 only, daylight hours, matte finish;"
+            },
+            {
+              "type": "p",
+              "text": "NOT validated on the polished variant introduced in May\" }"
+            },
+            {
+              "type": "p",
+              "text": "The known_limits field is the most valuable line in the card. It is what stops someone deploying your model to a line it was never validated on"
+            }
+          ]
+        },
+        {
+          "id": "ai-production-engineering-2-5",
+          "number": "2.5",
+          "title": "Monitoring: watch the input, not just the output",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "# One JSONL line per inference. This is your entire observability stack. {\"ts\":\"2026-04-12T09:14:03+05:30\",\"model\":\"defect_v3\",\"frame_id\":88213,"
+            },
+            {
+              "type": "p",
+              "text": "\"pred\":\"ok\",\"conf\":0.91,\"latency_ms\":112, \"mean_lum\":0.47,\"sharpness\":184.2,\"marker_ok\":true}"
+            },
+            {
+              "type": "p",
+              "text": "# The four fields after latency are the DRIFT DETECTORS:"
+            },
+            {
+              "type": "p",
+              "text": "# mean_lum average frame brightness -&gt; lighting changed / lamp failed"
+            },
+            {
+              "type": "p",
+              "text": "# sharpness variance of Laplacian -&gt; camera out of focus or dirty"
+            },
+            {
+              "type": "p",
+              "text": "# marker_ok fixed reference marker -&gt; camera moved (1.2 case study)"
+            },
+            {
+              "type": "p",
+              "text": "# conf mean confidence over time -&gt; the model is less sure than"
+            },
+            {
+              "type": "p",
+              "text": "# it used to be"
+            },
+            {
+              "type": "p",
+              "text": "# Daily drift check - a cron job, ten lines, no platform required python - &lt;&lt;'EOF' import json, statistics as st rows=[json.loads(l) for l in open('/var/log/defect/today.jsonl')] base=json.load(open('/etc/defect/baseline.json')) for k in (\"mean_lum\",\"sharpness\",\"conf\"):"
+            },
+            {
+              "type": "p",
+              "text": "now=st.mean(r[k] for r in rows) drift=abs(now-base[k])/base[k] if drift&gt;0.15: alert(f\"{k} drifted {drift:.0%}: {base[k]:.2f} -&gt; {now:.2f}\") if sum(not r[\"marker_ok\"] for r in rows) &gt; 5: alert(\"camera reference lost\") if len(rows) &lt; base[\"expected_daily_frames\"]*0.8: alert(\"frame count LOW\") EOF"
+            },
+            {
+              "type": "p",
+              "text": "# The last check is the heartbeat: too FEW inferences is a failure too, # and it is the one that silent-stoppage hides behind."
+            },
+            {
+              "type": "p",
+              "text": "Alert on both directions of every metric. A defect rate that falls to zero is far more likely to be a broken camera than a perfect production line"
+            },
+            {
+              "type": "p",
+              "text": "DEPLOY THIS — Set up the frugal MLOps skeleton Half a day. Do this before you deploy anything. 1 Create the manifest for your current training data and commit it. Verify it with sha256sum -c. 2 Build a golden set of 50–200 hand-labelled examples that reflect real production conditions, not clean lab images. 3 Write the four test categories from §2.3. Run them against your current model and record the baseline numbers. 4 Export to ONNX, quantise, and re-run the tests. Note the accuracy cost of quantisation — if it is large, your model is"
+            },
+            {
+              "type": "p",
+              "text": "fragile in ways worth knowing about. 5 Write the model card, including an honest known_limits line. 6 Pin your environment with pip freeze and commit the lock file."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "3",
+      "title": "Where the Model Runs",
+      "intro": [
+        {
+          "type": "p",
+          "text": "The first deployment target for most Indian factory AI is not a Raspberry Pi. It is the laptop already sitting in the supervisor’s office — free, fast, with a screen an operator can read and an operating system you already know how to fix."
+        }
+      ],
+      "topics": [
+        {
+          "id": "ai-production-engineering-3-1",
+          "number": "3.1",
+          "title": "Realistic capability, with Indian prices",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Target Rough ₹ Realistic throughput Use it when"
+            },
+            {
+              "type": "pre",
+              "text": "Existing laptop (i5        ₹0 — it is already    MobileNet-class int8: 20–60 fps at    The default. Mains power exists, a screen is useful, and\nclass, no GPU)             there                 224×224. YOLO-nano at 640: roughly    marginal cost is zero\n                                                 5–15 fps\nRaspberry Pi 5 (4–8        ₹7,000–12,000         MobileNet int8: 10–25 fps.            The station has no room or no operator screen; you need\nGB)                                              YOLO-nano at 640: 2–5 fps             many cheap independent nodes\nPi Zero 2 W                ₹1,800–2,500          MobileNet: 1–3 fps                    Very low duty cycle — a still image every few seconds,\n                                                                                       not a video stream\nAndroid phone              ₹0 if one exists      MobileNet: 30+ fps                    Portable inspection, an operator already carrying it, and\n(mid-range, TFLite                                                                     a camera plus screen plus battery in one unit\nwith GPU/NNAPI)\nESP32 / ESP32-S3           ₹350–800              Tiny models only — keyword            Sensor-side inference, not vision. Do not plan a defect\n                                                 spotting, simple sensor-data anomaly  classifier here\n                                                 detection, person-presence at very\n                                                 low resolution\nPi + NPU accelerator       ₹7,000–20,000 on      Order-of-magnitude improvement on     Only after you have measured that a plain Pi is genuinely\n                           top                   supported models                      too slow. Verify current product availability before\n                                                                                       designing around one"
+            },
+            {
+              "type": "p",
+              "text": "Throughput figures are indicative and depend heavily on model, input size and thermal conditions. Benchmark on your own hardware before committing — §3.3 shows how, and it takes ten minutes."
+            },
+            {
+              "type": "p",
+              "text": "GOTCHA — Reaching for a Pi when a laptop was right there"
+            },
+            {
+              "type": "p",
+              "text": "The most common architecture mistake in factory AI projects"
+            },
+            {
+              "type": "pre",
+              "text": "WHAT         The team buys a Pi 5, a camera module, a case and a power supply — about ₹12,000 and three weeks of\nHAPPENS      shipping and setup — for an inspection station that is four metres from a mains socket and a desk."
+            },
+            {
+              "type": "p",
+              "text": "WHY IT FEELS ‘Edge deployment’ sounds like proper engineering. A laptop running a Python script feels like a prototype. RIGHT"
+            },
+            {
+              "type": "pre",
+              "text": "WHAT IT      Slower inference, no screen for the operator, an ARM build of every dependency, an SD card that will corrupt,\nACTUALLY     and a machine nobody in the plant knows how to troubleshoot at 11 p.m.\nCOSTS"
+            },
+            {
+              "type": "p",
+              "text": "WHEN A PI IS Many independent stations where one laptop each is genuinely uneconomic; no space for a laptop; no operator"
+            },
+            {
+              "type": "p",
+              "text": "RIGHT interaction needed; or the station must be sealed against dust."
+            },
+            {
+              "type": "p",
+              "text": "What to take from this: Choose the target by the constraint that actually binds — space, power, count or cost — not by which one sounds more like embedded engineering. Ship on the laptop, then move to a Pi if and when the constraint appears."
+            }
+          ]
+        },
+        {
+          "id": "ai-production-engineering-3-2",
+          "number": "3.2",
+          "title": "Runtime and format",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Runtime            Best on                       Format      Note\nONNX Runtime       Laptop x86, Pi ARM, servers   .onnx\n                                                             The most portable choice. Same model file, same code, from your\nLiteRT             Android, microcontrollers, Pi .tflite     laptop to a Pi. Default to this\n(renamed from\nTensorFlow Lite,   PyTorch models on phones .pte             The right choice for a phone deployment and the only realistic\nSept 2024)         and embedded                              option on constrained microcontrollers, where it is now LiteRT\n                                                             Micro. The file extension and backward compatibility are\nExecuTorch         Intel CPUs specifically       .xml/.bin   unchanged, but current docs and tooling use the new name and\n                                                             some exporters warn on the old one\nOpenVINO           Training only                 .pt /\n                                                 SavedModel  The direct PyTorch→edge path, generally available since 2024. It\nPyTorch /                                                    removes the old PyTorch → ONNX → TFLite conversion dance. Use it\nTensorFlow direct                                            if your model was trained in PyTorch and the target is mobile"
+            },
+            {
+              "type": "p",
+              "text": "Meaningfully faster on Intel laptops, which is what most Indian plants have. Worth measuring if your target is fixed"
+            },
+            {
+              "type": "p",
+              "text": "Do not deploy these. Huge dependency footprint, slow startup, and version fragility on the shop floor"
+            }
+          ]
+        },
+        {
+          "id": "ai-production-engineering-3-3",
+          "number": "3.3",
+          "title": "Benchmark before you buy",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "# Ten minutes, on the exact hardware you plan to deploy on. # Do not trust anyone's published fps, including this guide's."
+            },
+            {
+              "type": "p",
+              "text": "pip install onnxruntime numpy"
+            },
+            {
+              "type": "p",
+              "text": "python - &lt;&lt;'EOF' import time, numpy as np, onnxruntime as ort"
+            },
+            {
+              "type": "p",
+              "text": "sess = ort.InferenceSession(\"model.onnx\", providers=[\"CPUExecutionProvider\"]) name = sess.get_inputs()[0].name shape = [d if isinstance(d, int) else 1 for d in sess.get_inputs()[0].shape] x = np.random.rand(*shape).astype(np.float32)"
+            },
+            {
+              "type": "p",
+              "text": "for _ in range(10): sess.run(None, {name: x}) # warm up - JIT, caches"
+            },
+            {
+              "type": "p",
+              "text": "N, t0 = 200, time.perf_counter() for _ in range(N): sess.run(None, {name: x}) dt = time.perf_counter() - t0 print(f\"{dt/N*1000:.1f} ms/inference {N/dt:.1f} fps\") EOF"
+            },
+            {
+              "type": "p",
+              "text": "# THREE THINGS TO CHECK, not one:"
+            },
+            {
+              "type": "p",
+              "text": "# 1. Run it for TEN MINUTES, not 200 frames. Laptops and Pis throttle"
+            },
+            {
+              "type": "p",
+              "text": "# when hot, and an Indian factory in May is hot. The fps you get in"
+            },
+            {
+              "type": "p",
+              "text": "# minute nine is the real number."
+            },
+            {
+              "type": "p",
+              "text": "# 2. Run it while the machine does everything else it will really be"
+            },
+            {
+              "type": "p",
+              "text": "# doing - camera capture, logging, the operator's browser."
+            },
+            {
+              "type": "p",
+              "text": "# 3. Check MEMORY, not just speed: /usr/bin/time -v python infer.py"
+            },
+            {
+              "type": "p",
+              "text": "# A model that fits in 8 GB on your laptop may not fit a 4 GB Pi."
+            },
+            {
+              "type": "p",
+              "text": "# Limit threads on a small board, or ONNX Runtime will oversubscribe"
+            },
+            {
+              "type": "p",
+              "text": "# and get SLOWER:"
+            },
+            {
+              "type": "p",
+              "text": "# sess = ort.InferenceSession(\"model.onnx\","
+            },
+            {
+              "type": "p",
+              "text": "# sess_options=so) with so.intra_op_num_threads = 2"
+            },
+            {
+              "type": "p",
+              "text": "The ten-minute thermal run is the one people skip. First-minute benchmarks routinely overstate sustained throughput by 30–50% on passively cooled hardware"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "4",
+      "title": "Project 1 — Defect Detection on a Webcam and a Laptop",
+      "intro": [
+        {
+          "type": "p",
+          "text": "A ₹1,200 webcam under controlled light will beat a ₹15,000 camera under factory ambient light, every time. Spend your first day on the fixture, not on the network architecture."
+        }
+      ],
+      "topics": [
+        {
+          "id": "ai-production-engineering-4-1",
+          "number": "4.1",
+          "title": "Get the imaging right first",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Control the light, then never change it. Ambient light from a window changes hourly, seasonally, and when someone opens a shutter. Enclose the inspection station — a simple box or hood — and light it yourself. This single decision determines whether your model survives."
+            },
+            {
+              "type": "p",
+              "text": "• Diffuse, do not spot. A bare LED on a machined metal surface produces specular highlights that look exactly like defects to a model. Use a diffuser, a ring light, or bounce the light off a white surface."
+            },
+            {
+              "type": "p",
+              "text": "• Consider backlighting if you are checking silhouette, dimension or the presence of a hole. It produces near-binary images that are trivially robust — and sometimes removes the need for a learned model at all."
+            },
+            {
+              "type": "p",
+              "text": "• A polarising filter costs a few hundred rupees and kills glare on shiny surfaces. Try it before you try a bigger model."
+            },
+            {
+              "type": "p",
+              "text": "• Fix the camera mechanically and lock it. Thread-lock the mount screws. Put a fixed reference marker in the frame (§1.2) so software can detect if it moves anyway."
+            },
+            {
+              "type": "p",
+              "text": "• Fix focus and exposure. Autofocus will hunt, and auto-exposure will compensate for the very defect you are trying to detect. Lock both in software at start-up and record the values."
+            }
+          ]
+        },
+        {
+          "id": "ai-production-engineering-4-2",
+          "number": "4.2",
+          "title": "Architecture",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "┌──────────────┐ USB ┌──────────────────────────────────────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ WEBCAM │────────▶│ LAPTOP (Ubuntu or Windows + WSL2) │"
+            },
+            {
+              "type": "p",
+              "text": "│ fixed mount │ │ │"
+            },
+            {
+              "type": "p",
+              "text": "│ locked focus│ │ capture ─▶ preprocess ─▶ ONNX ─▶ threshold │"
+            },
+            {
+              "type": "p",
+              "text": "│ hooded, lit │ │ │ │ │"
+            },
+            {
+              "type": "p",
+              "text": "└──────────────┘ │ │ ▼ │"
+            },
+            {
+              "type": "p",
+              "text": "▲ │ │ ┌──────────────────┐│"
+            },
+            {
+              "type": "p",
+              "text": "│ reference marker │ │ │ OPERATOR DISPLAY ││"
+            },
+            {
+              "type": "p",
+              "text": "│ in frame │ │ │ big, green/red, ││"
+            },
+            {
+              "type": "p",
+              "text": "└───────────────────┤ │ │ no jargon ││"
+            },
+            {
+              "type": "p",
+              "text": "│ ▼ └──────────────────┘│"
+            },
+            {
+              "type": "p",
+              "text": "│ (every frame: pred, conf, │ │"
+            },
+            {
+              "type": "p",
+              "text": "│ lum, sharpness, marker) │ │"
+            },
+            {
+              "type": "p",
+              "text": "└───────────────────────────────┼──────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "│ hourly summary only"
+            },
+            {
+              "type": "p",
+              "text": "▼"
+            },
+            {
+              "type": "p",
+              "text": "┌─────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ CLOUD/SHEET │ (ch 5)"
+            },
+            {
+              "type": "p",
+              "text": "│ aggregates │"
+            },
+            {
+              "type": "p",
+              "text": "└─────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "NOTE WHAT DOES NOT LEAVE THE BUILDING: the video. Inference is local. Only counts and alerts go out. That is what makes chapter 7's cost argument work, and it is also the right answer for confidentiality - most plants will not permit product images leaving the network."
+            },
+            {
+              "type": "p",
+              "text": "Figure 4.1 — Edge inference is not only cheaper; it is usually the only architecture a plant’s IT and quality teams will approve"
+            },
+            {
+              "type": "p",
+              "text": "RUNBOOK — Setup — exact commands"
+            },
+            {
+              "type": "p",
+              "text": "# 1. ENVIRONMENT (Ubuntu 22.04 or WSL2; same on a Pi) sudo apt update &amp;&amp; sudo apt install -y python3-venv v4l-utils python3 -m venv ~/defect &amp;&amp; source ~/defect/bin/activate pip install onnxruntime opencv-python-headless numpy"
+            },
+            {
+              "type": "p",
+              "text": "# 2. FIND AND CONFIGURE THE CAMERA # what can be locked? v4l2-ctl --list-devices v4l2-ctl -d /dev/video0 --list-ctrls"
+            },
+            {
+              "type": "p",
+              "text": "# LOCK focus and exposure - non-negotiable (4.1)"
+            },
+            {
+              "type": "p",
+              "text": "v4l2-ctl -d /dev/video0 -c focus_automatic_continuous=0"
+            },
+            {
+              "type": "p",
+              "text": "v4l2-ctl -d /dev/video0 -c focus_absolute=35"
+            },
+            {
+              "type": "p",
+              "text": "v4l2-ctl -d /dev/video0 -c auto_exposure=1 # 1 = manual"
+            },
+            {
+              "type": "p",
+              "text": "v4l2-ctl -d /dev/video0 -c exposure_time_absolute=250"
+            },
+            {
+              "type": "p",
+              "text": "v4l2-ctl -d /dev/video0 -c white_balance_automatic=0"
+            },
+            {
+              "type": "p",
+              "text": "# SAVE these values into your config. Re-apply them on every boot - # many webcams forget them on replug. v4l2-ctl -d /dev/video0 --list-ctrls &gt; /etc/defect/camera_baseline.txt"
+            },
+            {
+              "type": "p",
+              "text": "# 3. CAPTURE A BASELINE for drift detection (2.5) python capture_baseline.py --frames 200 --out /etc/defect/baseline.json"
+            },
+            {
+              "type": "p",
+              "text": "# 4. RUN AS A SERVICE so it survives reboots and power cuts sudo tee /etc/systemd/system/defect.service &gt; /dev/null &lt;&lt;'EOF' [Unit] Description=Defect detection After=network.target"
+            },
+            {
+              "type": "p",
+              "text": "[Service] Type=simple User=quality WorkingDirectory=/opt/defect ExecStartPre=/opt/defect/apply_camera_settings.sh ExecStart=/home/quality/defect/bin/python /opt/defect/run.py Restart=always RestartSec=10 StandardOutput=append:/var/log/defect/service.log StandardError=append:/var/log/defect/service.log"
+            },
+            {
+              "type": "p",
+              "text": "[Install] WantedBy=multi-user.target EOF"
+            },
+            {
+              "type": "p",
+              "text": "sudo systemctl daemon-reload sudo systemctl enable --now defect sudo systemctl status defect"
+            },
+            {
+              "type": "p",
+              "text": "# 5. TEST THE THING THAT MATTERS: pull the power cord, plug it back in, # and confirm it comes up on its own within 60 seconds. If it does # not, you do not have a production system."
+            },
+            {
+              "type": "p",
+              "text": "ExecStartPre re-applying the camera settings is the line that saves you. A webcam that renegotiates autofocus after a power cut will silently destroy your accuracy."
+            }
+          ]
+        },
+        {
+          "id": "ai-production-engineering-4-3",
+          "number": "4.3",
+          "title": "The inference loop",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "import cv2, json, time, numpy as np, onnxruntime as ort from datetime import datetime"
+            },
+            {
+              "type": "pre",
+              "text": "CFG   = json.load(open(\"/etc/defect/config.json\"))\nCARD  = json.load(open(\"/opt/defect/model_card.json\"))\nsess  = ort.InferenceSession(CFG[\"model\"], providers=[\"CPUExecutionProvider\"])\nIN    = sess.get_inputs()[0].name\nLOG   = open(f\"/var/log/defect/{datetime.now():%Y-%m-%d}.jsonl\", \"a\", buffering=1)"
+            },
+            {
+              "type": "p",
+              "text": "cap = cv2.VideoCapture(CFG[\"device\"])"
+            },
+            {
+              "type": "p",
+              "text": "cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280); cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)"
+            },
+            {
+              "type": "p",
+              "text": "cap.set(cv2.CAP_PROP_BUFFERSIZE, 1) # always the LATEST frame,"
+            },
+            {
+              "type": "p",
+              "text": "# never a stale queued one"
+            },
+            {
+              "type": "p",
+              "text": "def quality_stats(frame):"
+            },
+            {
+              "type": "p",
+              "text": "g = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)"
+            },
+            {
+              "type": "p",
+              "text": "return float(g.mean()/255.0), float(cv2.Laplacian(g, cv2.CV_64F).var())"
+            },
+            {
+              "type": "p",
+              "text": "def marker_present(frame): # camera hasn't moved roi = frame[CFG[\"marker_y\"]:CFG[\"marker_y\"]+40, CFG[\"marker_x\"]:CFG[\"marker_x\"]+40] return bool(roi.mean() &gt; CFG[\"marker_min_lum\"])"
+            },
+            {
+              "type": "pre",
+              "text": "frame_id, consecutive = 0, 0                                      # survive a replug\nwhile True:"
+            },
+            {
+              "type": "p",
+              "text": "ok, frame = cap.read() if not ok:"
+            },
+            {
+              "type": "p",
+              "text": "time.sleep(1); cap.open(CFG[\"device\"]); continue"
+            },
+            {
+              "type": "p",
+              "text": "lum, sharp = quality_stats(frame) mk = marker_present(frame)"
+            },
+            {
+              "type": "p",
+              "text": "x = cv2.resize(frame, (224,224))[:, :, ::-1].astype(np.float32)/255.0 x = np.transpose(x, (2,0,1))[None] t0 = time.perf_counter() out = sess.run(None, {IN: x})[0][0] ms = (time.perf_counter()-t0)*1000"
+            },
+            {
+              "type": "p",
+              "text": "idx = int(out.argmax()); conf = float(out[idx]); cls = CARD[\"classes\"][idx]"
+            },
+            {
+              "type": "p",
+              "text": "# PERSISTENCE: never alarm on a single frame. Require N of the last M."
+            },
+            {
+              "type": "p",
+              "text": "consecutive = consecutive+1 if (cls!=\"ok\" and conf&gt;CFG[\"threshold\"]) else 0"
+            },
+            {
+              "type": "p",
+              "text": "alarm = consecutive &gt;= CFG[\"consecutive_required\"] # typically 3"
+            },
+            {
+              "type": "p",
+              "text": "LOG.write(json.dumps({\"ts\":datetime.now().isoformat(),\"frame_id\":frame_id, \"model\":CARD[\"name\"],\"pred\":cls,\"conf\":round(conf,3), \"latency_ms\":round(ms,1),\"mean_lum\":round(lum,3), \"sharpness\":round(sharp,1),\"marker_ok\":mk,\"alarm\":alarm})+\"\\n\")"
+            },
+            {
+              "type": "p",
+              "text": "display(frame, cls, conf, alarm, mk) # 4.4 if alarm: signal_operator() frame_id += 1"
+            },
+            {
+              "type": "p",
+              "text": "Two lines carry disproportionate weight: BUFFERSIZE=1, without which you inspect frames from thirty seconds ago; and the persistence counter, without which one noisy frame stops the line"
+            },
+            {
+              "type": "p",
+              "text": "Track operator agreement rate — the metric that predicts survival"
+            },
+            {
+              "type": "p",
+              "text": "Accuracy on a held-out split tells you nothing about whether this system will still be in use in six weeks. Operator agreement rate does. Log, for every flag the system raises, whether the operator confirmed it or cleared it — one button each way — and report the weekly percentage."
+            },
+            {
+              "type": "p",
+              "text": "Work the arithmetic before you deploy. On a line producing 4,000 parts a shift with a genuine defect rate of 0.3%, there are about 12 real defects. A 1% false-positive rate flags roughly 40 good parts on top — so about 77% of every alert is wrong, while accuracy still reads 99%. Operators stop looking within a fortnight, and no accuracy dashboard can see it happening."
+            },
+            {
+              "type": "p",
+              "text": "So tune the threshold to the alarm budget, not to the F1 score. Decide first how many flags per shift an operator will actually inspect properly — usually five to fifteen — then raise the threshold until you are inside that budget, and accept the recall you lose. A detector that catches 80% of defects and is trusted beats one that catches 95% and is ignored."
+            }
+          ]
+        },
+        {
+          "id": "ai-production-engineering-4-4",
+          "number": "4.4",
+          "title": "The operator interface, and the threshold",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Legible from two metres. A full-screen green or red panel with one word. Not a confidence score, not a class probability, not a matplotlib window. The operator has gloves on and four seconds."
+            },
+            {
+              "type": "p",
+              "text": "• Show the live frame. Operators trust a system they can see working, and it makes camera problems obvious to a human before your drift detector catches them."
+            },
+            {
+              "type": "p",
+              "text": "• Show ‘unclear’ as its own state. Below the confidence threshold the answer is ‘check by hand’, not ‘ok’. A correct refusal is a success, and framing it that way changes how operators treat the system."
+            },
+            {
+              "type": "p",
+              "text": "• Make it obvious when the system is not running. A frozen screen must look different from a working one — a moving timestamp or a heartbeat dot."
+            },
+            {
+              "type": "p",
+              "text": "• Set the threshold by alarm budget, not by F1. Ask the line supervisor how many false stops per shift are tolerable — the answer is usually one or two. Then pick the threshold that delivers that on your golden set, and report the recall you get at that operating point. Optimising F1 and then discovering the line stops eleven times a shift is how these systems get switched off in week three."
+            },
+            {
+              "type": "p",
+              "text": "RUNBOOK — Troubleshooting — Project 1"
+            },
+            {
+              "type": "p",
+              "text": "-------------------------------------------------------------------------"
+            },
+            {
+              "type": "p",
+              "text": "Accuracy fell overnight 1. marker_ok in the log - camera moved?"
+            },
+            {
+              "type": "p",
+              "text": "2. mean_lum - did a lamp fail or a shutter"
+            },
+            {
+              "type": "p",
+              "text": "open?"
+            },
+            {
+              "type": "p",
+              "text": "3. sharpness - lens dirty or focus hunting?"
+            },
+            {
+              "type": "p",
+              "text": "4. ONLY THEN suspect the model."
+            },
+            {
+              "type": "p",
+              "text": "\"No such device /dev/video0\" Replug. Check `v4l2-ctl --list-devices`. USB power management can suspend a webcam: echo -1 &gt; /sys/module/usbcore/parameters/"
+            },
+            {
+              "type": "p",
+              "text": "autosuspend"
+            },
+            {
+              "type": "pre",
+              "text": "Inference much slower than    Thermal throttling. Check with\nthe benchmark                 `vcgencmd measure_temp` (Pi) or\n                              `sensors`. Add airflow, or lower fps.\n                              Also check intra_op_num_threads (3.3)."
+            },
+            {
+              "type": "p",
+              "text": "Frames are stale / lagging CAP_PROP_BUFFERSIZE not set to 1, or you are processing slower than capture. Drop frames deliberately rather than queueing."
+            },
+            {
+              "type": "p",
+              "text": "Service dies overnight journalctl -u defect --since \"12 hours ago\" Usually: log disk full, or the OS updated and rebooted. Set Restart=always AND disable automatic reboots."
+            },
+            {
+              "type": "p",
+              "text": "Log disk filled up Rotate. /etc/logrotate.d/defect with daily + rotate 30 + compress. Do this on day one, not day forty."
+            },
+            {
+              "type": "p",
+              "text": "Operator says \"it's wrong\" Ask them to press a key that saves the frame to a review folder. That folder is your next golden set. Never dismiss it."
+            },
+            {
+              "type": "p",
+              "text": "The first block is the important one. Three of the four checks are about the camera, because three out of four accuracy problems are."
+            },
+            {
+              "type": "p",
+              "text": "DEPLOY THIS — Get Project 1 to survive a week"
+            },
+            {
+              "type": "p",
+              "text": "Two weekends, then a week of unattended running. 1 Build the enclosure and lighting before writing any code. Photograph 50 parts and confirm by eye that defects are visible"
+            },
+            {
+              "type": "p",
+              "text": "and consistent. 2 Lock focus, exposure and white balance. Record the values into a script that re-applies them at boot. 3 Deploy the ONNX model and the inference loop. Confirm the JSONL log contains all the drift fields from §2.5. 4 Set the threshold using the alarm budget the supervisor gives you, not F1. Write down the recall you accept at that"
+            },
+            {
+              "type": "p",
+              "text": "operating point. 5 Install the systemd service, then pull the power cord. It must come back within a minute with the camera settings"
+            },
+            {
+              "type": "p",
+              "text": "reapplied. 6 Run for a week. Each morning, check the drift script output. Log every intervention and its cause — the causes will cluster,"
+            },
+            {
+              "type": "p",
+              "text": "and the cluster is your next task."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "5",
+      "title": "Project 2 — Predictive Maintenance on a Free Tier",
+      "intro": [
+        {
+          "type": "p",
+          "text": "The architecture that makes this cost nothing is the same one that makes it work when the network is down: decide at the edge, and send the cloud only what a human needs to see."
+        }
+      ],
+      "topics": [
+        {
+          "id": "ai-production-engineering-5-1",
+          "number": "5.1",
+          "title": "The cost argument, in numbers",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "A vision or sensor model running 5 inferences/second, 8 hours a day, 22 days a month:"
+            },
+            {
+              "type": "p",
+              "text": "5 x 3600 x 8 x 22 = 3,168,000 inferences per month"
+            },
+            {
+              "type": "p",
+              "text": "RUN IT IN THE CLOUD - stream frames to a hosted vision API at an illustrative Rs 1.50 per 1,000 calls -&gt; Rs 4,752 / month plus egress bandwidth for the images plus it stops working entirely when the link drops plus product images leave your network (many plants forbid this)"
+            },
+            {
+              "type": "p",
+              "text": "RUN IT AT THE EDGE - on the laptop that is already there"
+            },
+            {
+              "type": "p",
+              "text": "marginal compute cost -&gt; Rs 0"
+            },
+            {
+              "type": "p",
+              "text": "cloud receives an hourly aggregate, ~200 bytes"
+            },
+            {
+              "type": "p",
+              "text": "24 x 30 x 200 bytes = about 141 KB/month -&gt; free on any tier"
+            },
+            {
+              "type": "p",
+              "text": "works with no network at all; syncs when the link returns"
+            },
+            {
+              "type": "p",
+              "text": "THE RATIO IS NOT 2x OR 10x. IT IS EFFECTIVELY INFINITE, because the edge cost is a machine you already own."
+            },
+            {
+              "type": "p",
+              "text": "- a place alerts can reach a phone from - a small history a manager can look at without walking to the machine - a place to publish a new model from (chapter 6) It is NOT for inference. Once you internalise that, the whole Rs 100/month question answers itself."
+            },
+            {
+              "type": "p",
+              "text": "Any architecture that streams raw sensor or video data to the cloud for inference has made the expensive choice twice — in rupees and in reliability"
+            }
+          ]
+        },
+        {
+          "id": "ai-production-engineering-5-2",
+          "number": "5.2",
+          "title": "Architecture and config",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "SENSORS ──▶ ESP32/Pi ──▶ [ EDGE INFERENCE ]──▶ local ring buffer"
+            },
+            {
+              "type": "p",
+              "text": "vibration (ch 9 anomaly score (survives outage)"
+            },
+            {
+              "type": "p",
+              "text": "current stack) + threshold │"
+            },
+            {
+              "type": "p",
+              "text": "temperature │ │ batched, hourly"
+            },
+            {
+              "type": "p",
+              "text": "│ alarm ▼"
+            },
+            {
+              "type": "p",
+              "text": "▼ ┌─────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ LOCAL ALERT │ HTTPS │ VM or │"
+            },
+            {
+              "type": "p",
+              "text": "│ buzzer/lamp │─────────▶│ managed DB │"
+            },
+            {
+              "type": "p",
+              "text": "└──────────────┘ │"
+            },
+            {
+              "type": "p",
+              "text": "▼"
+            },
+            {
+              "type": "p",
+              "text": "┌──────────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ dashboard + SMS/ │"
+            },
+            {
+              "type": "p",
+              "text": "│ WhatsApp alerts │"
+            },
+            {
+              "type": "p",
+              "text": "└──────────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "THE ORDERING RULE: the local alert fires FIRST and does not depend on the cloud. If the technician only learns about a failing bearing when a cloud dashboard is reachable, you have built a system that fails exactly when the plant's network does - which is often the same moment the power is unstable and the machine is under stress."
+            },
+            {
+              "type": "p",
+              "text": "Figure 5.1 — Cloud-optional, not cloud-dependent. Test this by unplugging the internet for a day and confirming the buzzer still works"
+            },
+            {
+              "type": "p",
+              "text": "# /etc/predmaint/config.yaml - everything tunable lives here, not in code device_id: \"press-04\" site: \"unit-2-surat\""
+            },
+            {
+              "type": "p",
+              "text": "sampling:"
+            },
+            {
+              "type": "p",
+              "text": "rate_hz: 100 # vibration needs this; temperature does not"
+            },
+            {
+              "type": "p",
+              "text": "window_seconds: 10 # features computed per window"
+            },
+            {
+              "type": "p",
+              "text": "features: [rms, peak, crest_factor, dominant_freq, band_energy_2k_5k]"
+            },
+            {
+              "type": "p",
+              "text": "model: # symlink - see ch 6 path: /opt/predmaint/models/current/model.onnx score_field: anomaly_score"
+            },
+            {
+              "type": "pre",
+              "text": "alerting:                     # persistence - never alarm on one window\n   warn_threshold: 0.65       # ONE alert per episode, not one per window\n   alarm_threshold: 0.80      # circuit breaker against an alert storm\n   consecutive_windows: 3     # fires regardless of network state\n   cooldown_minutes: 30\n   max_alerts_per_day: 6\n   local_buzzer_gpio: 17"
+            },
+            {
+              "type": "p",
+              "text": "cloud:"
+            },
+            {
+              "type": "p",
+              "text": "enabled: true # &lt;-- the system MUST work with this false"
+            },
+            {
+              "type": "p",
+              "text": "endpoint: \"https://&lt;host&gt;/ingest\""
+            },
+            {
+              "type": "p",
+              "text": "batch_interval_minutes: 60"
+            },
+            {
+              "type": "p",
+              "text": "buffer_max_records: 20000 # ~14 days at one record per minute"
+            },
+            {
+              "type": "p",
+              "text": "retry_backoff_seconds: [30, 120, 600, 3600]"
+            },
+            {
+              "type": "pre",
+              "text": "heartbeat:                    # absence of this is what raises the alarm\n   interval_minutes: 15       # at the other end"
+            },
+            {
+              "type": "p",
+              "text": "cooldown_minutes and max_alerts_per_day are what stop a real detection becoming forty messages and a technician who mutes the group"
+            }
+          ]
+        },
+        {
+          "id": "ai-production-engineering-5-3",
+          "number": "5.3",
+          "title": "Choosing the free tier honestly",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "GOTCHA — Oracle halved its free tier in June 2026, without announcing it"
+            },
+            {
+              "type": "p",
+              "text": "A live case study in what ‘always free’ means"
+            },
+            {
+              "type": "pre",
+              "text": "WHAT       Oracle Cloud’s Always Free Ampere ARM allocation went from 4 OCPUs and 24 GB of RAM to 2 OCPUs and 12\nHAPPENED   GB — halved. The documentation was quietly updated; there was no public announcement, and users\n           discovered it when instances were shut down or when someone noticed the changed numbers."
+            },
+            {
+              "type": "p",
+              "text": "WHY IT STILL It remains genuinely always-free rather than a 12-month trial like the major alternatives, and 2 OCPUs with 12 MAY BE THE GB is ample for aggregating sensor data and serving a small dashboard. There are no GPUs in the free tier — BEST OPTION which is fine, because §5.1 says you are not doing inference there."
+            },
+            {
+              "type": "p",
+              "text": "THE OTHER Capacity. A shape can be advertised as always-free while your home region has no ARM capacity available —"
+            },
+            {
+              "type": "p",
+              "text": "CATCH Indian regions are frequently among those affected. Low-activity instances can also be reclaimed."
+            },
+            {
+              "type": "p",
+              "text": "WHAT THIS Not ‘avoid free tiers’. It means the cloud component must be replaceable in an afternoon: standard MEANS FOR protocols, no proprietary services, data in a format you can export, and the edge fully functional without it."
+            },
+            {
+              "type": "p",
+              "text": "What to take from this: Design so that losing the cloud tier is an inconvenience, not an outage. Then a free tier is a rational choice rather than a risk — and check the current limits before you architect around any published number, including these."
+            },
+            {
+              "type": "p",
+              "text": "DEPLOY THIS — Deploy Project 2 and then unplug the internet"
+            },
+            {
+              "type": "p",
+              "text": "Two weekends. 1 Instrument one machine and collect two weeks of normal-operation baseline data before attempting any detection. 2 Run inference at the edge. Confirm the local buzzer fires with the network cable physically unplugged. 3 Implement the ring buffer with the config above. Fill it, then reconnect and confirm every buffered record arrives, in order,"
+            },
+            {
+              "type": "p",
+              "text": "without duplicates. 4 Set the cloud tier up, then write down what you would do if it disappeared tomorrow. If the answer takes more than"
+            },
+            {
+              "type": "p",
+              "text": "an afternoon, simplify the dependency. 5 Test the alert path end to end: trigger a real anomaly, confirm exactly one message arrives, and confirm the cooldown"
+            },
+            {
+              "type": "p",
+              "text": "suppresses the next forty. 6 Leave the heartbeat running and then kill the process deliberately. Confirm someone is alerted by its absence within the"
+            },
+            {
+              "type": "p",
+              "text": "interval you configured."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "6",
+      "title": "Project 3 — Model Updates Over a Bad Connection",
+      "intro": [
+        {
+          "type": "p",
+          "text": "A plant in a Tier-2 town has connectivity that comes and goes, is slow when present, and is shared with everything else the site does. An update mechanism that assumes a stable link will leave you driving to Aurangabad with a pen drive."
+        }
+      ],
+      "topics": [
+        {
+          "id": "ai-production-engineering-6-1",
+          "number": "6.1",
+          "title": "Seven design rules",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Pull, never push. The device checks for updates when it happens to have connectivity. A push system needs the server to reach a device sitting behind a plant firewall on an intermittent link — it will not."
+            },
+            {
+              "type": "p",
+              "text": "• Fetch a tiny manifest first. A few hundred bytes of JSON tells the device whether there is anything to do. It succeeds on a link that could never carry a 50 MB model, so the device always knows its own status."
+            },
+            {
+              "type": "p",
+              "text": "• Resume, do not restart. HTTP range requests. A 50 MB download over a link that drops every three minutes will never complete otherwise, and each failed attempt costs real money on a metered connection."
+            },
+            {
+              "type": "p",
+              "text": "• Verify before you install. SHA-256 against the manifest. A truncated model file that still loads and produces confident nonsense is far worse than a download that failed cleanly."
+            },
+            {
+              "type": "p",
+              "text": "• Swap atomically. Download to staging, verify, then move a symlink. Never write over the model the running process is using — that is how you get a half-written file loaded at the exact moment the machine reboots."
+            },
+            {
+              "type": "p",
+              "text": "• Health-check, then auto-roll-back. After the swap, run the golden set locally. If it fails, revert to the previous model automatically and raise an alert. The device must be able to save itself without anyone driving anywhere."
+            },
+            {
+              "type": "p",
+              "text": "• Stage the rollout. One canary device, watched for a week, before the other eleven. A bad model deployed to every site at once is the worst failure mode available to you."
+            }
+          ]
+        },
+        {
+          "id": "ai-production-engineering-6-2",
+          "number": "6.2",
+          "title": "The manifest and the layout on disk",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "# Published at a stable URL. Under 1 KB - fetchable on any link."
+            },
+            {
+              "type": "p",
+              "text": "# https://models.example.in/defect/manifest.json"
+            },
+            {
+              "type": "p",
+              "text": "{"
+            },
+            {
+              "type": "p",
+              "text": "\"schema\": 1,"
+            },
+            {
+              "type": "p",
+              "text": "\"updated\": \"2026-04-20T11:00:00+05:30\","
+            },
+            {
+              "type": "p",
+              "text": "\"channels\": {"
+            },
+            {
+              "type": "p",
+              "text": "\"stable\": \"defect_v3\","
+            },
+            {
+              "type": "p",
+              "text": "\"canary\": \"defect_v4\""
+            },
+            {
+              "type": "p",
+              "text": "},"
+            },
+            {
+              "type": "p",
+              "text": "\"models\": {"
+            },
+            {
+              "type": "p",
+              "text": "\"defect_v4\": {"
+            },
+            {
+              "type": "p",
+              "text": "\"url\": \"https://models.example.in/defect/defect_v4.onnx\","
+            },
+            {
+              "type": "p",
+              "text": "\"sha256\": \"9f2c...e17a\","
+            },
+            {
+              "type": "p",
+              "text": "\"bytes\": 12483920,"
+            },
+            {
+              "type": "p",
+              "text": "\"min_golden_acc\": 0.92,"
+            },
+            {
+              "type": "p",
+              "text": "\"notes\": \"adds polished-finish variant from line 3\""
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "},"
+            },
+            {
+              "type": "p",
+              "text": "\"device_channels\": { \"press-01\": \"canary\" } # everything else: stable"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "# ---- ON-DISK LAYOUT. The symlink is the entire deployment mechanism."
+            },
+            {
+              "type": "p",
+              "text": "/opt/defect/models/"
+            },
+            {
+              "type": "p",
+              "text": "current -&gt; defect_v3/ &lt;-- ONE symlink. Swapping it IS the deploy"
+            },
+            {
+              "type": "p",
+              "text": "previous -&gt; defect_v2/ &lt;-- rollback target, kept always"
+            },
+            {
+              "type": "p",
+              "text": "defect_v2/ model.onnx model_card.json metrics.json"
+            },
+            {
+              "type": "p",
+              "text": "defect_v3/ model.onnx model_card.json metrics.json"
+            },
+            {
+              "type": "p",
+              "text": "staging/ defect_v4.onnx.part &lt;-- partial downloads live here"
+            },
+            {
+              "type": "p",
+              "text": "# The running service opens models/current/model.onnx and nothing else. # It never knows or cares which version that is."
+            },
+            {
+              "type": "p",
+              "text": "One symlink, two directories and a manifest. There is no deployment system to maintain, nothing to license, and a technician can read the whole thing with ls -l"
+            },
+            {
+              "type": "p",
+              "text": "RUNBOOK — update.sh — the whole updater, run hourly by cron"
+            },
+            {
+              "type": "p",
+              "text": "#!/usr/bin/env bash set -euo pipefail ROOT=/opt/defect/models; DEV=$(cat /etc/defect/device_id) MANIFEST=https://models.example.in/defect/manifest.json log(){ echo \"$(date -Is) $*\" &gt;&gt; /var/log/defect/update.log; }"
+            },
+            {
+              "type": "p",
+              "text": "# 1. TINY MANIFEST FIRST. Short timeout - if the link is dead, exit quietly. if ! curl -fsS --max-time 20 -o /tmp/m.json \"$MANIFEST\"; then"
+            },
+            {
+              "type": "p",
+              "text": "log \"no manifest (offline) - will retry next hour\"; exit 0 fi"
+            },
+            {
+              "type": "p",
+              "text": "CH=$(jq -r --arg d \"$DEV\" '.device_channels[$d] // \"stable\"' /tmp/m.json) WANT=$(jq -r --arg c \"$CH\" '.channels[$c]' /tmp/m.json) HAVE=$(basename \"$(readlink -f $ROOT/current)\") [ \"$WANT\" = \"$HAVE\" ] &amp;&amp; { log \"up to date ($HAVE)\"; exit 0; } log \"update available: $HAVE -&gt; $WANT (channel $CH)\""
+            },
+            {
+              "type": "p",
+              "text": "URL=$(jq -r --arg m \"$WANT\" '.models[$m].url' /tmp/m.json) SUM=$(jq -r --arg m \"$WANT\" '.models[$m].sha256' /tmp/m.json) MINACC=$(jq -r --arg m \"$WANT\" '.models[$m].min_golden_acc' /tmp/m.json) PART=$ROOT/staging/$WANT.onnx.part"
+            },
+            {
+              "type": "p",
+              "text": "# 2. RESUMABLE DOWNLOAD. -C - resumes. --limit-rate leaves the plant's # link usable for everyone else. Failure here is NORMAL, not an error. mkdir -p \"$ROOT/staging\" if ! curl -fL -C - --retry 5 --retry-delay 30 --retry-all-errors \\"
+            },
+            {
+              "type": "p",
+              "text": "--max-time 3600 --limit-rate 200k -o \"$PART\" \"$URL\"; then log \"download incomplete - resuming next hour\"; exit 0 # keep the .part! fi"
+            },
+            {
+              "type": "p",
+              "text": "if ! echo \"$SUM $PART\" | sha256sum -c --status; then"
+            },
+            {
+              "type": "p",
+              "text": "log \"CHECKSUM FAILED - discarding\"; rm -f \"$PART\"; exit 1 fi"
+            },
+            {
+              "type": "p",
+              "text": "# 4. STAGE mkdir -p \"$ROOT/$WANT\" &amp;&amp; mv \"$PART\" \"$ROOT/$WANT/model.onnx\" curl -fsS -o \"$ROOT/$WANT/model_card.json\" \"${URL%.onnx}_card.json\" || true"
+            },
+            {
+              "type": "p",
+              "text": "# 5. HEALTH-CHECK THE NEW MODEL *BEFORE* SWAPPING (golden set, local) ACC=$(/opt/defect/venv/bin/python /opt/defect/healthcheck.py \\"
+            },
+            {
+              "type": "p",
+              "text": "--model \"$ROOT/$WANT/model.onnx\") if (( $(echo \"$ACC &lt; $MINACC\" | bc -l) )); then"
+            },
+            {
+              "type": "p",
+              "text": "log \"HEALTHCHECK FAILED acc=$ACC &lt; $MINACC - NOT deploying\" /opt/defect/alert.sh \"model $WANT failed healthcheck on $DEV ($ACC)\" exit 1 fi"
+            },
+            {
+              "type": "p",
+              "text": "# 6. ATOMIC SWAP. ln -sfn + mv -T is atomic: the running process either # sees the old target or the new one, never a broken link. ln -sfn \"$(readlink -f $ROOT/current)\" \"$ROOT/previous.new\" mv -T \"$ROOT/previous.new\" \"$ROOT/previous\" ln -sfn \"$ROOT/$WANT\" \"$ROOT/current.new\" mv -T \"$ROOT/current.new\" \"$ROOT/current\" systemctl restart defect log \"deployed $WANT (acc=$ACC)\""
+            },
+            {
+              "type": "p",
+              "text": "# 7. POST-DEPLOY WATCHDOG: if the service is not healthy in 120 s, revert. sleep 120 if ! systemctl is-active --quiet defect || ! /opt/defect/smoke.sh; then"
+            },
+            {
+              "type": "p",
+              "text": "log \"POST-DEPLOY FAILURE - rolling back to $(basename $(readlink -f $ROOT/previous))\" ln -sfn \"$(readlink -f $ROOT/previous)\" \"$ROOT/current.new\" mv -T \"$ROOT/current.new\" \"$ROOT/current\" systemctl restart defect /opt/defect/alert.sh \"ROLLED BACK on $DEV\" fi"
+            },
+            {
+              "type": "p",
+              "text": "Note that step 2 exits 0 on an incomplete download and keeps the partial file. On a bad link a model may take four days to arrive across dozens of attempts, and that is a success, not a fault."
+            },
+            {
+              "type": "p",
+              "text": "GOTCHA — The update that bricked eleven machines at once"
+            },
+            {
+              "type": "p",
+              "text": "Why staged rollout is not optional"
+            },
+            {
+              "type": "p",
+              "text": "WHAT A retrained model was published to all sites simultaneously. It scored better on the held-out split but had been"
+            },
+            {
+              "type": "p",
+              "text": "HAPPENED trained without the night-shift lighting condition, which had never been in the validation data."
+            },
+            {
+              "type": "p",
+              "text": "THE RESULT Every station across three plants started flagging good parts from 10 p.m. Lines stopped. By the time anyone connected the two events, it was the following afternoon."
+            },
+            {
+              "type": "p",
+              "text": "WHAT One canary device on the canary channel for a week (§6.2). The night shift would have surfaced it on day one,"
+            },
+            {
+              "type": "p",
+              "text": "WOULD HAVE on one machine, at no cost."
+            },
+            {
+              "type": "p",
+              "text": "IT"
+            },
+            {
+              "type": "pre",
+              "text": "AND THE  The post-deploy watchdog in step 7. An automatic rollback after a failed smoke test turns a three-plant outage\nSECOND   into a log line and an alert.\nDEFENCE"
+            },
+            {
+              "type": "p",
+              "text": "What to take from this: Publish to canary, wait a full production cycle including every shift, then promote to stable by editing one line of the manifest. Promotion should be a one-word change, and so should reverting it."
+            }
+          ]
+        },
+        {
+          "id": "ai-production-engineering-6-3",
+          "number": "6.3",
+          "title": "Shadow mode: compare before you switch",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "When you can afford the compute — and on a laptop you usually can — run the new model alongside the old one for a week without acting on its output. Log both predictions per frame. You then have a direct, real-data comparison rather than a held-out-split argument, and you can see exactly which cases changed."
+            },
+            {
+              "type": "pre",
+              "text": "# In the inference loop, when shadow is enabled:    # acted upon\npred_live = live_sess.run(None, {IN: x})[0][0]      # logged only\npred_shadow = shadow_sess.run(None, {IN: x})[0][0]"
+            },
+            {
+              "type": "p",
+              "text": "LOG.write(json.dumps({... , \"pred\": cls(pred_live), \"conf\": conf(pred_live), \"shadow_pred\": cls(pred_shadow), \"shadow_conf\": conf(pred_shadow), \"agree\": cls(pred_live) == cls(pred_shadow)}) + \"\\n\")"
+            },
+            {
+              "type": "p",
+              "text": "# After a week, the question you can now answer with real data:"
+            },
+            {
+              "type": "p",
+              "text": "# overall agreement rate"
+            },
+            {
+              "type": "p",
+              "text": "# of the cases where they DISAGREE, which was right?"
+            },
+            {
+              "type": "p",
+              "text": "# -&gt; pull those frames, have a human label them. Usually 20-80 frames."
+            },
+            {
+              "type": "p",
+              "text": "# -&gt; that is a real comparison on real production data, which no"
+            },
+            {
+              "type": "p",
+              "text": "# held-out split can give you."
+            },
+            {
+              "type": "p",
+              "text": "#"
+            },
+            {
+              "type": "p",
+              "text": "# Promote only if: shadow wins the disagreements, AND the shadow model's"
+            },
+            {
+              "type": "p",
+              "text": "# alarm rate is within your alarm budget (4.4). A more accurate model"
+            },
+            {
+              "type": "p",
+              "text": "# that doubles the false-stop rate is a worse model in production."
+            },
+            {
+              "type": "p",
+              "text": "The disagreement set is the highest-value labelling work you will ever do — it is small, it is exactly the ambiguous region, and a human can label it in an hour"
+            },
+            {
+              "type": "p",
+              "text": "DEPLOY THIS — Build and abuse the update pipeline A weekend to build, a week to test properly. 1 Set up the manifest, the two model directories and the symlink. Confirm the service reads only through current/. 2 Run update.sh with a good connection and confirm a clean upgrade and restart. 3 Now abuse it: kill the download halfway and re-run — it must resume, not restart. Check the partial file survived. 4 Corrupt the model file deliberately and re-run. The checksum must reject it before anything touches current/. 5 Publish a deliberately bad model that fails the golden-set threshold. Confirm it is not deployed and that an alert fires. 6 Make the smoke test fail after deployment. Confirm the automatic rollback in step 7 works and that the machine"
+            },
+            {
+              "type": "p",
+              "text": "ends up running the previous model unaided. This is the test that matters most."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "7",
+      "title": "Cost and Go-Live",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Running production AI for under a hundred rupees a month is not a procurement trick. It is an architectural consequence of deciding at the edge and sending the cloud only what a human reads."
+        }
+      ],
+      "topics": [
+        {
+          "id": "ai-production-engineering-7-1",
+          "number": "7.1",
+          "title": "What things actually cost",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Component Monthly ₹ Note"
+            },
+            {
+              "type": "pre",
+              "text": "Inference compute          ₹0                    On a laptop or Pi already on site. This is the line that dominates every cloud-inference\n                                                 architecture, and edge deployment removes it entirely\nCloud VM for aggregation ₹0                      An always-free ARM instance is ample for this workload. See the caveats in §5.3 — limits\nand dashboard                                    change and regional capacity is not guaranteed\nObject storage for models ₹0–50                  A few hundred MB. Free tiers cover it comfortably; even paid, it is negligible\nand backups"
+            },
+            {
+              "type": "p",
+              "text": "Alerting ₹0–50 WhatsApp service messages inside the 24-hour window are free; SMS runs roughly ₹0.50–₹1.00 each, so an alarm budget of six a day is well under ₹200/month even at the worst case"
+            },
+            {
+              "type": "p",
+              "text": "Domain name ₹50–80 Optional. Amortised annually"
+            },
+            {
+              "type": "p",
+              "text": "Bandwidth ₹0 Aggregates and alerts are kilobytes. Video never leaves the plant"
+            },
+            {
+              "type": "p",
+              "text": "TOTAL ₹0–150 And the two largest line items are structurally zero rather than discounted"
+            },
+            {
+              "type": "p",
+              "text": "What would break this budget: streaming video to the cloud, cloud GPU inference, a managed MLOps platform, or per-inference API pricing. Each is a choice, and each is avoidable for the workloads in this guide."
+            },
+            {
+              "type": "p",
+              "text": "The honest caveat on free tiers"
+            },
+            {
+              "type": "p",
+              "text": "Everything above depends on free tiers that can change without notice — as Oracle’s did in June 2026, halving its always-free ARM allocation with no announcement (§5.3). Regional capacity is not guaranteed either, and Indian regions are frequently constrained."
+            },
+            {
+              "type": "p",
+              "text": "So do not build a dependency you cannot replace in an afternoon. Use standard protocols, keep your data in exportable formats, avoid proprietary managed services, and keep the edge fully functional with the cloud switched off. Then a free tier disappearing is an inconvenience, and you can move to a ₹400/month VPS without redesigning anything."
+            }
+          ]
+        },
+        {
+          "id": "ai-production-engineering-7-2",
+          "number": "7.2",
+          "title": "The production checklist",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "CHECKLIST — Go-live — every box ticked before the first real shift"
+            },
+            {
+              "type": "p",
+              "text": "□ Service starts automatically after a power cut — tested by □ Alert cooldown and daily cap configured pulling the plug"
+            },
+            {
+              "type": "p",
+              "text": "□ Camera or sensor settings reapplied on every boot □ Environment pinned; requirements.lock committed"
+            },
+            {
+              "type": "pre",
+              "text": "□ Watchdog restarts the process on crash                   □ current/ and previous/ symlinks in place; rollback tested\n    (Restart=always), tested                                   end to end"
+            },
+            {
+              "type": "p",
+              "text": "□ Automatic OS updates and reboots disabled or scheduled □ Update pipeline tested against a dropped download and a corrupt file"
+            },
+            {
+              "type": "p",
+              "text": "□ Heartbeat published, and absence of it raises an alert □ Post-deploy smoke test with automatic rollback, tested"
+            },
+            {
+              "type": "pre",
+              "text": "□ Alert on the metric falling as well as rising            □ Canary channel configured; nothing goes to all sites at\n                                                               once\n□ Log rotation configured — disk cannot fill               □ Operator display legible from two metres, with an\n                                                               ‘unclear’ state\n□ Input drift monitored: brightness, sharpness, reference  □ Operators can flag a wrong result, and those frames are\n    marker                                                     saved"
+            },
+            {
+              "type": "p",
+              "text": "□ Model card present with an honest known_limits line □ A named person owns the system and knows it"
+            },
+            {
+              "type": "pre",
+              "text": "□ Golden set exists and the model was tested against it    □ Someone who is not you has restarted it from the written\n                                                               runbook\n□ Invariance tests pass (brightness, small translation)    □ Runbook printed and taped near the machine, not only in\n                                                               a repo"
+            },
+            {
+              "type": "p",
+              "text": "□ Threshold set from the alarm budget, not from F1 □ Cloud dependency replaceable in an afternoon"
+            },
+            {
+              "type": "p",
+              "text": "□ Persistence rule in place — no alarm on a single frame or □ No raw images or sensitive data leave the plant network window"
+            }
+          ]
+        },
+        {
+          "id": "ai-production-engineering-7-3",
+          "number": "7.3",
+          "title": "The first thirty days",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Week 1 — shadow only. Log predictions, show nothing to operators, act on nothing. Read fifty logged frames by hand. You will find something surprising, and it is far cheaper to find it now."
+            },
+            {
+              "type": "p",
+              "text": "• Week 2 — advisory. The display goes live but the line does not stop for it. Operators compare the machine’s call to their own and flag disagreements. This is when you tune the threshold with real data."
+            },
+            {
+              "type": "p",
+              "text": "• Weeks 3–4 — supervised operation. The system is acted upon, with the engineer reachable and a documented off-switch. Count interventions per shift."
+            },
+            {
+              "type": "p",
+              "text": "• Day 30 — the honest review. Interventions per shift, false stops per shift, and the one number that matters: did the defect escape rate to the customer actually fall? If you cannot measure that, you measured the wrong thing at the start."
+            },
+            {
+              "type": "p",
+              "text": "• Then hand it over properly. Runbook, owner, rollback command, and a person who has operated it unaided. A system that only you can run has an expiry date and it is the day you change jobs."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "A",
+      "title": "Reference",
+      "intro": [],
+      "topics": [
+        {
+          "id": "ai-production-engineering-A-1",
+          "number": "A.1",
+          "title": "Command reference",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "find data/train -type f | sort | xargs sha256sum &gt; manifests/v3.sha256 sha256sum -c manifests/v3.sha256 --quiet python -m onnxruntime.quantization.preprocess --input m.onnx --output p.onnx pip freeze &gt; requirements.lock"
+            },
+            {
+              "type": "p",
+              "text": "SERVICE sudo systemctl enable --now defect sudo systemctl status defect journalctl -u defect --since \"2 hours ago\" -f sudo systemctl restart defect"
+            },
+            {
+              "type": "p",
+              "text": "CAMERA v4l2-ctl --list-devices v4l2-ctl -d /dev/video0 --list-ctrls v4l2-ctl -d /dev/video0 -c focus_automatic_continuous=0 v4l2-ctl -d /dev/video0 -c auto_exposure=1"
+            },
+            {
+              "type": "p",
+              "text": "ls -l /opt/defect/models/current # which version is live?"
+            },
+            {
+              "type": "p",
+              "text": "ln -sfn /opt/defect/models/defect_v3 /opt/defect/models/current.new"
+            },
+            {
+              "type": "p",
+              "text": "mv -T /opt/defect/models/current.new /opt/defect/models/current"
+            },
+            {
+              "type": "p",
+              "text": "systemctl restart defect # rollback, ~10 seconds"
+            },
+            {
+              "type": "p",
+              "text": "tail -f /var/log/defect/$(date +%F).jsonl | jq -c '{pred,conf,mean_lum,marker_ok}'"
+            },
+            {
+              "type": "p",
+              "text": "jq -s 'map(.conf) | add/length' /var/log/defect/*.jsonl # mean confidence"
+            },
+            {
+              "type": "p",
+              "text": "jq -s 'map(select(.marker_ok==false)) | length' /var/log/defect/*.jsonl"
+            },
+            {
+              "type": "p",
+              "text": "vcgencmd measure_temp # Pi thermal throttling"
+            },
+            {
+              "type": "p",
+              "text": "df -h /var/log # the disk that fills up"
+            },
+            {
+              "type": "p",
+              "text": "/usr/bin/time -v python infer.py # peak memory"
+            },
+            {
+              "type": "p",
+              "text": "Print this page and tape it inside the panel door. The person debugging at 11 p.m. will not be you"
+            }
+          ]
+        },
+        {
+          "id": "ai-production-engineering-A-2",
+          "number": "A.2",
+          "title": "A twelve-week plan",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Weeks Focus Deliverable"
+            },
+            {
+              "type": "p",
+              "text": "1 Ch 1 — define production-ready for your case; The six criteria, answered honestly for your system"
+            },
+            {
+              "type": "p",
+              "text": "list failure modes"
+            },
+            {
+              "type": "p",
+              "text": "2–3 Ch 2 — manifest, golden set, the four test A test suite that can fail a deployment"
+            },
+            {
+              "type": "p",
+              "text": "categories, model card"
+            },
+            {
+              "type": "p",
+              "text": "4 Ch 3 — benchmark your real hardware for ten Sustained fps and peak memory on the actual target"
+            },
+            {
+              "type": "p",
+              "text": "minutes under load"
+            },
+            {
+              "type": "p",
+              "text": "5–7 Ch 4 — build the fixture and lighting, then A week of unattended running with logged drift metrics"
+            },
+            {
+              "type": "p",
+              "text": "deploy"
+            },
+            {
+              "type": "p",
+              "text": "8–9 Ch 5 — edge inference plus cloud aggregation Works with the network unplugged; buffered records sync on return"
+            },
+            {
+              "type": "pre",
+              "text": "10–11     Ch 6 — update pipeline, tested against       A tested automatic rollback\n12        dropped and corrupt downloads                A named owner and someone else who has run it from the runbook"
+            },
+            {
+              "type": "p",
+              "text": "Ch 7 — checklist, shadow week, handover"
+            }
+          ]
+        },
+        {
+          "id": "ai-production-engineering-A-3",
+          "number": "A.3",
+          "title": "Glossary",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "                            Meets all six criteria in §1.1 — not five\n Term                       Hand-labelled examples re-tested after every change\n Production-ready           Checks the prediction does not change when it should not\n Golden set                 A manifest travelling with the model, including its known limits\n Invariance test            The data changing while the model stays the same — the top failure mode\n Model card                 A periodic ‘alive’ signal; you alert on its absence\n Input drift                int8 weights — roughly 4× smaller and faster, with an accuracy cost you must re-measure\n Heartbeat                  Portable model format; the same file runs on laptop and Pi\n Quantisation               Replacing a symlink with mv -T so no process sees a partial state\n ONNX                       One device receiving a new model first, watched before wider release\n Atomic swap\n Canary\nTerm                       Meaning\nShadow mode                Running a new model alongside the live one, logging but not acting\nAlarm budget               How many alerts per shift the operator will tolerate — sets the threshold\nPersistence rule           Requiring N consecutive detections before alarming\nRing buffer                Fixed-size local store that survives outages, oldest evicted first\nAlways Free                A cloud tier with no expiry — but not a guarantee of capacity or of unchanged limits"
+            },
+            {
+              "type": "p",
+              "text": "On the free-tier figures. The Oracle Cloud case in §5.3 and §7.1 reflects the position in mid-2026: the Always Free Ampere ARM allocation was reduced from 4 OCPUs and 24 GB to 2 OCPUs and 12 GB in June 2026, documented by a quiet update to the published limits rather than an announcement, with enforcement reportedly inconsistent at the time. There are no GPUs in that free tier, regional ARM capacity is frequently unavailable including in Indian regions, and idle instances may be reclaimed. Check the current limits before designing around any published number — including these. The architectural response is in §7.1: make the cloud replaceable."
+            },
+            {
+              "type": "p",
+              "text": "And the summary. Production AI engineering is mostly not about models. It is about a camera that stays where you bolted it, a service that comes back after a power cut, a log that tells you what happened, a threshold set to the number of false stops a supervisor will actually tolerate, an update that survives a bad link and reverts itself when it goes wrong, and one named person who knows they own it. Get those right and a mediocre model will deliver value for years. Get them wrong and a state-of-the-art model will be quietly switched off in week three, and nobody will tell you."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

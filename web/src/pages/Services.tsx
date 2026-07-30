@@ -1,25 +1,42 @@
-import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Workflow } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import { Layout } from "@/components/Layout";
+import { CourseView } from "@/components/CourseView";
 import { FadeIn, Icon, SectionHeading } from "@/components/ui/primitives";
-import { WorkflowToolModal } from "@/components/WorkflowToolModal";
 import { programCategories } from "@/lib/site";
+import { getCourse } from "@/lib/courses";
 
 /**
- * Programs page — category-filtered.
+ * Programs page — category-filtered, with an interactive knowledge base.
  *
- * Reached from the floating ProgramChooser (opened by the Programs bubble):
- * clicking a category routes here with `?category=<id>` and only that
- * category's programs are shown. Visiting /services with no category shows the
- * three category cards so the page is never empty.
+ * Flow: the floating ProgramChooser (Programs bubble) routes here with
+ * `?category=<id>` to show that category's programs. A program that has a
+ * course routes to `?category=<id>&course=<slug>`, which opens the course's
+ * knowledge base — chapters and clickable topics, each opening an in-site
+ * screen. Visiting /services with no params shows the three category cards.
  */
 export default function Services() {
   const [params] = useSearchParams();
   const categoryId = params.get("category");
+  const courseSlug = params.get("course");
   const category = programCategories.find((c) => c.id === categoryId);
-  const [whiteboardOpen, setWhiteboardOpen] = useState(false);
+  const course = getCourse(courseSlug);
+
+  // ---- Course knowledge base ----------------------------------------------
+  if (course) {
+    const backHref = category ? `/services?category=${category.id}` : "/services";
+    const backLabel = category ? `${category.title} programs` : "All programs";
+    return (
+      <Layout>
+        <SEO
+          title={`${course.title} — Knowledge base`}
+          description={course.tagline}
+        />
+        <CourseView course={course} backHref={backHref} backLabel={backLabel} />
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -67,40 +84,50 @@ export default function Services() {
       {/* Body */}
       <section className="mx-auto max-w-6xl px-4 pb-24 sm:px-6 lg:px-8">
         {category ? (
-          <>
-            {category.id === "ai-and-tech" && (
-              <FadeIn>
-                <div className="mb-10 flex justify-center">
-                  <button
-                    type="button"
-                    onClick={() => setWhiteboardOpen(true)}
-                    className="inline-flex items-center gap-2 rounded-xl bg-forge-gradient px-6 py-3.5 text-base font-semibold text-white shadow-forge transition-transform hover:scale-[1.03] active:scale-95"
-                  >
-                    <Workflow className="h-4 w-4" />
-                    Launch AI Automation Whiteboard
-                  </button>
-                </div>
-              </FadeIn>
-            )}
-
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {category.programs.map((p, i) => (
-                <FadeIn key={p.title} delay={i * 0.06}>
-                  <div className="flex h-full flex-col rounded-2xl border border-border/60 glass-card p-6 shadow-forge">
-                    <span className="grid h-11 w-11 place-items-center rounded-xl bg-forge-gradient text-white shadow-forge">
-                      <Icon name={category.icon} size={20} />
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {category.programs.map((p, i) => {
+              const hasCourse = Boolean(p.courseSlug);
+              const inner = (
+                <>
+                  <span className="grid h-11 w-11 place-items-center rounded-xl bg-forge-gradient text-white shadow-forge">
+                    <Icon name={category.icon} size={20} />
+                  </span>
+                  <h3 className="mt-4 font-display text-lg font-bold leading-snug">
+                    {p.title}
+                  </h3>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
+                    {p.blurb}
+                  </p>
+                  {hasCourse ? (
+                    <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-transform group-hover:translate-x-1">
+                      <BookOpen className="h-4 w-4" /> Open knowledge base
+                      <ArrowRight className="h-4 w-4" />
                     </span>
-                    <h3 className="mt-4 font-display text-lg font-bold leading-snug">
-                      {p.title}
-                    </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                      {p.blurb}
-                    </p>
-                  </div>
+                  ) : (
+                    <span className="mt-4 text-xs font-medium uppercase tracking-wider text-muted-foreground/60">
+                      Coming soon
+                    </span>
+                  )}
+                </>
+              );
+              return (
+                <FadeIn key={p.title} delay={i * 0.06}>
+                  {hasCourse ? (
+                    <Link
+                      to={`/services?category=${category.id}&course=${p.courseSlug}`}
+                      className="group flex h-full flex-col rounded-2xl border border-border/60 glass-card p-6 shadow-forge transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-forge-red"
+                    >
+                      {inner}
+                    </Link>
+                  ) : (
+                    <div className="flex h-full flex-col rounded-2xl border border-border/60 glass-card p-6 shadow-forge">
+                      {inner}
+                    </div>
+                  )}
                 </FadeIn>
-              ))}
-            </div>
-          </>
+              );
+            })}
+          </div>
         ) : (
           <div className="grid gap-6 md:grid-cols-3">
             {programCategories.map((cat, i) => (
@@ -126,8 +153,6 @@ export default function Services() {
           </div>
         )}
       </section>
-
-      <WorkflowToolModal open={whiteboardOpen} onClose={() => setWhiteboardOpen(false)} />
     </Layout>
   );
 }

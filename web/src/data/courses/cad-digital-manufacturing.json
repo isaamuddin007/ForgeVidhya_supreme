@@ -1,0 +1,1853 @@
+{
+  "slug": "cad-digital-manufacturing",
+  "title": "CAD Design & Digital Manufacturing",
+  "tagline": "A model is a set of instructions, not a picture — design for the process that will make it.",
+  "modules": [
+    {
+      "number": "1",
+      "title": "Parametric Modelling and Design Intent",
+      "intro": [
+        {
+          "type": "p",
+          "text": "A parametric model is a program. The feature tree is the source code, the dimensions are the variables, and ‘it rebuilt without errors’ is the compiler passing. Everything in this chapter follows from taking that seriously."
+        }
+      ],
+      "topics": [
+        {
+          "id": "cad-digital-manufacturing-1-1",
+          "number": "1.1",
+          "title": "Design intent — encoding why, not just what",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Two models can produce byte-identical geometry and be worth completely different amounts. The difference is what happens when a requirement changes — and it always changes. Consider a bracket with two mounting holes:"
+            },
+            {
+              "type": "p",
+              "text": "Model A — dimensioned from the left edge Model B — symmetric about a centre plane"
+            },
+            {
+              "type": "p",
+              "text": "Looks Identical Identical"
+            },
+            {
+              "type": "pre",
+              "text": "‘Make the      Holes stay put; the part becomes asymmetric;     Holes move outward and stay centred. One dimension changed,\nbracket 10 mm  someone notices in assembly                      intent preserved\nwider’"
+            },
+            {
+              "type": "p",
+              "text": "What it encodes Where the holes happened to be when you drew That the holes are meant to be symmetric — which is the real"
+            },
+            {
+              "type": "p",
+              "text": "it requirement"
+            },
+            {
+              "type": "p",
+              "text": "Design intent is the answer to: if this dimension changes, what should move with it? Decide that while sketching, not while debugging a rebuild error three weeks later."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-1-2",
+          "number": "1.2",
+          "title": "Sketching: fully constrained or it is not finished",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Every CAD package shows a degrees-of-freedom count or colours under-defined geometry differently. Use it. An under-constrained sketch is geometry that can move when someone else edits the model — and it will, silently, in a way nobody notices until a part does not fit."
+            },
+            {
+              "type": "pre",
+              "text": "Geometric              What they fix                            Dimensional  What they fix\nconstraints                                                     constraints\nCoincident             A point onto a point, line or curve                   A distance\nCollinear / Coradial   Two lines on the same axis; two arcs     Linear       An angle between two entities\n                       sharing a centre and radius\nParallel /             Relative orientation of two lines        Angular\nPerpendicular\nTangent                                                         Radius / Diameter The size of an arc or circle\nConcentric             Smooth transition between a line and     Ordinate /   Several dimensions from one datum — mirrors\n                       an arc, or two arcs                      Baseline     how the part will be inspected\nEqual\n                       Two circles sharing a centre             Equations / linked One dimension driven by another (§1.6)\nSymmetric                                                       values\nHorizontal / Vertical  Two entities forced to the same size —\n                       fewer dimensions, clearer intent"
+            },
+            {
+              "type": "p",
+              "text": "Two entities mirrored about a line. The highest-value constraint in this table"
+            },
+            {
+              "type": "p",
+              "text": "Alignment to the sketch axes"
+            },
+            {
+              "type": "p",
+              "text": "Ten sketching rules that prevent most rebuild failures 1. Sketch on the three origin planes wherever possible, not on model faces. A face can vanish when an upstream feature changes; an origin plane cannot. 2. Start every sketch by relating it to the origin — one coincident or symmetric constraint anchors the whole thing. 3. Apply geometric constraints first, dimensions last. Dimensions are expensive; a symmetric constraint replaces two of them and says more. 4. Keep sketches simple. One sketch, one feature. A 40-entity sketch that makes six features is a single point of failure. 5. Fully constrain before leaving the sketch. Every time, without exception. 6. Do not over-constrain — duplicate dimensions cause conflicts. If the software complains, remove a dimension rather than deleting a constraint. 7. Use arcs and lines in preference to splines. Splines are hard to constrain, hard to manufacture to, and hard for the next person to edit. 8. Do not sketch fillets and chamfers — add them as features later (§1.5). 9. Avoid tiny gaps and duplicate overlapping entities. They cause ‘cannot create a closed profile’ errors that take longer to find than to prevent. 10. Name your sketches and features. ‘Sketch14’ tells the next person nothing; ‘MountingHolePattern’ tells them everything."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-1-3",
+          "number": "1.3",
+          "title": "The four solid-creating features",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Feature Needs Use when Watch"
+            },
+            {
+              "type": "pre",
+              "text": "Extrude    A closed profile and a      The default. Any prismatic shape:          Prefer up-to-face or up-to-next over a blind distance\n           direction                   plates, bosses, pockets, ribs              where the intent is ‘reaches that surface’ — it survives\n                                                                                  later changes\nRevolve    A profile and an axis,      Anything turned: shafts, bosses, seals, The profile must not cross the axis. Model half and\n           profile on one side only\n                                       bottles, knobs                             revolve 360°\nSweep      A profile and a path, plus  Tubes, handles, gaskets, wiring            The path radius must exceed the profile’s half-width or\n           optionally a guide curve    channels, extruded frame sections          the sweep self-intersects\nLoft       Two or more profiles,       Transitions between different              Powerful and unstable. Match the vertex ordering on\n           ideally with guide curves   sections: ducts, blended housings,         every profile, or it twists\n                                       blades"
+            },
+            {
+              "type": "p",
+              "text": "Then the modifiers, which do not create the shape but define the part: fillet and chamfer (stress relief, mould release, safety, cost), shell (turn a solid into a wall of constant thickness — the single most useful feature in enclosure design), draft (§5.2), rib, hole wizard (real standard hole sizes with the tapping and clearance data attached), and pattern/mirror — which encode intent far better than copies do."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-1-4",
+          "number": "1.4",
+          "title": "The tree is a program, and it has an order",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "1 Origin planes 1 Extrude base"
+            },
+            {
+              "type": "p",
+              "text": "2 Master sketch (overall size, 2 Fillet edges"
+            },
+            {
+              "type": "p",
+              "text": "hole positions, key datums) 3 Sketch on a FILLETED FACE &lt;-- fragile"
+            },
+            {
+              "type": "p",
+              "text": "3 Base extrude (from master sketch) 4 Extrude boss"
+            },
+            {
+              "type": "p",
+              "text": "4 Secondary features 5 Shell"
+            },
+            {
+              "type": "p",
+              "text": "5 Holes (hole wizard) 6 Sketch on the shelled inner face &lt;-- fragile"
+            },
+            {
+              "type": "p",
+              "text": "6 Shell 7 Holes"
+            },
+            {
+              "type": "p",
+              "text": "7 Draft 8 Draft (added after holes -&gt; holes now"
+            },
+            {
+              "type": "p",
+              "text": "8 Fillets (LAST) taper unintentionally)"
+            },
+            {
+              "type": "p",
+              "text": "9 Chamfers 9 More fillets"
+            },
+            {
+              "type": "p",
+              "text": "Fillets create new faces. Any sketch or feature that references a fillet face breaks when the fillet radius changes - and \"the fillet radius changed\" is the single most common late edit in real projects. Fillets and chamfers are cosmetic and manufacturing features. They go at the end, where nothing depends on them."
+            },
+            {
+              "type": "p",
+              "text": "Every feature that references another is its child. Delete or suppress a parent and every child fails. Before you delete anything, check what depends on it - every package has a \"parent/child\" or \"dependencies\" view."
+            },
+            {
+              "type": "p",
+              "text": "Figure 1.1 — If you take one habit from this chapter, take ‘fillet last’. It prevents more broken models than every other rule combined."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-1-5",
+          "number": "1.5",
+          "title": "Robust modelling: surviving the next editor",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Anchor to stable references. Origin planes, the master sketch, and named datum planes are stable. Model faces — especially filleted, shelled or drafted ones — are not. This is the practical face of what CAD developers call the topological naming problem: when geometry regenerates, faces can be renumbered, and a reference to ‘Face7’ may silently attach to the wrong one."
+            },
+            {
+              "type": "p",
+              "text": "• Use a master (skeleton) sketch. One sketch near the top of the tree carrying overall dimensions, key hole positions and datums. Downstream features reference it instead of each other. Changing the part then means editing one sketch."
+            },
+            {
+              "type": "p",
+              "text": "• Suppress rather than delete while experimenting, so you can see what breaks before committing."
+            },
+            {
+              "type": "p",
+              "text": "• Rebuild frequently and fix errors immediately. One error is a puzzle; nine accumulated errors is a rebuild from scratch."
+            },
+            {
+              "type": "p",
+              "text": "• Do not model what you can buy. Fasteners, bearings, motors and connectors come from supplier libraries. Modelling an M3 screw yourself is a waste of an afternoon and will be less accurate."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-1-6",
+          "number": "1.6",
+          "title": "Parameters and equations",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Give the numbers that matter names, then drive the model from them. Every package supports this - \"Parameters\", \"Equations\", \"Variables\"."
+            },
+            {
+              "type": "pre",
+              "text": "WALL       = 2.5 mm                 // nominal wall thickness\nPCB_X\nPCB_Y      = 65 mm                  // from the electrical team\nBOSS_ID    = 30 mm\nRIB\nDRAFT      = 3 mm                   // PCB to inner wall\nINNER_R\nCAVITY_X   = 2.4 mm                 // for M3 self-tapping into plastic\nCAVITY_Y\n           = WALL * 0.6             // 1.5 mm - sink-mark rule (5.3)"
+            },
+            {
+              "type": "p",
+              "text": "= 1.5 deg"
+            },
+            {
+              "type": "p",
+              "text": "= WALL * 0.5 // 1.25 mm - stress and flow (5.3)"
+            },
+            {
+              "type": "p",
+              "text": "- The electrical team enlarges the PCB by 4 mm. You change ONE number. - You switch material and the wall goes from 2.5 to 3.0 mm. Ribs, radii and bosses all follow automatically, because they were defined as RELATIONSHIPS, not as numbers that happened to be right once. - The rules from Chapter 5 are now enforced by the model rather than remembered by you."
+            },
+            {
+              "type": "p",
+              "text": "RULE: if a dimension appears more than once, or is derived from another, it should be a parameter. Typing 1.5 in three places is three chances to forget one."
+            },
+            {
+              "type": "p",
+              "text": "This is the highest-leverage habit in parametric CAD and the one most often skipped because it feels like overhead on day one"
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-1-7",
+          "number": "1.7",
+          "title": "Patterns, mirrors and part families",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Three features that encode intent rather than geometry, and are consistently under-used by beginners who copy and paste instead."
+            },
+            {
+              "type": "p",
+              "text": "• Pattern (linear, circular, sketch-driven) says ‘these eight holes belong to one bolt circle’. Change the count from eight to twelve and it is one edit. Eight separately-placed holes is eight edits and seven chances to miss one."
+            },
+            {
+              "type": "p",
+              "text": "• Mirror says ‘this side matches that side’ about a named plane. It survives changes to the original; a copied feature does not."
+            },
+            {
+              "type": "p",
+              "text": "• Configurations / design tables (called configurations, versions, or iParts depending on the package) let one file hold a family: the same bracket in three lengths, or with and without the optional boss. A spreadsheet drives the parameters. This is how you avoid twelve nearly-identical files whose differences nobody can remember."
+            },
+            {
+              "type": "p",
+              "text": "The copy-paste tell If you find yourself editing the same dimension in more than one place, stop — you have geometry where you should have a relationship. Replace it with a pattern, a mirror, or an equation from §1.6. The five minutes this costs is repaid the first time a requirement changes, which will be within the fortnight."
+            },
+            {
+              "type": "p",
+              "text": "DESIGN EXERCISE — Model an enclosure twice Two hours. The comparison is the lesson, not the part. 1 Model a simple rectangular enclosure for a 65 × 30 mm PCB — base, walls, four bosses, a lid — the way you normally"
+            },
+            {
+              "type": "p",
+              "text": "would. Note how long it takes. 2 Now model it again from scratch: origin planes, a master sketch, named parameters as in §1.6, fillets last. 3 Change PCB_X to 80 mm in both. Time how long each takes to update correctly, and count the rebuild errors. 4 In the second model, change WALL from 2.5 to 3.0 mm. Confirm the ribs and internal radii followed automatically. 5 Open the first model and try to answer, without hunting: which sketch controls the boss positions? That difficulty is what"
+            },
+            {
+              "type": "p",
+              "text": "design intent buys you."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "2",
+      "title": "Assembly Design",
+      "intro": [
+        {
+          "type": "p",
+          "text": "An assembly is a statement about how parts relate. Done well it catches interference before anything is cut and drives dependent geometry automatically. Done badly it is a slow, fragile file that fails to rebuild and tells you nothing."
+        }
+      ],
+      "topics": [
+        {
+          "id": "cad-digital-manufacturing-2-1",
+          "number": "2.1",
+          "title": "Six degrees of freedom",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "A free part in space has six: three translations and three rotations. Each mate removes some. A part is fully located when all six are removed — no more, no fewer. Adding mates beyond that over-constrains the assembly and produces conflicts that are hard to diagnose."
+            },
+            {
+              "type": "p",
+              "text": "Mate Removes Typical use"
+            },
+            {
+              "type": "pre",
+              "text": "Coincident (face to face)  1 translation, 2               A part sitting flat on another\n                           rotations\nConcentric / axis-to-axis  2 translations, 2              A shaft in a bore, a screw in a hole\n                           rotations"
+            },
+            {
+              "type": "p",
+              "text": "Distance 1 translation A defined gap or offset — also useful for deliberately modelling clearance"
+            },
+            {
+              "type": "p",
+              "text": "Parallel / Perpendicular 2 rotations Orientation without fixing position"
+            },
+            {
+              "type": "p",
+              "text": "Angle 1 rotation A hinge held at a stated angle"
+            },
+            {
+              "type": "p",
+              "text": "Tangent 1 translation A cam follower, a bearing against a race"
+            },
+            {
+              "type": "p",
+              "text": "Width / Symmetric 1 translation Centring a part in a slot — encodes intent far better than two distances"
+            },
+            {
+              "type": "p",
+              "text": "Limit constrains a range A drawer or slide that must move, but only so far"
+            },
+            {
+              "type": "p",
+              "text": "Gear / Rack / Path couples motions Mechanism studies and motion checks"
+            },
+            {
+              "type": "p",
+              "text": "Concentric plus coincident plus one anti-rotation mate fully locates most parts. If you have added six mates to one component, you have probably over-constrained it."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-2-2",
+          "number": "2.2",
+          "title": "Bottom-up versus top-down",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "How it works        Bottom-up                                       Top-down\n                                                                    A skeleton or layout at assembly level drives geometry down into the\n                    Parts modelled independently, then brought      parts\n                    together and mated\n                                                                    Parts whose shape depends on each other — mating enclosure halves,\nBest for            Standard and purchased components; parts        a cover that must follow a chassis, sheet-metal that shares a bend line\n                    whose shape is independent; several people\n                    working in parallel; anything you will reuse    One change propagates everywhere correctly. Interfaces cannot drift\n                                                                    apart\nStrength            Simple, robust, files are independent, easy to\n                    version and reuse                               Creates external references. Move or rename a file and children break.\n                                                                    Harder to reuse a part elsewhere\nWeakness            Interfaces drift. Two people each adjust their\n                    side and the parts no longer meet               Use it specifically at the interfaces that must agree"
+            },
+            {
+              "type": "p",
+              "text": "Rule of thumb Default to this"
+            },
+            {
+              "type": "p",
+              "text": "What real practice looks like: hybrid, with a skeleton"
+            },
+            {
+              "type": "p",
+              "text": "Build a skeleton part — a file containing only sketches, planes and axes that define the shared interfaces: the overall envelope, the split line between two housing halves, the mounting hole pattern, the PCB outline."
+            },
+            {
+              "type": "p",
+              "text": "Every part references the skeleton, and nothing references any other part. You get the propagation benefit of top-down without the tangle of parts depending on each other. When the PCB grows, you edit the skeleton once and both housing halves follow — and neither half can drift away from the other, because neither one defines the interface."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-2-3",
+          "number": "2.3",
+          "title": "Mate strategy",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Ground one component. Usually the largest or the one that defines the coordinate system. Everything else locates relative to it."
+            },
+            {
+              "type": "p",
+              "text": "• Mate to origin planes and axes where you can, not to model faces. Same reasoning as §1.5 — planes survive geometry changes."
+            },
+            {
+              "type": "p",
+              "text": "• Three well-chosen mates beat eight. Every extra mate is another thing to conflict, another thing to solve, and another thing to fail when a part is revised."
+            },
+            {
+              "type": "p",
+              "text": "• Never create circular references. Part A referencing B while B references A produces an assembly that cannot resolve and errors that appear to move around when you rebuild."
+            },
+            {
+              "type": "p",
+              "text": "• Use sub-assemblies that match how it is actually built. If the gearbox is assembled on the bench and then bolted on, model it as a sub-assembly. The structure should mirror the build sequence, which makes the BOM and the assembly instructions fall out of the model."
+            },
+            {
+              "type": "p",
+              "text": "• Model clearance deliberately. A distance mate of 0.3 mm where two parts must not touch documents an intent that a coincident mate hides."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-2-4",
+          "number": "2.4",
+          "title": "Checking the assembly before anyone cuts metal",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "CHECKLIST — Assembly review"
+            },
+            {
+              "type": "p",
+              "text": "□ Interference detection run — zero results, or every result □ Wire and cable routes exist, with bend radius and strain"
+            },
+            {
+              "type": "p",
+              "text": "explained relief"
+            },
+            {
+              "type": "pre",
+              "text": "□ Clearance check at the minimum designed gap             □ Mass properties sane — does the computed mass match\n                                                              your estimate?"
+            },
+            {
+              "type": "p",
+              "text": "□ Every moving part swept through its full travel □ Centre of gravity where it needs to be"
+            },
+            {
+              "type": "p",
+              "text": "□ Fastener access: can a driver or spanner physically reach □ No part is over-constrained (check the mate error list) every screw?"
+            },
+            {
+              "type": "pre",
+              "text": "□ Assembly order works — nothing has to pass through      □ No external references between sibling parts — only to\n    something else                                            the skeleton\n□ Tool access for maintenance, not just first assembly    □ BOM generated from the assembly matches what you\n                                                              intend to buy"
+            },
+            {
+              "type": "p",
+              "text": "DESIGN EXERCISE — Build the same assembly both ways Three hours. Use the enclosure from Chapter 1. 1 Build it bottom-up: model the base and lid as independent files, then mate them. 2 Now change the wall thickness of the base only. Note what no longer aligns — this is interface drift, and it is why"
+            },
+            {
+              "type": "p",
+              "text": "enclosures made by two people never fit. 3 Rebuild using a skeleton part carrying the envelope, the split line and the boss pattern. Reference both halves to it. 4 Change the envelope in the skeleton. Confirm both halves follow and still meet. 5 Run the assembly review checklist. Fix at least the fastener-access item — it is the one that most often fails on real first"
+            },
+            {
+              "type": "p",
+              "text": "builds."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "3",
+      "title": "Simulation and FEA",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Finite element analysis does not tell you whether your part is safe. It tells you what your model does under your assumed loads with your assumed material and your assumed restraints. Every one of those is a decision you made, and the colours will look equally convincing whether the decisions were good or not."
+        }
+      ],
+      "topics": [
+        {
+          "id": "cad-digital-manufacturing-3-1",
+          "number": "3.1",
+          "title": "What it actually does",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "FEA divides your geometry into small elements, assumes a simple behaviour within each, and solves a large system of equations for the displacements at the nodes. Stress is then derived from those displacements. Three consequences follow immediately and explain most beginner mistakes:"
+            },
+            {
+              "type": "p",
+              "text": "• Displacement is computed; stress is derived. Displacement results converge quickly and are usually trustworthy. Stress results converge slowly and are much more sensitive to mesh and geometry. If you only trust one output, trust deflection."
+            },
+            {
+              "type": "p",
+              "text": "• It is an approximation with a knob. Refining the mesh changes the answer. The question is always ‘has it stopped changing?’ — which is what §3.4 is about."
+            },
+            {
+              "type": "p",
+              "text": "• The default analysis is linear static, which assumes small deflections, a material that stays elastic, and contacts that do not change. Violate any of those and the result is not slightly wrong, it is meaningless."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-3-2",
+          "number": "3.2",
+          "title": "The workflow",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "1 SIMPLIFY (defeature) Remove cosmetic fillets, small chamfers, logos, tiny holes far from the load path. They add thousands of elements and change nothing. KEEP any fillet at a stress concentration - that one is the point."
+            },
+            {
+              "type": "p",
+              "text": "Use real values. \"Aluminium\" in the library may not be your alloy. 6061-T6 yield ~276 MPa; 6063-T5 is much lower. For plastics, get the supplier datasheet - and note that printed plastic is NOT the same material as moulded plastic (4.3)."
+            },
+            {
+              "type": "p",
+              "text": "3 RESTRAINTS &lt;-- the hardest step, and the one that decides the answer Ask: how is this part ACTUALLY held? A bolted joint is not a fixed face. Over-restraining adds artificial stiffness and hides deflection."
+            },
+            {
+              "type": "p",
+              "text": "4 LOADS Where does force enter, over what area, in what direction? A point load is a mathematical fiction that creates infinite stress (3.3). Spread loads over the real bearing area."
+            },
+            {
+              "type": "p",
+              "text": "5 MESH Start coarse. Refine locally where stress is high, not everywhere."
+            },
+            {
+              "type": "p",
+              "text": "6 SOLVE, then IMMEDIATELY sanity-check - Does the deformed shape look physically sensible? (Exaggerate it.) - Is peak deflection plausible? Compare to a hand calculation (3.5). - Is the reaction force equal to the applied load? If not, your restraints or loads are wrong. This check takes five seconds and catches a surprising number of setup errors."
+            },
+            {
+              "type": "p",
+              "text": "7 CONVERGE (3.4), then interpret (3.6)"
+            },
+            {
+              "type": "p",
+              "text": "Step 3 is where most student analyses go wrong, and no amount of mesh refinement rescues a wrong restraint"
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-3-3",
+          "number": "3.3",
+          "title": "The stress singularity — the trap everyone falls into once",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "        │                                                 │\n        │                                                 │\n        └──────────                                       ╰──────────\n        ^                                                 ^\n        sharp re-entrant corner                           R = 2 mm\npeak stress                                               peak stress\n                                                                 │\n     │                                                           │\n600 ┤                    ●                                180 ┤ ●───●───●───●\n                                                                 │●\n     │                ●\n                                                          120 ┤●\n400 ┤        ●                                                   │\n     │●                                                    60 ┤\n                                                                   └─┬────┬────┬────┬──\n200 ┤ ●                                                                 2 1 0.5 0.25"
+            },
+            {
+              "type": "p",
+              "text": "│"
+            },
+            {
+              "type": "p",
+              "text": "└─┬────┬────┬────┬────┬─"
+            },
+            {
+              "type": "p",
+              "text": "2 1 0.5 0.25 0.1 mesh size"
+            },
+            {
+              "type": "p",
+              "text": "IT NEVER CONVERGES. The finer CONVERGES to a real number. the mesh, the higher the stress - The fillet gives the stress toward infinity. This is not a bug somewhere physical to be. in the software. It is the correct answer to an impossible geometry: elasticity theory predicts infinite stress at a zero-radius corner."
+            },
+            {
+              "type": "p",
+              "text": "If your peak stress keeps climbing as you refine the mesh, you have a singularity, not a result. Look for: sharp internal corners, point loads, point restraints, and the edges of fixed faces. Fix the MODEL - add the fillet that will exist in the real part, spread the load over its real area - then re-run. Never report a singular stress value."
+            },
+            {
+              "type": "p",
+              "text": "Figure 3.1 — Real parts have no zero-radius internal corners: casting, machining and moulding all leave a radius. Model the radius and the singularity disappears."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-3-4",
+          "number": "3.4",
+          "title": "The mesh convergence study",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "This is the single procedure that separates analysis from decoration, and it takes about twenty minutes. Without it you have no basis for believing any stress number your software prints."
+            },
+            {
+              "type": "p",
+              "text": "Mesh convergence log — refine until the answer stops moving"
+            },
+            {
+              "type": "pre",
+              "text": "Run     Element size     No. of elements                  Peak von Mises             Max deflection  % change vs previous\n        (mm)                                              (MPa)                      (mm)"
+            },
+            {
+              "type": "p",
+              "text": "Refine in roughly halving steps. Converged when peak stress changes less than about 5% between successive refinements. If it never settles, re-read §3.3 — you have a singularity. Note that deflection converges much earlier than stress, which is itself a useful diagnostic."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-3-5",
+          "number": "3.5",
+          "title": "Validate against a hand calculation — always",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "WORKED EXAMPLE — Aluminium cantilever bracket"
+            },
+            {
+              "type": "p",
+              "text": "Simplify the part to a beam, calculate by hand, then compare with FEA"
+            },
+            {
+              "type": "pre",
+              "text": "THE PART          A 6061-T6 bracket, effectively a cantilever 80 mm long with a 20 × 5 mm rectangular section, carrying a 100 N\n                  load at the free end."
+            },
+            {
+              "type": "p",
+              "text": "SECOND I = b·h³/12 = 0.020 × 0.005³ / 12 = 2.08 × 10⁻¹⁰ m⁴"
+            },
+            {
+              "type": "p",
+              "text": "AREA"
+            },
+            {
+              "type": "pre",
+              "text": "BENDING           σ = 6PL / (b·h²) = 6 × 100 × 0.080 / (0.020 × 0.005²) = 96 MPa\nSTRESS"
+            },
+            {
+              "type": "p",
+              "text": "TIP δ = PL³ / (3EI) = 100 × 0.080³ / (3 × 69 GPa × 2.08×10⁻¹⁰) = 1.19 mm"
+            },
+            {
+              "type": "p",
+              "text": "FACTOR OF 6061-T6 yield ≈ 276 MPa, so FoS ≈ 276 / 96 ≈ 2.9 against yield. SAFETY"
+            },
+            {
+              "type": "pre",
+              "text": "NOW RUN           Expect deflection within roughly 5–10% of 1.19 mm. Expect stress in the mid-field to match ~96 MPa closely,\nTHE FEA           and stress at the fixed end to read higher — that is the restraint singularity, not a real stress."
+            },
+            {
+              "type": "p",
+              "text": "What to take from this: If the FEA deflection differs from the hand calculation by more than about 20%, the setup is wrong — not the arithmetic. Wrong material, wrong units, wrong restraint, or a load applied in the wrong direction. Find it before you trust anything else in the model."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-3-6",
+          "number": "3.6",
+          "title": "Reading the results honestly",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Quantity Use it for Careful"
+            },
+            {
+              "type": "pre",
+              "text": "von Mises stress  Ductile metals and most engineering plastics                     It is a scalar and always positive: it hides whether the region is in\n                  — it predicts the onset of yielding                              tension or compression\nMax principal stress Brittle materials — cast iron, ceramics, some                 Using von Mises for a brittle material can badly under-predict\n                                   filled plastics, glass — which fail in tension  failure"
+            },
+            {
+              "type": "p",
+              "text": "Displacement Stiffness, clearance and fit checks. Converges Big deflection relative to thickness invalidates the linear-static"
+            },
+            {
+              "type": "p",
+              "text": "fastest and is the most trustworthy output assumption"
+            },
+            {
+              "type": "p",
+              "text": "Factor of safety Yield strength divided by von Mises stress, for FoS against yield, not ultimate. And it says nothing about fatigue,"
+            },
+            {
+              "type": "p",
+              "text": "ductile parts which is what actually breaks most cyclically loaded parts"
+            },
+            {
+              "type": "pre",
+              "text": "Reaction force    A free sanity check — it must equal the applied If it does not, stop and fix the setup before reading anything else\n                  load"
+            },
+            {
+              "type": "p",
+              "text": "Fatigue is the failure mode your static FEA cannot see"
+            },
+            {
+              "type": "p",
+              "text": "A part loaded once to 60% of yield is fine. The same part cycled ten million times at 30% of yield may crack. Most real mechanical failures are fatigue failures, and a linear static study says nothing about them."
+            },
+            {
+              "type": "p",
+              "text": "If your part sees repeated or vibrating load, treat the static result as a first screen only, keep stresses well below yield, eliminate sharp corners and surface defects (fatigue cracks start at stress concentrations), and look up the fatigue strength for your material and cycle count before committing."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-3-7",
+          "number": "3.7",
+          "title": "Thermal analysis in brief",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Three transport modes. Conduction through solids (well characterised, the reliable part). Convection to surrounding fluid, expressed as a coefficient h. Radiation, which matters at higher temperatures and scales with the fourth power of absolute temperature."
+            },
+            {
+              "type": "p",
+              "text": "• The convection coefficient is your biggest uncertainty. Natural convection in air is roughly 5–25 W/m²K depending on orientation, surface and air movement; forced convection with a fan is far higher. That range is a factor of five, and it propagates straight into your answer. Bound the problem: run the best and worst plausible h and see whether the design survives both."
+            },
+            {
+              "type": "p",
+              "text": "• Steady-state versus transient. Steady-state answers ‘where does it end up?’ and is quick. Transient answers ‘how long until it gets there?’ and matters for anything with a duty cycle — a motor that runs for two minutes may never reach its steady-state temperature."
+            },
+            {
+              "type": "p",
+              "text": "• Coupled thermal-structural. Temperature gradients cause differential expansion and therefore stress. Relevant whenever two materials with different expansion coefficients are fastened together, or when a part is heated unevenly."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-3-8",
+          "number": "3.8",
+          "title": "When not to run FEA",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "When a hand calculation will do. Beams, columns, pressure vessels, bolted joints and shafts all have closed-form solutions that are faster, more transparent and easier to check. When you do not know the loads. FEA turns an assumed load into a precise-looking stress; the precision is fake and the assumption is still the weak link — go and measure the load"
+            },
+            {
+              "type": "p",
+              "text": "instead. When the geometry is still moving. Analysing a design you will change tomorrow is a way of feeling productive. When a test is cheaper. For a printed bracket you can make in two hours, loading it until it breaks tells you more than a day of simulation — and it tells you about the real material, with its real layer adhesion and real voids."
+            },
+            {
+              "type": "p",
+              "text": "DESIGN EXERCISE — Run a study you can actually defend Three hours. The deliverable is a convergence table and a comparison, not a rainbow picture. 1 Model the cantilever bracket from §3.5 with a sharp internal corner at the fixed end. Run it at four mesh densities and"
+            },
+            {
+              "type": "p",
+              "text": "record peak stress each time. 2 Plot the four values. Watch it fail to converge. You have now seen a singularity with your own hands. 3 Add a 2 mm fillet at that corner and repeat. Fill in the convergence log from §3.4 and identify where it settles. 4 Compare the converged deflection against the 1.19 mm hand calculation. If you are outside 20%, find the setup error"
+            },
+            {
+              "type": "p",
+              "text": "before continuing. 5 Change the restraint from a fully fixed face to something closer to the real bolted joint. Note how much the deflection"
+            },
+            {
+              "type": "p",
+              "text": "changes — usually far more than the mesh refinement did. That is the lesson of the chapter."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "4",
+      "title": "Design for 3D Printing",
+      "intro": [
+        {
+          "type": "p",
+          "text": "An FDM part is not a solid object that happens to have been made in layers. It is a stack of extruded plastic threads welded to their neighbours — strong along the threads, weak between the layers. Almost every printing design rule follows from that one fact."
+        }
+      ],
+      "topics": [
+        {
+          "id": "cad-digital-manufacturing-4-1",
+          "number": "4.1",
+          "title": "The rules, with numbers",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Rule              Number                                  Why                                      If you break it\n                                                                                                   Drooping, curling, or a support structure you\nOverhang angle    Support-free up to about                Each layer must be at least half         must remove and that scars the surface\nBridging          45° from vertical                       supported by the one below it            Sagging in the middle. Longer spans need\n                                                                                                   support or a redesign\n                  Reliable to roughly 5–10                A bridged strand cools in tension        The slicer silently drops it, or prints a single\n                  mm unsupported                          between two anchors                      fragile bead\n                                                                                                   It simply does not appear in the print\nMinimum wall      ≥ 2 × nozzle diameter (0.8 A wall thinner than two perimeters has\n                  mm with a 0.4 mm nozzle) no infill and no strength                               M3 screws will not pass through a nominal 3\n                                                                                                   mm hole. Oversize, or drill after\nMinimum feature ≥ 1 × nozzle diameter                     Nothing narrower than one extrusion      An oval hole and an ugly top surface\n                                                          can be produced\n                                                                                                   The part rocks, or does not seat flat in an\nVertical hole     Print 0.1–0.4 mm undersize Extrusion width and corner cutting                    assembly\ndiameter                                                    shrink the aperture                    Parts fuse together and need filing apart\nHorizontal hole   Use a teardrop or diamond               The top of a round horizontal hole is a  Split walls, or a joint that falls apart\nFirst layer edge  profile                                 90° overhang and droops\n                                                                                                   One or two assembly cycles before the\n                  Chamfer the bottom edge                 The first layer is squashed and spreads  thread is gone\n                  ~0.5 mm                                 — ‘elephant’s foot’\nClearance,        0.3–0.5 mm total                        Real dimensional error on a hobby\nsliding fit       0.1–0.2 mm interference                 printer is a few tenths\nClearance, press                                          Plastic deforms and creeps\nfit\nThreads           Use heat-set brass inserts              Printed threads have layer lines across\n                                                          the flanks and strip"
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-4-2",
+          "number": "4.2",
+          "title": "Orientation is a design decision, not a slicer setting",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "                                         ┌──┐                  ┌──┐\n┌─────────────┐                          ││                    ││\n                                         ││                    ││\n│                 │                      ││                    ││\n                                         └──┘                  └──┘\n└─────────────┘\n                                    layers │││            layers ═══\nlayers ─────────\nstrength         HIGH along length HIGH along height      LOW - load pulls\n                                                          layers apart\n                 vs bending load    poor across layers\nsurface          best on top/bottom good on the walls     good, but tall and\n                                                          prone to wobble"
+            },
+            {
+              "type": "p",
+              "text": "supports few depends on features often none needed"
+            },
+            {
+              "type": "p",
+              "text": "print time shortest medium longest"
+            },
+            {
+              "type": "p",
+              "text": "Layer-to-layer (Z) strength is typically only about 30-60% of in-plane (XY) strength, because layers are welded rather than continuous. So:"
+            },
+            {
+              "type": "p",
+              "text": "A printed hook loaded in tension along Z will fail at a layer line at a fraction of the load the same geometry survives when printed flat. Decide orientation while designing, and put it on the drawing."
+            },
+            {
+              "type": "p",
+              "text": "Figure 4.1 — Anisotropy is the difference between FDM and every other process in this guide. Injection moulded and machined parts are essentially isotropic; printed parts are not."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-4-3",
+          "number": "4.3",
+          "title": "Printed plastic is not the same material as moulded plastic",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Do not use datasheet values for a printed part"
+            },
+            {
+              "type": "p",
+              "text": "The tensile strength on a filament spool’s datasheet is typically measured on an injection-moulded or optimally-printed specimen. Your part has layer interfaces, internal voids where extrusions meet, and infill that is mostly air. Its real strength depends on orientation, layer height, extrusion temperature, infill percentage and pattern, and how many perimeters you used."
+            },
+            {
+              "type": "p",
+              "text": "For anything structural, do not simulate a printed part with library material values and believe the number. Print it and break it. A luggage scale, a vice and ten minutes give you a real load-to-failure figure for your printer, your filament and your settings — which is the only figure that applies to your part."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-4-4",
+          "number": "4.4",
+          "title": "A note on the other processes",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Process Good for Design differences from FDM"
+            },
+            {
+              "type": "pre",
+              "text": "SLA / DLP resin      Fine detail, smooth surfaces, small  No layer-adhesion weakness of the same kind, but resins are brittle and\n                     parts, casting patterns              creep. Needs drain holes for hollow parts and a support strategy on\n                                                          down-facing surfaces. Post-cure matters"
+            },
+            {
+              "type": "p",
+              "text": "SLS nylon Functional parts, living hinges, complex No supports needed — unfused powder holds the part, so overhang"
+            },
+            {
+              "type": "p",
+              "text": "geometry, small batches rules largely vanish. Needs escape holes to remove trapped powder."
+            },
+            {
+              "type": "p",
+              "text": "Surface is matte and slightly porous"
+            },
+            {
+              "type": "p",
+              "text": "Metal (DMLS/SLM) Prototypes and low-volume parts in real Supports are mandatory and hard to remove; needs stress relief and"
+            },
+            {
+              "type": "p",
+              "text": "metal machining of critical faces. Expensive enough that a machined part is"
+            },
+            {
+              "type": "p",
+              "text": "often cheaper"
+            },
+            {
+              "type": "pre",
+              "text": "CHECKLIST — Before you send a part to print               □ Bottom edges chamfered against elephant’s foot\n□ Every overhang is under 45°, or supported deliberately\n□ Print orientation chosen and recorded on the drawing    □ Fits given real clearance (0.3–0.5 mm sliding)\n□ Primary load runs along layers, not across them\n□ No unsupported bridge longer than ~10 mm                □ Threads replaced by heat-set inserts or captive nuts"
+            },
+            {
+              "type": "p",
+              "text": "□ All walls ≥ 2 × nozzle diameter □ Sharp internal corners filleted — they concentrate stress here too □ Vertical holes oversized, or marked ‘drill after’ □ Horizontal holes teardropped, or oriented differently □ Support contact avoided on any cosmetic or mating surface"
+            },
+            {
+              "type": "p",
+              "text": "□ Part fits the build volume in the chosen orientation"
+            },
+            {
+              "type": "p",
+              "text": "□ A test print of just the critical feature done before the whole part"
+            },
+            {
+              "type": "p",
+              "text": "DESIGN EXERCISE — Print the same bracket three ways and break all three An evening of printing, twenty minutes of testing. This exercise produces a number you will use for years. 1 Design a simple L-bracket with a hole at each end, sized so you can hang a load from it. 2 Print it in all three orientations from Figure 4.1, with identical settings. 3 Hang a bag from each and add weight (water bottles, a luggage scale) until it fails. Record the failure load and photograph"
+            },
+            {
+              "type": "p",
+              "text": "the fracture surface. 4 Compare. The upright print will fail at a layer line at a substantially lower load. You now have your own anisotropy ratio for"
+            },
+            {
+              "type": "p",
+              "text": "your printer and filament. 5 Reprint the weakest orientation with a fillet at the inside corner and four perimeters instead of two. Measure the"
+            },
+            {
+              "type": "p",
+              "text": "improvement — usually large, and free."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "5",
+      "title": "Design for Moulding, Machining and Sheet Metal",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Every process imposes its own geometry rules, and they are not suggestions — a part that violates them either cannot be made, or can be made badly and expensively. Learn the numbers once and design inside them from the first sketch."
+        }
+      ],
+      "topics": [
+        {
+          "id": "cad-digital-manufacturing-5-1",
+          "number": "5.1",
+          "title": "Injection moulding: what the process does to your part",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Molten polymer is forced into a steel cavity, held under pressure while it cools and shrinks, then ejected. Four facts follow, and they generate every rule below: the melt must flow to fill; thick sections cool slowly and shrink more; the part must release from steel; and the tool must open in a straight line."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-5-2",
+          "number": "5.2",
+          "title": "Uniform wall thickness — the rule above all others",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Why a thick section becomes a defect A thick region cools from the outside in. The skin solidifies first; the molten core then shrinks and pulls the skin inward. If the skin is still soft you get a sink mark — a visible dimple on the show surface, usually exactly opposite a rib or a boss. If the skin has already set, the core tears itself apart instead and you get an internal void you cannot see and which halves the strength. This is why uniform wall thickness is the first rule of moulding, why ribs are thinner than the wall they support, and why you support a boss with gussets instead of making it thicker. Thickness is not strength in moulding — it is a defect."
+            },
+            {
+              "type": "pre",
+              "text": "Feature          Rule of thumb                            Note\nNominal wall                                              ABS 1.2–3.5 · PP 0.8–3.0 · PC 1.0–4.0 · nylon 0.8–3.0 · POM 1.5–3.0. Check the\n                 1.5–3.0 mm for most consumer             supplier datasheet for your grade\nWall uniformity  parts; 2.0–2.5 mm is a good\nRib thickness    default                                  Where thickness must change, taper over at least 3× the difference rather than\nRib height                                                stepping\n                 Hold variation within about              Above ~60% you will see a sink mark opposite the rib on the show face. This is the\n                 ±10–15% of nominal                       most commonly broken rule in student designs\n                                                          Taller ribs are hard to fill and hard to eject. Use more ribs, not taller ones\n                 0.5–0.6 × nominal wall,\n                 measured at the base"
+            },
+            {
+              "type": "p",
+              "text": "≤ 3 × nominal wall"
+            },
+            {
+              "type": "pre",
+              "text": "Feature             Rule of thumb                            Note\nRib spacing                                                  Closer spacing traps a thin steel blade in the tool that overheats and wears\nInternal radius     ≥ 2 × nominal wall                       Sharp internal corners concentrate stress and obstruct flow. The external radius\n                                                             should then be internal + wall, to keep the wall uniform round the corner\nBoss outer          ≥ 0.5 × nominal wall (minimum            Boss wall follows the same 0.6 × rule. Support with gussets, never by thickening\ndiameter            ~0.25 mm)\nBoss height                                                  Taller bosses trap gas at the tip and burn\nShrinkage           ≈ 2–2.5 × the screw major                The moulder applies this to the tool, not you to the model — but it explains why you\nallowance           diameter                                 cannot switch material after the tool is cut"
+            },
+            {
+              "type": "p",
+              "text": "≤ 3 × its outer diameter"
+            },
+            {
+              "type": "p",
+              "text": "Amorphous (ABS, PC, PS) 0.4–0.8% · semi-crystalline (PP, PE, PA, POM) 1.0–2.5%"
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-5-3",
+          "number": "5.3",
+          "title": "Draft angle",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "NO DRAFT (won't release) WITH DRAFT (releases cleanly)"
+            },
+            {
+              "type": "p",
+              "text": "║ ║ ╲ ╱"
+            },
+            {
+              "type": "pre",
+              "text": "║                ║                  ╲                        ╱  1-2 degrees\n                                                                per side\n║                ║                     ╲                  ╱"
+            },
+            {
+              "type": "p",
+              "text": "║ ║ ╲ ╱"
+            },
+            {
+              "type": "p",
+              "text": "╚══════════╝ ╲════╱"
+            },
+            {
+              "type": "pre",
+              "text": "The part grips the core as it             The moment the part lifts, the\nshrinks onto it. Ejection scuffs,         gap opens all the way round.\ndrags, stress-whitens or breaks\nthe part."
+            },
+            {
+              "type": "p",
+              "text": "DRAFT ANGLE GUIDE (per side, measured from the direction of pull)"
+            },
+            {
+              "type": "p",
+              "text": "polished surface, shallow depth ......... 0.5 deg (absolute minimum) general surfaces, typical ................ 1 - 2 deg deep cores and long draws ................ 2 - 3 deg textured surfaces ........................ 3 - 5 deg"
+            },
+            {
+              "type": "p",
+              "text": "add roughly 1 deg for every 0.025 mm of texture depth - a deep leather grain can need 5 deg or more per side"
+            },
+            {
+              "type": "p",
+              "text": "ribs and bosses .......................... 0.5 - 1.5 deg per side"
+            },
+            {
+              "type": "p",
+              "text": "PRACTICAL RULE: put 1.5 degrees on everything from the start. It costs almost nothing in function and it is far easier than adding draft to a finished model - which is a genuinely miserable afternoon, because every drafted face changes size and everything referencing it moves."
+            },
+            {
+              "type": "p",
+              "text": "Figure 5.1 — Draft is applied in the direction the tool opens, so you must decide the parting line before you can apply draft. Decide it early."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-5-4",
+          "number": "5.4",
+          "title": "Parting lines, undercuts and what drives tooling cost",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• The parting line is where the two tool halves meet. It leaves a visible witness line on the part. Choose it deliberately — usually the largest cross-section — and put it somewhere cosmetically acceptable."
+            },
+            {
+              "type": "p",
+              "text": "• An undercut is any feature that prevents the part lifting straight out: a side hole, a snap-fit lip, a recessed logo on a side wall. Undercuts are not impossible — they require a side action or lifter in the tool, which adds significant cost, adds a moving part that wears, and lengthens the cycle."
+            },
+            {
+              "type": "p",
+              "text": "• Design the undercut out if you can. A snap hook can often be moulded through a hole in the wall directly beneath it (a ‘pass-through’ or shut-off), letting the core form the hook with no side action at all. This one trick saves a lot of money and is worth learning properly."
+            },
+            {
+              "type": "p",
+              "text": "• Gates and ejector pins leave marks. Ask the moulder where they intend to gate; you get a say, and you would rather the mark was not on the show face."
+            },
+            {
+              "type": "p",
+              "text": "• Tooling is the big number. A simple single-cavity aluminium tool in India may run from roughly ₹80,000; a hardened multi-cavity production tool runs into several lakhs. Per-part cost is then very low. That shape — huge fixed cost, tiny variable cost — is why moulding only makes sense above a few thousand units, and why §6.5 exists."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-5-5",
+          "number": "5.5",
+          "title": "CNC machining",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Rule Number Why"
+            },
+            {
+              "type": "pre",
+              "text": "Internal corner     ≥ tool radius; design at 1.2 ×           A round tool cannot cut a sharp internal corner. At exactly the tool radius the tool is\nradius              tool radius                              fully engaged and chatters — a slightly larger radius machines faster and better.\n                                                             Common end mills of 3/6/10/12 mm give 1.5/3/5/6 mm radii\nPocket depth        ≤ 4 × the tool diameter\nMinimum wall                                                 Deeper needs long slender tools that deflect and chatter; cost rises sharply\n                    ≈ 0.8 mm in metal, ≈ 1.5 mm\n                    in plastic                               Thin walls vibrate under the cutter and distort\nRule                Number                                Why\nStandard tolerance                                        Tighter is available and costs more, per dimension. See §6.3\nSetups              About ±0.125 mm unless\nAvoid               stated                                Every re-fixturing is manual time and a new source of alignment error. A part\n                                                          machinable from two sides is much cheaper than one needing five\n                    Minimise the number of faces          Each needs a special tool or a slow operation. Engraved text in particular is priced by\n                    that must be machined                 the minute"
+            },
+            {
+              "type": "p",
+              "text": "Undercuts, deep narrow slots, engraved text, sharp internal corners"
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-5-6",
+          "number": "5.6",
+          "title": "Sheet metal",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Rule Number Why"
+            },
+            {
+              "type": "p",
+              "text": "Inside bend radius ≥ 1 × material thickness Tighter cracks the outer fibre, especially in aluminium and harder steels"
+            },
+            {
+              "type": "pre",
+              "text": "Minimum flange      ≥ 4 × thickness (plus the bend A shorter flange cannot be gripped by the press brake tooling\nlength              radius)\nHole to bend distance ≥ 2.5 × thickness + bend            Closer and the hole is drawn oval by the bend\n                                     radius\nBend relief         Width ≥ thickness; depth ≥            Without relief the material tears at the end of the bend\n                    radius + thickness\nConsistent radius   Use one bend radius throughout Each different radius may mean a tooling change and another setup charge\n                    the part\nK-factor            ≈ 0.33–0.5 (0.44 is a common          It sets the flat pattern length. Get it from your fabricator — it depends on their\n                    default for mild steel)               tooling, and a wrong K-factor means every bent part is the wrong size"
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-5-7",
+          "number": "5.7",
+          "title": "Snap-fits and living hinges",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Two moulded features worth designing properly, because both replace fasteners and assembly labour — and both fail immediately if the arithmetic is skipped."
+            },
+            {
+              "type": "p",
+              "text": "┌──────────────────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ ╲___ hook, undercut = y"
+            },
+            {
+              "type": "p",
+              "text": "│ L (beam length) ╱"
+            },
+            {
+              "type": "p",
+              "text": "└───┬──────────────────────────"
+            },
+            {
+              "type": "p",
+              "text": "│"
+            },
+            {
+              "type": "p",
+              "text": "t (thickness at the ROOT - this is what matters)"
+            },
+            {
+              "type": "p",
+              "text": "Maximum deflection the beam can take without damage:"
+            },
+            {
+              "type": "p",
+              "text": "y_max = ( eps_max x L^2 ) / ( 1.5 x t )"
+            },
+            {
+              "type": "p",
+              "text": "where eps_max is the permissible strain for the material:"
+            },
+            {
+              "type": "p",
+              "text": "ABS ~2% PC ~2% PP / PE ~5-6% nylon ~3%"
+            },
+            {
+              "type": "p",
+              "text": "(use HALF these values if the snap must be assembled repeatedly -"
+            },
+            {
+              "type": "p",
+              "text": "and note these are one-time-assembly figures for unfilled grades;"
+            },
+            {
+              "type": "p",
+              "text": "glass-filled materials are far less forgiving)"
+            },
+            {
+              "type": "p",
+              "text": "WORKED: ABS, L = 10 mm, t = 2 mm, eps = 2% y_max = (0.02 x 100) / (1.5 x 2) = 0.67 mm"
+            },
+            {
+              "type": "p",
+              "text": "So this hook can have an undercut of about 0.6 mm - no more. Designing a 1.5 mm undercut on that beam means it yields or snaps on first assembly."
+            },
+            {
+              "type": "p",
+              "text": "TO GET MORE DEFLECTION, in order of preference: 1. lengthen the beam (y goes with L SQUARED - by far the cheapest win) 2. taper the beam, thick at root to about half at the tip (spreads strain along the beam; allows roughly 2x the deflection) 3. thin the root (weakens it, and t is also what carries the load) 4. change material"
+            },
+            {
+              "type": "p",
+              "text": "ALSO - radius the root generously. A sharp root is a stress concentration and it is exactly where the snap will break. - design the insertion face shallow (~25-30 deg) and the retention face steep (~45 deg or more) so it assembles easily and resists being pulled apart. - a snap moulded on a side wall is an UNDERCUT (5.4). Put a hole in the wall beneath it so the core forms it - no side action needed."
+            },
+            {
+              "type": "p",
+              "text": "A thin web moulded integrally, flexed many thousands of times. - polypropylene or polyethylene ONLY. It does not work in ABS, PC or filled materials - they craze and crack. - web thickness 0.25 - 0.5 mm, with generous radii either side - the gate must be positioned so the melt flows ACROSS the hinge, aligning the polymer chains through it. Flow direction is what gives a living hinge its fatigue life - this is a moulding decision as much as a design one, so discuss it with the moulder. - flex it once immediately after moulding, while warm: this cold-works and orients the web and dramatically extends its life."
+            },
+            {
+              "type": "p",
+              "text": "The snap-fit formula is worth memorising. Undercut depth is the number everyone guesses and it is the number that decides whether the part assembles or breaks"
+            },
+            {
+              "type": "p",
+              "text": "CHECKLIST — DFM review — run before any enquiry goes out"
+            },
+            {
+              "type": "pre",
+              "text": "□ Process chosen deliberately, and the quantity justifies it  □ Pocket depths ≤ 4 × tool diameter (machining)\n□ Wall thickness uniform within ±15% (moulding)               □ Number of machining setups minimised\n□ All ribs ≤ 0.6 × nominal wall                               □ Bend radii consistent; K-factor confirmed with the"
+            },
+            {
+              "type": "p",
+              "text": "□ Draft applied to every face in the pull direction fabricator □ Parting line chosen and cosmetically acceptable □ Holes far enough from bends (sheet metal) □ Material specified by grade, not by family (‘6061-T6’, not □ Undercuts eliminated, or side actions accepted and costed ‘aluminium’) □ Surface finish specified only where it matters □ Gate and ejector positions discussed with the moulder □ All internal corners radiused (moulding and machining) □ Tolerances tightened only on features that need it (§6.3) □ A prototype made by a faster process before committing □ Internal radii ≥ tool radius × 1.2 (machining) to tooling"
+            },
+            {
+              "type": "p",
+              "text": "DESIGN EXERCISE — Convert a printed part into a mouldable one"
+            },
+            {
+              "type": "p",
+              "text": "Two hours. Take the enclosure you modelled in Chapter 1. 1 Set a nominal wall of 2.2 mm as a parameter and shell the part to it. 2 Find every place your design violates the uniform-wall rule — usually the bosses and the corners. Fix them: thin the bosses"
+            },
+            {
+              "type": "p",
+              "text": "to 0.6 × wall and add gussets. 3 Choose a parting line and mark it. Then apply 1.5° of draft to every face in the pull direction, using a parameter so you can"
+            },
+            {
+              "type": "p",
+              "text": "change it. 4 Identify every undercut. For at least one, redesign it away using a pass-through shut-off rather than accepting a side"
+            },
+            {
+              "type": "p",
+              "text": "action. 5 Add internal radii of 0.5 × wall everywhere, and matching external radii so the wall stays uniform round each corner. 6 Now open the original printed version alongside. List every change and, next to each, name which of the four process facts"
+            },
+            {
+              "type": "p",
+              "text": "in §5.1 caused it."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "6",
+      "title": "Talking to Vendors and Estimating Cost",
+      "intro": [
+        {
+          "type": "p",
+          "text": "A job shop cannot quote from a STEP file and a hopeful message. Most delays between a finished design and a made part are communication failures, and almost all of them are preventable with one well-formed enquiry."
+        }
+      ],
+      "topics": [
+        {
+          "id": "cad-digital-manufacturing-6-1",
+          "number": "6.1",
+          "title": "What a quotable enquiry contains",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Item Why the vendor needs it"
+            },
+            {
+              "type": "p",
+              "text": "3D model, STEP (.stp) format Neutral, universally readable, and geometrically exact. Send STEP, not your native file and not an STL — an STL is a triangulated approximation and no machinist will quote precision work from one"
+            },
+            {
+              "type": "pre",
+              "text": "2D drawing, PDF           The 3D file carries geometry; the drawing carries intent — what is critical, what is tolerance, what is\n                          reference. A quote without a drawing is a guess, and the vendor will price the risk into it"
+            },
+            {
+              "type": "p",
+              "text": "Material, by exact grade ‘6061-T6’ not ‘aluminium’; ‘ABS, natural’ not ‘plastic’. Grades differ in price, machinability and availability"
+            },
+            {
+              "type": "pre",
+              "text": "Quantity, and quantity    Ask for 1, 10, 100 and 1000. The unit price curve tells you where the setup cost lives and is itself useful\nbreaks                    design information"
+            },
+            {
+              "type": "p",
+              "text": "Surface finish and treatment As-machined, bead blast, anodise (and colour), powder coat, plating. Unspecified means as-machined, which may be unacceptable and is definitely a change order later"
+            },
+            {
+              "type": "p",
+              "text": "Tolerances A general tolerance in the title block, plus tighter values only on the few features that need them. See §6.3"
+            },
+            {
+              "type": "p",
+              "text": "Lead time needed, and target Saying ‘we need 20 by the 30th, targeting under ₹600 each’ lets a good vendor propose an alternative"
+            },
+            {
+              "type": "p",
+              "text": "price if you have one approach rather than silently quoting something you cannot afford"
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-6-2",
+          "number": "6.2",
+          "title": "The drawing still matters",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "‘Model-based definition’ exists, but most Indian job shops still work from a print. A useful drawing does not repeat every dimension in the model — it communicates what matters. Include: overall envelope; critical dimensions with their"
+            },
+            {
+              "type": "p",
+              "text": "tolerances; datums (which faces the part is located from, matching how it will be fixtured and inspected); thread callouts and depths; surface finish symbols where relevant; a general tolerance note; material and finish; and a revision number. Then annotate anything unusual in plain words — ‘this bore must be concentric with the outer diameter within 0.05 mm’ saves more argument than any symbol."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-6-3",
+          "number": "6.3",
+          "title": "Tolerance discipline — where money quietly disappears",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Tolerancing everything tightly is the most expensive habit in mechanical design Applying ±0.05 mm to every dimension on a drawing does not make the part better. It makes it slower to machine, forces additional inspection, raises the reject rate, and can multiply the price several times over — all for dimensions where ±0.3 mm would have worked perfectly. The discipline: set a generous general tolerance in the title block (±0.2 mm is comfortable for most machined work), then tighten only the specific features that need it — a bearing bore, a mating face, a hole pattern that must align with another part. On a typical bracket that is two or three dimensions out of thirty. For every tight tolerance you write, be able to say which mating part or function requires it. If you cannot, loosen it."
+            },
+            {
+              "type": "p",
+              "text": "TEMPLATE — Request for quotation — send this, and you will get a usable quote back"
+            },
+            {
+              "type": "p",
+              "text": "Subject: RFQ - &lt;part name&gt; - &lt;qty&gt; off - &lt;your organisation&gt;"
+            },
+            {
+              "type": "p",
+              "text": "Dear &lt;name&gt;,"
+            },
+            {
+              "type": "p",
+              "text": "We would like a quotation for the part described below. Files attached."
+            },
+            {
+              "type": "pre",
+              "text": "PART         &lt;name and part number&gt;, revision &lt;A&gt;\nATTACHED     &lt;part&gt;.stp (3D geometry)\n             &lt;part&gt;_A.pdf (2D drawing with tolerances and datums)\nPROCESS      &lt;CNC milling / turning / sheet metal / injection moulding&gt;\nMATERIAL     &lt;exact grade, e.g. Al 6061-T6 / ABS natural / MS 1.6 mm&gt;\nQUANTITY     Please quote for 1, 10, 100 and 1000 off\nFINISH       &lt;as machined / bead blast / clear anodise / powder coat RAL____&gt;\nTOLERANCES   General +/- 0.2 mm per the drawing title block.\n             Only the 3 dimensions marked CRITICAL require +/- 0.05 mm.\nDELIVERY     Required by &lt;date&gt;. Please state your lead time for each\n             quantity.\nDESTINATION  &lt;city&gt; - please include packing and freight."
+            },
+            {
+              "type": "p",
+              "text": "1. Is any feature difficult or costly to make as drawn? We can change the design - we would rather hear now than after the first article. 2. Would a different material or finish reduce cost significantly? 3. What is the minimum order quantity that makes sense at your end? 4. For tooled processes: what is the tooling cost, what is the lead time for the tool, and who owns the tool afterwards?"
+            },
+            {
+              "type": "p",
+              "text": "We are happy to discuss over a call. Thank you, &lt;name, organisation, phone&gt;"
+            },
+            {
+              "type": "p",
+              "text": "Question 1 is the one that pays for itself. A vendor who makes these parts every day will spot in thirty seconds something that costs you 40% — but only if you invite the comment. Question 4 matters more than people expect: tool ownership should be written down before the tool is cut."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-6-4",
+          "number": "6.4",
+          "title": "Reading the quote, and the first article",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Separate one-time from per-piece. Tooling, fixturing, programming and setup are one-time; material and machine time are per-piece. A quote that lumps them together hides where your money goes and makes the quantity breaks impossible to interpret."
+            },
+            {
+              "type": "p",
+              "text": "• Look at the shape of the price curve. If 100 costs barely more than 10, the cost is nearly all setup — order more. If it scales almost linearly, it is material and cycle time, and quantity will not save you; design will."
+            },
+            {
+              "type": "p",
+              "text": "• Always order a first article before a production run, and inspect it against your critical dimensions with your own instruments. ‘It looked fine’ is not inspection."
+            },
+            {
+              "type": "p",
+              "text": "• Expect to iterate. The first article usually reveals one dimension you specified wrongly and one the vendor interpreted differently. That is normal and it is why you make one before you make a hundred."
+            },
+            {
+              "type": "p",
+              "text": "• Keep a revision discipline. Every file you send carries a revision letter, and the drawing, the STEP file and the purchase order all name the same one. More production errors come from someone working to an old revision than from any technical cause."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-6-5",
+          "number": "6.5",
+          "title": "A short, practical GD&T; primer",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Geometric dimensioning and tolerancing is a large subject. Three ideas from it will improve your drawings immediately, and you can leave the rest until you need it."
+            },
+            {
+              "type": "p",
+              "text": "• Datums, and the 3-2-1 principle. A part is located by a primary datum face (three points of contact), a secondary (two points) and a tertiary (one). Label them A, B and C on the drawing. Choose datums that match how the part is actually fixtured and how it functions — if the machinist clamps on a different face from the one you dimensioned from, your tolerances mean something different from what you intended."
+            },
+            {
+              "type": "p",
+              "text": "• Position tolerance beats ± on hole patterns. A hole dimensioned ±0.1 mm in X and Y sits in a square tolerance zone 0.2 mm on a side. The equivalent position tolerance is ø0.28 — the circle that just contains that square — and its zone is about 57% larger in area, and matches how a bolt actually fits through a hole. Same function, looser manufacture, cheaper part. This is the single best-value GD&T callout for a beginner to adopt."
+            },
+            {
+              "type": "p",
+              "text": "• Material condition and bonus tolerance. Applying position at maximum material condition means that when a hole is drilled larger than its minimum size, the extra clearance is available as additional position tolerance. It costs you nothing and it measurably raises yield on bolt patterns."
+            },
+            {
+              "type": "p",
+              "text": "• Use the simple form controls where they say something ± cannot: flatness for a sealing face, perpendicularity for a face that must sit square to a datum, concentricity or runout for a rotating part. Each of these constrains a relationship that no linear dimension can express."
+            },
+            {
+              "type": "p",
+              "text": "The honest advice on GD&T"
+            },
+            {
+              "type": "p",
+              "text": "Do not cover a student drawing in feature control frames you do not fully understand — a wrongly applied GD&T callout is worse than a clear ± dimension, because the vendor must either query it or guess."
+            },
+            {
+              "type": "p",
+              "text": "Start with: clearly labelled datums, position tolerance on your hole patterns, and plain ± dimensions everywhere else with a sensible general tolerance. That combination covers the great majority of student and small-production parts, and it is unambiguous to every machinist who reads it."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-6-5-2",
+          "number": "6.5",
+          "title": "Cost estimation",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Cost model — fill it before you ask, then compare against the quote"
+            },
+            {
+              "type": "p",
+              "text": "Cost element Basis 1 off 10 off 100 off 1000 off"
+            },
+            {
+              "type": "p",
+              "text": "Rows to include: tooling / fixturing (one-time, divided by quantity) · programming and setup (one-time) · material per part · machine time per part · finishing · inspection · freight and packing. Estimating before you receive the quote is what turns a number you cannot argue with into a conversation you can have."
+            },
+            {
+              "type": "p",
+              "text": "The break-even question. Every process has a fixed cost and a variable cost. 3D printing has almost no fixed cost and a high per-part cost; injection moulding is the opposite. Plot both and find where the lines cross — that crossing point, not anyone’s opinion, tells you which process your quantity belongs to. For most small plastic parts the crossover against moulding sits somewhere in the low thousands of units, which is why prototyping and short runs stay printed or machined and only real volume justifies a tool."
+            },
+            {
+              "type": "p",
+              "text": "DESIGN EXERCISE — Get three real quotes A week, most of it waiting. Do this with a part you have actually designed. 1 Complete the DFM checklist from §5.6 on your part first. Do not send out a design you know violates its own process rules. 2 Produce the drawing: envelope, datums, critical dimensions with tolerances, general tolerance note, material, finish,"
+            },
+            {
+              "type": "p",
+              "text": "revision. 3 Fill in your own cost model in §6.5 before asking anyone. Write down what you expect to pay. 4 Send the RFQ from §6.3 to three vendors. Include question 1 every time. 5 Compare the quotes against each other and against your estimate. Where you were badly wrong, work out which cost"
+            },
+            {
+              "type": "p",
+              "text": "element you mis-estimated. 6 Act on at least one piece of DFM feedback a vendor gives you, and ask for a revised price. The difference is the value of"
+            },
+            {
+              "type": "p",
+              "text": "this entire chapter."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "7",
+      "title": "Digital Twins",
+      "intro": [
+        {
+          "type": "p",
+          "text": "‘Digital twin’ is the most oversold phrase in manufacturing software. There is a precise and useful definition underneath the marketing, and once you have it you can tell in one question whether something is a twin or a dashboard with a 3D model on it."
+        }
+      ],
+      "topics": [
+        {
+          "id": "cad-digital-manufacturing-7-1",
+          "number": "7.1",
+          "title": "Three things, only one of which is a twin",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The distinction most widely used in the literature comes from Kritzinger and colleagues, and it turns entirely on how data flows — not on how good the 3D graphics are."
+            },
+            {
+              "type": "pre",
+              "text": "┌────────┐ ┌────────┐               ┌────────┐ ┌────────┐    ┌────────┐ ┌────────┐\n└────────┘ └────────┘               └────────┘ └────────┘    └────────┘ └────────┘"
+            },
+            {
+              "type": "p",
+              "text": "manual, both ways automatic, ONE way automatic, BOTH ways"
+            },
+            {
+              "type": "pre",
+              "text": "Your CAD model of a          Sensors stream live              The digital side can\npump. Accurate, useful,      data from ONE SPECIFIC           also act on the physical\nand completely              physical unit into the            one - adjust a setpoint,\ndisconnected. Updating      model. It reflects that           throttle a machine,\nit is a person's job.       unit's real state.               schedule maintenance.\nA CAD file is a MODEL.      Most industrial                  Genuinely rarer than\nA simulation is a MODEL.    \"digital twins\" are              the marketing suggests.\nNeither is a twin.          actually SHADOWS."
+            },
+            {
+              "type": "p",
+              "text": "\"Does data flow automatically FROM the physical thing, and can the"
+            },
+            {
+              "type": "p",
+              "text": "digital side automatically act BACK on it?\""
+            },
+            {
+              "type": "p",
+              "text": "both -&gt; twin one way -&gt; shadow neither -&gt; model"
+            },
+            {
+              "type": "p",
+              "text": "ALSO: a twin is of ONE SPECIFIC INSTANCE, not of a design. The CAD model describes every pump of that type. The twin describes pump number 0472, with its actual wear, its actual bearing temperature, its actual history."
+            },
+            {
+              "type": "p",
+              "text": "Figure 7.1 — There is nothing wrong with building a shadow. Most of the practical value — monitoring, diagnostics, predictive maintenance — lives there. Just call it what it is."
+            },
+            {
+              "type": "p",
+              "text": "Even the standard is arguably a shadow"
+            },
+            {
+              "type": "p",
+              "text": "ISO 23247, Automation systems and integration — Digital twin framework for manufacturing, was published in 2021 in four parts (overview and principles, reference architecture, digital representation of manufacturing elements, and information exchange), with later parts covering the digital thread and twin composition. It structures a system into layers: the observable manufacturing elements themselves, a device communication entity that collects data and controls devices, the digital twin entity, and the user entity."
+            },
+            {
+              "type": "p",
+              "text": "Researchers have pointed out that the standard’s emphasis is on monitoring and it does not require bidirectional communication — so under the Kritzinger definition, what ISO 23247 describes is closer to a digital shadow. The same critique applies to most commercial IIoT platforms: they get you to a shadow readily, and true bidirectional synchronisation takes real additional engineering. This is not a criticism to repeat smugly; it is a reason to be precise about what you have built."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-7-2",
+          "number": "7.2",
+          "title": "What CAD actually contributes",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Geometry for context. A temperature reading of 71 °C means little; the same reading shown at the exact bearing it came from is immediately interpretable. This is the most visible contribution and the least important one."
+            },
+            {
+              "type": "p",
+              "text": "• The parameter set. Your parametric model already contains the dimensions, materials and tolerances of the design. Those are the nominal values that measured data gets compared against."
+            },
+            {
+              "type": "p",
+              "text": "• The simulation model — this is the real contribution. Chapter 3 gave you a model that predicts deflection, stress or temperature under a given load. Connect live load data to it and you can compare predicted against measured, continuously. That comparison is where the engineering value is: a growing divergence between what the model says should be happening and what the sensors report is the earliest possible signal that something has changed — a crack, a loosening bolt, a fouled heat path."
+            },
+            {
+              "type": "p",
+              "text": "• The lightweight geometry for display. Export STEP to glTF for a browser view. Never stream your native CAD file — it is huge, it is your intellectual property, and nothing downstream needs the feature tree."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-7-3",
+          "number": "7.3",
+          "title": "An architecture you can actually build",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "┌──────────────┐ sensors ┌──────────────┐ MQTT ┌──────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ THE PHYSICAL │ strain, temp, │ EDGE DEVICE │ publish │ BROKER │"
+            },
+            {
+              "type": "p",
+              "text": "│ PART │─ current, ────▶│ ESP32 / Pi │────────────▶│ Mosquitto │"
+            },
+            {
+              "type": "p",
+              "text": "│ (one unit, │ vibration, │ timestamps, │ topic: │ │"
+            },
+            {
+              "type": "p",
+              "text": "│ serial no.) │ load │ buffers, │ plant/ └──────┬───────┘"
+            },
+            {
+              "type": "p",
+              "text": "└──────────────┘ │ reconnects │ brkt0472/ │"
+            },
+            {
+              "type": "p",
+              "text": "▲ └──────────────┘ strain ▼"
+            },
+            {
+              "type": "p",
+              "text": "│ ┌──────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ (this arrow is what makes it a TWIN. │ DB │"
+            },
+            {
+              "type": "p",
+              "text": "│ without it you have a shadow.) │ InfluxDB │"
+            },
+            {
+              "type": "p",
+              "text": "│ └──────┬───────┘"
+            },
+            {
+              "type": "p",
+              "text": "┌──────┴───────┐ │"
+            },
+            {
+              "type": "p",
+              "text": "│ CONTROL │ ▼ ▼"
+            },
+            {
+              "type": "p",
+              "text": "└──────────────┘ ┌──────────────┐ ┌──────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ Grafana │ │ FEA / a fit │"
+            },
+            {
+              "type": "p",
+              "text": "│ + 3D view │ │ PREDICTS │"
+            },
+            {
+              "type": "p",
+              "text": "│ (glTF from │ │ expected │"
+            },
+            {
+              "type": "p",
+              "text": "│ your STEP) │ │ value │"
+            },
+            {
+              "type": "p",
+              "text": "└──────────────┘ └──────┬───────┘"
+            },
+            {
+              "type": "p",
+              "text": "│"
+            },
+            {
+              "type": "p",
+              "text": "ALERT WHEN |measured - predicted| │"
+            },
+            {
+              "type": "p",
+              "text": "Figure 7.2 — Everything in this diagram is free and open source. The box that creates the value is the bottom right one, and it is the box most ‘digital twin’ projects leave out."
+            },
+            {
+              "type": "p",
+              "text": "// Edge node: read the sensor, timestamp it, publish it. ESP32 + MQTT. // Everything hard about this is in the four notes at the bottom."
+            },
+            {
+              "type": "p",
+              "text": "#include &lt;WiFi.h&gt; #include &lt;PubSubClient.h&gt;"
+            },
+            {
+              "type": "p",
+              "text": "const char* MQTT_HOST = \"192.168.1.50\"; // THIS unit, not this design const char* SERIAL_NO = \"brkt0472\"; WiFiClient net; PubSubClient mqtt(net);"
+            },
+            {
+              "type": "p",
+              "text": "void publishSample(float loadN, float deflMm) { char topic[64], payload[192]; snprintf(topic, sizeof topic, \"plant/%s/telemetry\", SERIAL_NO);"
+            },
+            {
+              "type": "p",
+              "text": "// Predicted deflection from the model in chapter 3, as a straight-line // fit to the FEA results: 1.19 mm at 100 N -&gt; 0.0119 mm per N. float predicted = loadN * K_MODEL; float divergence = (predicted &gt; 0.01f)"
+            },
+            {
+              "type": "p",
+              "text": "? fabsf(deflMm - predicted) / predicted : 0.0f;"
+            },
+            {
+              "type": "p",
+              "text": "snprintf(payload, sizeof payload, \"{\"sn\":\"%s\",\"ts\":%lu,\"load_n\":%.2f,\" \"\"defl_mm\":%.3f,\"pred_mm\":%.3f,\"divergence\":%.3f}\", SERIAL_NO, (unsigned long)time(NULL), loadN, deflMm, predicted, divergence);"
+            },
+            {
+              "type": "p",
+              "text": "mqtt.publish(topic, payload, false); }"
+            },
+            {
+              "type": "p",
+              "text": "// 1. TIMESTAMP AT THE EDGE, not on arrival. Network delay is variable and // a shadow with wrong timing tells you nothing about dynamics. // 2. BUFFER WHEN OFFLINE. Wi-Fi will drop. Hold samples in a ring buffer // and publish on reconnect, or you have gaps exactly during the events // you most wanted to see. // 3. PUBLISH THE PREDICTION ALONGSIDE THE MEASUREMENT. Computing // divergence at the edge means the alert works even if the dashboard // is down - and divergence, not absolute value, is the useful signal. // 4. THE SERIAL NUMBER IS IN EVERY MESSAGE. A twin is of one instance; // without the serial number you have merged all your units into an // average that describes none of them."
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-7-4",
+          "number": "7.4",
+          "title": "What separates a twin from a nice dashboard",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "It is a dashboard if… It is becoming a twin if…"
+            },
+            {
+              "type": "p",
+              "text": "It shows current sensor values It shows measured values against what the model predicted"
+            },
+            {
+              "type": "pre",
+              "text": "It is the same for every unit you made                            It is bound to one serial number and carries that unit’s history and\n                                                                  accumulated wear"
+            },
+            {
+              "type": "p",
+              "text": "It is a dashboard if… It is becoming a twin if… It alerts on a fixed threshold The 3D view is decoration It alerts on divergence from expected behaviour, which catches Nothing flows back faults long before an absolute limit is reached It was built once The 3D view maps data to the location it came from and shows the predicted stress or temperature field alongside"
+            },
+            {
+              "type": "p",
+              "text": "It can adjust something — a setpoint, a duty cycle, a maintenance schedule"
+            },
+            {
+              "type": "p",
+              "text": "The model is corrected as measurements accumulate, so its predictions improve"
+            },
+            {
+              "type": "p",
+              "text": "Start smaller than you think"
+            },
+            {
+              "type": "p",
+              "text": "The failure mode of student digital-twin projects is scope. Do not attempt a twin of a factory. Instrument one part, with one measurement, and compare it against one prediction from a model you built yourself."
+            },
+            {
+              "type": "p",
+              "text": "A strain gauge on the bracket from Chapter 3, streaming to a chart that also plots the FEA-predicted strain for the measured load, with an alert when the two diverge by more than 15% — that is a genuine, defensible, working digital shadow with a predictive model attached. It is worth more than an elaborate 3D scene with no model behind it, and it demonstrates that you understand the difference."
+            },
+            {
+              "type": "p",
+              "text": "DESIGN EXERCISE — Close the loop on the bracket you already analysed"
+            },
+            {
+              "type": "p",
+              "text": "Two weekends. This exercise uses every chapter in the guide, which is why it is last."
+            },
+            {
+              "type": "p",
+              "text": "1 Take the cantilever bracket you modelled in Chapter 1 and analysed in Chapter 3. Manufacture it — print it (Chapter 4) or have it machined (Chapters 5–6)."
+            },
+            {
+              "type": "p",
+              "text": "2 Instrument it: a strain gauge near the fixed end, or a dial indicator or ToF sensor measuring tip deflection. Deflection is easier and, per §3.6, more trustworthy."
+            },
+            {
+              "type": "p",
+              "text": "3 Load it with known masses in steps. Record measured deflection against load, and plot it against the FEA prediction and the hand calculation from §3.5."
+            },
+            {
+              "type": "p",
+              "text": "4 Explain the gap. There will be one. Candidates: the restraint is not truly fixed, the printed material is not the library material (§4.3), the section is not exactly what you modelled, the load is not exactly where you think it is. Working out which is the entire skill of simulation."
+            },
+            {
+              "type": "p",
+              "text": "5 Now stream it: ESP32 reading the sensor, publishing over MQTT, stored and plotted, with the predicted curve overlaid. You now have a digital shadow with a predictive model behind it."
+            },
+            {
+              "type": "p",
+              "text": "6 Write one paragraph stating honestly whether you built a model, a shadow or a twin, and what specifically would be required to reach the next level. That paragraph is the deliverable."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "A",
+      "title": "Reference",
+      "intro": [],
+      "topics": [
+        {
+          "id": "cad-digital-manufacturing-A-1",
+          "number": "A.1",
+          "title": "CAD tools, with the licensing detail that matters",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Tool             Strengths                                   Licensing note — verify current terms\nAutodesk Fusion                                              Free 1-year student/educator subscription, renewable while eligible. Separate\n                 Integrated CAD, CAM, FEA and PCB;           free personal-use licence for non-commercial work under roughly USD 1,000\nOnshape          strong for makers and small                 annual revenue, with reduced functionality\n                 manufacturing; good direct and\nSolidWorks       parametric mix                              Free education plan for students and educators. The free public plan makes\n                                                             your documents publicly visible — fine for learning, not for anything confidential\n                 Fully browser-based, real version control\n                 and branching, excellent for teams and      Education edition via community download; availability depends on your\n                 for machines that cannot run heavy          institution and some universities have dropped it\n                 software"
+            },
+            {
+              "type": "p",
+              "text": "Industry standard in Indian mechanical design; deep sheet metal, weldment and drawing tools; large parts library"
+            },
+            {
+              "type": "pre",
+              "text": "FreeCAD          Open source, genuinely parametric,          Open source. Commercial use permitted outright — the relevant point if\n                 Python-scriptable, no licence restrictions  your project might become a product\n                 at all\nOpenSCAD /       Geometry as code: fully parametric,         Open source, commercial use permitted. CadQuery outputs STEP, so it\nCadQuery         version-controllable in git, excellent for  interoperates with everything else here\n                 families of parts\nTool               Strengths                               Licensing note — verify current terms\nBlender\n                   Organic and cosmetic form, rendering,   Open source. Not parametric and not dimensionally driven — not a substitute\n                   visualisation                           for engineering CAD"
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-A-2",
+          "number": "A.2",
+          "title": "Process selection at a glance",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Quantity Plastic part Metal part Why 1–10 FDM or SLA print CNC, or waterjet plus bending No tooling. Cost is dominated by machine 10–500 SLS, or CNC from stock; cast urethane CNC; sheet metal for time 500–5,000 5,000+ for cosmetic parts enclosures Still below the tooling break-even for most parts Consider a soft or aluminium tool; Sheet metal with proper compare against machining tooling; investment casting This is the crossover band — run the arithmetic in §6.5 rather than guessing Injection moulding, hardened steel tool Die casting, stamping, forging High fixed cost, very low variable cost. Now the tool pays for itself"
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-A-3",
+          "number": "A.3",
+          "title": "Numbers worth memorising",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Context Number"
+            },
+            {
+              "type": "p",
+              "text": "Moulding — nominal wall 1.5–3.0 mm; 2.0–2.5 mm a safe default"
+            },
+            {
+              "type": "pre",
+              "text": "Moulding — rib thickness            ≤ 0.6 × nominal wall (sink-mark limit)\nMoulding — rib height / spacing     ≤ 3 × wall / ≥ 2 × wall"
+            },
+            {
+              "type": "p",
+              "text": "Moulding — draft 1–2° typical; 3–5° textured; 0.5° absolute minimum"
+            },
+            {
+              "type": "p",
+              "text": "Moulding — internal radius ≥ 0.5 × wall"
+            },
+            {
+              "type": "p",
+              "text": "Moulding — shrinkage 0.4–0.8% amorphous; 1.0–2.5% semi-crystalline"
+            },
+            {
+              "type": "pre",
+              "text": "FDM — overhang                      45° without support\nFDM — minimum wall                  ≥ 2 × nozzle diameter"
+            },
+            {
+              "type": "p",
+              "text": "FDM — Z strength roughly 30–60% of XY strength"
+            },
+            {
+              "type": "p",
+              "text": "FDM — sliding clearance 0.3–0.5 mm total"
+            },
+            {
+              "type": "pre",
+              "text": "CNC — internal corner               ≥ tool radius; design at 1.2 ×\nCNC — pocket depth                  ≤ 4 × tool diameter"
+            },
+            {
+              "type": "p",
+              "text": "CNC — general tolerance ±0.125 mm unless stated"
+            },
+            {
+              "type": "p",
+              "text": "Sheet metal — bend radius ≥ 1 × thickness"
+            },
+            {
+              "type": "pre",
+              "text": "Sheet metal — hole to bend          ≥ 2.5 × thickness + radius\nFEA — mesh convergence              peak stress changing < ~5% between refinements"
+            },
+            {
+              "type": "p",
+              "text": "FEA — hand-calc agreement within ~20% on deflection, or the setup is wrong"
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-A-4",
+          "number": "A.4",
+          "title": "A twelve-week plan",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Weeks Focus Deliverable"
+            },
+            {
+              "type": "p",
+              "text": "1–2 Ch 1 — model an enclosure twice, with and A parameter-driven model that survives a 15 mm size change"
+            },
+            {
+              "type": "p",
+              "text": "without design intent"
+            },
+            {
+              "type": "p",
+              "text": "3 Ch 2 — skeleton-driven assembly, run the Two halves that still mate after the envelope changes"
+            },
+            {
+              "type": "p",
+              "text": "review checklist"
+            },
+            {
+              "type": "p",
+              "text": "4–5 Ch 3 — cantilever study, singularity, A convergence table and a defended stress number"
+            },
+            {
+              "type": "p",
+              "text": "convergence, hand-calc"
+            },
+            {
+              "type": "p",
+              "text": "6 Ch 4 — print the bracket in three orientations Your own anisotropy ratio, measured"
+            },
+            {
+              "type": "p",
+              "text": "and break them"
+            },
+            {
+              "type": "p",
+              "text": "7–8 Ch 5 — convert the enclosure to a mouldable Uniform wall, draft, no undercuts, DFM checklist complete"
+            },
+            {
+              "type": "p",
+              "text": "part"
+            },
+            {
+              "type": "p",
+              "text": "9 Ch 6 — drawing, cost model, RFQ to three Three quotes and one acted-upon DFM suggestion"
+            },
+            {
+              "type": "p",
+              "text": "vendors"
+            },
+            {
+              "type": "p",
+              "text": "10 Manufacture: order the part or print the final A real part in your hand, inspected against your drawing"
+            },
+            {
+              "type": "p",
+              "text": "version"
+            },
+            {
+              "type": "pre",
+              "text": "Weeks  Focus                                              Deliverable\n11–12\n       Ch 7 — instrument it, stream it, compare           A measured-versus-predicted plot and an honest model/shadow/twin\n       against prediction                                 statement"
+            }
+          ]
+        },
+        {
+          "id": "cad-digital-manufacturing-A-5",
+          "number": "A.5",
+          "title": "Glossary",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "                           What the model should do when a dimension changes\n Term                      A sketch with zero remaining degrees of freedom\n Design intent             The ordered list of operations that build the part — the program\n Fully constrained         A feature depending on an earlier one; break the parent and the child fails\n Feature tree              The problem of references attaching to the wrong face after geometry regenerates\n Parent–child              One sketch carrying the shared interfaces that everything else references\n Topological naming        Geometry driven from the assembly, versus parts modelled independently and mated\n Skeleton / master sketch  The six free motions of a part in space; mates remove them\n Top-down / bottom-up      A modelled stress that rises without limit as the mesh is refined — not a real result\n Degrees of freedom        Refining until the answer stops changing meaningfully\n Stress singularity        A scalar yield criterion for ductile materials\n Mesh convergence          Taper on faces parallel to the tool pull, so the part releases\n von Mises stress          A surface dimple caused by a thick section shrinking as it cools\n Draft angle               A feature preventing straight-line ejection; needs a side action\n Sink mark                 Where the two halves of a mould meet; leaves a witness line\n Undercut                  Direction-dependent strength — the defining property of FDM parts\n Parting line              The default tolerance applied to every unmarked dimension\n Anisotropy                The first part from a new process, inspected before the run proceeds\n General tolerance         Neutral exact-geometry exchange format — what you send a vendor\n First article             Automatic one-way data flow from physical to digital\n STEP                      Automatic two-way flow, bound to one specific physical instance\n Digital shadow\n Digital twin"
+            },
+            {
+              "type": "p",
+              "text": "Sources for the specific claims. The model / shadow / twin distinction follows the taxonomy of Kritzinger and colleagues, which is the one most widely used in the literature. ISO 23247, Digital twin framework for manufacturing, was published in 2021 in four parts, with later parts on the digital thread and twin composition; the observation that its monitoring emphasis places it closer to a digital shadow is made in the research literature analysing the standard. CAD licensing terms are as published in mid-2026 and change regularly — check before you rely on them, particularly if you intend to sell what you design."
+            },
+            {
+              "type": "p",
+              "text": "And the habit to carry out of this guide. The recurring mistake in mechanical design is deciding the shape first and discovering the process afterwards. Every expensive lesson in these seven chapters — the model that broke when someone else edited it, the stress result that meant nothing, the sink mark opposite the rib, the quote that came back at four times the estimate — has the same root: a constraint that existed from the beginning was learned at the end. Find out how it will be made before you finish deciding what it looks like, and most of the difficulty in this book disappears."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

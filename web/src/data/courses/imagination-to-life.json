@@ -1,0 +1,1513 @@
+{
+  "slug": "imagination-to-life",
+  "title": "Imagination to Life with AI",
+  "tagline": "Turn your ideas into apps, art, and products — execution over fantasy, no team required.",
+  "modules": [
+    {
+      "number": "1",
+      "title": "The Gap Between an Idea and a Thing",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Ideas feel complete in your head because your head fills in every gap automatically. The first prototype is disappointing for exactly the same reason: it contains only what you actually specified, which is always far less than what you imagined."
+        }
+      ],
+      "topics": [
+        {
+          "id": "imagination-to-life-1-1",
+          "number": "1.1",
+          "title": "The taste gap, and why it is good news",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Everyone who makes things starts with taste that outruns ability. You can tell that your output is worse than the thing you had in mind, and that gap is uncomfortable enough that many people conclude they are not creative and stop. The gap is not evidence of a problem — it is evidence that your judgement is working. It closes by producing volume, not by thinking harder before you start."
+            },
+            {
+              "type": "p",
+              "text": "This is precisely where AI helps most, and it is worth being specific about how. It does not close the taste gap for you. It makes the volume cheap, so you traverse the gap in weeks instead of years. The person who generates forty concepts and rejects thirty-nine is developing taste at speed. The person who generates one and polishes it for a month is not."
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-1-2",
+          "number": "1.2",
+          "title": "What actually changed",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Before Now Still true"
+            },
+            {
+              "type": "pre",
+              "text": "First visual of an   Hours of sketching, or a skill  Minutes  A picture of a thing is not a plan for a thing\nidea                 you did not have\nFirst draft of code  Days, plus learning the         Minutes  It runs on assumptions you must check\n                     framework"
+            },
+            {
+              "type": "p",
+              "text": "Ten variations A week Ten minutes Choosing between them still requires criteria you wrote yourself"
+            },
+            {
+              "type": "pre",
+              "text": "A 3D shape from a CAD skill plus hours               Seconds  Mesh geometry is not an editable engineering model (§4.5)\ndescription\nKnowing whether      Judgement, research, talking Unchanged   This is the whole job and no tool does it for you\nit should exist      to people"
+            },
+            {
+              "type": "p",
+              "text": "Read the last row twice. Everything AI made cheap is upstream of the decision that actually matters."
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-1-3",
+          "number": "1.3",
+          "title": "Three ways this goes wrong",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• The infinite ideation loop. Generating concepts is pleasant, low-risk and produces a feeling of progress. Building is none of those. People generate for weeks because the generating feels like the work. Symptom: more than about three sessions of ideation without one thing existing outside a chat window."
+            },
+            {
+              "type": "p",
+              "text": "• The beautiful impossible render. An image model will happily produce a gorgeous device with no room for a battery, an impossible hinge, and a screen that floats. It looks like a design because it looks finished. Symptom: you cannot answer ‘what is inside it’ about your own concept."
+            },
+            {
+              "type": "p",
+              "text": "• The prompt that describes a feeling. ‘A sleek futuristic assistant robot, minimal, elegant’ contains no decision. It will produce something — a generic average of everything with those tags — and you will not know why you dislike it. Symptom: your outputs are competent and interchangeable."
+            },
+            {
+              "type": "p",
+              "text": "The rule this guide runs on"
+            },
+            {
+              "type": "p",
+              "text": "Nothing counts until it exists outside a chat window. A file, a render you saved and annotated, a script that runs, a paper mock-up, a breadboard. The chat log is not the artefact. Every chapter ends with something you can point at, and that constraint is doing more work than any technique in the book."
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-1-4",
+          "number": "1.4",
+          "title": "The loop",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "┌──────────────────────────────────────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ │"
+            },
+            {
+              "type": "p",
+              "text": "▼ │"
+            },
+            {
+              "type": "p",
+              "text": "┌─────────┐ ┌─────────┐ ┌───────────┐ ┌──────────────┐ │"
+            },
+            {
+              "type": "p",
+              "text": "└─────────┘ └─────────┘ └───────────┘ └──────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "a feeling a spec a something what has to be true"
+            },
+            {
+              "type": "p",
+              "text": "you can't machine can that exists that isn't yet?"
+            },
+            {
+              "type": "p",
+              "text": "yet defend act on and can be"
+            },
+            {
+              "type": "p",
+              "text": "criticised │"
+            },
+            {
+              "type": "p",
+              "text": "▲ │ passes all six gates"
+            },
+            {
+              "type": "p",
+              "text": "│ ▼"
+            },
+            {
+              "type": "p",
+              "text": "│ ┌──────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "└── most loops return here, and │ REAL BUILD │"
+            },
+            {
+              "type": "p",
+              "text": "that is the process working └──────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "TIME PER LAP: lap 1 should take under an hour. If your first lap takes a week, you are polishing instead of looping."
+            },
+            {
+              "type": "p",
+              "text": "Figure 1.1 — The arrow back to IDEA is not failure. Each lap redefines the idea into something more specific, which is the only way vague concepts become real ones."
+            },
+            {
+              "type": "p",
+              "text": "EXERCISE — Choose your one idea Fifteen minutes. Everything in this guide will operate on whatever you pick here. 1 Write down three ideas you have been carrying. One sentence each. No editing. 2 For each, answer in one line: who is worse off if this does not exist? If the honest answer is ‘nobody, I just want to make it’"
+            },
+            {
+              "type": "p",
+              "text": "— that is a completely valid answer, write it down. 3 Pick the one you would still want to work on in six weeks, not the one that sounds most impressive. 4 Write the single sentence you would say to a friend to describe it. Keep this sentence; §2.2 will dismantle it. 5 Name the one thing about it you cannot currently picture. That unknown is where your first lap should go."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "2",
+      "title": "Idea → Prompt",
+      "intro": [
+        {
+          "type": "p",
+          "text": "A prompt is not a wish. It is a specification with enough decisions in it that a machine can act without inventing the parts you left out — because it will invent them, and it will invent the average of everything it has seen."
+        }
+      ],
+      "topics": [
+        {
+          "id": "imagination-to-life-2-1",
+          "number": "2.1",
+          "title": "Every vague word is a decision you have not made",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "‘Sleek’, ‘modern’, ‘user-friendly’, ‘smart’, ‘elegant’ — these feel like descriptions and function as blanks. When you write one, a model fills it with the statistical centre of that word, which is why prompts built from adjectives produce output that is competent, generic and impossible to critique. You cannot argue with an average. The fix is mechanical: replace each adjective with the decision it was hiding. ‘Sleek’ becomes ‘no visible screws, single continuous surface, matte finish, under 18 mm thick’. Now there is something to disagree with, which means there is something to iterate on."
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-2-2",
+          "number": "2.2",
+          "title": "The specificity ladder",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "RUNG 1 A FEELING \"A cool robot that helps around the house.\""
+            },
+            {
+              "type": "p",
+              "text": "Nothing here is actionable. Every noun is a category."
+            },
+            {
+              "type": "p",
+              "text": "RUNG 2 A DESCRIPTION \"A small wheeled robot that carries things"
+            },
+            {
+              "type": "p",
+              "text": "between rooms for someone with limited"
+            },
+            {
+              "type": "p",
+              "text": "mobility.\""
+            },
+            {
+              "type": "p",
+              "text": "Now there is a user and a job. Still no constraints."
+            },
+            {
+              "type": "p",
+              "text": "RUNG 3 A SPECIFICATION \"A wheeled robot, roughly 40 x 30 x 35 cm,"
+            },
+            {
+              "type": "p",
+              "text": "carries up to 3 kg, crosses a 15 mm door"
+            },
+            {
+              "type": "p",
+              "text": "threshold, runs 2 hours per charge, is"
+            },
+            {
+              "type": "p",
+              "text": "summoned by voice from another room, and"
+            },
+            {
+              "type": "p",
+              "text": "must cost under Rs 8,000 in parts.\""
+            },
+            {
+              "type": "p",
+              "text": "Every number is a decision that can be checked, argued with,"
+            },
+            {
+              "type": "p",
+              "text": "and got wrong - which is what makes it useful."
+            },
+            {
+              "type": "p",
+              "text": "The rung-3 spec, plus what you want THIS tool to produce, in what format, with what to do when it is unsure. Different for each modality - see Chapter 5."
+            },
+            {
+              "type": "p",
+              "text": "THE TEST FOR RUNG 3: could two different people build from your spec and produce recognisably the same thing? If not, you are still on rung 2 and the model is making your decisions for you."
+            },
+            {
+              "type": "p",
+              "text": "Most people write rung 1, get generic output, and conclude the tool is limited. Climbing one rung usually changes the output more than changing the tool"
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-2-3",
+          "number": "2.3",
+          "title": "Five questions that move you up the ladder",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Question                     Why it forces a decision                     Example answer\n                                                                          My grandmother, who uses a walker and does not use apps\nWho is it for,               ‘Everyone’ produces a design for nobody. A\nspecifically?                named user creates constraints"
+            },
+            {
+              "type": "p",
+              "text": "What single job does Multi-purpose concepts have no shape. One Carries a cup of tea from kitchen to bedroom without spilling"
+            },
+            {
+              "type": "p",
+              "text": "it do? job gives you a form"
+            },
+            {
+              "type": "pre",
+              "text": "What constraints are         Constraints are the most valuable input you  Under ₹8,000 · no internet · must be carried upstairs by one\nnon-negotiable?              can give any generative tool                 person\nWhat form does the           ‘Show me ideas’ gets prose. Name the         Three labelled side-view sketches with dimensions\noutput take?                 artefact you want"
+            },
+            {
+              "type": "p",
+              "text": "How will you know it Without this you cannot iterate, only It crosses the door threshold with a full cup, five times out of five"
+            },
+            {
+              "type": "p",
+              "text": "worked? redecorate"
+            },
+            {
+              "type": "p",
+              "text": "Constraints are not the enemy of creativity"
+            },
+            {
+              "type": "p",
+              "text": "This is the most counter-intuitive thing in the guide and it is reliable: adding constraints improves generative output, sharply. ‘Design a lamp’ produces wallpaper. ‘Design a lamp from a single sheet of A4 card, no glue, that a child can assemble in five minutes’ produces something worth looking at."
+            },
+            {
+              "type": "p",
+              "text": "A constraint eliminates the enormous space of average answers and forces the model — and you — into the smaller space where the interesting ones live. When output feels bland, the reliable first move is not a better adjective. It is one more constraint."
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-2-4",
+          "number": "2.4",
+          "title": "The one thing not to ask",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Do not ask a model what you should build. It will answer, fluently, with something plausible and unowned, and you will spend three weeks on an idea that was never yours. The model has no stake, no context about your life, and no access to the thing that makes a project survive difficulty — which is that you want it to exist. Use it to expand and stress-test your direction. Choose the direction yourself."
+            },
+            {
+              "type": "p",
+              "text": "EXERCISE — Climb the ladder with your idea Thirty minutes with the sentence you wrote in §1.4. 1 Write your idea at rung 1, exactly as it currently lives in your head. 2 Answer the five questions in §2.3. Write real answers — a name, a number, a rupee figure. ‘TBD’ is allowed once and it"
+            },
+            {
+              "type": "p",
+              "text": "marks your first research task. 3 Rewrite as a rung-3 specification with at least four numbers in it. 4 Underline every remaining adjective. Replace each with the decision it was hiding, or delete it. 5 Give the rung-3 spec to a friend and ask them to describe back what they picture. Where their picture differs from yours,"
+            },
+            {
+              "type": "p",
+              "text": "you have found the next decision to make."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "3",
+      "title": "Ten Variations in Ten Minutes",
+      "intro": [
+        {
+          "type": "p",
+          "text": "The point of generating ten options is not that one of them will be brilliant. It is that ten options make your own preferences visible to you — you learn what you actually want by reacting to things, far faster than by thinking about it."
+        }
+      ],
+      "topics": [
+        {
+          "id": "imagination-to-life-3-1",
+          "number": "3.1",
+          "title": "Never diverge and converge at the same time",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The most common iteration mistake is judging each option as it arrives. This kills the unusual ones early, because unusual things look wrong before they look interesting, and it exhausts you. Separate the two modes completely and put a wall between them:"
+            },
+            {
+              "type": "p",
+              "text": "┌──────────────── DIVERGE (10 min) ────────────────┐ ┌──── CONVERGE (10 min) ────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ ││ │"
+            },
+            {
+              "type": "p",
+              "text": "│ no judging · no editing · no deleting │ │ score against criteria │"
+            },
+            {
+              "type": "p",
+              "text": "│ quantity is the only goal │ │ written BEFORE you │"
+            },
+            {
+              "type": "p",
+              "text": "│ weird ones are the point │ │ generated anything │"
+            },
+            {
+              "type": "p",
+              "text": "│ ││ │"
+            },
+            {
+              "type": "p",
+              "text": "│ vary deliberately along 3 chosen axes │ │ pick ONE to advance │"
+            },
+            {
+              "type": "p",
+              "text": "│ ───────────────────────────────────────── │ │ keep one weird one │"
+            },
+            {
+              "type": "p",
+              "text": "│ axis A: form compact / modular / worn │ │ kill the rest, on paper │"
+            },
+            {
+              "type": "p",
+              "text": "│ axis B: interface voice / button / automatic │ │ │"
+            },
+            {
+              "type": "p",
+              "text": "│ axis C: cost Rs 500 / Rs 3k / Rs 10k ││ │"
+            },
+            {
+              "type": "p",
+              "text": "└──────────────────────────────────────────────────┘ └───────────────────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "│ ▲"
+            },
+            {
+              "type": "p",
+              "text": "└──────── WALL: take a break ─────────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "do not evaluate while generating"
+            },
+            {
+              "type": "p",
+              "text": "Figure 3.1 — Deliberate axes beat ‘give me ten ideas’. Random variation clusters around the average; chosen axes spread across the actual design space."
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-3-2",
+          "number": "3.2",
+          "title": "Generate in one batch, not ten conversations",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Asking ten times produces ten variations on the first answer, because each reply anchors the next. Asking once for ten forced-different options produces genuine spread. Make the differences a requirement, not a hope."
+            },
+            {
+              "type": "p",
+              "text": "PROMPT — Batch divergence"
+            },
+            {
+              "type": "p",
+              "text": "I am designing: {rung-3 specification from 2.2}"
+            },
+            {
+              "type": "p",
+              "text": "Generate exactly 10 distinctly different approaches."
+            },
+            {
+              "type": "p",
+              "text": "RULES 1. Vary deliberately along these three axes, and cover the range of each:"
+            },
+            {
+              "type": "p",
+              "text": "- {axis A, e.g. form: compact / modular / wearable} - {axis B, e.g. interface: voice / physical button / fully automatic} - {axis C, e.g. cost: under Rs 500 / around Rs 3,000 / around Rs 10,000} 2. No two options may share the same combination of the three axes. 3. Options 8, 9 and 10 must break one of my stated constraints on purpose, and each must say which constraint it broke and what that buys. 4. For each option give exactly: a 4-word name, one sentence on how it works, its position on all three axes, and the single biggest risk. 5. No preamble. No recommendation. Do not tell me which is best - I will decide that with criteria you have not seen."
+            },
+            {
+              "type": "p",
+              "text": "Output as a numbered list, one block per option, maximum 40 words each."
+            },
+            {
+              "type": "p",
+              "text": "Rule 3 is the valuable one. The constraint-breaking options are usually rejected, and they routinely contain the idea that makes the winning option better."
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-3-3",
+          "number": "3.3",
+          "title": "You cannot choose without criteria",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Write your selection criteria before generating. If you write them after, you will unconsciously write criteria that describe whichever option you already liked, and the whole exercise becomes decoration. Three criteria, weighted, scored one to five. Three is enough; five is a research project."
+            },
+            {
+              "type": "p",
+              "text": "Selection scorecard — fill the header before you generate"
+            },
+            {
+              "type": "pre",
+              "text": "# Option name                  Criterion 1          Criterion 2      Criterion 3  Total Keep / kill\n                               (×__)                (×__)            (×__)"
+            },
+            {
+              "type": "p",
+              "text": "Suggested criteria for a first project: can I build it in two weeks · would the named user in §2.3 actually use it · do I want to spend six weeks on it. Weight them before you score."
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-3-4",
+          "number": "3.4",
+          "title": "The iteration log",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Keep one log per project, in one file, for the whole project. Its job is to stop you re-running experiments you already ran — which everyone does, around week three, having completely forgotten that version 4 failed for a specific reason."
+            },
+            {
+              "type": "p",
+              "text": "Iteration log"
+            },
+            {
+              "type": "p",
+              "text": "v Date What I changed What I expected What actually happened Next"
+            },
+            {
+              "type": "p",
+              "text": "The ‘what I expected’ column is the one people skip and the one that teaches you the most. Writing a prediction before you look turns each iteration into an experiment instead of a guess."
+            },
+            {
+              "type": "p",
+              "text": "Kill on paper, not in your head When you reject an option, write one line saying why. Two reasons: it stops you regenerating the same rejected idea in a fortnight, and rejected options are the raw material for later ones — ‘the modular one, but with the voice interface from option 6’ is where most good final designs actually come from. Keep one weird option alive through at least two rounds even if it scores badly. Scoring rewards the safe and legible, and the interesting thing is rarely either on the first pass."
+            },
+            {
+              "type": "p",
+              "text": "EXERCISE — Ten in ten, then one Twenty-five minutes, timed. Set an actual timer — the constraint is the method. 1 Write your three selection criteria and their weights. Do this first. No exceptions. 2 Choose your three variation axes and the three values along each. 3 Run the batch prompt from §3.2 once. Ten minutes, no editing, no follow-ups. 4 Take a five-minute break. Physically leave the screen. This is the wall. 5 Score all ten on the scorecard. Pick one to advance and one weird one to keep alive. 6 Write the first row of your iteration log. Your project now has a history, which is the thing that turns a session into a"
+            },
+            {
+              "type": "p",
+              "text": "project."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "4",
+      "title": "Chaining Text, Image, Geometry and Code",
+      "intro": [
+        {
+          "type": "p",
+          "text": "A multimodal workflow is not ‘using several AI tools’. It is a chain in which each step’s output becomes the next step’s input without losing the decisions you already made — and information loss between steps is where almost every chain fails."
+        }
+      ],
+      "topics": [
+        {
+          "id": "imagination-to-life-4-1",
+          "number": "4.1",
+          "title": "What each modality is actually good at",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Modality          Genuinely good at                                 Do not trust it for\nText / LLM\n                  Specification, naming, structuring, critique,     Facts it was not given · arithmetic · physical plausibility · current\nImage             generating variation, writing code and BOMs       prices\ngeneration\nImage             Communicating a feel, exploring form and          Anything dimensional. It is drawing, not designing. There is no interior\nunderstanding     proportion fast, making a concept discussable"
+            },
+            {
+              "type": "p",
+              "text": "Text-to-3D / CAD Reading your sketch back, critiquing a photo of Precise measurement from a photograph your build, extracting a description from a reference"
+            },
+            {
+              "type": "pre",
+              "text": "                  Getting a rough shape on screen in seconds;       Manufacturable geometry — see §4.5, this is the biggest trap in the\n                  sanity-checking proportion                        chain\nCode generation   Scaffolding, glue code, state machines,           Hardware it cannot see · pin numbers · timing · anything\nVoice / speech    parsing, a first working control loop             safety-critical\n                  A natural interface for users who cannot or will  Reliable recognition in noise, in accented speech, or in a room with a\n                  not type; fast demo polish                        fan on"
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-4-2",
+          "number": "4.2",
+          "title": "The travelling spec",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The single technique that makes chains work: maintain one plain-text specification file that travels with you through every tool. Do not carry decisions in your head or in a chat history. Each step reads the spec, adds to it, and hands it on. When the image model and the code model disagree, the spec is the arbiter."
+            },
+            {
+              "type": "p",
+              "text": "spec.md - one file, updated at every step, pasted into every tool"
+            },
+            {
+              "type": "p",
+              "text": "# TEA ROVER v4 ## Job Carries one cup of tea from kitchen to bedroom for a user with a walker."
+            },
+            {
+              "type": "p",
+              "text": "## Hard constraints (these never change without a decision)"
+            },
+            {
+              "type": "p",
+              "text": "- parts budget: Rs 8,000"
+            },
+            {
+              "type": "p",
+              "text": "- crosses a 15 mm door threshold"
+            },
+            {
+              "type": "p",
+              "text": "- 2 hours runtime"
+            },
+            {
+              "type": "p",
+              "text": "- no internet connection required"
+            },
+            {
+              "type": "p",
+              "text": "- one person can carry it upstairs -&gt; under 4 kg"
+            },
+            {
+              "type": "pre",
+              "text": "## Decided                   (locked, with the reason)\n- 4 wheels, not 2 + caster   (threshold crossing, v2 tipped)\n- voice trigger, not app     (named user does not use apps)\n- gimballed cup holder       (v3 spilled on the threshold)"
+            },
+            {
+              "type": "p",
+              "text": "## Open questions (each one is a next lap)"
+            },
+            {
+              "type": "p",
+              "text": "- battery chemistry and charging approach?"
+            },
+            {
+              "type": "p",
+              "text": "- how does it know which room it is in?"
+            },
+            {
+              "type": "p",
+              "text": "## Rejected (so I stop regenerating these)"
+            },
+            {
+              "type": "p",
+              "text": "- tracked drive: over budget, too heavy"
+            },
+            {
+              "type": "p",
+              "text": "- line-following tape: user will not accept tape on the floor"
+            },
+            {
+              "type": "p",
+              "text": "The Rejected section is the one that saves the most time. Without it you will regenerate a discarded idea roughly every ten days"
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-4-3",
+          "number": "4.3",
+          "title": "A full chain, end to end",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "WORKED EXAMPLE — The tea rover"
+            },
+            {
+              "type": "p",
+              "text": "One idea through six tools in an afternoon"
+            },
+            {
+              "type": "pre",
+              "text": "1. TEXT →   Feed the rung-3 specification to an LLM and ask it to return a structured spec with the constraints separated\nSPEC        from the decisions, plus a list of every question it had to guess an answer to. That guess list is your\n            research queue.\n2. TEXT →   Turn the spec into an image prompt using the anatomy in §5.2. Generate four views. Purpose: make the\nIMAGE       concept discussable, not to design it. Save the best and annotate it by hand with what is wrong.\n3. IMAGE →  Give the render back to a vision-capable model with the spec and ask: what does this design not account for? It\nCRITIQUE    will find things you stopped seeing — no visible access panel, wheels too small for the threshold, no room for a\n            battery."
+            },
+            {
+              "type": "p",
+              "text": "4. SPEC → Ask for parametric CAD code rather than a 3D file (§4.5). You get dimensioned, editable geometry instead of an GEOMETRY unmodifiable mesh."
+            },
+            {
+              "type": "pre",
+              "text": "5. SPEC →   Ask for a bill of materials with generic component types and specifications — not brand names or prices, which\nBOM         it will confidently invent. Then price it yourself from a real supplier.\n6. SPEC →   Ask for the control loop as a state machine first, in plain language, then as code. Specify your actual board and\nCODE        library. Expect the pin assignments to be wrong and check every one."
+            },
+            {
+              "type": "p",
+              "text": "What to take from this: Six steps, one afternoon, and the output is a spec, an annotated render, editable geometry, a BOM and a first control loop. None of it is finished. All of it is something you can now criticise, which is the entire purpose."
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-4-4",
+          "number": "4.4",
+          "title": "Where chains break",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Silent drift. By step 5 the design has quietly become something the spec no longer describes, because each step improvised slightly. Fix: re-read the spec aloud before every step and update it after."
+            },
+            {
+              "type": "p",
+              "text": "• Confident invention at the handoff. Ask for a BOM and you will get plausible part numbers and prices that do not exist. Fix: ask for component types and requirements, then source real parts yourself."
+            },
+            {
+              "type": "p",
+              "text": "• Modality mismatch. The render shows a seamless enclosure; the BOM assumes a standard project box. Both are reasonable; together they are incoherent. Fix: the spec decides, and the spec is text."
+            },
+            {
+              "type": "p",
+              "text": "• The compounding error. Each step is 90% right, so after five steps you are at roughly 60% and it is not obvious which step introduced the problem. Fix: a human check between every step — the chain is not automation, it is a series of drafts you approve."
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-4-5",
+          "number": "4.5",
+          "title": "The geometry trap — read this before you 3D print anything",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "A shape is not an engineering design"
+            },
+            {
+              "type": "p",
+              "text": "Text-to-3D tools have improved a great deal and there is one limitation that matters more than all the others: most of them output mesh geometry (STL, OBJ) rather than parametric solids (STEP and native CAD formats). A mesh is a shell of triangles. You cannot add a chamfer to it, you cannot change a dimension, and it carries no feature history, no tolerances and no material information."
+            },
+            {
+              "type": "p",
+              "text": "As of 2026 the honest position is: these tools are excellent for getting a rough shape on screen in seconds so you can judge proportion and communicate an idea. They do not yet produce assemblies you can manufacture from. As one engineering review put it, you get a shape — not an engineering design."
+            },
+            {
+              "type": "p",
+              "text": "The workaround that actually works for makers: instead of asking a tool for a 3D file, ask a language model to write parametric CAD code — CadQuery (Python) is free, open source, and produces genuine editable solids you can export as STEP. You get real dimensions you can change by editing a number, and you can read exactly what was built. It handles simple parts well, which is what most student projects need. FreeCAD is a good companion because its feature tree lets you see and learn every operation."
+            },
+            {
+              "type": "p",
+              "text": "PROMPT — Geometry as editable code, not as a mesh"
+            },
+            {
+              "type": "p",
+              "text": "Write a CadQuery (Python) script that models the following part."
+            },
+            {
+              "type": "p",
+              "text": "PART: {enclosure for a 65 x 30 mm PCB} - wall thickness 2.5 mm - internal clearance 3 mm on all sides - 4 x M3 mounting bosses positioned at {x, y coordinates} - one cable opening 12 x 6 mm on the short face, centred - must be printable FDM without supports: no overhang beyond 45 degrees"
+            },
+            {
+              "type": "p",
+              "text": "RULES 1. Put EVERY dimension in a named variable at the top of the file, so I can"
+            },
+            {
+              "type": "p",
+              "text": "change one number and regenerate. This is the whole point. 2. Comment each operation with what it creates and why. 3. Add a short comment block listing which constraints you could not"
+            },
+            {
+              "type": "p",
+              "text": "satisfy and what you assumed. Do not silently compromise. 4. End with an export to STEP and to STL. 5. Do not invent dimensions I did not give. Where you must assume one,"
+            },
+            {
+              "type": "p",
+              "text": "name it as an ASSUMPTION variable at the top. The difference this makes: to change wall thickness you edit one variable and rerun, instead of regenerating a whole new mesh and losing everything you had refined."
+            },
+            {
+              "type": "p",
+              "text": "EXERCISE — Run one complete chain One afternoon. The deliverable is four saved files, not a conversation. 1 Create spec.md from your Chapter 2 specification, with the four sections in §4.2. 2 Run steps 1–3 of the chain. Print or save the render and annotate it by hand with three things that are wrong. Handwriting"
+            },
+            {
+              "type": "p",
+              "text": "on a render is a real design activity. 3 Run step 4 asking for CadQuery code, not a mesh. Change one variable and regenerate to prove it is parametric. 4 Run steps 5–6. In the BOM, mark every item whose price or part number you have not personally verified. That column is"
+            },
+            {
+              "type": "p",
+              "text": "your shopping research. 5 Update spec.md with everything you decided and everything you rejected. Add a row to the iteration log."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "5",
+      "title": "The Prompt Library",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Fill in the braces and delete what does not apply. These are starting structures, not incantations — the value is in the shape of the request, which stays useful as models change."
+        }
+      ],
+      "topics": [
+        {
+          "id": "imagination-to-life-5-1",
+          "number": "5.1",
+          "title": "Ideation prompts",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "PROMPT — Analogy transfer — the most reliable idea generator"
+            },
+            {
+              "type": "p",
+              "text": "My problem: {specific problem from your spec}"
+            },
+            {
+              "type": "p",
+              "text": "Find 6 fields that have solved a STRUCTURALLY similar problem - same shape of problem, completely different domain. For each:"
+            },
+            {
+              "type": "p",
+              "text": "1. name the field and its solution in one sentence 2. state the structural similarity explicitly 3. describe what my version would look like if I copied that mechanism 4. name what breaks in the transfer"
+            },
+            {
+              "type": "p",
+              "text": "Do not suggest anything from {my own field}. The point is distance. Analogy transfer produces more usable novelty than ‘be creative’, because it gives the model a specific place to search rather than an instruction to be unusual."
+            },
+            {
+              "type": "p",
+              "text": "PROMPT — Inversion — finding the assumption you cannot see"
+            },
+            {
+              "type": "p",
+              "text": "My concept: {one paragraph}"
+            },
+            {
+              "type": "p",
+              "text": "List the 8 assumptions my concept depends on but never states. Include the ones so obvious they feel like facts."
+            },
+            {
+              "type": "p",
+              "text": "Then, for the 3 most load-bearing, describe what the design becomes if that assumption is FALSE. Be concrete, not philosophical."
+            },
+            {
+              "type": "p",
+              "text": "Finally: which of the 8 would be cheapest for me to actually test this week, and how? The last question quietly converts an ideation exercise into the riskiest-assumption test in §6.3."
+            },
+            {
+              "type": "p",
+              "text": "PROMPT — Constraint escalation — when output feels bland"
+            },
+            {
+              "type": "p",
+              "text": "Concept: {one line}"
+            },
+            {
+              "type": "p",
+              "text": "Regenerate it 5 times, adding one brutal constraint each round and keeping all previous ones:"
+            },
+            {
+              "type": "p",
+              "text": "round 1 half the budget round 2 a single material round 3 no electronics at all round 4 must be assembled by the user in under 5 minutes round 5 must still work if the most complex part fails"
+            },
+            {
+              "type": "p",
+              "text": "For each round give the design in 30 words and name what was gained by the constraint, not only what was lost. Round 5 is where the interesting answer usually is. Designing for graceful failure tends to produce simpler, better objects."
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-5-2",
+          "number": "5.2",
+          "title": "Visualisation prompts",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Image prompts have a reliable anatomy. Write the six slots in order; vagueness in any one slot is filled with the statistical average of everything the model has seen."
+            },
+            {
+              "type": "p",
+              "text": "1 SUBJECT what it is, with its defining physical features and rough"
+            },
+            {
+              "type": "p",
+              "text": "dimensions. Nouns and numbers, not adjectives."
+            },
+            {
+              "type": "p",
+              "text": "2 COMPOSITION view and framing. \"three-quarter view\", \"orthographic side"
+            },
+            {
+              "type": "p",
+              "text": "elevation\", \"exploded view\", \"held in a hand for scale\"."
+            },
+            {
+              "type": "p",
+              "text": "3 CONTEXT where it is and what is next to it. Context communicates"
+            },
+            {
+              "type": "p",
+              "text": "scale and purpose better than any description of the object."
+            },
+            {
+              "type": "p",
+              "text": "4 STYLE the rendering convention. \"technical product photograph\","
+            },
+            {
+              "type": "p",
+              "text": "\"hand-drawn concept sketch, marker and pen\", \"matte clay"
+            },
+            {
+              "type": "p",
+              "text": "render, no branding\". Style is a decision about how finished"
+            },
+            {
+              "type": "p",
+              "text": "it should look - and early renders should look UNfinished."
+            },
+            {
+              "type": "p",
+              "text": "5 LIGHT/DETAIL \"soft studio light\", \"harsh sunlight showing surface"
+            },
+            {
+              "type": "p",
+              "text": "texture\", \"flat lighting, no shadows, for tracing over\"."
+            },
+            {
+              "type": "p",
+              "text": "6 NEGATIVE what must not appear: \"no text, no logos, no people, no"
+            },
+            {
+              "type": "p",
+              "text": "lens flare, no impossible floating parts\"."
+            },
+            {
+              "type": "p",
+              "text": "WORKED \"Orthographic side elevation of a four-wheeled tabletop robot roughly 40 cm long and 35 cm tall, with a gimballed circular cup holder on top and 90 mm wheels; positioned beside a standard doorway threshold for scale; hand-drawn concept sketch in grey marker with visible construction lines; flat even lighting; no text, no logos, no background clutter.\""
+            },
+            {
+              "type": "p",
+              "text": "A NOTE ON STYLE Ask for sketch styles early and photorealism late. A photoreal render of an undecided concept invites feedback on the finish instead of the idea, and you will get compliments instead of criticism."
+            },
+            {
+              "type": "p",
+              "text": "Slot 3 does more work than people expect. Putting the object next to something of known size is the fastest way to make scale decisions visible"
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-5-3",
+          "number": "5.3",
+          "title": "Specification and prototyping prompts",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "PROMPT — Concept → structured specification"
+            },
+            {
+              "type": "p",
+              "text": "Turn this into an engineering specification."
+            },
+            {
+              "type": "p",
+              "text": "CONCEPT: {your paragraph}"
+            },
+            {
+              "type": "p",
+              "text": "Return exactly these sections:"
+            },
+            {
+              "type": "p",
+              "text": "FUNCTION one sentence: what it does, for whom"
+            },
+            {
+              "type": "p",
+              "text": "HARD CONSTRAINTS every number I gave you, listed"
+            },
+            {
+              "type": "p",
+              "text": "DERIVED REQUIREMENTS what my constraints imply that I did not state"
+            },
+            {
+              "type": "p",
+              "text": "(e.g. \"under 4 kg implies no lead-acid battery\")"
+            },
+            {
+              "type": "p",
+              "text": "ASSUMPTIONS every value you had to invent, flagged clearly, with the"
+            },
+            {
+              "type": "p",
+              "text": "range you'd expect it to fall in"
+            },
+            {
+              "type": "p",
+              "text": "OPEN QUESTIONS the decisions I have not made yet, ordered by how much"
+            },
+            {
+              "type": "p",
+              "text": "they constrain everything else"
+            },
+            {
+              "type": "p",
+              "text": "RISKS the 3 most likely reasons this does not work"
+            },
+            {
+              "type": "p",
+              "text": "Do not smooth over gaps. If something is underspecified, say so rather than choosing for me. I would rather see 10 open questions than a tidy document."
+            },
+            {
+              "type": "p",
+              "text": "‘Derived requirements’ is the highest-value section. It surfaces the consequences of your own constraints, which is where beginners are most often surprised."
+            },
+            {
+              "type": "p",
+              "text": "PROMPT — Bill of materials — types, not part numbers"
+            },
+            {
+              "type": "p",
+              "text": "From this specification, produce a bill of materials."
+            },
+            {
+              "type": "p",
+              "text": "SPEC: {paste spec.md}"
+            },
+            {
+              "type": "p",
+              "text": "RULES 1. List component TYPES and required specifications, not brand names and"
+            },
+            {
+              "type": "p",
+              "text": "not part numbers. I will source these myself. Good: \"brushed DC gearmotor, 6-12 V, &gt;= 30 kg-cm stall torque, 2 off\" Bad: \"XYZ-450 motor, Rs 380\" 2. Do NOT give prices. You do not have current pricing and I will check it. 3. Group by subsystem: structure / drive / power / sensing / control. 4. For each item state WHY that specification, tied to a constraint. 5. Add a column: \"have / need to buy / need to check\". 6. Flag anything that needs a tool or skill I have not mentioned having."
+            },
+            {
+              "type": "p",
+              "text": "Rules 1 and 2 exist because invented part numbers and prices are the most common and most costly hallucination in hardware projects."
+            },
+            {
+              "type": "p",
+              "text": "PROMPT — Control logic — state machine before code"
+            },
+            {
+              "type": "p",
+              "text": "I am building: {one line}. Hardware: {exact board, exact components}."
+            },
+            {
+              "type": "p",
+              "text": "STEP 1 - Do not write code yet. Describe the control logic as a state machine in plain language: every state, every transition, every trigger, and what happens in each state if the expected input never arrives."
+            },
+            {
+              "type": "p",
+              "text": "STEP 2 - After I approve it, write the code for {exact platform and library}. Requirements:"
+            },
+            {
+              "type": "p",
+              "text": "- every pin number in a named constant at the top - a comment on each pin saying what it connects to - a clearly marked block listing every assumption you made about my"
+            },
+            {
+              "type": "p",
+              "text": "hardware that I must verify before running this - safe behaviour on startup and on loss of input - it must not move"
+            },
+            {
+              "type": "p",
+              "text": "on power-up"
+            },
+            {
+              "type": "p",
+              "text": "Do not use libraries you have not named at the top of the file. Separating the logic from the code is what lets you find design errors before you are debugging syntax. Most beginner robotics failures are logic errors wearing a code costume."
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-5-4",
+          "number": "5.4",
+          "title": "Critique prompts — the most underused category",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "PROMPT — Attack my idea"
+            },
+            {
+              "type": "p",
+              "text": "Here is my concept and specification: {paste}"
+            },
+            {
+              "type": "p",
+              "text": "You are a sceptical senior engineer reviewing this before I spend money. Be specific and unkind about the design, not about me."
+            },
+            {
+              "type": "p",
+              "text": "1. The 3 reasons this most likely fails, in order of probability. 2. The single physical or practical constraint I have most likely"
+            },
+            {
+              "type": "p",
+              "text": "underestimated. 3. What the cheapest existing product that solves 80% of this costs, and"
+            },
+            {
+              "type": "p",
+              "text": "why someone would buy mine instead. If the honest answer is \"they wouldn't\", say that plainly. 4. Which of my stated assumptions would you test first, and what is the cheapest possible test? 5. One thing about this that is genuinely good and worth keeping."
+            },
+            {
+              "type": "p",
+              "text": "Do not soften anything in points 1-4. I am asking for this on purpose. Run this before every build decision. Point 3 kills more projects than anything else in this guide, and it kills them at zero cost, which is the best time for a project to die."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "6",
+      "title": "The Reality Check",
+      "intro": [
+        {
+          "type": "p",
+          "text": "At some point the renders stop teaching you anything. The Reality Check is the structured version of the question every maker eventually has to ask: what has to be true about the world for this to work, and which of those things have I actually checked?"
+        }
+      ],
+      "topics": [
+        {
+          "id": "imagination-to-life-6-1",
+          "number": "6.1",
+          "title": "The six gates",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "An idea passes to a real build when it clears all six. Score each honestly from 0 to 3. The gate you score lowest is your next lap — not the one you find most interesting."
+            },
+            {
+              "type": "p",
+              "text": "Gate The question 0 — unexamined 3 — cleared"
+            },
+            {
+              "type": "pre",
+              "text": "Desirability  Does anyone other than me want I have not asked a single person             Five people in the target situation described the\n                                                                                          problem to me unprompted, or reacted usefully to\n              this to exist?                        outside my own head                   a mock-up\nFeasibility   Can this be built with things that The hard part is hand-waved in my        I have found a working example of each hard\n                                                                                          subsystem, built by someone\n              exist?                                own description"
+            },
+            {
+              "type": "p",
+              "text": "Physics Do the numbers actually work? I have not done a single calculation Power, torque, weight, heat, bandwidth or throughput calculated to one significant figure and they close"
+            },
+            {
+              "type": "pre",
+              "text": "Cost          Can I afford the real version?        My BOM has prices I did not verify    Every line priced from a real supplier, plus 40%\n                                                                                          for the parts I will destroy\nSkill         Can I actually make this, or learn There is a step I am quietly hoping      I have done a smaller version of every technique\n                                                                                          involved, or found who can help\n              to in time?                           will resolve itself\nTime          Does it fit the time I really have?   My estimate assumes nothing goes      Estimated in units of work, then doubled, and it\n                                                    wrong                                 still fits my semester"
+            },
+            {
+              "type": "p",
+              "text": "A total under 10 out of 18 means keep prototyping on screen. 10–14 means build the riskiest part only. 15–18 means build it."
+            },
+            {
+              "type": "p",
+              "text": "The gate everyone skips is Physics"
+            },
+            {
+              "type": "p",
+              "text": "Not because it is hard, but because AI output makes it feel already handled. A render has no mass. Generated code has no current draw. A generated BOM does not check whether your motor can actually lift your payload."
+            },
+            {
+              "type": "p",
+              "text": "One significant figure is enough at this stage and it takes ten minutes. Will a 2,000 mAh battery run a 900 mA load for two hours? No — that is roughly one hour before losses, so the answer is no and your design just changed. Doing this arithmetic before the build is the difference between a prototype and a pile of parts."
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-6-2",
+          "number": "6.2",
+          "title": "Assumption mapping",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Before building anything, list every assumption your idea rests on and place each on two axes: how sure am I, and how badly does it hurt if I am wrong. Only one quadrant matters."
+            },
+            {
+              "type": "pre",
+              "text": " high       │                                       │\ncost\nof          │ RESEARCH LATER                        │ ★ TEST THIS FIRST ★\nbeing\nwrong       │ (important, but I'm                   │ (important AND uncertain)\n low        │ fairly confident)                     │\ncost\nof          │                                       │ \"the voice trigger works\nbeing\nwrong       │ \"it needs to be under                 │ across a room with a"
+            },
+            {
+              "type": "p",
+              "text": "│ 4 kg to carry upstairs\" │ ceiling fan running\""
+            },
+            {
+              "type": "p",
+              "text": "│ │"
+            },
+            {
+              "type": "p",
+              "text": "├──────────────────────────────┼──────────────────────────────"
+            },
+            {
+              "type": "p",
+              "text": "│ │"
+            },
+            {
+              "type": "p",
+              "text": "│ (confident and it barely │ (uncertain but cheap to be"
+            },
+            {
+              "type": "p",
+              "text": "│ matters) │ wrong about)"
+            },
+            {
+              "type": "p",
+              "text": "│ │"
+            },
+            {
+              "type": "p",
+              "text": "│ \"users prefer matte\" │ \"which shade of grey\""
+            },
+            {
+              "type": "p",
+              "text": "│ │"
+            },
+            {
+              "type": "p",
+              "text": "└──────────────────────────────┴──────────────────────────────"
+            },
+            {
+              "type": "p",
+              "text": "high confidence low confidence"
+            },
+            {
+              "type": "p",
+              "text": "The top-right quadrant is your entire next week. Everything else is procrastination with a to-do list."
+            },
+            {
+              "type": "p",
+              "text": "Figure 6.1 — Most people build the part they know how to build. The map exists to force you at the part you do not."
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-6-3",
+          "number": "6.3",
+          "title": "The riskiest-assumption test",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "You do not need a working prototype to test an assumption. You need the smallest thing that produces evidence. The rule: if you can learn it in three hours, do not spend three weeks."
+            },
+            {
+              "type": "p",
+              "text": "\"Voice works across a room with Play a recording from 4 m with 40 min a fan running\" a fan on, into any speech-to-text"
+            },
+            {
+              "type": "p",
+              "text": "app on your phone. No robot needed."
+            },
+            {
+              "type": "pre",
+              "text": "\"People with limited mobility        Show the annotated render to 5                   2 hrs\n would actually use this\"            people in that situation and ask\n                                     what they would use it for.\n                                     Their unprompted answer is data.\n\"The wheels clear a 15 mm            Tape 90 mm wheels to a loaded                    30 min\n threshold with a full cup\"          cardboard box and push it over\n                                     a real threshold. Watch the cup.\n\"A 3 kg payload is enough\"           Weigh the actual objects the user 10 min\n                                     would put on it."
+            },
+            {
+              "type": "p",
+              "text": "\"I can 3D print the cup gimbal\" Print the gimbal alone, today, 3 hrs"
+            },
+            {
+              "type": "p",
+              "text": "before designing anything around it."
+            },
+            {
+              "type": "p",
+              "text": "THE PATTERN: every test above removes a risk without building the thing. Four of the five need no electronics at all. Cardboard, tape, a phone and five conversations will de-risk more of a project than a month of CAD."
+            },
+            {
+              "type": "p",
+              "text": "If a test would take longer than three hours, you have not found the small version of it yet. Keep shrinking the test, not the ambition"
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-6-4",
+          "number": "6.4",
+          "title": "Physical versus software: different checks",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Physical build Software / app"
+            },
+            {
+              "type": "pre",
+              "text": "What is          Materials, lead time, mistakes you cannot undo            Your attention over months; almost nothing is unrecoverable\nexpensive\n                 Physics and Cost — they are unforgiving and               Desirability — it is easy to build for months for nobody\nThe killer gate  arithmetic\nCheapest useful  Cardboard, tape, a hand-drawn mock at real size           A clickable mock-up or even a static image put in front of five\ntest                                                                       people\nFirst real       One subsystem working alone on a bench                    One user completing one task without you sitting next to them\nmilestone\n                 Designing the whole enclosure before the                  Adding features because they are easy, before anyone has used\nThe trap         mechanism works                                           the first one"
+            },
+            {
+              "type": "p",
+              "text": "Reality check scorecard — rescore after every major lap"
+            },
+            {
+              "type": "p",
+              "text": "Date Desir. Feas. Physics Cost Skill Time Total Lowest gate → next action"
+            },
+            {
+              "type": "p",
+              "text": "Rescore at the end of each lap. If a score has not moved in two laps, you are working on the wrong gate — almost always because it is the comfortable one."
+            },
+            {
+              "type": "p",
+              "text": "EXERCISE — Run the check on your idea Ninety minutes. This is the chapter that decides what you do next. 1 Score all six gates. Be pessimistic; optimism here is expensive later. 2 List every assumption your idea rests on — aim for at least twelve. Place them on the map in §6.2. 3 Take the top-right assumption and design a test that takes under three hours and requires no fabrication. 4 Run it today. Not tomorrow. The test existing on paper is not the point. 5 Update spec.md and the iteration log with what you learned, then rescore. Write one line: build, keep prototyping, or stop"
+            },
+            {
+              "type": "p",
+              "text": "— and if it is stop, write what you would need to see to restart it."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "7",
+      "title": "From Prototype to Real Build",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Fidelity should rise only as fast as your certainty. Every hour spent making something look finished before you know it works is an hour spent making it harder to change."
+        }
+      ],
+      "topics": [
+        {
+          "id": "imagination-to-life-7-1",
+          "number": "7.1",
+          "title": "Five levels of fidelity",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Level What it is What it proves Move up when"
+            },
+            {
+              "type": "p",
+              "text": "1. Sketch Pen and paper, ten minutes That you can describe the thing at all You can draw it twice the same way"
+            },
+            {
+              "type": "pre",
+              "text": "2. AI mock     Render, generated geometry,          That the concept is discussable and  Someone has criticised it usefully\n               generated code skeleton              roughly proportioned\n3. Crude       Cardboard, tape, a breadboard, a     Scale, ergonomics, and whether the   The riskiest assumption has been tested\nphysical       paper interface at real size         mechanism can work at all            (§6.3)\n4. Functional Real parts, ugly, does the actual job That it works. Not that it is nice   It has done the job five times in a row,\n                                                                                         unattended\nprototype      once\n5. Real build  Made properly, survives handling,    That it works without you standing next —\n               someone else can use it              to it"
+            },
+            {
+              "type": "p",
+              "text": "Level 3 is the one students skip, and it is the cheapest level in the whole table. A cardboard mock at true size answers questions that no render can."
+            },
+            {
+              "type": "p",
+              "text": "Ugly and working beats beautiful and theoretical"
+            },
+            {
+              "type": "p",
+              "text": "A level-4 prototype should look bad. Exposed wires, hot glue, a project box with holes filed by hand. That is not a shortcoming; it is a correctly allocated budget of effort. Spending a week on the enclosure before the mechanism works is the most common way a project runs out of time — and the enclosure will need redesigning anyway once the mechanism changes, which it will."
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-7-2",
+          "number": "7.2",
+          "title": "Sourcing in India, practically",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Route Best for Watch for"
+            },
+            {
+              "type": "pre",
+              "text": "Local electronics            Lamington Road (Mumbai), SP Road (Bengaluru),    Specifications are approximate. Test before you leave the\nmarket                       Nehru Place (Delhi), Ritchie Street (Chennai) —  shop where you can\n                             common components, same day, and shopkeepers\n                             who will tell you your plan is wrong\nRoute                        Best for                                              Watch for\nIndian\nhobby-electronics            Modules, sensors, motors, boards, with usable         Prices are higher than the market; lead times vary. Order\nretailers                    documentation and delivery anywhere                   spares in the same order\nComponent\ndistributors                 Actual datasheets and verified specifications when Minimum orders and import time. Worth it only for the parts\nCollege lab or\nmakerspace                   a parameter genuinely matters                         that must be right\nSalvage                      3D printing, laser cutting, oscilloscopes, soldering  Ask early and ask a person, not a noticeboard. Access is\n                             stations — usually free and usually underused.        usually a relationship\n                             Atal Tinkering Labs, FabLabs and department labs\n                             all count\n                             Motors, gears, power supplies, enclosures from        The best free source of mechanical parts, and the fastest way\n                             dead printers, drives and appliances                  to learn how things are actually made"
+            },
+            {
+              "type": "p",
+              "text": "Order spares of anything you can destroy. You will destroy at least one motor driver, one sensor and one microcontroller. Budgeting for this in advance is the difference between a two-day delay and a two-week one, and it is the single most common reason student builds stall."
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-7-3",
+          "number": "7.3",
+          "title": "The build log",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "One file. Every session. It costs two minutes and it is the difference between a project you can hand over, write up, or return to after exams — and a pile of parts whose wiring you no longer remember."
+            },
+            {
+              "type": "p",
+              "text": "Build log"
+            },
+            {
+              "type": "p",
+              "text": "Date What I did What broke Why Fix / next"
+            },
+            {
+              "type": "p",
+              "text": "Photograph the wiring before you take anything apart. Every single time. This is the advice makers repeat most often because it is the mistake everyone makes exactly once."
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-7-4",
+          "number": "7.4",
+          "title": "Knowing when to stop",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• It does the job you specified in §2.2. Not every job you thought of afterwards — the one you wrote down. Scope grows silently and finishing is a skill."
+            },
+            {
+              "type": "p",
+              "text": "• Someone else has used it without you explaining it. This is the real test and it is uncomfortable to run. Do it anyway."
+            },
+            {
+              "type": "p",
+              "text": "• The next improvement costs more than it returns. Write the remaining ideas in the log under ‘v2’ and stop. A finished level-4 prototype is worth more than an abandoned level-5 one."
+            },
+            {
+              "type": "p",
+              "text": "• You have learned what you came to learn. Sometimes the honest answer is that the project taught you what you needed and finishing it would teach you nothing more. Write that down explicitly and move on without guilt — an abandoned project with a written conclusion is a completed experiment."
+            },
+            {
+              "type": "p",
+              "text": "Show the process, not only the result When you write this up — for a portfolio, a report, an interview — the iteration log and the rejected options are more impressive than the final photograph. Anyone can post a render. Showing that you generated ten options, scored them against criteria you wrote first, tested your riskiest assumption with cardboard, and abandoned two approaches for stated reasons demonstrates judgement, which is the thing that is actually scarce. Keep the failed versions. Photograph them. They are evidence in the sense of Chapter 4 of the personal-branding guide: specific, checkable, and much harder to fake than a finished object."
+            },
+            {
+              "type": "p",
+              "text": "EXERCISE — Get to level 3 this week Two evenings. Cardboard and tape only — no purchasing allowed. 1 Build your idea at full size in cardboard, paper and tape. Wrong in every detail, right in dimensions. 2 Put it where it would actually live. On the desk, in the doorway, in the hand. Photograph it there. 3 Perform the task with it manually, pushing it yourself. Note every awkward moment — those are your real design problems"
+            },
+            {
+              "type": "p",
+              "text": "and none of them appeared in the render. 4 Show it to one person in the target situation. Say nothing. Watch what they do with it first. 5 Update the spec, the log and the reality-check score. Then decide the next single subsystem to build for real — one, not"
+            },
+            {
+              "type": "p",
+              "text": "the whole thing."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "A",
+      "title": "Reference",
+      "intro": [],
+      "topics": [
+        {
+          "id": "imagination-to-life-A-1",
+          "number": "A.1",
+          "title": "Prompt index",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "                                                    Analogy transfer                             §5.1\n When you are…                                      Inversion                                    §5.1\n Stuck for directions                               Constraint escalation                        §5.1\n Suspicious that your idea is obvious               Batch divergence                             §3.2\n Getting bland, interchangeable output              The six slots for image prompts              §5.2\n Needing ten real options fast                      Concept → specification                      §5.3\n Trying to see it\n Turning a concept into something                   Bill of materials — types, not part numbers  §5.3\n buildable                                          CadQuery parametric code                     §4.5\n Working out what to buy                            State machine before code                    §5.3\n Needing geometry you can edit                      Attack my idea                               §5.4\n Writing firmware or control logic\n About to spend money"
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-A-2",
+          "number": "A.2",
+          "title": "Tools by job",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The job What to look for Honest limitation"
+            },
+            {
+              "type": "pre",
+              "text": "Thinking,         Any capable chat model with a long context so It agrees with you too readily. Ask it to attack, explicitly\nspecifying,       your whole spec fits\ncritiquing\nConcept imagery   Any image generator that respects negative      No interior, no dimensions, no physics. It draws\n                  prompts and lets you fix a style\nReading your sketch A vision-capable chat model                   Cannot measure from a photograph\nor build photo\nQuick 3D shape    Text-to-3D tools — fastest path from words to Mesh output, not editable engineering geometry (§4.5)\n                  something on screen"
+            },
+            {
+              "type": "p",
+              "text": "Editable parametric CadQuery (Python, free) with a model writing Good for simple parts; complex assemblies still need real CAD skill"
+            },
+            {
+              "type": "p",
+              "text": "geometry the script; FreeCAD to inspect and extend"
+            },
+            {
+              "type": "pre",
+              "text": "Code              Any coding assistant, given your exact board    Invents pin numbers and library APIs. Verify every hardware\n                  and libraries                                   assumption\nVoice interface   On-device speech recognition if you need        Degrades badly with accents, noise and fans — test in the real\n                  offline; cloud if you need accuracy             room"
+            },
+            {
+              "type": "p",
+              "text": "Named tools change constantly; the jobs do not. Choose by job, then check the tool still does what you expect before you plan around it."
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-A-3",
+          "number": "A.3",
+          "title": "A thirty-day plan",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Days      Do                                                 You will have\n                                                             A rung-3 spec with at least four numbers in it\n1–2       §1.4 pick one idea · §2.2 climb the specificity"
+            },
+            {
+              "type": "p",
+              "text": "ladder"
+            },
+            {
+              "type": "pre",
+              "text": "Days       Do                                               You will have\n3–4        §3.3 criteria · §3.2 batch divergence · score    Ten options, one chosen, one weird one kept alive\n5–7        §4.3 run a full multimodal chain                 spec.md, an annotated render, parametric geometry, a BOM, a control\n                                                            skeleton\n8–10       §6.1 score the six gates · §6.2 map              A scorecard and a ranked list of what you do not know\n           assumptions\n11–14                                                       Evidence instead of opinion, and probably a changed design\n           §6.3 run three cheap tests on your riskiest\n15–18      assumptions                                      The level-3 mock and a list of problems no render showed you\n19–26                                                       One thing that works on a bench\n27–30      §7.1 build it in cardboard, full size (level 3)  A decision: build, iterate, or stop — all three are results"
+            },
+            {
+              "type": "p",
+              "text": "Build the single riskiest subsystem for real"
+            },
+            {
+              "type": "p",
+              "text": "Rescore the gates · write the build log up"
+            }
+          ]
+        },
+        {
+          "id": "imagination-to-life-A-4",
+          "number": "A.4",
+          "title": "Glossary",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Term Meaning"
+            },
+            {
+              "type": "p",
+              "text": "Specificity ladder Feeling → description → specification → executable instruction"
+            },
+            {
+              "type": "p",
+              "text": "Travelling spec One text file carrying every decision through every tool"
+            },
+            {
+              "type": "p",
+              "text": "Divergence / convergence Generating without judging, then judging without generating"
+            },
+            {
+              "type": "p",
+              "text": "Variation axis A dimension you deliberately vary options along"
+            },
+            {
+              "type": "p",
+              "text": "Riskiest-assumption test The cheapest experiment that could change your mind"
+            },
+            {
+              "type": "p",
+              "text": "Mesh Geometry as a shell of triangles — viewable, printable, not editable"
+            },
+            {
+              "type": "p",
+              "text": "Parametric model Geometry defined by dimensions you can change and regenerate"
+            },
+            {
+              "type": "p",
+              "text": "STEP / STL Editable solid exchange format / triangle mesh format"
+            },
+            {
+              "type": "p",
+              "text": "BOM Bill of materials: every part needed, with its specification"
+            },
+            {
+              "type": "p",
+              "text": "Fidelity How finished a prototype is — should trail your certainty, not lead it"
+            },
+            {
+              "type": "p",
+              "text": "Level-3 mock Full-size cardboard version; the cheapest useful prototype there is"
+            },
+            {
+              "type": "p",
+              "text": "Build log Dated record of what you did, what broke and why"
+            },
+            {
+              "type": "p",
+              "text": "A note on the geometry claims in §4.5. The limitation described there — that most text-to-3D tools output mesh rather than parametric solids, and that the result is a shape rather than an engineering design — reflects the state of the field in 2026, where the parametric gap remains the main obstacle to production use even as output quality improves. This is an active area and it will change. Re-check it before you rely on it, and treat any tool’s demo as the best case rather than the typical one."
+            },
+            {
+              "type": "p",
+              "text": "And the only instruction that really matters. The techniques here compress the distance between having an idea and holding one, but they do not remove the part where you make something badly, look at it, and feel the gap between what you imagined and what you made. That gap is not a sign you chose wrong. It is the sensation of your taste being ahead of your hands, which is the correct order and the only one that improves. Generate more, keep the log, test the thing you are avoiding, and let most of your ideas die on paper so that one of them gets to exist."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

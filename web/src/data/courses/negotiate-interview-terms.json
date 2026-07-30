@@ -1,0 +1,1368 @@
+{
+  "slug": "negotiate-interview-terms",
+  "title": "How to Negotiate Terms in an Interview",
+  "tagline": "Ask for what you're worth — and get it. Value first, ask second, and know your leverage.",
+  "modules": [
+    {
+      "number": "1",
+      "title": "What You Are Actually Negotiating",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Before you learn a single script, two questions decide everything: do you have leverage, and is the offer actually low? Most graduates get both wrong — they assume no leverage when they have some, and they assume an offer is good because the CTC number sounds large."
+        }
+      ],
+      "topics": [
+        {
+          "id": "negotiate-interview-terms-1-1",
+          "number": "1.1",
+          "title": "CTC is not salary — learn this before anything else",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The single most valuable page in this guide Your in-hand pay is typically 65–75% of CTC. A quick estimate: (CTC × 0.70) ÷ 12. So a ₹6 LPA offer is roughly ₹35,000 a month, not ₹50,000 — and graduates routinely plan their rent around the wrong number. What sits inside CTC but never reaches your bank account: employer PF contribution (locked until retirement), gratuity (payable only after five years, so it vanishes if you leave earlier), variable or performance pay (commonly 10–20% of CTC, paid only if targets are met), medical insurance premium, and sometimes a retention bonus payable after two or three years. The structural difference by company type: when a product company offers ₹25 LPA they usually mean a largely fixed ₹25 LPA. When a service company offers ₹12 LPA, the fixed component is often nearer ₹9 LPA. Two offers with the same CTC can differ by lakhs in what you actually receive."
+            },
+            {
+              "type": "p",
+              "text": "Ask HR this, in writing Why it matters"
+            },
+            {
+              "type": "p",
+              "text": "“What is the fixed component of the CTC?” This is the number to compare across offers. Everything else is conditional"
+            },
+            {
+              "type": "p",
+              "text": "“What is the variable component, and what Company-wide targets that have missed for three years are not compensation triggers it?”"
+            },
+            {
+              "type": "pre",
+              "text": "“Is there a retention or joining bonus, and       A bonus payable at 24 months is not part of year-one pay, and may carry a clawback\nwhen is it payable?”\n“What is the expected monthly in-hand             Ask for the figure. A good HR team will give it; hesitation is itself information\nafter statutory deductions?”\n“When is the first appraisal, and is it           Joining in March at a company with an April cycle can mean waiting thirteen months or\ncalendar-linked or joining-linked?”               getting a pro-rated token"
+            },
+            {
+              "type": "p",
+              "text": "“Is there a service agreement or bond, and Bonds are still common in some sectors. Read the number before you sign what is the exit cost?”"
+            },
+            {
+              "type": "p",
+              "text": "Asking these is not aggressive — it is competence, and experienced recruiters read it that way. Ask them by email so you have the answers in writing."
+            }
+          ]
+        },
+        {
+          "id": "negotiate-interview-terms-1-2",
+          "number": "1.2",
+          "title": "Which game are you playing?",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Situation       Salary negotiable?                What you can move                     Approach\nOn-campus\nplacement       Usually no. The package is fixed  Role and team allocation, base        Accept the number graciously; negotiate\n                in the recruiter–placement cell   location, joining date, training      everything else, and only through the\nOff-campus      agreement, and pushing may        track                                 channel your placement cell permits\nfresher         breach placement policy\n                                                  Salary at the margin, joining         Value first, then one specific ask backed by\n                Sometimes, at the margin —\n                typically 5–15% if you have a     bonus, location, role, joining date evidence\n                genuine reason\nLateral, 2–5    Yes. This is where most real      Everything: fixed pay, title, level,  The full framework in this guide applies\nyears           negotiation happens               team, remote arrangement,\n                                                  notice buyout                         You have leverage. Use it calmly and\nSenior / niche  Yes, substantially                                                      precisely\nskills                                            All of the above, plus scope,\n                                                  reporting line, budget and equity"
+            }
+          ]
+        },
+        {
+          "id": "negotiate-interview-terms-1-3",
+          "number": "1.3",
+          "title": "Your leverage inventory",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Leverage is not confidence. It is a set of facts. Score yourself honestly — this single page determines how hard you can reasonably push."
+            },
+            {
+              "type": "p",
+              "text": "Source of leverage Score 0 Score 2"
+            },
+            {
+              "type": "p",
+              "text": "A competing offer None A written offer you would genuinely accept"
+            },
+            {
+              "type": "pre",
+              "text": "Scarce, demonstrable    Same profile as 400 other applicants  Something specific and checkable that they are hiring for\nskill"
+            },
+            {
+              "type": "p",
+              "text": "Ability to walk away You need this job this month You have runway, or a current job you can stay in"
+            },
+            {
+              "type": "pre",
+              "text": "Being late in their     First interview                       Final round — they have invested weeks and rejecting you restarts a\nprocess                                                       search\nA referral or internal  Cold application                      Someone inside who wants you hired\nadvocate"
+            },
+            {
+              "type": "p",
+              "text": "Evidence of impact A CV of responsibilities Numbers and artefacts you can show (§3.2)"
+            },
+            {
+              "type": "p",
+              "text": "9–12: negotiate properly, and expect to win something. 5–8: one specific, well-justified ask — no more. 0–4: negotiate terms, not salary (Chapter 5), accept gracefully, and spend the next eighteen months moving this score."
+            },
+            {
+              "type": "p",
+              "text": "The most reliable way to raise your score"
+            },
+            {
+              "type": "p",
+              "text": "Get a second offer. Nothing else moves the needle as much, and nothing else is as widely available. Two live processes in parallel changes your behaviour before it changes anything else — you stop over-explaining, you stop conceding unprompted, and the other side can hear it."
+            },
+            {
+              "type": "p",
+              "text": "The second most reliable: be genuinely good at something specific and be able to show it. In 2026 the skills carrying visible premiums in Indian engineering hiring are system design, strong DSA, distributed systems, cloud beyond the basics, and production AI engineering — the last commanding a substantial premium over equivalent-experience backend work, because production experience is genuinely scarce."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "2",
+      "title": "How Indian Negotiations Actually Work",
+      "intro": [
+        {
+          "type": "p",
+          "text": "The same sentence lands differently in a Bengaluru HR round than in a negotiation textbook. Four cultural features shape almost every conversation you will have, and working with them is far more effective than pushing against them."
+        },
+        {
+          "type": "p",
+          "text": "CULTURAL CONTEXT — Hierarchy: the person opposite may not be able to say yes"
+        },
+        {
+          "type": "p",
+          "text": "Why your best argument sometimes produces ‘I will check and revert’"
+        },
+        {
+          "type": "p",
+          "text": "WHAT IS In many Indian companies, compensation bands are owned by HR and approvals sit two levels above the"
+        },
+        {
+          "type": "p",
+          "text": "HAPPENING person in the room. The recruiter is often a messenger with a range, not a decision-maker with a budget."
+        },
+        {
+          "type": "pre",
+          "text": "WHY IT     Pressing harder on someone with no authority does not produce a better offer. It produces discomfort, and\nMATTERS    discomfort in a hierarchy travels upward as ‘this candidate was difficult’."
+        },
+        {
+          "type": "p",
+          "text": "WHAT TO DO Make it easy for them to advocate for you. Give them the written justification they can forward — a short,"
+        },
+        {
+          "type": "p",
+          "text": "INSTEAD specific, forwardable case. You are not negotiating with them; you are arming them."
+        },
+        {
+          "type": "pre",
+          "text": "THE        “I understand the band may not be yours to change. Would it help if I put my case in two lines by email, so you\nSENTENCE   can share it with whoever needs to see it?”\nTHIS"
+        },
+        {
+          "type": "p",
+          "text": "What to take from this: Identify early whether you are talking to a messenger or a decision-maker, and change your tactic accordingly. With a messenger, your goal is a document. With a decision-maker, your goal is a conversation."
+        },
+        {
+          "type": "p",
+          "text": "CULTURAL CONTEXT — Indirect communication: learning to hear a no"
+        },
+        {
+          "type": "p",
+          "text": "‘We will see’, ‘let me check’, ‘that should not be a problem’"
+        },
+        {
+          "type": "p",
+          "text": "WHAT IS Direct refusal is often avoided because it causes loss of face on both sides. A soft phrase is frequently a polite"
+        },
+        {
+          "type": "p",
+          "text": "HAPPENING no, or a genuine maybe that will decay into a no through silence."
+        },
+        {
+          "type": "pre",
+          "text": "HOW TO     ‘Let me check with the team’ with a date attached is real. Without a date, it is usually a no. ‘That should\nREAD IT    not be a problem’ is not a commitment. ‘We do not normally do that’ means an exception exists and you\n           have not yet given them a reason."
+        },
+        {
+          "type": "p",
+          "text": "WHAT TO DO Convert softness into specifics without confrontation. Attach a date and a written record to everything, warmly. This is not distrust; it is how ambiguity gets resolved without anyone losing face."
+        },
+        {
+          "type": "pre",
+          "text": "THE        “That is very helpful, thank you. So I have it right — you will confirm the joining bonus by Friday, and I will hold\nSENTENCE   my decision until then. Shall I drop you a short note capturing that?”"
+        },
+        {
+          "type": "p",
+          "text": "What to take from this: Never treat a soft yes as a yes. Get it in the written offer, because what is not in the offer letter does not exist — and the person who promised it may not be in that role next year."
+        },
+        {
+          "type": "p",
+          "text": "CULTURAL CONTEXT — Relationship before transaction"
+        },
+        {
+          "type": "p",
+          "text": "Why the Indian tech network is smaller than you think"
+        },
+        {
+          "type": "p",
+          "text": "WHAT IS Hiring circles in Indian engineering are tight. Recruiters move between companies, hiring managers stay in"
+        },
+        {
+          "type": "p",
+          "text": "HAPPENING touch, and a reputation for being difficult travels through a city’s ecosystem faster than a good one does."
+        },
+        {
+          "type": "pre",
+          "text": "WHAT THIS  It does not mean you should accept anything you are offered. Reasonable, well-evidenced negotiation is normal\nDOES NOT   and respected — and a good hiring manager expects it from a strong candidate.\nMEAN\n           Tone carries as much weight as content. The same ask delivered warmly and once is professional;\nWHAT IT    delivered coldly, or repeated three times, becomes a story about you. And you never renege after accepting in\nDOES MEAN  writing — that is the one act the network genuinely remembers."
+        },
+        {
+          "type": "p",
+          "text": "THE POSTURE Collaborative, not adversarial. You are two people trying to make one thing work, not two sides splitting a pie."
+        },
+        {
+          "type": "p",
+          "text": "What to take from this: Negotiate as though you will work with this person for five years, because in the Indian market there is a real chance you will — at this company or the next one."
+        }
+      ],
+      "topics": [
+        {
+          "id": "negotiate-interview-terms-2-1",
+          "number": "2.1",
+          "title": "Face-saving: give them a way to say yes",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The most useful cultural skill in this guide. A negotiation fails when the other side cannot concede without appearing to have been beaten. Your job is to build them a path where saying yes looks like good judgement rather than capitulation."
+            },
+            {
+              "type": "p",
+              "text": "SCRIPT — Three ways to make yes easy"
+            },
+            {
+              "type": "p",
+              "text": "“I completely understand the band. The reason I am asking is that the role includes the deployment ownership we discussed, which is a level above what the posting described — so I wanted to check whether the band reflects that scope.”"
+            },
+            {
+              "type": "p",
+              "text": "“If the fixed component is genuinely capped, I understand. Would a one-time joining bonus or an early review at six months be easier on your side? I am flexible on the form.”"
+            },
+            {
+              "type": "p",
+              "text": "“The gap for me is really the relocation cost in the first two months. If that can be covered in some way, the rest works comfortably.”"
+            },
+            {
+              "type": "p",
+              "text": "DON’T SAY"
+            },
+            {
+              "type": "p",
+              "text": "“That offer is well below market. I know for a fact people at your level get more than that.”"
+            },
+            {
+              "type": "p",
+              "text": "The rejected version may even be factually true. It still loses, because it forces the other person to defend their company rather than solve your problem."
+            }
+          ]
+        },
+        {
+          "id": "negotiate-interview-terms-2-2",
+          "number": "2.2",
+          "title": "When to push, when to stop",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Push when Stop when"
+            },
+            {
+              "type": "p",
+              "text": "You have a competing offer, or a genuinely scarce skill You have made the same ask twice and received the same answer"
+            },
+            {
+              "type": "p",
+              "text": "The role has expanded beyond the posting They have said the band is fixed and explained why"
+            },
+            {
+              "type": "p",
+              "text": "Your evidence is specific and checkable The tone shifts — shorter replies, longer gaps, a colder register"
+            },
+            {
+              "type": "p",
+              "text": "You are in the final round and they have invested weeks You are negotiating on principle rather than on need"
+            },
+            {
+              "type": "p",
+              "text": "You are asking once, on one or two things You have already got a meaningful improvement. Take the win"
+            },
+            {
+              "type": "p",
+              "text": "The one-ask rule for freshers and juniors: make your case once, clearly, in writing. If it is declined, accept warmly and immediately. A single well-made ask reads as professional; a second reads as a problem."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "3",
+      "title": "Value First, Ask Second",
+      "intro": [
+        {
+          "type": "p",
+          "text": "The sequence is the whole framework. Every rupee you are offered is priced against their estimate of your value, and that estimate is largely fixed before compensation is ever discussed. Negotiating after a low estimate is hard. Raising the estimate first is easy, and almost nobody does it deliberately."
+        }
+      ],
+      "topics": [
+        {
+          "id": "negotiate-interview-terms-3-1",
+          "number": "3.1",
+          "title": "Why the order matters",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• You are negotiating against an anchor you helped set. By the time HR quotes a number, the hiring manager has already placed you in a band. That placement happened during the technical rounds — which means your negotiation began in round one, whether you knew it or not."
+            },
+            {
+              "type": "p",
+              "text": "• A specific ask needs a specific justification. ‘I would like more’ has no answer. ‘The role includes owning deployments, which was not in the posting’ has one. The justification has to be established before you use it."
+            },
+            {
+              "type": "p",
+              "text": "• Reciprocity is real and it is sequential. People who have already invested in you — spent five hours interviewing, imagined you on the team, told a colleague they found someone — work harder to keep you. That investment accrues over the process and is at its peak immediately after the final round, which is exactly when the offer arrives."
+            },
+            {
+              "type": "p",
+              "text": "• Deflecting early is cheap; retracting later is not. A number you name in round one becomes your ceiling. A number you name after they have decided they want you becomes a starting point."
+            }
+          ]
+        },
+        {
+          "id": "negotiate-interview-terms-3-2",
+          "number": "3.2",
+          "title": "The three proof moments",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Moment What to do What it buys you"
+            },
+            {
+              "type": "pre",
+              "text": "1. The technical  Do not just answer — narrate your reasoning, name  Moves you from ‘can code’ to ‘can be trusted with a system’, which\nround             the trade-off you rejected, and state what you     is a band, not an adjective\n                  would check before shipping. Judgement is scarcer\n2. The manager    than knowledge                                     You become a person solving their problem rather than a candidate\nconversation                                                         seeking a role\n                  Ask what would make the first six months a\n3. The evidence   success, then say specifically how you would       Specificity is what makes a claim survive a hiring committee you\nartefact          approach it. Use the questions in §3.4             will never meet"
+            },
+            {
+              "type": "p",
+              "text": "One checkable thing — a repository, a deployed project, a measured result, a written teardown. Referenced naturally, not brandished"
+            },
+            {
+              "type": "p",
+              "text": "Evidence beats adjectives, every time"
+            },
+            {
+              "type": "p",
+              "text": "‘I am a hard worker and a quick learner’ asks the interviewer to take your word and to judge your character. ‘I rewrote our onboarding emails and completion went from 31% to 52% over six weeks’ asks them to assess a fact."
+            },
+            {
+              "type": "p",
+              "text": "The second sentence makes a bigger claim and reads as more modest, because you have handed the conclusion to them. This is the entire technique, and it is what makes the ask in Chapter 4 land — you are not asking them to believe you are worth more, you are pointing at something and letting them work it out."
+            }
+          ]
+        },
+        {
+          "id": "negotiate-interview-terms-3-3",
+          "number": "3.3",
+          "title": "Deflecting the early salary question",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "You will be asked for a number early, often in the first screening call, sometimes on a form. Answering it precisely, before they have decided they want you, is the most common and most expensive mistake in this entire process."
+            },
+            {
+              "type": "p",
+              "text": "SCRIPT — When they ask your expectation in round one"
+            },
+            {
+              "type": "p",
+              "text": "“I am still learning what the market looks like for this specific role, and I would rather understand the scope first. Could you tell me the band you have in mind for this position? I am fairly confident we will be in the same range.”"
+            },
+            {
+              "type": "p",
+              "text": "“Based on what I have seen for similar roles in Bengaluru, I have been looking at something in the ₹X to ₹Y range — but I would want to understand the role better before being firm about that.”"
+            },
+            {
+              "type": "p",
+              "text": "“My current fixed is ₹X. What matters more to me is the scope — this role looks like a level up in ownership, so I would expect the range to reflect that. What band is budgeted?”"
+            },
+            {
+              "type": "p",
+              "text": "“I would prefer to be evaluated on what the role is worth rather than on what I was paid previously. I am happy to tell you my expectation for this role — would that work?”"
+            },
+            {
+              "type": "p",
+              "text": "DON’T SAY"
+            },
+            {
+              "type": "p",
+              "text": "“I am flexible, whatever the company thinks is fair.”"
+            },
+            {
+              "type": "p",
+              "text": "The rejected line feels safe and costs the most. It transfers the entire decision to them and signals you have no basis for a view — which is precisely the estimate they will then act on."
+            }
+          ]
+        },
+        {
+          "id": "negotiate-interview-terms-3-4",
+          "number": "3.4",
+          "title": "Questions that raise your estimate while you ask them",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• ‘What does success in this role look like at six months?’ — converts a job description into a success definition. Half of interviewers have not articulated it, and helping them do so is the first piece of work you do for them."
+            },
+            {
+              "type": "p",
+              "text": "• ‘What has been tried here already that did not work?’ — the highest-value question available. It surfaces the real constraints and is impossible to ask from a supplicant posture."
+            },
+            {
+              "type": "p",
+              "text": "• ‘Why is this role open now?’ — growth, backfill, or someone burning out. You need this to evaluate the offer, and asking it signals that you are evaluating too."
+            },
+            {
+              "type": "p",
+              "text": "• ‘What would make you hesitate about me?’ — uncomfortable and extremely effective. It surfaces the objection while you are still in the room to answer it, rather than after you have left."
+            },
+            {
+              "type": "p",
+              "text": "PRACTISE THIS — Build your value case before you need it Ninety minutes. Do this before your next interview, not after the offer. 1 Write three pieces of evidence from §3.2: for each, the claim, the checkable number or artefact, and who it mattered to. 2 Cut every adjective describing yourself. If a sentence survives without ‘hard working’, ‘passionate’ or ‘quick learner’, it was"
+            },
+            {
+              "type": "p",
+              "text": "doing real work. 3 Write your deflection line from §3.3 word for word and say it aloud ten times, until it sounds boring rather than defensive. 4 Research your band before any interview: check three sources for your role, city and company type, and write down a"
+            },
+            {
+              "type": "p",
+              "text": "range with a number you can defend at each end. 5 Prepare the four questions from §3.4. Ask at least two in your next interview and note how the conversation changes."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "4",
+      "title": "Exercise 1 — Answering a Lowball",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Before you respond to a low offer, establish that it is actually low. Half the offers graduates call insulting are simply the market rate for their profile, and arguing against the market makes you look uninformed rather than undervalued."
+        }
+      ],
+      "topics": [
+        {
+          "id": "negotiate-interview-terms-4-1",
+          "number": "4.1",
+          "title": "Where the market sat in 2026",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Read the caveat before the table These are orientation ranges compiled from Indian compensation reporting in early to mid 2026. They go stale quickly, the spread within every band is enormous, and your specific number depends on your college tier, your demonstrable skills, your city and the company’s type far more than on your years of experience. Use them to locate yourself roughly, then verify against three current sources — a salary aggregator, people one or two years ahead of you in the same company type, and the actual job posting. Walking in with a stale number is worse than walking in with none."
+            },
+            {
+              "type": "pre",
+              "text": "Profile                            All figures    Note\n                                   annual CTC\nFresher — IT services, standard    ₹3.5–5 LPA     The largest hiring volume in the country by far. Rarely negotiable, especially\ntrack                                             on-campus\nFresher — IT services, premium     ₹7.5–11 LPA    Digital/Prime-style tracks. Reached through the company’s own qualifying test, not\ntrack                                             through negotiation\nFresher — general software role    ₹4–6 LPA       The broad middle\nFresher — demonstrable skills      ₹7–10 LPA      Competitive programming, real open-source contributions, shipped projects\nFresher — product startup          ₹8–14 LPA      Wide variance; check the fixed component carefully\nFresher — top product company      ₹15–25 LPA     The top decile of freshers, roughly ₹15–21 LPA and above\n3–5 years — IT services            ₹4–10 LPA      The ceiling here is the reason lateral moves are so common\n3–5 years — product company        ₹14–28 LPA     The single biggest jump available to most Indian engineers\n3–5 years — global MNC / GCC       ₹22–45 LPA     Highest bar, strongest brand signal\n3–5 years — median across all      ₹10–14 LPA     Useful sanity check on any offer\ntypes\nModifier                    Effect                           What it means for your ask\nProduct company vs IT       roughly 1.5–2×                   The largest single lever available. Often bigger than anything you can\nservices                                                     negotiate\nTier-1 city vs Tier-2       15–25% higher in Tier-1          Do not compare a Bengaluru offer to a Coimbatore benchmark\nStrong DSA (fresher)        large multiplier at the top end  The primary filter for product-company bands\nSystem design               +40–70%                          The main barrier to ₹25 LPA+ at any product company\nDistributed systems, cloud  +25–50%                          Specific, checkable and currently in demand\ndepth\nProduction AI engineering   substantial premium over         Genuine scarcity of production experience, distinct from theoretical ML\n                            equivalent backend\nSwitching vs staying        30–60% on a switch, against      The uncomfortable arithmetic: your best negotiation may be with a different\n                            roughly 9% annual hikes          employer in two years"
+            }
+          ]
+        },
+        {
+          "id": "negotiate-interview-terms-4-2",
+          "number": "4.2",
+          "title": "Diagnose before you respond",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "IS THIS ACTUALLY A LOWBALL? Work through in order."
+            },
+            {
+              "type": "p",
+              "text": "1. CONVERT TO FIXED. Ask for the fixed component (1.1). Compare fixed against fixed. A \"12 LPA\" with 9 fixed is not a 12 LPA offer."
+            },
+            {
+              "type": "p",
+              "text": "2. LOCATE IT. Find your row in 4.1, then apply the modifiers for company type and city. Write down the range you land in."
+            },
+            {
+              "type": "pre",
+              "text": "3. COMPARE.                                       -&gt; it is market. Negotiate\n         Offer is INSIDE the range                     terms (ch 5), not salary."
+            },
+            {
+              "type": "p",
+              "text": "Offer is 10-20% BELOW -&gt; a reasonable, evidenced ask is likely to land. Offer is 30%+ BELOW -&gt; either they have mis-levelled you, or the role is not what you thought. ASK WHICH - do not counter yet."
+            },
+            {
+              "type": "p",
+              "text": "4. CHECK THE LEVEL, NOT JUST THE NUMBER. Being offered a band below your experience is a levelling problem, and levelling is often easier to fix than money - it is a category error rather than a budget decision."
+            },
+            {
+              "type": "p",
+              "text": "A 10% difference on Rs 6 LPA is Rs 60,000 a year - about Rs 3,500 a month in hand. Worth one clean, well-made ask. Not worth three rounds, a damaged relationship, or a withdrawn offer. A 10% difference on Rs 24 LPA is Rs 2.4 lakh. Push properly."
+            },
+            {
+              "type": "p",
+              "text": "Step 1 alone resolves a large share of ‘lowball’ offers — in both directions. Some offers are worse than they look, and some are better"
+            }
+          ]
+        },
+        {
+          "id": "negotiate-interview-terms-4-3",
+          "number": "4.3",
+          "title": "The counter structure",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Every effective counter has the same four parts, in this order. Deviating from the order is what makes an ask sound like a complaint."
+            },
+            {
+              "type": "pre",
+              "text": "1. APPRECIATE   Genuine, brief, specific. One sentence.\n2. COMMIT       Signal you want the role. Removes the fear that you\n                are shopping the offer, which is what makes HR\n3. ASK          defensive.\n4. OPEN A DOOR  ONE specific number or term, with a reason that is\n                about the ROLE or the MARKET, not about your needs.\n                Name flexibility on the form. This is the step that\n                gets you something when the band is genuinely fixed."
+            },
+            {
+              "type": "p",
+              "text": "Notice what is absent: any mention of your rent, your loan, your parents, or another candidate's package. Personal need is not a negotiating position in a professional context, and comparisons to named colleagues will end the conversation."
+            },
+            {
+              "type": "p",
+              "text": "Four sentences. Anything longer reads as anxiety, and anxiety invites a lower number"
+            },
+            {
+              "type": "p",
+              "text": "SCRIPT — Scenario 1 — Fresher, off-campus, offer 15% below market"
+            },
+            {
+              "type": "p",
+              "text": "YOU SAY"
+            },
+            {
+              "type": "p",
+              "text": "“Thank you — I am genuinely keen on this role, particularly the platform team’s work on the payments migration. I want to say clearly that I want to join. On the package: based on what I have seen for similar backend roles in Bengaluru with the DSA and system design depth I have shown in the rounds, I had been working towards something closer to ₹X. Is there room to look at that? And if the fixed band is firm, I am flexible on the form — a joining bonus or an early review would work just as well for me.”"
+            },
+            {
+              "type": "p",
+              "text": "Four parts, one ask, one door. Under sixty seconds spoken. Then stop talking — the silence that follows is where people concede against themselves."
+            },
+            {
+              "type": "p",
+              "text": "SCRIPT — Scenario 2 — They say the band is fixed"
+            },
+            {
+              "type": "p",
+              "text": "“That is completely understood, and thank you for being straight with me about it. In that case, could we look at the joining bonus instead? Relocating from Hyderabad is about ₹40,000 of one-time cost for me, and covering that would make this comfortable.”"
+            },
+            {
+              "type": "p",
+              "text": "“Understood, and I appreciate you checking. I am happy to go ahead. Could you send the revised letter with the joining date we discussed?”"
+            },
+            {
+              "type": "p",
+              "text": "DON’T SAY"
+            },
+            {
+              "type": "p",
+              "text": "“Are you sure there is nothing at all? Even a little? Everyone I know at your company got more than this.”"
+            },
+            {
+              "type": "p",
+              "text": "The second line is doing important work. Accepting cleanly and immediately after a declined ask is what preserves the relationship — and it is remembered at your first appraisal."
+            },
+            {
+              "type": "p",
+              "text": "SCRIPT — Scenario 3 — Experienced, offer 30% below your current fixed"
+            },
+            {
+              "type": "p",
+              "text": "“Thank you for the offer. I want to flag something before we discuss numbers, because I think there may be a mismatch. The package is meaningfully below my current fixed, which makes me wonder whether the level is what we both assumed. In the conversations we had, the scope sounded like it included owning the service end-to-end. Could you help me understand which band this sits in?”"
+            },
+            {
+              "type": "p",
+              "text": "“That is helpful. If the role is at that level, then I think we are looking at different things — and I would rather say so now than six months in. If there is a senior band that matches the scope we discussed, I would be very interested. Is that something you can explore?”"
+            },
+            {
+              "type": "p",
+              "text": "A 30% gap is almost never a negotiation problem — it is a levelling problem or a role mismatch. Treating it as a haggle wastes the one conversation where you could have fixed the actual issue."
+            },
+            {
+              "type": "p",
+              "text": "SCRIPT — Scenario 4 — Startup, low cash, large ESOP claim"
+            },
+            {
+              "type": "p",
+              "text": "“Thank you — I am excited about the product. On the equity: could you share the total number of shares outstanding, the strike price, the vesting schedule and cliff, and the valuation at the last round? I want to understand the grant properly rather than as a headline figure.”"
+            },
+            {
+              "type": "p",
+              "text": "“I appreciate the upside, and I do want to be realistic — I have to live on the fixed. Is there room on the fixed component, understanding that I am taking real risk on the equity portion?”"
+            },
+            {
+              "type": "p",
+              "text": "DON’T SAY"
+            },
+            {
+              "type": "p",
+              "text": "“The ESOPs sound great, I am fine with the lower salary.”"
+            },
+            {
+              "type": "p",
+              "text": "Most early-stage Indian ESOP grants are worth nothing. Some are worth a great deal. You cannot tell which without those four numbers, and a founder who will not share them has told you something important."
+            },
+            {
+              "type": "p",
+              "text": "SCRIPT — Scenario 5 — On-campus, package is fixed by the placement agreement"
+            },
+            {
+              "type": "p",
+              "text": "“Thank you — I am delighted to have the offer and I understand the package is set through the placement process. Could I ask about the allocation? My final year project was on distributed systems, and I would be keen to be considered for the platform team rather than a general pool. Is there a process for indicating that?”"
+            },
+            {
+              "type": "p",
+              "text": "On-campus salary is usually set by agreement between the recruiter and your placement cell, and pushing on it may breach placement policy. Role, team and location are frequently open — and over a five-year horizon your first team matters more to your earnings than the first year’s package does."
+            },
+            {
+              "type": "p",
+              "text": "PRACTISE THIS — Rehearse until it is boring Ninety minutes with one other person. Out loud, not in your head. 1 Locate yourself in §4.1 and write your defensible range with a number at each end. 2 Write your own version of the Scenario 1 script using your real evidence and your real number. 3 Say it aloud ten times. Record yourself once. The goal is for it to sound boring — negotiation asks fail when delivered with"
+            },
+            {
+              "type": "p",
+              "text": "heat, because the heat is what the other person responds to. 4 Have a friend play HR and decline flatly. Practise the Scenario 2 redirect, then the clean acceptance. The clean acceptance"
+            },
+            {
+              "type": "p",
+              "text": "is the part everyone skips and the part that protects the relationship. 5 Practise the silence. Make your ask and then say nothing for a full ten seconds. Most people cannot do this on the first"
+            },
+            {
+              "type": "p",
+              "text": "attempt, and filling that silence is where offers get conceded away."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "5",
+      "title": "Exercise 2 — Everything Except Salary",
+      "intro": [
+        {
+          "type": "p",
+          "text": "If you can only win one thing, it is usually not money. Understanding why will make you a far more effective negotiator than any script — and will often get you more actual value than the salary bump you were chasing."
+        }
+      ],
+      "topics": [
+        {
+          "id": "negotiate-interview-terms-5-1",
+          "number": "5.1",
+          "title": "Why non-salary asks succeed more often",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Look at it from the employer’s side of the ledger A senior engineer’s true cost to a company runs roughly 135–145% of the stated CTC once employer statutory contributions, recruitment fees, joining bonuses and benefits are counted. So the company is already paying far more than the number in your letter, and it is watching that total closely. More importantly, base salary is the most expensive kind of yes they can give you. It is permanent, it compounds into every future increment, it sets a precedent across the band, it shows up in internal equity reviews, and it makes your colleagues’ numbers a problem. That is why a ₹50,000 base increase can be harder to obtain than a ₹1,00,000 joining bonus. One-time and non-cash items do none of that. They come from a different budget line, they do not compound, and they do not create precedent. This asymmetry is the single most exploitable fact in the entire negotiation."
+            },
+            {
+              "type": "p",
+              "text": "What to ask for How hard Why Worth to you"
+            },
+            {
+              "type": "pre",
+              "text": "Joining bonus         Easy         One-time, separate budget line, no  High, immediately — but check the clawback period\n                                   precedent, no compounding\nNotice period buyout Easy          They want you sooner; it is a       High if you are serving a 60–90 day notice\n                                   one-time cost that buys them time"
+            },
+            {
+              "type": "p",
+              "text": "Joining date Easy Costs nothing Genuine rest between jobs is worth more than people think"
+            },
+            {
+              "type": "pre",
+              "text": "Relocation and        Easy         Standard budget lines that already  Direct cash saving in month one\nequipment                          exist\nLearning /            Easy         Small, often already budgeted, and  High and compounding — it raises your next negotiation\ncertification budget               easy to justify upward\nEarly review at six   Medium       Costs nothing today; defers the     The best answer when the band is genuinely fixed\nmonths                             decision rather than refusing it\nProject or ownership Medium        Free to grant, and a good manager   Highest long-term value of anything on this list\nscope                              wants an owner\nRemote or hybrid      Medium       Policy-dependent; team norms        High, and worth quantifying in commute hours\ndays                               matter more than HR"
+            },
+            {
+              "type": "p",
+              "text": "Base location Medium Depends on team distribution Large, given city cost-of-living differences"
+            },
+            {
+              "type": "pre",
+              "text": "Title or level        Hard         Affects band, internal equity and   Very high — which is exactly why it is hard\n                                   every future increment"
+            },
+            {
+              "type": "p",
+              "text": "Leave beyond policy Hard Policy, and visible to everyone Rarely worth spending your one ask on"
+            },
+            {
+              "type": "p",
+              "text": "Pick two. Asking for eight of these reads as a shopping list and gets you none. Choose the one with the highest long-term value — usually scope or learning budget — and one easy win."
+            }
+          ]
+        },
+        {
+          "id": "negotiate-interview-terms-5-2",
+          "number": "5.2",
+          "title": "Quantify the non-cash ask",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "A term you cannot value is a term you cannot argue for. Convert each ask into rupees or hours before you make it — partly so you can judge whether it is worth asking for, and partly because a quantified ask is far harder to wave away."
+            },
+            {
+              "type": "p",
+              "text": "commute saved 2 days x 90 min x 48 weeks = 144 hours/year"
+            },
+            {
+              "type": "p",
+              "text": "at your hourly rate of Rs 400 = Rs 57,600/year"
+            },
+            {
+              "type": "p",
+              "text": "plus fuel or transport, roughly = Rs 20,000/year"
+            },
+            {
+              "type": "p",
+              "text": "TOTAL ~ Rs 77,000/year"
+            },
+            {
+              "type": "p",
+              "text": "-&gt; often worth MORE than the salary bump you were going to ask for,"
+            },
+            {
+              "type": "p",
+              "text": "and considerably easier for them to say yes to."
+            },
+            {
+              "type": "p",
+              "text": "A LEARNING BUDGET OF Rs 50,000"
+            },
+            {
+              "type": "p",
+              "text": "direct value Rs 50,000"
+            },
+            {
+              "type": "p",
+              "text": "plus what a certification or course does to your NEXT negotiation,"
+            },
+            {
+              "type": "p",
+              "text": "where a demonstrable skill can move you a band"
+            },
+            {
+              "type": "p",
+              "text": "-&gt; the compounding one. Ask for this even when you win on salary."
+            },
+            {
+              "type": "p",
+              "text": "two months of your current fixed, paid by them"
+            },
+            {
+              "type": "p",
+              "text": "at Rs 12 LPA that is roughly Rs 1,50,000 gross"
+            },
+            {
+              "type": "p",
+              "text": "-&gt; one of the largest single wins available to a lateral candidate,"
+            },
+            {
+              "type": "p",
+              "text": "and routinely not asked for."
+            },
+            {
+              "type": "p",
+              "text": "Not directly quantifiable, and the highest value on the list. Owning a system rather than a ticket queue is what produces the evidence (3.2) that moves you a band at your NEXT switch - where the 30-60% jump lives."
+            },
+            {
+              "type": "p",
+              "text": "Run this arithmetic before you choose your two asks. It frequently changes which two you pick"
+            },
+            {
+              "type": "p",
+              "text": "SCRIPT — Role-play A — asking for remote days"
+            },
+            {
+              "type": "p",
+              "text": "“One thing I wanted to raise — I do my deepest work in long uninterrupted blocks, and I have found two days a week at home makes a real difference to how much I ship. Would two remote days be workable for this team? I am completely flexible on which days, and happy to be in for anything that needs the room.”"
+            },
+            {
+              "type": "p",
+              "text": "“Understood on the policy. Can I ask what the team actually does in practice? If the team norm has some flexibility, I would rather work within that than push on the policy.”"
+            },
+            {
+              "type": "p",
+              "text": "DON’T SAY"
+            },
+            {
+              "type": "p",
+              "text": "“I would prefer to work from home because the commute from my place is very long and traffic is terrible.”"
+            },
+            {
+              "type": "p",
+              "text": "The rejected version is true and it makes the ask about your convenience. The accepted version makes it about their output, which is the only currency that reliably buys concessions."
+            },
+            {
+              "type": "p",
+              "text": "SCRIPT — Role-play B — asking for a learning budget"
+            },
+            {
+              "type": "p",
+              "text": "“You mentioned the team is moving more workloads onto Kubernetes this year. I would like to get properly certified rather than learn it piecemeal. Is there a learning or certification budget I could draw on? Around ₹40,000 would cover the course and the exam.”"
+            },
+            {
+              "type": "p",
+              "text": "“No problem. Would the company support the time — say two days for the exam and prep — even if the cost is mine? That would still help a lot.”"
+            },
+            {
+              "type": "p",
+              "text": "Naming a specific figure and a specific need makes this trivially easy to approve. ‘Some budget for learning’ requires someone to do work you should have done."
+            },
+            {
+              "type": "p",
+              "text": "SCRIPT — Role-play C — asking for ownership"
+            },
+            {
+              "type": "p",
+              "text": "“One thing that would matter a lot to me: I would like to own a service end-to-end rather than work across a queue — including the on-call for it. Is there a piece of the platform that could be mine within the first six months? I am happy to earn it rather than have it handed over on day one.”"
+            },
+            {
+              "type": "p",
+              "text": "Volunteering for the on-call is what makes this credible. You are asking for accountability, not status — and almost no manager refuses someone who wants to own the pager."
+            },
+            {
+              "type": "p",
+              "text": "PRACTISE THIS — Run the three role-plays An hour with a partner. Swap roles halfway. 1 Quantify all three asks from §5.2 using your own hourly rate and commute. Write down the rupee figure for each. 2 Pick two from the table in §5.1 — one high long-term value, one easy win. Write down why you chose those two and not"
+            },
+            {
+              "type": "p",
+              "text": "the others. 3 Run each role-play twice: once with your partner agreeing, once with them declining flatly. Practise the graceful close after"
+            },
+            {
+              "type": "p",
+              "text": "a decline. 4 Have your partner try the classic deflection — ‘that is not really something we do’ — and practise the redirect to team"
+            },
+            {
+              "type": "p",
+              "text": "norms rather than policy. 5 Write the two asks into a single short paragraph you could send by email. Chapter 6 gives you the wrapper."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "6",
+      "title": "Templates and Your Prep Sheet",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Put the ask in writing. Email gives you time to phrase it well, gives them something forwardable to an approver, and creates the record that stops a verbal promise evaporating between the call and the letter."
+        }
+      ],
+      "topics": [
+        {
+          "id": "negotiate-interview-terms-6-1",
+          "number": "6.1",
+          "title": "Six emails that cover almost every situation",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "EMAIL TEMPLATE — 1. Buying time when the offer arrives"
+            },
+            {
+              "type": "p",
+              "text": "Subject: Thank you — offer for &lt;role&gt;"
+            },
+            {
+              "type": "p",
+              "text": "Dear &lt;name&gt;,"
+            },
+            {
+              "type": "p",
+              "text": "Thank you for the offer, and for the time your team put into the process. I am genuinely excited about the &lt;specific thing — the platform team's work on X&gt;."
+            },
+            {
+              "type": "p",
+              "text": "I would like to review the details properly and come back to you by &lt;specific day, 2-3 working days out&gt;. Would that be all right?"
+            },
+            {
+              "type": "p",
+              "text": "One thing that would help in the meantime: could you confirm the fixed component of the CTC, and the variable component with what triggers it?"
+            },
+            {
+              "type": "p",
+              "text": "Thank you again, &lt;name&gt; Always ask for time. Accepting on the call removes every option you have. Two to three working days is normal and nobody will withdraw an offer over it — and asking for the fixed component in the same breath makes it a logistics question rather than a challenge."
+            },
+            {
+              "type": "p",
+              "text": "EMAIL TEMPLATE — 2. The counter — experienced candidate, MNC or established company"
+            },
+            {
+              "type": "p",
+              "text": "Subject: Re: Offer for &lt;role&gt;"
+            },
+            {
+              "type": "p",
+              "text": "Dear &lt;name&gt;,"
+            },
+            {
+              "type": "p",
+              "text": "Thank you again for the offer. I want to be clear up front that I want to join — the scope of the role and the team's direction are exactly what I am looking for."
+            },
+            {
+              "type": "p",
+              "text": "I would like to raise one point on the package. Based on &lt;the specific scope discussed: owning the service end-to-end, including on-call&gt; and on what I have seen for comparable roles in &lt;city&gt; at similar companies, I had been working towards a fixed component closer to &lt;Rs X&gt;. Is there room to look at that?"
+            },
+            {
+              "type": "p",
+              "text": "If the band is firm, I completely understand — in that case, a joining bonus to cover my &lt;60-day notice buyout / relocation&gt; would achieve much the same for me, and I would be glad to close on that basis."
+            },
+            {
+              "type": "p",
+              "text": "Either way, I am keen to move forward and can start by &lt;date&gt;."
+            },
+            {
+              "type": "p",
+              "text": "Best regards, &lt;name&gt; Appreciate, commit, one ask with a role-based reason, an open door, and a close. Nine lines. Nothing about rent, loans or other candidates."
+            },
+            {
+              "type": "p",
+              "text": "EMAIL TEMPLATE — 3. The counter — fresher, one ask only"
+            },
+            {
+              "type": "p",
+              "text": "Subject: Re: Offer — &lt;role&gt;"
+            },
+            {
+              "type": "p",
+              "text": "Dear &lt;name&gt;,"
+            },
+            {
+              "type": "p",
+              "text": "Thank you so much for the offer. I would very much like to join, and the &lt;team / product&gt; is what I was hoping to work on."
+            },
+            {
+              "type": "p",
+              "text": "May I ask one question about the package? Given the &lt;specific evidence — the system design round, the deployment project I walked through&gt;, I had been hoping for something closer to &lt;Rs X&gt;. I understand if the band is set — in that case I would still be happy to accept, and would only ask whether a joining bonus towards relocation might be possible."
+            },
+            {
+              "type": "p",
+              "text": "Please let me know either way, and thank you for considering it."
+            },
+            {
+              "type": "p",
+              "text": "Warm regards, &lt;name&gt; Note that this version says ‘I would still be happy to accept’ inside the ask. For a fresher with little leverage, removing the implied threat is what makes the ask safe to make — and it costs you very little, because the threat was not credible anyway."
+            },
+            {
+              "type": "p",
+              "text": "EMAIL TEMPLATE — 4. The counter — startup, informal register"
+            },
+            {
+              "type": "p",
+              "text": "Subject: Offer — couple of things"
+            },
+            {
+              "type": "p",
+              "text": "Hi &lt;name&gt;,"
+            },
+            {
+              "type": "p",
+              "text": "Really enjoyed the conversations — I want to do this."
+            },
+            {
+              "type": "p",
+              "text": "Two things before I sign:"
+            },
+            {
+              "type": "p",
+              "text": "1. Fixed component. I know cash is tight at this stage and I am taking the equity seriously, but I have to live on the fixed. Anything you can do to get it to &lt;Rs X&gt; would let me say yes today."
+            },
+            {
+              "type": "p",
+              "text": "2. Equity. Could you send the total shares outstanding, strike price, vesting and cliff, and the last round valuation? Not haggling — I just want to understand what I am being given."
+            },
+            {
+              "type": "p",
+              "text": "Happy to jump on a call if that is easier."
+            },
+            {
+              "type": "p",
+              "text": "&lt;name&gt; Match the register. A formal seven-paragraph letter to a twelve-person startup reads as a poor cultural fit; the same informality sent to an MNC HR team reads as unprofessional. The four equity questions are non-negotiable regardless of tone."
+            },
+            {
+              "type": "p",
+              "text": "EMAIL TEMPLATE — 5. Accepting after your ask was declined — the one people skip"
+            },
+            {
+              "type": "p",
+              "text": "Subject: Re: Offer for &lt;role&gt; — accepting"
+            },
+            {
+              "type": "p",
+              "text": "Dear &lt;name&gt;,"
+            },
+            {
+              "type": "p",
+              "text": "Thank you for checking on that, and for coming back to me so quickly. I understand the band is fixed."
+            },
+            {
+              "type": "p",
+              "text": "I am happy to accept the offer as it stands. Could you send the letter with a joining date of &lt;date&gt;?"
+            },
+            {
+              "type": "p",
+              "text": "I am looking forward to starting, and thank you for how straightforward you have been throughout the process."
+            },
+            {
+              "type": "p",
+              "text": "Best regards, &lt;name&gt; Send this within a day of the decline. A fast, warm, unambiguous acceptance after an unsuccessful ask is what separates a candidate who negotiated from a candidate who was difficult — and it is remembered when your first appraisal comes around."
+            },
+            {
+              "type": "p",
+              "text": "EMAIL TEMPLATE — 6. Declining without burning the bridge"
+            },
+            {
+              "type": "p",
+              "text": "Subject: Re: Offer for &lt;role&gt;"
+            },
+            {
+              "type": "p",
+              "text": "Dear &lt;name&gt;,"
+            },
+            {
+              "type": "p",
+              "text": "Thank you for the offer, and for the care your team took over the process — I have a lot of respect for how it was run."
+            },
+            {
+              "type": "p",
+              "text": "After thinking it through, I have decided to accept another opportunity that is closer to &lt;specific, honest, non-comparative reason: the systems work I want to move into&gt;. This was not an easy decision."
+            },
+            {
+              "type": "p",
+              "text": "I would very much like to stay in touch, and I hope our paths cross again."
+            },
+            {
+              "type": "p",
+              "text": "With thanks and best wishes, &lt;name&gt; Never say the other offer paid more, even when it did — it invites a counter you have decided not to take and leaves an awkward memory. Give a reason about fit. And never accept and then renege: in a network this small, that is the one thing people genuinely remember."
+            }
+          ]
+        },
+        {
+          "id": "negotiate-interview-terms-6-2",
+          "number": "6.2",
+          "title": "Exercise 3 — the negotiation prep sheet",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Fill this in for one real job description from an Indian portal before your next interview. One page, filled in advance, is worth more than any amount of improvised confidence in the room."
+            },
+            {
+              "type": "p",
+              "text": "EMAIL TEMPLATE — Negotiation prep sheet — one page, filled before the interview"
+            },
+            {
+              "type": "p",
+              "text": "COMPANY TYPE services / product / startup / GCC-MNC CITY __________"
+            },
+            {
+              "type": "pre",
+              "text": "1. THE MARKET                                     Rs ______ to Rs ______ LPA\n     My band from 4.1                             Rs ______ to Rs ______ LPA\n     Adjusted for company type and city           ____________________________\n     Three sources I checked                      Rs ______ (and why: ________)\n     My defensible ask                            Rs ______ (below this I decline)\n     My walk-away number"
+            },
+            {
+              "type": "p",
+              "text": "2. MY LEVERAGE (score from 1.3) ____ / 12"
+            },
+            {
+              "type": "p",
+              "text": "Competing offer? yes / no If yes, with whom ____________"
+            },
+            {
+              "type": "p",
+              "text": "Scarce skill I can demonstrate ____________________________"
+            },
+            {
+              "type": "p",
+              "text": "Can I walk away? yes / no"
+            },
+            {
+              "type": "p",
+              "text": "3. MY EVIDENCE (3.2) - three items, each with a checkable number a. ______________________________________________________ b. ______________________________________________________ c. ______________________________________________________"
+            },
+            {
+              "type": "p",
+              "text": "______________________________________________________"
+            },
+            {
+              "type": "p",
+              "text": "\"_____________________________________________________\""
+            },
+            {
+              "type": "p",
+              "text": "6. MY TWO NON-SALARY ASKS (5.1) - and what each is worth in rupees a. ____________________ worth Rs ______ ease: easy/med/hard b. ____________________ worth Rs ______ ease: easy/med/hard"
+            },
+            {
+              "type": "p",
+              "text": "______________________________________________________"
+            },
+            {
+              "type": "pre",
+              "text": "8. CTC QUESTIONS FOR HR    (1.1)                   [ ] bonus + timing\n     [ ] fixed component   [ ] variable + trigger  [ ] bond / agreement\n     [ ] in-hand estimate  [ ] appraisal cycle"
+            },
+            {
+              "type": "p",
+              "text": "I will accept immediately if fixed is above Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "I will make ONE ask if fixed is between Rs ______ and ______"
+            },
+            {
+              "type": "p",
+              "text": "I will decline if fixed is below Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "Point 9 is the important one. Decide before the adrenaline, not during."
+            },
+            {
+              "type": "p",
+              "text": "The prep sheet exists so that the version of you sitting in the room is executing a decision made calmly, rather than making one under pressure with a recruiter waiting for an answer."
+            },
+            {
+              "type": "p",
+              "text": "PRACTISE THIS — Fill it in for a real posting Ninety minutes. Use an actual job description from Naukri, LinkedIn, Instahyre or a company careers page. 1 Pick one real posting you would genuinely apply to. Print it. 2 Complete sections 1–4. If you cannot fill section 3 with three checkable items, that is your project for the next month — not"
+            },
+            {
+              "type": "p",
+              "text": "your negotiation problem. 3 Write your deflection line word for word and rehearse it aloud (§3.3). 4 Quantify both non-salary asks in rupees using §5.2. 5 Fill in section 9 last, and do not change it later. Write the three numbers down and put the sheet somewhere you will"
+            },
+            {
+              "type": "p",
+              "text": "see it before the call. 6 Keep the sheet after the process ends. Note what actually happened against what you planned. Three of these and you"
+            },
+            {
+              "type": "p",
+              "text": "will be genuinely good at this."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "7",
+      "title": "Red Flags and What Comes After",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Some companies will not negotiate in good faith, and how they behave during the offer is the clearest preview of how they will behave when you work there. The offer stage is the last moment you have full information and full freedom — use it."
+        }
+      ],
+      "topics": [
+        {
+          "id": "negotiate-interview-terms-7-1",
+          "number": "7.1",
+          "title": "The Red Flag Detector",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "CHECKLIST — Signs a company will not negotiate in good faith"
+            },
+            {
+              "type": "p",
+              "text": "□ Pressure to accept on the call, or ‘this offer expires today’ □ ‘Everyone here started at this number’ used to close the conversation"
+            },
+            {
+              "type": "pre",
+              "text": "□ Refusal to put the offer in writing before you commit     □ A service bond or agreement is mentioned only at the\n                                                                letter stage\n□ Will not state the fixed component when asked directly    □ Notice period or exit terms are unusually onerous and\n                                                                non-negotiable\n□ The number in the letter differs from the number          □ You cannot get a straight answer about who your\n    discussed verbally                                          manager will be\n□ A verbal promise (‘we will review at six months’) they    □ Interviewers were visibly unprepared or spoke poorly of\n    decline to write down                                       current staff\n□ The role in the letter is different from the role you     □ High visible attrition in the team, unexplained when\n    interviewed for                                             asked\n□ Vague or shifting job title, with no level or band named  □ Salary delays or restructuring mentioned by anyone you\n                                                                speak to"
+            },
+            {
+              "type": "p",
+              "text": "□ Asks for your current salary slip before making any offer □ The recruiter cannot describe what success in the role looks like"
+            },
+            {
+              "type": "p",
+              "text": "□ Reacts to a single polite ask with irritation or guilt □ You are discouraged from speaking to a future teammate"
+            },
+            {
+              "type": "p",
+              "text": "How to read the flags One flag is usually noise — recruiters are busy and processes are messy. Two or three from the top half of that list is a pattern, and the pattern will not improve after you join; the offer stage is when a company is trying hardest to impress you. Two flags are close to disqualifying on their own: a written offer that differs from what was discussed verbally, and a refusal to write down a promise someone was happy to make out loud. Both tell you exactly what the next two years will feel like. The single best diligence step costs nothing: ask to speak to someone who would be your peer, and ask them what they would change about the team. A confident company will arrange it. A reluctance to let you talk to anyone is itself the answer."
+            }
+          ]
+        },
+        {
+          "id": "negotiate-interview-terms-7-2",
+          "number": "7.2",
+          "title": "What to do if you lose the negotiation",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Accept quickly and warmly, or decline quickly and warmly. The delay is what costs you, not the answer. Template 5 in §6.1 exists for exactly this moment."
+            },
+            {
+              "type": "p",
+              "text": "• Get the timeline in writing instead. If salary is fixed, ask for the appraisal date and criteria in the letter. ‘We will look at it in six months’ that appears in the offer letter is worth something; the same sentence spoken on a call is worth nothing once the person who said it changes role."
+            },
+            {
+              "type": "p",
+              "text": "• Write down what you will show at the first review. On day one, note the three things you intend to have achieved by month six. That document is your next negotiation, and it will be far stronger than this one because it will be about work they watched you do."
+            },
+            {
+              "type": "p",
+              "text": "• Do not carry it into the job. Resentment about a starting number is visible, and it costs you far more than the number did. You made your case, it was declined, you accepted — that transaction is closed."
+            },
+            {
+              "type": "p",
+              "text": "• Remember the arithmetic. Annual increments in India ran around 9% in 2026, while switching companies typically produces a 30–60% jump. If this offer is below where you should be, the fix is usually a well-prepared move in two years — not three more rounds of email now."
+            }
+          ]
+        },
+        {
+          "id": "negotiate-interview-terms-7-3",
+          "number": "7.3",
+          "title": "Keeping the relationship afterwards",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "CULTURAL CONTEXT — The first ninety days after a negotiation"
+            },
+            {
+              "type": "p",
+              "text": "What the other side is quietly watching for"
+            },
+            {
+              "type": "p",
+              "text": "IF YOU WON Do not mention it again, to anyone. Not to teammates, not on social media, not to your manager. The person who approved the exception took a small risk for you, and the only thing they want in return is for it to be invisible and for you to be good."
+            },
+            {
+              "type": "p",
+              "text": "IF YOU LOST Behave exactly as though you had won. The manager who could not move the band is often the same person who will fight for your increment — and the thing that determines whether they do is how you handled being told no."
+            },
+            {
+              "type": "p",
+              "text": "EITHER WAY Thank the recruiter by name after you join. It takes two minutes, almost nobody does it, and recruiters move between companies constantly — the person who processed your offer this year may be hiring for a much better role in three."
+            },
+            {
+              "type": "pre",
+              "text": "THE LONG       Indian engineering hiring runs on referrals and reputation more than on applications. Every process you go\nGAME           through, including the ones you decline, adds to or subtracts from a record that follows you between companies\n               for a decade."
+            },
+            {
+              "type": "p",
+              "text": "What to take from this: Negotiate hard, once, in writing, and then close warmly whatever the answer. That combination — not the size of the ask — is what marks out people who get taken seriously the next time."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "A",
+      "title": "Reference",
+      "intro": [],
+      "topics": [
+        {
+          "id": "negotiate-interview-terms-A-1",
+          "number": "A.1",
+          "title": "Phrase bank",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Situation Say this"
+            },
+            {
+              "type": "p",
+              "text": "Asked your expectation in “Could you tell me the band you have in mind for this role? I am fairly confident we will be in the same range.” round one"
+            },
+            {
+              "type": "pre",
+              "text": "Asked for your current    “I would prefer to be evaluated on what the role is worth. Happy to share my expectation for this role — would\nCTC                       that work?”"
+            },
+            {
+              "type": "p",
+              "text": "Offer arrives on a call “Thank you — I am really pleased. May I come back to you by Thursday with my response?”"
+            },
+            {
+              "type": "p",
+              "text": "Opening a counter “I want to say clearly that I want to join. There is one point I would like to raise on the package.”"
+            },
+            {
+              "type": "p",
+              "text": "Justifying the ask “The reason I am asking is that the role includes , which is beyond what the posting described.”"
+            },
+            {
+              "type": "pre",
+              "text": "Opening a non-cash door   “If the fixed band is firm, I am flexible on the form — a joining bonus or an early review would work just as\n                          well.”"
+            },
+            {
+              "type": "p",
+              "text": "They say the band is fixed “That is completely understood, and thank you for being straight with me.”"
+            },
+            {
+              "type": "p",
+              "text": "Arming a messenger “Would it help if I put my case in two lines by email, so you can share it with whoever needs to see it?”"
+            },
+            {
+              "type": "p",
+              "text": "Pinning down a soft yes “So I have it right — you will confirm by Friday. Shall I drop you a short note capturing that?”"
+            },
+            {
+              "type": "p",
+              "text": "Closing after a decline “Understood, and I appreciate you checking. I am happy to go ahead — could you send the revised letter?”"
+            },
+            {
+              "type": "p",
+              "text": "Declining an offer “I have decided to accept another opportunity closer to . I would very much like to stay in touch.”"
+            },
+            {
+              "type": "pre",
+              "text": "Under pressure to decide  “I understand there is a timeline. I do need until to give you a proper answer rather than a rushed one.”\nimmediately"
+            }
+          ]
+        },
+        {
+          "id": "negotiate-interview-terms-A-2",
+          "number": "A.2",
+          "title": "A thirty-day plan",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Days Do You will have"
+            },
+            {
+              "type": "p",
+              "text": "1–3 §1.1 CTC literacy · §1.3 score your leverage A clear view of whether you are negotiating salary or terms"
+            },
+            {
+              "type": "p",
+              "text": "honestly"
+            },
+            {
+              "type": "p",
+              "text": "4–7 §3.2 build three pieces of checkable evidence The material every later script depends on"
+            },
+            {
+              "type": "pre",
+              "text": "8–10       §4.1 locate your band; verify against three   A defensible range with a number at each end\n           current sources\n11–14      §3.3 write and rehearse your deflection line  A line that sounds boring rather than defensive\n           aloud\n15–18      §4.3 write your counter; rehearse scenarios 1 A counter you can deliver in under a minute, and a clean close\n           and 2 with a partner"
+            },
+            {
+              "type": "p",
+              "text": "19–22 §5.2 quantify non-salary asks; pick two Two asks with rupee values attached"
+            },
+            {
+              "type": "pre",
+              "text": "Days   Do                                           You will have\n23–26\n27–30  §6.2 fill the prep sheet for a real posting  A one-page plan, including your decision rule"
+            },
+            {
+              "type": "p",
+              "text": "§7.1 review the red flags · rehearse the whole A rehearsed process rather than an improvised conversation sequence once end to end"
+            }
+          ]
+        },
+        {
+          "id": "negotiate-interview-terms-A-3",
+          "number": "A.3",
+          "title": "Glossary",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "                  Cost to Company — the headline number, including components you never receive\n Term             The part of CTC paid regardless of performance. The number to compare across offers\n CTC              Performance or company-linked, commonly 10–20% of CTC, paid only if targets are met\n Fixed component  What reaches your bank monthly — typically 65–75% of CTC\n Variable pay     Statutory payment, generally only after five years of service\n In-hand          One-time payment, usually with a clawback if you leave early\n Gratuity         Payable after a stated period; not part of year-one pay\n Joining bonus    The new employer paying your notice period so you can join sooner\n Retention bonus  An agreement to stay a fixed period or pay a penalty\n Notice buyout    Employee stock options — worthless without strike price, share count, vesting and valuation\n Service bond     The period before any equity vests at all, commonly one year\n ESOP             Which internal band a role sits in — often easier to fix than the number inside it\n Cliff            The first number named, which shapes everything after it\n Levelling        Global Capability Centre — an MNC’s in-house India centre\n Anchor           Hiring from another company rather than from campus\n GCC\n Lateral hire"
+            },
+            {
+              "type": "p",
+              "text": "On the figures in this guide. The benchmark ranges in §4.1 and the modifiers beside them are compiled from Indian compensation reporting current to mid-2026, including the roughly 9% average increment budgets reported for the year, the sizeable premium GCC and product employers pay over IT services, and the widely documented 30–60% jump associated with switching employers rather than staying. Ranges within every band are wide and move quickly. Verify against three current sources before you name a number — a stale benchmark quoted with confidence is worse than no benchmark at all."
+            },
+            {
+              "type": "p",
+              "text": "And the summary of the whole method. Establish your value before anyone mentions money. Know what the offer is really worth by converting CTC into fixed pay and in-hand. Score your leverage honestly and push proportionally to it — hard when you have a competing offer and a scarce skill, once and gently when you do not. Ask for one thing, in writing, with a reason that is about the role rather than about your rent. Open a door to a non-cash alternative, because that is where most concessions actually live. And whatever the answer, close warmly and quickly — because in Indian engineering the same fifty people will keep appearing in your career, and how you handled being told no is the part they remember."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

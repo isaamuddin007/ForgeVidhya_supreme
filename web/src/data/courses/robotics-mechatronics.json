@@ -1,0 +1,2844 @@
+{
+  "slug": "robotics-mechatronics",
+  "title": "Robotics & Mechatronics",
+  "tagline": "Robustness over sophistication — making machines move with purpose, where the system is the product.",
+  "modules": [
+    {
+      "number": "1",
+      "title": "Systems Thinking",
+      "intro": [
+        {
+          "type": "p",
+          "text": "A mechatronic system is not a mechanical system plus an electrical system plus software. It is the set of interactions between them — and every interaction is an interface where an assumption made by one domain meets an assumption made by another."
+        }
+      ],
+      "topics": [
+        {
+          "id": "robotics-mechatronics-1-1",
+          "number": "1.1",
+          "title": "The three domains and the four seams",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "┌──────────────────┐ seam A: actuation ┌──────────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ │ torque, speed, force, │ │"
+            },
+            {
+              "type": "p",
+              "text": "│ structure │ stall current, back-EMF │ power, drivers, │"
+            },
+            {
+              "type": "p",
+              "text": "│ transmission │ │ wiring, grounds │"
+            },
+            {
+              "type": "p",
+              "text": "│ bearings │───────────────────────────▶│ regulation │"
+            },
+            {
+              "type": "p",
+              "text": "│ compliance │ seam B: sensing │ │"
+            },
+            {
+              "type": "p",
+              "text": "│ backlash │ position, current, load, └────────┬─────────┘"
+            },
+            {
+              "type": "p",
+              "text": "│ MASS &amp; FRICTION │ vibration, temperature │"
+            },
+            {
+              "type": "p",
+              "text": "└────────┬─────────┘ │ seam C:"
+            },
+            {
+              "type": "p",
+              "text": "│ │ command &amp;"
+            },
+            {
+              "type": "p",
+              "text": "│ seam D: the physical world │ measurement"
+            },
+            {
+              "type": "p",
+              "text": "│ (this seam is the one that is │ PWM, ADC counts,"
+            },
+            {
+              "type": "p",
+              "text": "│ never in the block diagram) │ timing, latency"
+            },
+            {
+              "type": "p",
+              "text": "▼ ▼"
+            },
+            {
+              "type": "p",
+              "text": "┌──────────────────────────────────────────────────────────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ control loops · state machines · timing · fault handling │"
+            },
+            {
+              "type": "p",
+              "text": "│ assumes: clean signals, instant actuation, no saturation │"
+            },
+            {
+              "type": "p",
+              "text": "│ reality: none of the above │"
+            },
+            {
+              "type": "p",
+              "text": "└──────────────────────────────────────────────────────────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "Figure 1.1 — Seam D is the one that ends student projects. The block diagram has no box for dust, sunlight, a 15 mm threshold, or someone picking your robot up."
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-1-2",
+          "number": "1.2",
+          "title": "Failures, ranked by how often they actually happen",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "This ordering comes from watching a lot of student robots fail. It is almost exactly inverted from where students spend their time, which is mostly on the algorithm."
+            },
+            {
+              "type": "pre",
+              "text": "Ra Failure                                                  Domain seam              Typical fix\nnk\n1 Power — brownout when the motor                           Electrical ↔             Separate supplies, bulk capacitance, common ground,\n        starts, logic resets                                Mechanical               measure the rail under load\n2 Connectors and wiring — intermittent,                     Electrical ↔             Strain relief, ferrules, locking connectors, no bare jumper\n        vibrates loose, breaks at the joint                 Mechanical               wires on a moving robot\n3 Grounding — noise, false sensor                           Electrical ↔ Software Star ground, thick return path, keep motor and signal returns\n        readings, resets on motor reversal                                                    separate until the star point\n4 Mechanical slop — backlash, flex, wheel Mechanical ↔                               Stiffen the structure; do not try to control through backlash\n                                                                                     (§3.7)\n   slip                                                     Software\n5 Saturation — commanded output the                         Software ↔ Electrical Clamp, anti-windup, and know your minimum effective PWM\n        hardware cannot deliver\n6 Timing — loop rate varies, blocking calls, Software                                Fixed-rate loop, non-blocking everything, measure actual\n        delay() in the control path                                                  jitter\n7 Sensor validity — works indoors, blind                    Physical world ↔         Test in the deployment environment early (Ch 7)\n        outdoors; works cold, drifts hot                    Electrical\n8 The algorithm is wrong                                    Software                 Genuinely last. Fix the seven above before you touch the\n                                                                                     controller"
+            },
+            {
+              "type": "p",
+              "text": "If your robot works on the bench and fails on the floor, the cause is almost always in rows 1–4."
+            },
+            {
+              "type": "p",
+              "text": "The bench lie"
+            },
+            {
+              "type": "p",
+              "text": "A robot on a bench with its wheels in the air draws a fraction of its real current, experiences no load torque, has no vibration, and never saturates. Every control gain you tune there is wrong. Every current measurement you take there is meaningless."
+            },
+            {
+              "type": "p",
+              "text": "Tune under load, on the surface you will actually drive on, with the battery you will actually use, at the state of charge it will actually be at. The number of student robots that work perfectly in the lab and fail in the corridor is not a coincidence — it is a measurement methodology problem."
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-1-3",
+          "number": "1.3",
+          "title": "The interface control document",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "In industry this is a formal artefact. For a student project it is one page, and it prevents the single most common team failure: two people each assuming the other handled something at the seam between their subsystems."
+            },
+            {
+              "type": "p",
+              "text": "interfaces.md - write this BEFORE anyone builds anything"
+            },
+            {
+              "type": "p",
+              "text": "source 3S Li-ion, 11.1 V nominal, 9.0 V cut-off, 2200 mAh"
+            },
+            {
+              "type": "p",
+              "text": "motor rail direct from pack, fused 5 A"
+            },
+            {
+              "type": "p",
+              "text": "logic rail buck to 5.0 V, 3 A, separate from motor rail"
+            },
+            {
+              "type": "p",
+              "text": "servo rail buck to 6.0 V, 5 A, own bulk cap 1000 uF at the servo"
+            },
+            {
+              "type": "p",
+              "text": "common ground ONE star point at the battery negative terminal"
+            },
+            {
+              "type": "p",
+              "text": "worst-case draw 2 motors stalled 1.8 A each + servos 2.5 A = 6.1 A peak"
+            },
+            {
+              "type": "p",
+              "text": "-&gt; fuse and wiring sized for this, not for average"
+            },
+            {
+              "type": "p",
+              "text": "MCU -&gt; driver 2 x PWM (pins 5, 6), 2 x DIR (pins 7, 8), 20 kHz"
+            },
+            {
+              "type": "p",
+              "text": "encoder -&gt; MCU quadrature, 5 V, interrupt-capable pins 2, 3"
+            },
+            {
+              "type": "p",
+              "text": "ToF -&gt; MCU I2C at 400 kHz, addresses 0x29 (front), 0x30 (left)"
+            },
+            {
+              "type": "p",
+              "text": "e-stop normally-closed loop; opening it cuts the MOTOR rail"
+            },
+            {
+              "type": "p",
+              "text": "in hardware, not in software"
+            },
+            {
+              "type": "p",
+              "text": "wheel to shaft 6 mm D-shaft, grub screw + flat, thread-locked"
+            },
+            {
+              "type": "p",
+              "text": "sensor bar mounted to chassis via 2 mm rubber, 12 +/- 3 mm above"
+            },
+            {
+              "type": "p",
+              "text": "ground across full suspension travel"
+            },
+            {
+              "type": "p",
+              "text": "payload 200 x 150 mm deck, 3 kg max, CG within 40 mm of axle"
+            },
+            {
+              "type": "pre",
+              "text": "TIMING CONTRACT    100 Hz, fixed. Nothing in this loop may block.\n   control loop    ToF 50 Hz (async), encoders on interrupt\n   sensor read     5 Hz, must never delay the control loop\n   telemetry"
+            },
+            {
+              "type": "p",
+              "text": "The three lines that prevent the most damage: the star ground, the worst-case current, and the hardware e-stop. Write those first"
+            },
+            {
+              "type": "p",
+              "text": "BUILD THIS — Draw your system before you buy anything Ninety minutes, on paper, with your team in the room. 1 Draw the three domains and mark every arrow that crosses between them. Every arrow is an interface someone must own"
+            },
+            {
+              "type": "p",
+              "text": "by name. 2 Write the power budget. Compute worst-case current — every motor stalled at once, every servo moving. That is the"
+            },
+            {
+              "type": "p",
+              "text": "number your wiring and fuse must survive, and it is usually 3–4× what people assume. 3 Mark your star ground point on the drawing. If you cannot point at one spot, you do not have a grounding scheme yet. 4 Write the timing contract: loop rate and what is forbidden inside the loop. 5 For each of the eight failures in §1.2, write one line on what you have done to prevent it. ‘Nothing yet’ is a valid and useful"
+            },
+            {
+              "type": "p",
+              "text": "answer."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "2",
+      "title": "Choosing Parts That Exist in India",
+      "intro": [
+        {
+          "type": "p",
+          "text": "The best component is the one that meets your derated requirement and is on a shelf you can reach this week. A marginally better part with a three-week import lead time has, for a one-semester project, infinite cost."
+        }
+      ],
+      "topics": [
+        {
+          "id": "robotics-mechatronics-2-1",
+          "number": "2.1",
+          "title": "Requirement → specification → candidate → verification",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "1 Requirement is physical and comes from your system: ‘must climb a 10° ramp carrying 2 kg at 0.4 m/s’. 2 Specification is the derated number you shop with: compute what you need, then apply the margins in §2.2. Shopping"
+            },
+            {
+              "type": "p",
+              "text": "with an underated requirement is how you buy a motor that works until the first ramp. 3 Candidates are parts that exist, in India, at a price you can pay. Two or three, not one — the first choice will be out of"
+            },
+            {
+              "type": "p",
+              "text": "stock. 4 Verification is measuring the part you received. Hobby-grade specifications are optimistic and counterfeits are"
+            },
+            {
+              "type": "p",
+              "text": "common. Measure the stall current, weigh the part, time the servo, load-test the battery."
+            },
+            {
+              "type": "p",
+              "text": "Hobby specifications are marketing, not datasheets"
+            },
+            {
+              "type": "p",
+              "text": "Assume, until you have measured otherwise: battery capacity is 50–70% of the printed mAh; servo torque is at the stated voltage only and falls off sharply below it; motor RPM is at no load and drops by a third or more under working load; ‘±2 cm’ sensor accuracy is at the ideal target, ideal reflectivity and ideal temperature. None of this is unusual — it is simply what unbranded hobby parts are. Design with margin and measure what you receive."
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-2-2",
+          "number": "2.2",
+          "title": "Derating: the margins that keep things working",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Quantity Margin Why"
+            },
+            {
+              "type": "pre",
+              "text": "Motor torque                 2× the computed steady Ramps, friction, wind-up, a jammed wheel, degradation over time\n                             requirement\nServo torque                 2.5–3× the computed            Dynamic loads, holding torque falls with heat, and the rating is at ideal voltage\n                             static load\nCurrent capacity (drivers, 2× worst-case stall              Stall is not an edge case; it happens the first time a wheel hits a kerb\nwiring, fuses)\nBattery capacity             2× the runtime you want Printed capacity is optimistic, and you must not run cells to empty\nVoltage headroom\n                             Regulator input at least       Battery sags under load; linear and buck regulators both need headroom\nStructural                   2 V above output at full\n                             load\n                             3× static load for             Dynamic loads are far above static; this is a safety margin, not a performance\n                             anything that could fall       one\n                             on a foot"
+            },
+            {
+              "type": "p",
+              "text": "Compute 50% of CPU and RAM Adding a feature must not break your timing contract free at the target loop rate"
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-2-3",
+          "number": "2.3",
+          "title": "Controllers",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Board                    Rough ₹      Use it for                                         Do not use it for\nArduino Nano / Uno       250–900\n(ATmega328P)                          Line follower, simple servo sequencing, first PID  Anything with a camera, floating-point-heavy\n                         350–700      loops. 16 MHz, 2 KB RAM, hardware interrupts       maths, or more than a few sensors\nESP32 (DevKit)                        on 2 pins\n                                      The default choice for most of this guide. Dual    Heavy vision. ADC is noisy and non-linear —\n                                      core, 240 MHz, Wi-Fi/BT, plenty of PWM and         calibrate or use an external ADC\n                                      ADC, hardware timers. Run control on one core,\n                                      comms on the other\nSTM32 ‘Blue Pill’ /      300–1,500    When you need deterministic timing, more           Quick prototyping if you have never used the\nNucleo                                hardware timers, or real motor-control             toolchain — the learning curve is real\n                         1,800–10,00  peripherals\nRaspberry Pi Zero 2 W /  0                                                               Direct real-time motor control. Linux is not\nPi 4 / Pi 5                           Vision, ROS 2, logging, high-level navigation.     real-time; use it as the brain, not the spine\n                                      Pair it with an MCU for real-time control\nJetson Orin Nano class   18,000–40,0 On-board neural inference, stereo/visual            Anything you could do with an ESP32. Most\n                                                                                         student projects do not need this\n                         00           odometry, multiple camera streams"
+            },
+            {
+              "type": "p",
+              "text": "The two-brain pattern is the right default for Projects 2 and 3: a Linux board for planning and perception, an MCU for the control loop and safety, one serial link between them. The MCU keeps the robot safe even if Linux hangs."
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-2-4",
+          "number": "2.4",
+          "title": "Actuators",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "                         80–200\n Actuator                             First line follower, very light robots   No encoder, huge unit-to-unit variation, plastic gears\n ‘BO’ plastic gearmotor                                                        strip. Two ‘identical’ motors will differ by 20%\nN20 metal gearmotor      300–900      Small robots needing real closed-loop    Low torque; check the gear ratio and stall current before\n(with encoder)           450–1,400    control. Compact                         buying\n                         90–250\nJGA25-370 / JGB37-520    250–500      The workhorse for a 2–5 kg campus        Heavy. Check shaft type (D-shaft vs round) matches\ngearmotor\n                                      robot. Encoder versions widely available your wheel hub\nHobby servo SG90 /\nMG90S                                 Light grippers, sensor tilt, anything    SG90 has plastic gears and will strip. MG90S metal gear\n                                      under ~1.5 kg·cm                         is worth the extra\nStandard servo\nMG996R class                          Small arm joints. Roughly 9–11 kg·cm at Draws well over 1 A when stalled. Jitters. Counterfeits"
+            },
+            {
+              "type": "p",
+              "text": "6V are extremely common"
+            },
+            {
+              "type": "pre",
+              "text": "Actuator                 Rough ₹     Good for                                Watch out\n                         700–1,500                                           Needs a proper 6–7.4 V supply with real current capacity\nDigital servo DS3218                 Arm shoulder joints where MG996R is\nclass                    600–1,600   not enough (see §5.3)                   Loses steps silently under load. Holds torque only while\n                                                                             powered and hot\nNEMA 17 stepper +                    Open-loop position where repeatability\ndriver                               matters and speed is low"
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-2-5",
+          "number": "2.5",
+          "title": "Motor drivers — where beginners lose the most performance",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Stop using the L298N It is the module everyone starts with and it is a bipolar-transistor design from 1988. It drops roughly 2 V across the output stage, which at 6 V motor supply means a third of your battery is heating the driver rather than turning the wheel. It also runs hot, needs a heatsink, and its current rating is optimistic. Use a MOSFET driver instead. A TB6612FNG (about ₹150–300, ~1.2 A per channel continuous) drops a fraction of a volt and is a straight swap for small robots. For larger motors, a BTS7960 module or a Cytron MDD10A handles far more current cleanly. Your battery life and your low-speed control will both improve immediately, and low-speed control is exactly what a line follower needs."
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-2-6",
+          "number": "2.6",
+          "title": "Sensors, and what each actually costs you",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Sensor                   Rough ₹     Measures                         Failure mode you must design around\n                         15–40\nTCRT5000 IR                          Surface reflectance at ~5–15 mm Swamped by sunlight; sensitive to height and surface\nreflectance                                                                            colour. See §4.2\nQTR-style IR array       400–1,500   Line position across 6–8 points  Same ambient-light problem, but calibration is much\n                                                                      easier\nHC-SR04 ultrasonic       60–150      Distance 2–400 cm                Wide beam, misses thin obstacles, confused by soft or\n                                                                      angled surfaces, slow (~60 ms per reading)\nVL53L0X / VL53L1X        200–600     Distance 5–200 cm, narrow        Range collapses in direct sunlight; struggles with dark\nToF                                  beam, fast                       and glossy surfaces"
+            },
+            {
+              "type": "p",
+              "text": "MPU6050 IMU 80–200 Acceleration and angular rate Gyro drifts; accelerometer is useless as an angle Wheel rotation reference while the robot accelerates. Needs fusion Quadrature encoder included / Everything and nothing (§6.3) 200–600 Counts wheel turns, not ground travel — slip is invisible Camera (ESP32-CAM / 400–2,500 to it USB / Pi cam) Needs compute, lighting, and far more engineering than it first appears"
+            },
+            {
+              "type": "pre",
+              "text": "Bump switch /            10–40       Contact                          None worth mentioning. The most reliable sensor in this\nwhisker                                                               table — use them"
+            },
+            {
+              "type": "p",
+              "text": "Note the last row seriously. A pair of ₹20 microswitches will save a robot that a ₹2,000 sensor suite missed, and they work in the dark, in dust and in sunlight."
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-2-7",
+          "number": "2.7",
+          "title": "Power — the subsystem that causes failure number one",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "BATTERY Li-ion 18650 pack (3S = 11.1 V nominal) with a BMS, or a LiPo with a low-voltage alarm. Never run cells below cut-off. Capacity: size for 2x your target runtime."
+            },
+            {
+              "type": "pre",
+              "text": "RAILS     Do NOT run logic from the same rail as motors. Motor current\n          spikes drag the rail down and reset your MCU mid-turn."
+            },
+            {
+              "type": "p",
+              "text": "battery ──┬── FUSE ── E-STOP ──── motor driver (raw pack V) │ ├── buck ── 5.0 V ── MCU, sensors │ └── buck ── 6.0 V ── servos (own bulk cap)"
+            },
+            {
+              "type": "p",
+              "text": "GROUND All returns meet at ONE point at the battery negative. Motor return current must not flow through the wire that your sensor ground uses as a reference. This single mistake causes most \"my sensor readings jump when the motor runs\"."
+            },
+            {
+              "type": "p",
+              "text": "CAPACITORS 1000 uF electrolytic across the motor driver supply, right at the driver. 100 uF at the servo rail, at the servos. 0.1 uF ceramic close to every IC. These are not optional."
+            },
+            {
+              "type": "p",
+              "text": "MEASURE Put a multimeter on the 5 V rail and run the motors from stall to full speed. If the rail dips below about 4.7 V you have found your reset problem before it finds you."
+            },
+            {
+              "type": "p",
+              "text": "The measurement in the last block takes two minutes and resolves a category of bug that otherwise consumes entire weekends"
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-2-8",
+          "number": "2.8",
+          "title": "Worked example: sizing the drive motors",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "ROBOT: 3.0 kg all-up · 80 mm wheels (r = 0.040 m) · 2 driven wheels TARGET: 0.4 m/s on level paver, must still climb an 8 degree ramp,"
+            },
+            {
+              "type": "p",
+              "text": "and reach speed in about 1 second"
+            },
+            {
+              "type": "p",
+              "text": "FORCES the drivetrain must overcome at the worst case (climbing, accelerating):"
+            },
+            {
+              "type": "p",
+              "text": "rolling resistance F = Crr * m * g"
+            },
+            {
+              "type": "p",
+              "text": "= 0.02 * 3.0 * 9.81 = 0.59 N"
+            },
+            {
+              "type": "p",
+              "text": "(Crr ~ 0.02 for rubber on rough paver; ~0.01 on smooth floor)"
+            },
+            {
+              "type": "p",
+              "text": "gradient F = m * g * sin(8 deg) = 3.0 * 9.81 * 0.139 = 4.09 N"
+            },
+            {
+              "type": "p",
+              "text": "acceleration F = m * a , a = 0.4 / 1.0 = 3.0 * 0.4 = 1.20 N 5.88 N"
+            },
+            {
+              "type": "pre",
+              "text": "TORQUE at the wheels: T = F * r = 5.88 * 0.040                     = 0.235 N-m\nPer motor (2 driven):                                              = 0.118 N-m\nConvert (1 kg-cm = 0.0981 N-m):                                    = 1.20 kg-cm"
+            },
+            {
+              "type": "p",
+              "text": "Apply the 2x drive derating from 2.2: REQUIRED ~ 2.4 kg-cm per motor"
+            },
+            {
+              "type": "pre",
+              "text": "SPEED: wheel circumference = 2 * pi * 0.040                        = 0.251 m\n              0.4 m/s / 0.251 m                                    = 1.59 rev/s\n                                                                   = ~95 RPM"
+            },
+            {
+              "type": "p",
+              "text": "SPECIFICATION TO SHOP WITH: ~100 RPM at load, &gt;= 2.4 kg-cm, with encoder -&gt; a JGA25-370 class gearmotor at a suitable ratio fits comfortably. -&gt; now look up its STALL current and size driver, wiring and fuse for 2x (two motors stalled simultaneously). That number, not the running current, is what your electronics must survive."
+            },
+            {
+              "type": "p",
+              "text": "NOTE HOW THE GRADIENT DOMINATES. On level ground the requirement is under 0.5 kg-cm and almost any motor works. The 8 degree ramp multiplies it by five. Always size for the worst gradient on the actual route - go and measure it with a phone inclinometer rather than guessing."
+            },
+            {
+              "type": "p",
+              "text": "BUILD THIS — Build the bill of materials and verify it Half a day, and it will save you two weeks. 1 Compute your real requirement: mass, target speed, worst gradient, payload. Get to a required wheel torque (worked in"
+            },
+            {
+              "type": "p",
+              "text": "§5.3 for the arm; same method for drive). 2 Apply the derating table in §2.2. Shop with the derated number. 3 Find two candidates for every part, priced from a supplier you can actually order from. Note lead times. 4 Compute worst-case current with everything stalled. Size the fuse, wire gauge and driver from that number. 5 When parts arrive, measure before you build: weigh them, measure stall current with a bench supply or a clamp meter,"
+            },
+            {
+              "type": "p",
+              "text": "run a battery discharge test. Record every measured value next to the claimed one. 6 Order spares of the motor driver, one motor, and the microcontroller. You will use at least one of them."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "3",
+      "title": "Control Loops on Real Hardware",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Textbook PID assumes a linear plant, continuous time, unlimited actuator authority and clean measurement. Your robot has none of these. Everything in this chapter is about the gap between those two situations."
+        }
+      ],
+      "topics": [
+        {
+          "id": "robotics-mechatronics-3-1",
+          "number": "3.1",
+          "title": "When you do not need a control loop",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Open loop is not a lesser choice. If the disturbance is small and the consequence of error is small, a calibrated open-loop command is simpler, cheaper and has no gains to tune. A servo commanded to 90° is open loop from your side. A line follower driving straight on flat ground barely needs a loop at all."
+            },
+            {
+              "type": "p",
+              "text": "Close the loop when the disturbance is significant and unpredictable — a gradient, a varying payload, battery voltage sagging over a run, one motor being 20% weaker than its twin. That last one is why two ‘identical’ hobby motors do not drive a robot straight, and it is the most common first reason to add encoders."
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-3-2",
+          "number": "3.2",
+          "title": "The five things that break textbook PID",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Reality What it does to the loop What you do about it"
+            },
+            {
+              "type": "pre",
+              "text": "Deadband — below some        Small errors produce commands that do              Measure the minimum effective PWM and add it as a\nPWM the motor does not       nothing. The robot sits with a steady error until  feedforward offset (§3.4)\nmove at all                  the integrator slowly winds up, then lurches\nStatic friction — breaking   Stick-slip: the robot creeps, stops, jumps. Looks Same feedforward, plus reduce friction mechanically. Do not\naway costs more than\nkeeping moving               like bad tuning; is not                            fix it with more gain\nBacklash — free play in the  The measurement does not respond to output         Reduce it mechanically; approach from one direction; accept\ngearbox before load          for the first few degrees of reversal. High gain   a dead zone (§3.7)\nmoves                        turns this into a permanent limit cycle —\n                             buzzing around the target\nSaturation — you can         The integrator keeps accumulating while the        Anti-windup: stop integrating while saturated and pushing\ncommand 300 but only         output is pinned. When the error finally           further in (§3.3)\ndeliver 255                  reverses, the robot overshoots enormously\nNoise and quantisation —     The derivative term amplifies noise. Raw D on a    Derivative on measurement, low-pass filtered. Fixed sample\nencoder ticks and noisy      noisy signal is a random number generator with     time\nADC                          a gain on it"
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-3-3",
+          "number": "3.3",
+          "title": "A PID that survives contact with hardware",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "// Discrete PID for real actuators. Fixed dt, anti-windup, filtered // derivative on measurement, output clamping, deadband feedforward."
+            },
+            {
+              "type": "p",
+              "text": "struct PID {"
+            },
+            {
+              "type": "p",
+              "text": "float kp, ki, kd;"
+            },
+            {
+              "type": "p",
+              "text": "float outMin, outMax; // actuator limits, in the units you command"
+            },
+            {
+              "type": "p",
+              "text": "float tau; // derivative low-pass time constant, seconds"
+            },
+            {
+              "type": "p",
+              "text": "float deadband; // measured minimum effective command (3.4)"
+            },
+            {
+              "type": "p",
+              "text": "// state"
+            },
+            {
+              "type": "p",
+              "text": "float integral, dFilt, prevMeasurement;"
+            },
+            {
+              "type": "p",
+              "text": "bool first;"
+            },
+            {
+              "type": "p",
+              "text": "};"
+            },
+            {
+              "type": "p",
+              "text": "static float clampf(float v, float lo, float hi) { return v &lt; lo ? lo : (v &gt; hi ? hi : v);"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "float pid_update(PID *p, float setpoint, float measurement, float dt) { float error = setpoint - measurement;"
+            },
+            {
+              "type": "p",
+              "text": "// ---- P float P = p-&gt;kp * error;"
+            },
+            {
+              "type": "p",
+              "text": "// ---- D on MEASUREMENT, not on error. // Differentiating the error makes the output spike every time the // setpoint changes (\"derivative kick\"). Differentiating the measurement // gives the same damping with no kick. if (p-&gt;first) { p-&gt;prevMeasurement = measurement; p-&gt;dFilt = 0; p-&gt;first = false; } float rawD = -(measurement - p-&gt;prevMeasurement) / dt; // first-order low-pass: raw encoder derivative is far too noisy to use float alpha = dt / (p-&gt;tau + dt); p-&gt;dFilt += alpha * (rawD - p-&gt;dFilt); float D = p-&gt;kd * p-&gt;dFilt;"
+            },
+            {
+              "type": "p",
+              "text": "// ---- I with conditional integration (anti-windup) float unsat = P + p-&gt;integral + D; bool windingUp = (unsat &gt; p-&gt;outMax &amp;&amp; error &gt; 0.0f) ||"
+            },
+            {
+              "type": "p",
+              "text": "(unsat &lt; p-&gt;outMin &amp;&amp; error &lt; 0.0f); if (!windingUp) {"
+            },
+            {
+              "type": "p",
+              "text": "p-&gt;integral += p-&gt;ki * error * dt; p-&gt;integral = clampf(p-&gt;integral, p-&gt;outMin, p-&gt;outMax); }"
+            },
+            {
+              "type": "p",
+              "text": "// ---- combine and clamp float out = clampf(P + p-&gt;integral + D, p-&gt;outMin, p-&gt;outMax);"
+            },
+            {
+              "type": "p",
+              "text": "// ---- deadband feedforward: push past static friction so that a small"
+            },
+            {
+              "type": "p",
+              "text": "// error produces a command the motor can actually act on."
+            },
+            {
+              "type": "p",
+              "text": "if (out &gt; 0.5f) out += p-&gt;deadband;"
+            },
+            {
+              "type": "p",
+              "text": "else if (out &lt; -0.5f) out -= p-&gt;deadband;"
+            },
+            {
+              "type": "p",
+              "text": "else out = 0.0f; // genuinely zero: let it rest"
+            },
+            {
+              "type": "p",
+              "text": "out = clampf(out, p-&gt;outMin, p-&gt;outMax);"
+            },
+            {
+              "type": "p",
+              "text": "p-&gt;prevMeasurement = measurement; return out; }"
+            },
+            {
+              "type": "p",
+              "text": "Four things here that the textbook version omits and that matter more than the gains: derivative on measurement, filtered derivative, conditional-integration anti-windup, and deadband feedforward"
+            },
+            {
+              "type": "p",
+              "text": "Fixed dt is not a detail"
+            },
+            {
+              "type": "p",
+              "text": "Call your control loop at a fixed rate and pass the real elapsed time, not a constant you hoped was true. If your loop runs at 100 Hz sometimes and 60 Hz when the telemetry sends, your effective Ki and Kd change from cycle to cycle and no amount of tuning will make the robot behave consistently."
+            },
+            {
+              "type": "p",
+              "text": "Structure it as a timed loop: check micros(), run when the interval has elapsed, and measure your actual jitter once. Never put delay(), a blocking ultrasonic read, or a serial print of more than a few bytes inside the control path."
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-3-4",
+          "number": "3.4",
+          "title": "Measure your deadband before you tune anything",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "PROCEDURE - 15 minutes, and it changes your low-speed behaviour completely"
+            },
+            {
+              "type": "p",
+              "text": "1. Put the robot ON THE GROUND, loaded as it will really be. Not on blocks. Friction with the wheels in the air is a different number."
+            },
+            {
+              "type": "p",
+              "text": "2. Command PWM = 0. Increase by 1 every 300 ms, printing the command and the encoder count."
+            },
+            {
+              "type": "p",
+              "text": "3. Record the command at which the wheel FIRST moves. -&gt; break-away Then reduce slowly and record where it STOPS moving. -&gt; keep-moving Break-away is always higher. The difference is your static friction."
+            },
+            {
+              "type": "p",
+              "text": "4. Repeat for reverse, and for the other motor. They will differ, often by 10-20%. Store one deadband value per motor per direction."
+            },
+            {
+              "type": "p",
+              "text": "TYPICAL RESULT on a small geared robot with an 8-bit PWM range:"
+            },
+            {
+              "type": "p",
+              "text": "break-away ~ 55 / 255 keep-moving ~ 35 / 255"
+            },
+            {
+              "type": "p",
+              "text": "Meaning: roughly the bottom fifth of your control range does nothing."
+            },
+            {
+              "type": "p",
+              "text": "Without feedforward, every small correction your PID makes is discarded"
+            },
+            {
+              "type": "p",
+              "text": "by the hardware, and the integrator has to wind up to compensate."
+            },
+            {
+              "type": "p",
+              "text": "USE keep-moving as the deadband feedforward value, not break-away - using break-away makes the robot jump on every direction reversal."
+            },
+            {
+              "type": "p",
+              "text": "Do this on every motor, on the real surface, with the real battery at mid charge. Write the four numbers into your code as named constants"
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-3-5",
+          "number": "3.5",
+          "title": "A tuning procedure that works on a robot",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "1 Fix the mechanics first. If there is visible slop, a loose grub screw or a wheel that wobbles, no gain will help. Tuning is the last step, not the first."
+            },
+            {
+              "type": "p",
+              "text": "2 Verify the loop rate and the sign of your feedback. A sign error looks exactly like instability and wastes hours. Command a small positive output and confirm the measurement increases."
+            },
+            {
+              "type": "p",
+              "text": "3 Set the deadband feedforward from §3.4. Now a small command produces small motion, which is what the rest of the tuning assumes."
+            },
+            {
+              "type": "p",
+              "text": "4 Kp only. Ki = Kd = 0. Raise Kp until the response oscillates steadily, then halve it. You are looking for brisk response with a small overshoot."
+            },
+            {
+              "type": "p",
+              "text": "5 Add Kd to damp the overshoot. Increase until the motion becomes rough or buzzy, then back off by a third. If the buzz appears immediately, increase the derivative filter time constant tau — you are amplifying encoder noise, not damping motion."
+            },
+            {
+              "type": "p",
+              "text": "6 Add Ki last, and sparingly. Only enough to remove the steady-state error you actually care about. Most mobile-robot loops need far less Ki than people give them; an aggressive integrator on a system with backlash produces a permanent hunt."
+            },
+            {
+              "type": "p",
+              "text": "7 Re-test under the conditions that matter: fully loaded, on the real surface, on a gradient, and with the battery at 30% charge. Gains tuned at full charge will be sluggish at the end of a run because your effective actuator authority has dropped."
+            },
+            {
+              "type": "p",
+              "text": "Ziegler–Nichols is a starting point, not an answer"
+            },
+            {
+              "type": "p",
+              "text": "The classical tuning rules assume a plant that your robot is not. They will get you into the right order of magnitude and they will overshoot badly on a system with backlash. Use them to find a starting Kp, then tune by observation — and log the step response so you are comparing plots rather than impressions. A phone video of the robot is a legitimate measurement instrument at this stage."
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-3-6",
+          "number": "3.6",
+          "title": "Feedforward: do the predictable part without the loop",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The feedback loop should correct errors, not do the whole job. If you already know roughly what command produces a given speed, apply it directly and let PID handle only the difference. This reduces the gain you need, which reduces every problem in §3.2."
+            },
+            {
+              "type": "p",
+              "text": "// Measure this once: command 20%, 40%, 60%, 80% PWM and record steady"
+            },
+            {
+              "type": "p",
+              "text": "// speed at each. Fit a straight line. That IS your feedforward model."
+            },
+            {
+              "type": "p",
+              "text": "//"
+            },
+            {
+              "type": "p",
+              "text": "// command = Kff * targetSpeed + deadband (per direction)"
+            },
+            {
+              "type": "p",
+              "text": "float ff = KFF * targetSpeed; float fb = pid_update(&amp;velPid, targetSpeed, measuredSpeed, dt); float cmd = clampf(ff + fb, -255, 255);"
+            },
+            {
+              "type": "p",
+              "text": "// With a decent feedforward, the PID output stays small and the loop // becomes far more forgiving. If your PID is doing 90% of the work, // you have not characterised your actuator yet."
+            },
+            {
+              "type": "p",
+              "text": "This is the single highest-value technique in the chapter and the one most often skipped in student code"
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-3-7",
+          "number": "3.7",
+          "title": "Backlash: design around it, do not control through it",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Backlash is free play — the gearbox output does not move for the first few degrees after a direction reversal. To the controller this looks like the plant briefly having zero gain, and the standard reaction — more gain — produces a limit cycle: the joint buzzes back and forth across the dead zone forever."
+            },
+            {
+              "type": "p",
+              "text": "• Measure it. Hold the output, rotate the input by hand, and record how far it moves before the output responds. On a hobby servo it is commonly 1–3°; on a cheap spur gearbox it can be much more."
+            },
+            {
+              "type": "p",
+              "text": "• Approach from one direction. For positioning tasks, always overshoot the target slightly and come back the same way every time. This converts backlash from an error into a constant offset you can calibrate out — the standard trick in machine tools and the reason Project 2 uses it."
+            },
+            {
+              "type": "p",
+              "text": "• Reduce it mechanically. Preloaded gears, a belt instead of a gear train, sensing at the output rather than the motor shaft. Belts have compliance but almost no backlash, which is usually the better trade for a student arm."
+            },
+            {
+              "type": "p",
+              "text": "• Accept a dead zone in the specification. If you have 2° of backlash, do not promise 0.5° repeatability. Write the achievable number down and design the task so it does not need more."
+            },
+            {
+              "type": "p",
+              "text": "BUILD THIS — Tune one motor properly Two hours on a single motor. Everything in Chapters 4–6 depends on this. 1 Wire one motor with an encoder. Confirm the encoder counts up when the motor drives forward. 2 Build the timed loop at 100 Hz and print actual loop interval. Confirm the jitter is small before continuing. 3 Run the deadband procedure in §3.4. Record four numbers. 4 Build the feedforward line from §3.6 by measuring speed at four PWM values. 5 Tune Kp, then Kd, then Ki using §3.5. Log a step response at each stage and keep the plots — they are your evidence and"
+            },
+            {
+              "type": "p",
+              "text": "your report. 6 Now repeat the step test with 2 kg on the robot and the battery half flat. Note how much worse it is. That gap is what"
+            },
+            {
+              "type": "p",
+              "text": "Chapter 7 is about."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "4",
+      "title": "Project 1 — Line Follower for Real Pathways",
+      "intro": [
+        {
+          "type": "p",
+          "text": "A competition line follower runs on matte black tape, on a flat smooth floor, under constant indoor light. A campus pathway offers none of those and defeats the standard design within about three metres. The differences are the entire engineering content of this project."
+        }
+      ],
+      "topics": [
+        {
+          "id": "robotics-mechatronics-4-1",
+          "number": "4.1",
+          "title": "Specification",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "    FOLLOWS   a 25 mm painted or taped line on interlocking paver blocks\n    LIGHT     3-8 mm steps between pavers, 5 mm joint gaps, a 6 degree ramp\n    SPEED\n    RECOVERY  works in shade, direct 10:00 sun, and under sodium lamps"
+            },
+            {
+              "type": "p",
+              "text": "RUNTIME 0.25 m/s nominal, slows automatically on curvature MASS if the line is lost, finds it again without human help,"
+            },
+            {
+              "type": "p",
+              "text": "or stops safely within 2 s"
+            },
+            {
+              "type": "p",
+              "text": "30 minutes continuous"
+            },
+            {
+              "type": "p",
+              "text": "under 1.5 kg BUDGET Rs 3,000 - 5,000"
+            },
+            {
+              "type": "p",
+              "text": "NOT IN SCOPE crossing roads, avoiding people, running at night Write the ‘not in scope’ line before you start. It is what stops the project growing until it cannot be finished"
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-4-2",
+          "number": "4.2",
+          "title": "The sunlight problem, and the fix that makes this project work",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "An IR reflectance sensor measures how much infrared its phototransistor sees. Indoors, that is almost entirely the light from its own LED bouncing off the floor. Outdoors it is mostly sunlight, which contains far more infrared than your LED emits. In direct sun the reading saturates and the sensor is effectively blind — which is why a robot that worked all week in the lab fails in the first patch of daylight."
+            },
+            {
+              "type": "p",
+              "text": "Differential (chopped) measurement — do this and the problem disappears Instead of reading the sensor once, read it twice: once with your IR LED off, and once with it on. Subtract. The ambient contribution appears in both readings and cancels; what remains is only your own LED’s reflected light."
+            },
+            {
+              "type": "p",
+              "text": "reflectance = read(LED on) − read(LED off)"
+            },
+            {
+              "type": "p",
+              "text": "The two readings must be close together in time — a few hundred microseconds — so the ambient level has not changed between them. This costs you one extra ADC conversion and one GPIO pin to switch the LED bank, and it converts a sensor that fails outdoors into one that works. It is the single most important technique in this chapter."
+            },
+            {
+              "type": "p",
+              "text": "// Ambient-cancelling read. LED bank on a GPIO, sensors on ADC pins. // Works with discrete TCRT5000s or a QTR array wired for controlled emitters."
+            },
+            {
+              "type": "p",
+              "text": "const uint8_t SENS[N] = {32, 33, 34, 35, 36, 39}; // ESP32 ADC pins const uint8_t LED_BANK = 25;"
+            },
+            {
+              "type": "p",
+              "text": "void readLine(uint16_t out[N]) { static uint16_t dark[N];"
+            },
+            {
+              "type": "p",
+              "text": "digitalWrite(LED_BANK, LOW); // ---- ambient only"
+            },
+            {
+              "type": "p",
+              "text": "delayMicroseconds(200); // let the phototransistor settle"
+            },
+            {
+              "type": "p",
+              "text": "for (uint8_t i = 0; i &lt; N; i++) dark[i] = analogRead(SENS[i]);"
+            },
+            {
+              "type": "p",
+              "text": "digitalWrite(LED_BANK, HIGH); // ---- ambient + our LED"
+            },
+            {
+              "type": "p",
+              "text": "delayMicroseconds(200);"
+            },
+            {
+              "type": "p",
+              "text": "for (uint8_t i = 0; i &lt; N; i++) {"
+            },
+            {
+              "type": "p",
+              "text": "int v = (int)analogRead(SENS[i]) - (int)dark[i];"
+            },
+            {
+              "type": "p",
+              "text": "out[i] = v &gt; 0 ? v : 0; // negative means ambient changed; treat as 0"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "digitalWrite(LED_BANK, LOW); // LEDs off between reads: saves power,"
+            },
+            {
+              "type": "p",
+              "text": "} // reduces heating and drift"
+            },
+            {
+              "type": "p",
+              "text": "// CALIBRATION - run once at the start of every deployment, on the actual // surface, in the actual light. Sweep the robot across the line by hand // for ~5 seconds while recording min/max per sensor, then normalise: // // norm[i] = 1000 * (raw[i] - min[i]) / max(1, (max[i] - min[i])) // // Normalising per sensor is what makes six mismatched hobby sensors and // a sensor bar that is not perfectly parallel to the ground behave alike."
+            },
+            {
+              "type": "p",
+              "text": "Recalibrate every time the light or surface changes. A calibration from yesterday indoors is not valid today outdoors, and this is a 5-second operation"
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-4-3",
+          "number": "4.3",
+          "title": "Mechanical design for uneven ground",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Sensor height is the critical dimension. Reflectance falls off sharply with distance. On a flat floor you would mount at 5 mm; over paver blocks with 8 mm steps, a rigid 5 mm mount will strike the ground. Mount at 10–12 mm and accept lower signal, or make the mount compliant."
+            },
+            {
+              "type": "p",
+              "text": "• Make the sensor bar compliant, not rigid. Mount it on a small sprung or rubber-isolated arm with a skid, so it follows the surface while the chassis rides over steps. This is a mechanical solution to what looks like a sensor problem, which is the theme of this whole guide."
+            },
+            {
+              "type": "p",
+              "text": "• Put the sensor bar ahead of the wheels — typically 60–100 mm. This gives the controller preview: it sees the curve before the robot reaches it. Too far forward and the geometry becomes unstable on tight turns."
+            },
+            {
+              "type": "p",
+              "text": "• Wheelbase and track. A short wheelbase turns tightly but wanders; a long one is stable but cuts corners. Start with track ≈ wheelbase and adjust after testing on the real path."
+            },
+            {
+              "type": "p",
+              "text": "• Ground clearance elsewhere. Everything except the sensor skid should clear the worst step by 2×. A robot that high-centres on a paver edge is not a control problem."
+            },
+            {
+              "type": "p",
+              "text": "• Castor or ball wheel at the back — a ball castor jams in paver joints. A larger-diameter castor wheel, or a third driven wheel, rolls over gaps that a small ball drops into."
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-4-4",
+          "number": "4.4",
+          "title": "From sensors to a line position",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "// Weighted average gives a CONTINUOUS position estimate from a handful of // discrete sensors - far better than \"which sensor is darkest\". // Positions in thousandths: sensor i sits at 1000*i."
+            },
+            {
+              "type": "p",
+              "text": "int32_t linePosition(const uint16_t norm[N], bool *seen) {"
+            },
+            {
+              "type": "p",
+              "text": "uint32_t weighted = 0, total = 0;"
+            },
+            {
+              "type": "p",
+              "text": "for (uint8_t i = 0; i &lt; N; i++) {"
+            },
+            {
+              "type": "p",
+              "text": "if (norm[i] &gt; 200) { // noise floor, tune on real data"
+            },
+            {
+              "type": "p",
+              "text": "weighted += (uint32_t)norm[i] * (i * 1000);"
+            },
+            {
+              "type": "p",
+              "text": "total += norm[i];"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "*seen = (total &gt; 0);"
+            },
+            {
+              "type": "p",
+              "text": "if (!*seen) return 0;"
+            },
+            {
+              "type": "p",
+              "text": "return (int32_t)(weighted / total); // 0 .. (N-1)*1000"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "// error, centred on zero: // int32_t centre = (N - 1) * 1000 / 2; // int32_t error = pos - centre;"
+            },
+            {
+              "type": "p",
+              "text": "// SPEED SCHEDULING - the difference between a demo and something that"
+            },
+            {
+              "type": "p",
+              "text": "// survives a real path. Slow down when the line is curving or uncertain."
+            },
+            {
+              "type": "p",
+              "text": "//"
+            },
+            {
+              "type": "p",
+              "text": "// float curvature = fabs(error) / (float)centre; // 0 .. 1"
+            },
+            {
+              "type": "p",
+              "text": "// float speed = BASE_SPEED * (1.0f - 0.65f * curvature);"
+            },
+            {
+              "type": "p",
+              "text": "//"
+            },
+            {
+              "type": "p",
+              "text": "// A constant-speed line follower will leave the line at the first sharp"
+            },
+            {
+              "type": "p",
+              "text": "// bend. This one line of code fixes most of that."
+            },
+            {
+              "type": "p",
+              "text": "Weighted-average position plus curvature-based speed scheduling is most of what separates a robot that finishes the path from one that does not"
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-4-5",
+          "number": "4.5",
+          "title": "Behaviour: what happens when the line is gone",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "On a campus path the line will be lost — a puddle, a patch of mud, a repaired section, a shadow edge, a gap in the paint. A follower with no recovery behaviour drives off into the grass. Make the behaviour explicit as a state machine."
+            },
+            {
+              "type": "p",
+              "text": "line seen"
+            },
+            {
+              "type": "p",
+              "text": "┌──────────────────────────────────────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ │"
+            },
+            {
+              "type": "p",
+              "text": "▼ │"
+            },
+            {
+              "type": "p",
+              "text": "┌─────────┐ line lost ┌──────────┐ timeout ┌─────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ │ │ hold last│ (300 ms) │ arc in │"
+            },
+            {
+              "type": "p",
+              "text": "│ PID on │ │ steering │ │ last │"
+            },
+            {
+              "type": "p",
+              "text": "│ error │ │ │ │ known │"
+            },
+            {
+              "type": "p",
+              "text": "└────┬────┘ └──────────┘ │ direction│"
+            },
+            {
+              "type": "p",
+              "text": "│ └────┬────┘"
+            },
+            {
+              "type": "p",
+              "text": "│ all sensors dark │ found"
+            },
+            {
+              "type": "p",
+              "text": "│ (intersection / thick line) │▲"
+            },
+            {
+              "type": "p",
+              "text": "▼ ▼│"
+            },
+            {
+              "type": "p",
+              "text": "┌──────────────┐ ┌─────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ INTERSECTION │ │ line seen? │"
+            },
+            {
+              "type": "p",
+              "text": "│ drive straight│ └─────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "│ for 1 robot │ │ no, after 3 s"
+            },
+            {
+              "type": "p",
+              "text": "│ length │ ▼"
+            },
+            {
+              "type": "p",
+              "text": "└──────────────┘ ┌─────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "COAST exists because a 100 ms dropout over a │ (safe fail) │"
+            },
+            {
+              "type": "p",
+              "text": "paver joint is not a lost line. Without it, └─────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "the robot panics several times per metre."
+            },
+            {
+              "type": "p",
+              "text": "Figure 4.1 — COAST is the state students omit and the one that makes the difference outdoors. Most ‘lost line’ events are momentary and should be ignored."
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-4-6",
+          "number": "4.6",
+          "title": "The control loop, assembled",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "// Fixed-rate loop. Nothing here blocks. This is the whole robot."
+            },
+            {
+              "type": "pre",
+              "text": "const uint32_t LOOP_US = 10000;       // 100 Hz\nuint32_t nextLoop = 0;"
+            },
+            {
+              "type": "p",
+              "text": "void loop() { uint32_t now = micros(); if ((int32_t)(now - nextLoop) &lt; 0) return; // not yet - do other work float dt = (now - nextLoop + LOOP_US) / 1e6f; nextLoop += LOOP_US; if ((int32_t)(micros() - nextLoop) &gt; 0) nextLoop = micros() + LOOP_US; // catch up"
+            },
+            {
+              "type": "p",
+              "text": "// ---- SENSE"
+            },
+            {
+              "type": "p",
+              "text": "uint16_t norm[N];"
+            },
+            {
+              "type": "p",
+              "text": "readLine(norm); // ambient-cancelled (4.2)"
+            },
+            {
+              "type": "p",
+              "text": "bool seen;"
+            },
+            {
+              "type": "p",
+              "text": "int32_t pos = linePosition(norm, &amp;seen);"
+            },
+            {
+              "type": "p",
+              "text": "int32_t centre = (N - 1) * 1000 / 2;"
+            },
+            {
+              "type": "p",
+              "text": "float error = (float)(pos - centre);"
+            },
+            {
+              "type": "p",
+              "text": "// ---- DECIDE (state machine from figure 4.1) state = updateState(seen, allDark(norm), dt);"
+            },
+            {
+              "type": "p",
+              "text": "float steer = 0.0f, base = 0.0f;"
+            },
+            {
+              "type": "p",
+              "text": "switch (state) {"
+            },
+            {
+              "type": "p",
+              "text": "case FOLLOW: {"
+            },
+            {
+              "type": "p",
+              "text": "steer = pid_update(&amp;linePid, 0.0f, error, dt); // drive error to 0"
+            },
+            {
+              "type": "p",
+              "text": "float curvature = fabsf(error) / (float)centre; // 0 .. 1"
+            },
+            {
+              "type": "p",
+              "text": "base = BASE_SPEED * (1.0f - 0.65f * curvature); // slow in the bends"
+            },
+            {
+              "type": "p",
+              "text": "lastSteer = steer;"
+            },
+            {
+              "type": "p",
+              "text": "break;"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "case COAST: // brief dropout: hold course"
+            },
+            {
+              "type": "p",
+              "text": "steer = lastSteer * 0.7f; base = BASE_SPEED * 0.5f; break;"
+            },
+            {
+              "type": "p",
+              "text": "case SEARCH: // arc toward last known side"
+            },
+            {
+              "type": "p",
+              "text": "steer = copysignf(SEARCH_STEER, lastSteer); base = SEARCH_SPEED; break;"
+            },
+            {
+              "type": "p",
+              "text": "case INTERSECTION:"
+            },
+            {
+              "type": "p",
+              "text": "steer = 0.0f; base = BASE_SPEED * 0.6f; break;"
+            },
+            {
+              "type": "p",
+              "text": "case STOPPED:"
+            },
+            {
+              "type": "p",
+              "text": "steer = 0.0f; base = 0.0f; break;"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "// ---- ACT: differential mixing, then clamp TOGETHER so that clipping // one wheel does not silently change the commanded curvature. float l = base - steer, r = base + steer; float peak = fmaxf(fabsf(l), fabsf(r)); if (peak &gt; PWM_MAX) { l *= PWM_MAX / peak; r *= PWM_MAX / peak; } setMotor(LEFT, l); setMotor(RIGHT, r); }"
+            },
+            {
+              "type": "p",
+              "text": "// Why scale both wheels instead of clamping each: clamping the outer wheel // alone reduces the turn rate exactly when the robot most needs it, and the // robot understeers out of every sharp corner. Scaling preserves the ratio."
+            },
+            {
+              "type": "p",
+              "text": "PROTOCOL — Test protocol — Project 1"
+            },
+            {
+              "type": "p",
+              "text": "Run these in order. Do not skip to stage 5 because the robot looks ready."
+            },
+            {
+              "type": "p",
+              "text": "STAGE 1 BENCH, wheels up - sensor read plausible? print all N normalised values - move a black card under each sensor, confirm it responds - confirm ambient cancellation: shine a phone torch on the"
+            },
+            {
+              "type": "p",
+              "text": "array. Readings should barely change. If they swamp, your LED-off subtraction is not working."
+            },
+            {
+              "type": "p",
+              "text": "STAGE 2 INDOOR FLAT, tape line - follows a straight line, then a 300 mm radius curve - measure: how far before it leaves the line at BASE_SPEED? - tune PID here. Record gains."
+            },
+            {
+              "type": "p",
+              "text": "- lay 5 mm strips across the path every 200 mm - does the sensor bar stay in range? does COAST trigger"
+            },
+            {
+              "type": "p",
+              "text": "correctly, or does it drop to SEARCH on every strip?"
+            },
+            {
+              "type": "p",
+              "text": "STAGE 4 OUTDOOR, SHADE, real pavers - recalibrate first. Run 20 m. Count interventions. - log: interventions per 10 m. This is your headline metric."
+            },
+            {
+              "type": "p",
+              "text": "- recalibrate. Run the same 20 m. - if interventions rise sharply vs stage 4, the ambient"
+            },
+            {
+              "type": "p",
+              "text": "cancellation or the calibration is the cause, not the PID."
+            },
+            {
+              "type": "p",
+              "text": "- wet pavers are specular: they reflect the LED away from the sensor. Expect degradation. Record it rather than hiding it."
+            },
+            {
+              "type": "p",
+              "text": "PASS CRITERION under 1 intervention per 20 m across stages 4 and 5, three runs each, on different days."
+            },
+            {
+              "type": "p",
+              "text": "Stage 3 is the cheap simulation of stage 4. Five-millimetre strips of card on a lab floor find most of the mechanical problems before you carry the robot outside."
+            },
+            {
+              "type": "p",
+              "text": "BUILD THIS — Build and run Project 1 Two weekends. The deliverable is an intervention count, not a video. 1 Build the electronics on the bench and get ambient-cancelled, normalised readings printing before you attach anything to"
+            },
+            {
+              "type": "p",
+              "text": "a chassis. 2 Build the compliant sensor mount. Test it by hand over a 8 mm step and confirm the sensor height stays within range"
+            },
+            {
+              "type": "p",
+              "text": "through the whole travel. 3 Run the deadband and feedforward work from §3.4 and §3.6 on this robot’s motors. 4 Get through stages 1–3 of the protocol indoors. Record your gains. 5 Take it outside in shade, recalibrate, and run 20 m. Log every intervention with its cause — the causes will cluster, and the"
+            },
+            {
+              "type": "p",
+              "text": "biggest cluster is your next task. 6 Return at midday and repeat. Compare. Write one paragraph on what changed and why."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "5",
+      "title": "Project 2 — Pick-and-Place Arm",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Almost every first robot arm sags, jitters, browns out the controller, or cannot lift what it was built for. All four have the same root cause: the torque budget was never calculated. Ten minutes of arithmetic before you order parts prevents all of it."
+        }
+      ],
+      "topics": [
+        {
+          "id": "robotics-mechatronics-5-1",
+          "number": "5.1",
+          "title": "Specification",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "REACH 300 mm from shoulder axis, in a horizontal plane"
+            },
+            {
+              "type": "p",
+              "text": "PAYLOAD 100 g at full reach (a small component, a connector, a bolt)"
+            },
+            {
+              "type": "p",
+              "text": "REPEATABILITY +/- 3 mm at the gripper, returning to the same point"
+            },
+            {
+              "type": "p",
+              "text": "from the SAME direction (see 5.5 - direction matters)"
+            },
+            {
+              "type": "p",
+              "text": "CYCLE pick and place within a 400 x 300 mm work area, 8 s/cycle"
+            },
+            {
+              "type": "p",
+              "text": "DOF 4: base rotation, shoulder, elbow, gripper"
+            },
+            {
+              "type": "p",
+              "text": "BUDGET Rs 4,000 - 7,000"
+            },
+            {
+              "type": "p",
+              "text": "absolute accuracy (we have no joint feedback - 5.2) smooth Cartesian straight-line motion anything above 150 g, ever"
+            },
+            {
+              "type": "p",
+              "text": "Repeatability and accuracy are different things. With hobby servos you can achieve useful repeatability and almost no accuracy — design the task around that"
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-5-2",
+          "number": "5.2",
+          "title": "What a hobby servo actually is",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "A hobby servo is a small DC motor, a plastic or metal gearbox, a potentiometer and a closed-loop controller in a box. You send it a pulse width; it tries to reach the corresponding position. Five consequences that shape the whole design:"
+            },
+            {
+              "type": "p",
+              "text": "• You get no feedback. You command a position; you never learn whether it arrived, stalled, or was pushed aside. Your software is flying blind, which is why §5.6 uses timed, verified motions rather than assuming success."
+            },
+            {
+              "type": "p",
+              "text": "• Torque is specified at a specific voltage and falls off below it. An MG996R rated around 11 kg·cm at 6 V delivers noticeably less at 5 V, and much less when hot after a few minutes of holding a load."
+            },
+            {
+              "type": "p",
+              "text": "• Holding costs current. A servo resisting a load draws current continuously even when nothing moves. An arm holding a payload at full extension is a sustained electrical load, not a static one."
+            },
+            {
+              "type": "p",
+              "text": "• Stall current is large and sudden. A standard servo can pull well over an amp when it hits an end stop or a jam. Four servos doing this at once is what browns out the microcontroller and resets your program mid-cycle."
+            },
+            {
+              "type": "p",
+              "text": "• They jitter. Cheap servos hunt around the commanded position, especially under load and especially on a noisy supply. Some of this is the servo; a lot of it is your power rail."
+            },
+            {
+              "type": "p",
+              "text": "Never power servos from the controller board Not from the Arduino 5 V pin, not from the ESP32 regulator, not from USB. The board regulator cannot supply servo current and the resulting rail collapse resets your MCU at exactly the moment the arm is moving. The correct arrangement: a separate buck converter sized for total stall current, feeding the servos directly; a 1000 µF electrolytic capacitor across the servo rail physically close to the servos; and the servo ground tied to the MCU ground at one point. Signal wires carry only the pulse. This single change fixes most ‘my arm behaves randomly’ problems."
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-5-3",
+          "number": "5.3",
+          "title": "The torque budget — do this before ordering anything",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Servo torque is quoted in kg·cm: the mass in kilograms it can hold at one centimetre from the shaft. A load of m kilograms at L centimetres needs m × L kg·cm. Every mass on the arm contributes, at its own distance, and the worst case is the arm fully extended and horizontal."
+            },
+            {
+              "type": "p",
+              "text": "WORKED TORQUE BUDGET - 300 mm arm, 100 g payload Links: L1 = 150 mm (shoulder to elbow), L2 = 150 mm (elbow to gripper)"
+            },
+            {
+              "type": "p",
+              "text": "SHOULDER, arm horizontal and fully extended (worst case):"
+            },
+            {
+              "type": "p",
+              "text": "item mass distance from torque"
+            },
+            {
+              "type": "p",
+              "text": "shoulder axis"
+            },
+            {
+              "type": "p",
+              "text": "----------------------------------------------------------------"
+            },
+            {
+              "type": "p",
+              "text": "link 1 (its own CG) 0.060 kg 7.5 cm 0.45 kg-cm"
+            },
+            {
+              "type": "p",
+              "text": "elbow servo 0.055 kg 15.0 cm 0.83 kg-cm"
+            },
+            {
+              "type": "p",
+              "text": "link 2 (its own CG) 0.050 kg 22.5 cm 1.13 kg-cm"
+            },
+            {
+              "type": "p",
+              "text": "gripper + wrist servo 0.090 kg 30.0 cm 2.70 kg-cm"
+            },
+            {
+              "type": "p",
+              "text": "payload 0.100 kg 30.0 cm 3.00 kg-cm"
+            },
+            {
+              "type": "p",
+              "text": "------------"
+            },
+            {
+              "type": "p",
+              "text": "STATIC REQUIREMENT 8.11 kg-cm"
+            },
+            {
+              "type": "p",
+              "text": "Apply the servo derating factor from 2.2 (x2.5, for dynamic load, heat, and voltage sag):"
+            },
+            {
+              "type": "p",
+              "text": "REQUIRED AT SHOULDER ~20 kg-cm"
+            },
+            {
+              "type": "pre",
+              "text": "MG996R class  ~11 kg-cm @ 6 V -&gt; NOT ENOUGH. It is only 1.35x the\nDS3218 class                                          static load. It will sag, buzz,\n                                                      overheat and eventually strip."
+            },
+            {
+              "type": "p",
+              "text": "~20 kg-cm @ 6.8 V -&gt; adequate, and still not generous."
+            },
+            {
+              "type": "p",
+              "text": "ELBOW (same method, distances measured from the elbow axis):"
+            },
+            {
+              "type": "pre",
+              "text": "link 2 CG        0.050 kg x 7.5 cm = 0.375\ngripper + wrist\npayload          0.090 kg x 15.0 cm = 1.350"
+            },
+            {
+              "type": "p",
+              "text": "0.100 kg x 15.0 cm = 1.500"
+            },
+            {
+              "type": "p",
+              "text": "-------"
+            },
+            {
+              "type": "p",
+              "text": "STATIC 3.23 kg-cm x2.5 -&gt; ~8 kg-cm"
+            },
+            {
+              "type": "p",
+              "text": "-&gt; MG996R class is fine here."
+            },
+            {
+              "type": "p",
+              "text": "WRIST / GRIPPER: small loads at small distances -&gt; MG90S metal-gear class."
+            },
+            {
+              "type": "p",
+              "text": "Torque at the shoulder scales with the SQUARE of reach: longer links are heavier AND act at a longer moment arm. Cutting reach from 300 mm to 220 mm roughly halves the shoulder requirement and moves you from an expensive servo to a cheap one. Shorten the arm before you upgrade the servo - that is the engineering decision."
+            },
+            {
+              "type": "p",
+              "text": "Redo this arithmetic with your own masses and lengths. It takes ten minutes and it is the difference between an arm that works and one that sags on day one"
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-5-4",
+          "number": "5.4",
+          "title": "Inverse kinematics for a two-link planar arm",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Given a target point, find the joint angles. For two links in a plane there is a closed-form solution — no iteration, no library, about fifteen lines."
+            },
+            {
+              "type": "p",
+              "text": "#include &lt;math.h&gt;"
+            },
+            {
+              "type": "p",
+              "text": "// Returns false if (x, y) is outside the workspace. Angles in radians: // th1 measured from +X axis at the shoulder, th2 is the elbow angle // relative to link 1. elbowUp selects between the two valid solutions. bool ik2(float x, float y, float L1, float L2, bool elbowUp,"
+            },
+            {
+              "type": "p",
+              "text": "float *th1, float *th2) { float r2 = x * x + y * y; float r = sqrtf(r2);"
+            },
+            {
+              "type": "p",
+              "text": "// Reachability: annulus between |L1-L2| and L1+L2. // Check this BEFORE the trig, and keep a margin off the outer edge - // near full extension the arm loses all vertical stiffness. if (r &gt; (L1 + L2) * 0.98f || r &lt; fabsf(L1 - L2) * 1.02f) return false;"
+            },
+            {
+              "type": "p",
+              "text": "float c2 = (r2 - L1 * L1 - L2 * L2) / (2.0f * L1 * L2);"
+            },
+            {
+              "type": "p",
+              "text": "if (c2 &gt; 1.0f) c2 = 1.0f;"
+            },
+            {
+              "type": "p",
+              "text": "if (c2 &lt; -1.0f) c2 = -1.0f; // guard against rounding"
+            },
+            {
+              "type": "p",
+              "text": "float s2 = sqrtf(1.0f - c2 * c2);"
+            },
+            {
+              "type": "p",
+              "text": "if (!elbowUp) s2 = -s2;"
+            },
+            {
+              "type": "p",
+              "text": "*th2 = atan2f(s2, c2); *th1 = atan2f(y, x) - atan2f(L2 * s2, L1 + L2 * c2); return true; }"
+            },
+            {
+              "type": "p",
+              "text": "// Mapping joint angle to a servo pulse. Every servo differs; calibrate"
+            },
+            {
+              "type": "p",
+              "text": "// each one and store its own constants. Never assume 500-2500 us = 0-180."
+            },
+            {
+              "type": "p",
+              "text": "uint16_t angleToUs(float rad, const ServoCal *c) {"
+            },
+            {
+              "type": "p",
+              "text": "float deg = rad * 57.2957795f;"
+            },
+            {
+              "type": "p",
+              "text": "deg = deg * c-&gt;direction + c-&gt;offsetDeg; // direction = +1 or -1"
+            },
+            {
+              "type": "p",
+              "text": "if (deg &lt; c-&gt;minDeg) deg = c-&gt;minDeg; // software end stops:"
+            },
+            {
+              "type": "p",
+              "text": "if (deg &gt; c-&gt;maxDeg) deg = c-&gt;maxDeg; // protect the mechanism"
+            },
+            {
+              "type": "p",
+              "text": "return (uint16_t)(c-&gt;usAtZero + deg * c-&gt;usPerDeg);"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "The reachability check with a 2% margin matters: commanding a point at exactly full extension gives a singular, floppy configuration and the servos fight each other"
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-5-5",
+          "number": "5.5",
+          "title": "Calibration, backlash and repeatability",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Calibrate each servo individually. Command a few known pulse widths, measure the actual angle with a printed protractor, and fit usPerDeg and usAtZero. Two servos from the same batch will differ by several degrees."
+            },
+            {
+              "type": "p",
+              "text": "• Measure your link lengths after assembly, not from the CAD. A 3 mm error in L1 becomes several millimetres of position error at the gripper."
+            },
+            {
+              "type": "p",
+              "text": "• Always approach a target from the same direction (§3.7). Overshoot by 5° and come back. This converts gearbox backlash from a random error into a constant offset your calibration absorbs, and it is the single biggest improvement to repeatability you can make in software."
+            },
+            {
+              "type": "p",
+              "text": "• Let the arm settle. Command the move, then wait — typically 200–400 ms — before closing the gripper. Servos have no ‘arrived’ signal, so the delay is your arrival check."
+            },
+            {
+              "type": "p",
+              "text": "• Move joints in the right order. Lift, traverse, then lower. Moving all joints simultaneously toward a target sweeps the gripper along an unpredictable arc that will collide with the workpiece."
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-5-6",
+          "number": "5.6",
+          "title": "Sequencing without delay()",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The instinctive way to write a pick-and-place cycle is a chain of servo.write() and delay() calls. It works on the bench and it is unusable in a real system: while the arm is delaying, nothing can read a sensor, respond to an e-stop, or notice that the cycle has jammed. Use a state machine with interpolated motion instead."
+            },
+            {
+              "type": "p",
+              "text": "// Interpolated, non-blocking joint motion. Servos jump to a commanded // position at full speed, which shakes the arm and overshoots. Ramping the // command over time gives smooth motion and much better repeatability."
+            },
+            {
+              "type": "p",
+              "text": "typedef struct { float from, to, t, dur; bool active; } Move; Move mv[NJOINTS];"
+            },
+            {
+              "type": "p",
+              "text": "void startMove(int j, float target, float seconds) { mv[j].from = jointAngle[j]; mv[j].to = target; mv[j].t = 0; mv[j].dur = seconds; mv[j].active = true;"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "bool movesDone(void) { for (int j = 0; j &lt; NJOINTS; j++) if (mv[j].active) return false; return true;"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "void updateMoves(float dt) { for (int j = 0; j &lt; NJOINTS; j++) { if (!mv[j].active) continue; mv[j].t += dt; float u = mv[j].t / mv[j].dur; if (u &gt;= 1.0f) { u = 1.0f; mv[j].active = false; } // smoothstep: zero velocity at both ends, no jerk at start or stop float s = u * u * (3.0f - 2.0f * u); jointAngle[j] = mv[j].from + s * (mv[j].to - mv[j].from); writeServo(j, angleToUs(jointAngle[j], &amp;cal[j])); }"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "// ---- the cycle, as a state machine. Called every loop, never blocks. enum { S_IDLE, S_ABOVE_PICK, S_DOWN, S_GRIP, S_LIFT, S_ABOVE_PLACE,"
+            },
+            {
+              "type": "p",
+              "text": "void cycleStep(float dt) {"
+            },
+            {
+              "type": "p",
+              "text": "updateMoves(dt);"
+            },
+            {
+              "type": "p",
+              "text": "if (!movesDone()) { // still moving: check for a jam"
+            },
+            {
+              "type": "p",
+              "text": "if ((millis() - stateEntered) &gt; STATE_TIMEOUT_MS) { state = S_FAULT; }"
+            },
+            {
+              "type": "p",
+              "text": "return;"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "if (settleRemaining &gt; 0) { settleRemaining -= dt; return; } // let it settle"
+            },
+            {
+              "type": "p",
+              "text": "switch (state) {"
+            },
+            {
+              "type": "p",
+              "text": "case S_ABOVE_PICK:"
+            },
+            {
+              "type": "p",
+              "text": "// approach every target from the SAME direction (3.7, 5.5): come in"
+            },
+            {
+              "type": "p",
+              "text": "// from above and from +X, always. Backlash becomes a constant offset."
+            },
+            {
+              "type": "p",
+              "text": "moveToXY(pick.x + APPROACH_MM, pick.y, HOVER_Z, 0.8f);"
+            },
+            {
+              "type": "p",
+              "text": "next(S_DOWN, 0.20f); break;"
+            },
+            {
+              "type": "p",
+              "text": "case S_DOWN: moveToXY(pick.x, pick.y, pick.z, 0.6f); next(S_GRIP, 0.30f); break;"
+            },
+            {
+              "type": "p",
+              "text": "case S_GRIP: gripper(CLOSED); next(S_LIFT, 0.40f); break;"
+            },
+            {
+              "type": "p",
+              "text": "case S_LIFT: moveToXY(pick.x, pick.y, HOVER_Z, 0.5f);"
+            },
+            {
+              "type": "p",
+              "text": "next(S_ABOVE_PLACE, 0.10f); break;"
+            },
+            {
+              "type": "p",
+              "text": "// ... place mirrors pick ..."
+            },
+            {
+              "type": "p",
+              "text": "case S_FAULT: relaxAllServos(); alarm(); break; // never leave a"
+            },
+            {
+              "type": "p",
+              "text": "} // servo stalled"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "The S_FAULT path matters: a servo held against a jam draws stall current continuously and will strip its gears or burn out within minutes. A timeout that relaxes the servos is the cheapest insurance in the project"
+            },
+            {
+              "type": "p",
+              "text": "PROTOCOL — Test protocol — Project 2"
+            },
+            {
+              "type": "pre",
+              "text": "STAGE 1  POWER, before any mechanics\n         - servo rail under load: command all servos to move together"
+            },
+            {
+              "type": "p",
+              "text": "while watching the rail with a meter. It must stay within about 0.3 V of nominal. If it dips, your supply or your capacitor is inadequate. Fix this first; everything else downstream depends on it."
+            },
+            {
+              "type": "p",
+              "text": "- calibrate each servo (5.5), record its constants - sweep each joint to its software end stops, slowly, and"
+            },
+            {
+              "type": "p",
+              "text": "confirm nothing collides or over-travels"
+            },
+            {
+              "type": "p",
+              "text": "- command a 100 mm square path at slow speed - mark the four corners on paper under the gripper - measure the error at each corner. This is your accuracy."
+            },
+            {
+              "type": "p",
+              "text": "Expect several millimetres. That is normal and acceptable."
+            },
+            {
+              "type": "pre",
+              "text": "STAGE 4  REPEATABILITY - the number that actually matters\n         - command the SAME point 20 times, always approached from"
+            },
+            {
+              "type": "p",
+              "text": "the same direction, returning to home in between - mark each attempt on paper. Measure the spread. - PASS: spread within +/- 3 mm. - Then repeat approaching from the OPPOSITE direction and"
+            },
+            {
+              "type": "p",
+              "text": "measure again. The difference between the two clusters is your backlash, in millimetres, at the gripper."
+            },
+            {
+              "type": "p",
+              "text": "- repeat stage 4 holding 100 g. Repeatability will worsen."
+            },
+            {
+              "type": "p",
+              "text": "Record by how much. - run 30 continuous cycles. Touch the shoulder servo"
+            },
+            {
+              "type": "p",
+              "text": "afterwards: if it is too hot to hold, it is undersized, regardless of what stage 4 said."
+            },
+            {
+              "type": "p",
+              "text": "- block the gripper mid-cycle. Does anything strip, or does"
+            },
+            {
+              "type": "p",
+              "text": "the software notice and stop? Add a cycle timeout. - cut power mid-cycle. Does the arm fall onto the work area?"
+            },
+            {
+              "type": "p",
+              "text": "If so, add a mechanical rest position."
+            },
+            {
+              "type": "p",
+              "text": "Stage 5’s heat check catches undersized servos that pass every positional test. A servo that is hot after thirty cycles will fail in the fourth week."
+            },
+            {
+              "type": "p",
+              "text": "BUILD THIS — Build and characterise the arm Two weekends. The deliverable is a repeatability number with a spread, not a video of one successful pick. 1 Do the torque budget from §5.3 with your own intended geometry before ordering servos. If the shoulder needs more"
+            },
+            {
+              "type": "p",
+              "text": "than about 20 kg·cm, shorten the arm rather than buying a bigger servo. 2 Build and verify the power architecture from §5.2. Complete stage 1 before assembling any linkage. 3 Calibrate every servo and record its constants in a table in your code. 4 Implement the IK, then run stage 3 and record your accuracy. 5 Run stage 4 twice — once approaching from each direction — and report both the repeatability spread and the backlash in"
+            },
+            {
+              "type": "p",
+              "text": "millimetres. 6 Run stage 5 and record the shoulder servo temperature by hand after thirty cycles. Write down whether your torque"
+            },
+            {
+              "type": "p",
+              "text": "budget was right."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "6",
+      "title": "Project 3 — Campus Navigation Without LiDAR",
+      "intro": [
+        {
+          "type": "p",
+          "text": "The interesting question is not whether you can afford a LiDAR. It is whether metric SLAM is the right architecture for a bot that runs the same three routes across a campus every day. For that problem it is usually not — and the alternative is cheaper, more robust and far easier to debug."
+        }
+      ],
+      "topics": [
+        {
+          "id": "robotics-mechatronics-6-1",
+          "number": "6.1",
+          "title": "An honest word about LiDAR",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Cheap 2D LiDAR exists now. It is still the wrong choice here."
+            },
+            {
+              "type": "p",
+              "text": "Entry-level 2D LiDAR has fallen dramatically — driven largely by robot vacuum cleaners — and units in the roughly ₹5,000–₹9,000 range are now common, with salvaged vacuum-cleaner units cheaper still. So ‘too expensive’ is no longer the honest objection. Three better ones:"
+            },
+            {
+              "type": "p",
+              "text": "Sunlight. Entry 2D LiDARs are commonly rated for ambient light around 2 klux — an indoor figure. Direct Indian sunlight is well over 100 klux. Units specified to work in strong sun (40–80 klux) exist and cost several times more. An outdoor campus bot with a ₹6,000 indoor LiDAR is carrying a sensor that goes blind at 11 a.m."
+            },
+            {
+              "type": "p",
+              "text": "Compute and complexity. SLAM needs a Linux-class board, a working ROS 2 stack, and real tuning effort. That is a semester in itself, and it is a different semester from the one where you learn integration."
+            },
+            {
+              "type": "p",
+              "text": "Architecture. SLAM builds a map so a robot can localise anywhere. Your bot runs fixed routes between known points. Building a full metric map to solve that is like using GPS to find your own kitchen."
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-6-2",
+          "number": "6.2",
+          "title": "Topological navigation — the right architecture for this problem",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "METRIC SLAM TOPOLOGICAL (what we build)"
+            },
+            {
+              "type": "pre",
+              "text": "builds a centimetre-accurate map       stores a GRAPH of known places\nlocalises anywhere in it               travels between adjacent nodes\nneeds LiDAR/vision + heavy compute     needs odometry + heading + a\nfails confusingly when it fails        few cheap range sensors\n                                       fails obviously and safely"
+            },
+            {
+              "type": "p",
+              "text": "┌───┐ 12.4 m, heading 087 ┌───┐ 6.1 m, 355 ┌───┐"
+            },
+            {
+              "type": "p",
+              "text": "│ A │───────────────────────▶│ B │───────────────▶│ C │"
+            },
+            {
+              "type": "p",
+              "text": "└───┘ \"corridor, wall on └───┘ \"ramp up 5°\" └───┘"
+            },
+            {
+              "type": "p",
+              "text": "lab right, ends at door\" lift office"
+            },
+            {
+              "type": "p",
+              "text": "▲ │"
+            },
+            {
+              "type": "p",
+              "text": "│ 18.0 m, 190 │"
+            },
+            {
+              "type": "p",
+              "text": "└────────────────────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "Each EDGE carries: distance, heading, and a TERMINATION CONDITION -"
+            },
+            {
+              "type": "p",
+              "text": "the thing that says \"you have arrived\", independent of odometry:"
+            },
+            {
+              "type": "p",
+              "text": "\"front ToF reads &lt; 400 mm\" (a wall)"
+            },
+            {
+              "type": "p",
+              "text": "\"right ToF steps from &lt;500 to &gt;1500 mm\" (a doorway edge)"
+            },
+            {
+              "type": "p",
+              "text": "\"line sensor sees the floor marker\""
+            },
+            {
+              "type": "p",
+              "text": "\"bump switch closes\""
+            },
+            {
+              "type": "p",
+              "text": "The termination condition is what stops odometry drift accumulating across the whole route. Every node arrival RESETS the position estimate. Drift now only has to survive ONE edge, not the entire journey."
+            },
+            {
+              "type": "p",
+              "text": "Figure 6.1 — This is the key idea in the chapter. Odometry is unreliable over 100 m and perfectly adequate over 12 m if something external tells you when you have arrived."
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-6-3",
+          "number": "6.3",
+          "title": "Odometry and heading",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "// Differential-drive odometry. Call at a fixed rate from the control loop. // Units: metres and radians. Wheel radius R, wheelbase W (wheel centre to // wheel centre), CPR = encoder counts per wheel revolution AFTER gearing."
+            },
+            {
+              "type": "p",
+              "text": "void odomUpdate(long dLeftTicks, long dRightTicks, Pose *p) { float dL = 2.0f * M_PI * R * (float)dLeftTicks / (float)CPR; float dR = 2.0f * M_PI * R * (float)dRightTicks / (float)CPR;"
+            },
+            {
+              "type": "p",
+              "text": "float dC = 0.5f * (dL + dR); // centre travel // heading change float dTheta = (dR - dL) / W;"
+            },
+            {
+              "type": "p",
+              "text": "// Midpoint integration: use the average heading over the step. Plain"
+            },
+            {
+              "type": "p",
+              "text": "// Euler (using the old heading) accumulates noticeable error on curves."
+            },
+            {
+              "type": "p",
+              "text": "p-&gt;x += dC * cosf(p-&gt;theta + 0.5f * dTheta);"
+            },
+            {
+              "type": "p",
+              "text": "p-&gt;y += dC * sinf(p-&gt;theta + 0.5f * dTheta);"
+            },
+            {
+              "type": "p",
+              "text": "p-&gt;theta = wrapPi(p-&gt;theta + dTheta);"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "// HEADING FUSION - odometry heading drifts because of wheel slip and"
+            },
+            {
+              "type": "p",
+              "text": "// because W is never exactly what you measured. Gyro heading drifts"
+            },
+            {
+              "type": "p",
+              "text": "// because of bias. They drift for DIFFERENT reasons, so fuse them."
+            },
+            {
+              "type": "p",
+              "text": "//"
+            },
+            {
+              "type": "p",
+              "text": "// gyro: good over seconds, drifts over minutes"
+            },
+            {
+              "type": "p",
+              "text": "// odometry: good on average, wrong whenever a wheel slips"
+            },
+            {
+              "type": "p",
+              "text": "//"
+            },
+            {
+              "type": "p",
+              "text": "void headingUpdate(float gyroZ, float odomDTheta, float dt, float *theta) {"
+            },
+            {
+              "type": "p",
+              "text": "static float bias = 0.0f;"
+            },
+            {
+              "type": "p",
+              "text": "// Estimate gyro bias while genuinely stationary - do this on every stop."
+            },
+            {
+              "type": "p",
+              "text": "if (isStationary()) bias += 0.001f * (gyroZ - bias);"
+            },
+            {
+              "type": "p",
+              "text": "float gyroDelta = (gyroZ - bias) * dt;"
+            },
+            {
+              "type": "p",
+              "text": "const float A = 0.98f; // trust the gyro short-term"
+            },
+            {
+              "type": "p",
+              "text": "*theta = wrapPi(*theta + A * gyroDelta + (1.0f - A) * odomDTheta);"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "// Do NOT use a magnetometer for heading on a robot with motors on it. // The magnetic field near a running DC motor swamps the earth's field, // and every steel door frame on campus shifts it further."
+            },
+            {
+              "type": "p",
+              "text": "Re-estimate the gyro bias every time the robot stops. Bias drifts with temperature, and on a 30-minute run in the sun the temperature changes a lot"
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-6-4",
+          "number": "6.4",
+          "title": "What drift actually costs you",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Error source                Typical         Effect over 20 m          Mitigation\n                            magnitude\nWheel radius error (wear, 1–2%              0.2–0.4 m along path      Calibrate by driving a measured 10 m and correcting R\npressure)\nWheelbase error             2–5%            Several degrees of        Calibrate by commanding ten full turns and correcting W\n                                            heading\nWheel slip on gravel or a   unbounded       Anything                  Detect: compare gyro rate against odometry rate. Large\nramp                                                                  mismatch = slip\nGyro bias drift             0.5–5°/min      Heading error grows with  Re-estimate bias at every stop; fuse with odometry\n                                            time"
+            },
+            {
+              "type": "p",
+              "text": "Encoder quantisation small Negligible at 20 m Use enough CPR that one tick is under ~2 mm of travel"
+            },
+            {
+              "type": "p",
+              "text": "Because edges are short and each node arrival resets the estimate, none of these accumulate across a route. That is the entire argument for topological navigation on a budget."
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-6-5",
+          "number": "6.5",
+          "title": "Behaviour arbitration and the safety layer",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "// Fixed priority. The highest-priority behaviour that WANTS control, // gets it. Simple, deterministic, and trivial to debug - you can always // print which behaviour is driving."
+            },
+            {
+              "type": "p",
+              "text": "typedef enum { B_ESTOP, B_CLIFF, B_BUMP, B_AVOID, B_NAV, B_IDLE } Behaviour;"
+            },
+            {
+              "type": "p",
+              "text": "Behaviour arbitrate(const Sensors *s) {"
+            },
+            {
+              "type": "p",
+              "text": "if (s-&gt;estopOpen) return B_ESTOP; // hardware also cuts"
+            },
+            {
+              "type": "p",
+              "text": "if (s-&gt;cliffFront &gt; CLIFF_MM) return B_CLIFF; // downward ToF: a step"
+            },
+            {
+              "type": "p",
+              "text": "if (s-&gt;bumpLeft || s-&gt;bumpRight) return B_BUMP; // physical contact"
+            },
+            {
+              "type": "p",
+              "text": "if (s-&gt;frontRange &lt; AVOID_MM) return B_AVOID;"
+            },
+            {
+              "type": "p",
+              "text": "if (navHasGoal()) return B_NAV;"
+            },
+            {
+              "type": "p",
+              "text": "return B_IDLE;"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "// It clamps whatever the behaviours asked for. void safetyClamp(float *v, float *w, const Sensors *s) {"
+            },
+            {
+              "type": "p",
+              "text": "// 1. speed limited by forward clearance - always able to stop in the // distance you can see float vMax = (s-&gt;frontRange - STOP_MARGIN_MM) / 1000.0f * K_STOP; if (vMax &lt; 0) vMax = 0; if (*v &gt; vMax) *v = vMax;"
+            },
+            {
+              "type": "p",
+              "text": "// 2. hard ceiling. A delivery bot among people has no business // exceeding walking pace. if (*v &gt; V_MAX) *v = V_MAX;"
+            },
+            {
+              "type": "p",
+              "text": "// 3. watchdog: if the high-level planner has not spoken recently, // it has crashed. Stop. if (millis() - lastNavUpdate &gt; 500) { *v = 0; *w = 0; }"
+            },
+            {
+              "type": "p",
+              "text": "// 4. tilt: if the IMU says we are on an unexpected slope or falling // over, stop and alarm. if (fabsf(s-&gt;pitch) &gt; TILT_LIMIT || fabsf(s-&gt;roll) &gt; TILT_LIMIT) {"
+            },
+            {
+              "type": "p",
+              "text": "*v = 0; *w = 0; alarm(); } }"
+            },
+            {
+              "type": "p",
+              "text": "The safety clamp must live on the microcontroller, not on the Linux board. If Linux hangs, the MCU still stops the robot — that is the whole reason for the two-brain architecture in §2.3"
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-6-6",
+          "number": "6.6",
+          "title": "The sensor suite",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Sensor Role Rough ₹"
+            },
+            {
+              "type": "p",
+              "text": "2 × quadrature encoders Odometry — distance and heading change included"
+            },
+            {
+              "type": "p",
+              "text": "IMU (MPU6050 class) Heading rate, tilt detection, slip detection 80–200"
+            },
+            {
+              "type": "pre",
+              "text": "3–5 × VL53L1X ToF        Front, left, right ranging; doorway and wall detection                250–600 each\n1 × downward ToF         Cliff and kerb detection — stops the bot driving off a step           250–600"
+            },
+            {
+              "type": "p",
+              "text": "2 × bump switches Last-resort contact detection. Works when everything else has failed 20–40 each"
+            },
+            {
+              "type": "p",
+              "text": "Ultrasonic (optional) Wide-beam backup for glass and dark surfaces that defeat ToF 60–150"
+            },
+            {
+              "type": "p",
+              "text": "Camera (optional) Reading fiducial markers at nodes for absolute correction 400–2,500"
+            },
+            {
+              "type": "p",
+              "text": "Total sensing cost is comfortably under ₹3,000. The optional fiducial marker route — a printed tag at each node — is the cheapest way to get genuine absolute position correction."
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-6-7",
+          "number": "6.7",
+          "title": "Executing one edge",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "// One edge of the graph: drive a heading for a distance, until the // termination condition fires. Odometry provides steering; the termination // condition provides truth. This function is the heart of the navigator."
+            },
+            {
+              "type": "pre",
+              "text": "typedef struct {              // desired heading, radians\n   float heading;             // expected length, metres (a sanity bound)\n   float distance;            // TERM_FRONT_WALL, TERM_RIGHT_OPENING, ...\n   uint8_t termType;          // e.g. 0.40 m\n   float termParam;"
+            },
+            {
+              "type": "p",
+              "text": "} Edge;"
+            },
+            {
+              "type": "p",
+              "text": "EdgeResult runEdge(const Edge *e, const Sensors *s, Pose *p, float dt) { // --- heading hold: a small PID on heading error, NOT on position. // Trying to servo to an (x, y) target amplifies odometry error; // holding a heading and letting the termination condition decide // arrival is far more robust with cheap sensors. float hErr = wrapPi(e-&gt;heading - p-&gt;theta); float w = pid_update(&amp;headingPid, 0.0f, -hErr, dt); float v = V_CRUISE;"
+            },
+            {
+              "type": "p",
+              "text": "// --- slow down near the expected end so termination is not overshot float travelled = distanceSince(edgeStartPose, *p); if (travelled &gt; e-&gt;distance * 0.80f) v *= 0.5f;"
+            },
+            {
+              "type": "p",
+              "text": "// --- termination: the external check that resets accumulated drift"
+            },
+            {
+              "type": "p",
+              "text": "bool arrived = false;"
+            },
+            {
+              "type": "p",
+              "text": "switch (e-&gt;termType) {"
+            },
+            {
+              "type": "p",
+              "text": "case TERM_FRONT_WALL:"
+            },
+            {
+              "type": "p",
+              "text": "arrived = (s-&gt;frontRange &lt; e-&gt;termParam); break;"
+            },
+            {
+              "type": "p",
+              "text": "case TERM_RIGHT_OPENING: // wall ends -&gt; doorway"
+            },
+            {
+              "type": "p",
+              "text": "arrived = (prevRight &lt; 0.5f &amp;&amp; s-&gt;rightRange &gt; 1.5f); break;"
+            },
+            {
+              "type": "p",
+              "text": "case TERM_MARKER:"
+            },
+            {
+              "type": "p",
+              "text": "arrived = markerSeen(e-&gt;termParam); break;"
+            },
+            {
+              "type": "p",
+              "text": "case TERM_DISTANCE_ONLY: // last resort - drifts"
+            },
+            {
+              "type": "p",
+              "text": "arrived = (travelled &gt;= e-&gt;distance); break;"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "// --- overshoot guard: if we have gone 30% past the expected length and // the condition has not fired, something is wrong. Stop rather than // continue into unknown territory. This single check prevents the // classic runaway across a lawn. if (!arrived &amp;&amp; travelled &gt; e-&gt;distance * 1.30f) {"
+            },
+            {
+              "type": "p",
+              "text": "stopMotors(); return EDGE_LOST; }"
+            },
+            {
+              "type": "p",
+              "text": "if (arrived) {"
+            },
+            {
+              "type": "p",
+              "text": "stopMotors();"
+            },
+            {
+              "type": "p",
+              "text": "*p = nodePose[currentEdge-&gt;toNode]; // &lt;-- RESET. Drift does not"
+            },
+            {
+              "type": "p",
+              "text": "return EDGE_ARRIVED; // accumulate past a node."
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "driveVW(v, w);"
+            },
+            {
+              "type": "p",
+              "text": "return EDGE_RUNNING;"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "PROTOCOL — Test protocol — Project 3"
+            },
+            {
+              "type": "p",
+              "text": "- drive a measured 10.00 m straight. Compare odometry to tape"
+            },
+            {
+              "type": "p",
+              "text": "measure. Correct R. Repeat until within 1%. - command ten full 360 degree turns in place. Measure the final"
+            },
+            {
+              "type": "p",
+              "text": "heading error. Correct W. Repeat until within 2 degrees total."
+            },
+            {
+              "type": "p",
+              "text": "- drive a 4 m square, return to start, WITHOUT any correction - measure the closing error. Typical good result: 100-300 mm. - if it is metres, something is wrong - do not proceed."
+            },
+            {
+              "type": "p",
+              "text": "- one edge, one termination condition (a wall at the far end) - run 10 times. Does it stop within +/- 100 mm every time? - this proves the reset mechanism works. Everything depends"
+            },
+            {
+              "type": "p",
+              "text": "on it."
+            },
+            {
+              "type": "p",
+              "text": "- 4-6 nodes. Run 10 times. Log failures BY NODE - failures will cluster at one edge and that edge is your next task."
+            },
+            {
+              "type": "p",
+              "text": "- place a box, a chair, a person standing still - then have someone walk across the path deliberately - PASS: never touches anything, always recovers or stops safely"
+            },
+            {
+              "type": "p",
+              "text": "- re-verify ToF ranging in direct sun BEFORE running: point at"
+            },
+            {
+              "type": "p",
+              "text": "a wall at 1 m and compare with the indoor reading. Expect degradation; if range collapses, add shrouds or switch that sensor to ultrasonic. - run the route. Log interventions per run."
+            },
+            {
+              "type": "p",
+              "text": "- 10 consecutive runs without a reset or a human touch - measure battery voltage at the end of each run"
+            },
+            {
+              "type": "p",
+              "text": "PASS CRITERION 8 of 10 full routes with zero human intervention, outdoors, on two different days."
+            },
+            {
+              "type": "p",
+              "text": "Stage 6’s first line is the one people skip: verify your ranging sensors in sunlight before you trust a route to them."
+            },
+            {
+              "type": "p",
+              "text": "BUILD THIS — Build and run Project 3"
+            },
+            {
+              "type": "p",
+              "text": "Three to four weekends. The deliverable is a success rate over ten runs. 1 Build the drivetrain and get calibrated odometry (stage 1) before writing any navigation code. Nothing works without this. 2 Implement the heading fusion in §6.3, including bias re-estimation at every stop. Verify by turning the robot 90° by hand"
+            },
+            {
+              "type": "p",
+              "text": "and checking the reported heading. 3 Build the safety clamp and the hardware e-stop next — before the robot ever drives autonomously. Test the e-stop by"
+            },
+            {
+              "type": "p",
+              "text": "pressing it at full speed. 4 Map your route as a graph on paper. For each edge, write the distance, the heading, and the termination condition. If you"
+            },
+            {
+              "type": "p",
+              "text": "cannot name a termination condition for an edge, redesign the route until you can. 5 Work through stages 2–5 indoors, logging failures by node. 6 Take it outdoors and run stage 6. Report interventions per run and what caused each one — that list is the honest result of"
+            },
+            {
+              "type": "p",
+              "text": "the project."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "7",
+      "title": "Field Deployment in Indian Conditions",
+      "intro": [
+        {
+          "type": "p",
+          "text": "A robot that works in an air-conditioned lab has been tested against one environment out of many. Outdoors in India it meets 45 °C, fine dust, 90% humidity, interlocking pavers, unreliable mains and — the variable nobody designs for — curious people who will pick it up."
+        }
+      ],
+      "topics": [
+        {
+          "id": "robotics-mechatronics-7-1",
+          "number": "7.1",
+          "title": "The environment, and what each factor breaks",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Condition What it does Design response"
+            },
+            {
+              "type": "pre",
+              "text": "Heat — 40–48 °C           PLA prints soften and creep from around 55      Print structural parts in PETG or ABS, not PLA. Use a\nambient, 60 °C+ inside a  °C — arms sag and mounts distort.               light-coloured enclosure. Derate motor current 30% for summer.\ndark enclosure in sun     Electrolytic capacitor life roughly halves per  Never charge a hot pack — let it cool first\n                          10 °C. Motors and drivers derate. Li-ion\nDust — fine, abrasive,    should not be charged above about 45 °C\neverywhere, worst\npre-monsoon               Fouls encoder discs and optical sensors, gets   Seal what you can; put optical sensors behind a wipeable\n                          into bearings and gear meshes, bridges          window. Prefer a sealed box with heat conducted to an external\nWater and humidity —      connector pins, blocks vents                    heatsink over a vented box with a fan\nmonsoon, 90%+ RH,\ncondensation              Shorts, corrosion at connector pins, and        Conformal-coat the boards. Drainage holes at the lowest point —\n                          condensation inside the enclosure when a        sealing alone traps water that gets in anyway. A silica sachet\nSurfaces — interlocking   cool robot meets warm humid air                 inside the box\npavers, 5–10 mm steps\nand joints, ramps, speed  High-centring, wheel slip that corrupts         Ground clearance 2× the worst step. Larger wheels than feel\nbreakers, loose gravel    odometry, sensor bar strikes                    necessary. Compliant sensor mounts (§4.3). Slip detection (§6.4)\nSunlight — 100 klux+      IR reflectance sensors saturate; ToF range      Ambient cancellation (§4.2), shrouds over ToF sensors, and verify\ndirect                    collapses; entry-level LiDAR rated near 2 klux  every optical sensor outdoors before trusting a route to it\n                          is effectively blind; camera exposure swings\nPeople — crowds,\nchildren, curiosity       Someone will stand in front of it to see what   Conservative speed limit, contact sensors, an obvious external\n                          it does. Someone will pick it up while it is    off-switch, a label with a phone number, and never leave it\nPower — fluctuating       running. Someone will put a bag on it           unattended\nmains, no outlet in the\nfield                     Charger damage, interrupted charge cycles, Charge through a stabiliser or a good SMPS. Carry a spare\nRF — congested 2.4 GHz    a flat pack on demo day                         charged pack. Log voltage at the end of every run\non any campus\n                          Telemetry drops, Wi-Fi control becomes          Never put the control loop on a wireless link. Wireless is for\n                          unreliable exactly when a crowd gathers         telemetry and commands only, with a watchdog that stops the\n                                                                          robot on loss"
+            },
+            {
+              "type": "p",
+              "text": "The PLA problem is real and specific"
+            },
+            {
+              "type": "p",
+              "text": "A 3D-printed PLA bracket that is perfectly rigid in a 24 °C lab will creep and deform inside a dark enclosure standing in direct sun, where internal temperatures of 55–65 °C are ordinary in an Indian summer. Arms droop, motor mounts twist, and your carefully calibrated geometry silently changes."
+            },
+            {
+              "type": "p",
+              "text": "For anything structural or load-bearing on an outdoor robot, print in PETG or ABS, or use aluminium. Keep PLA for non-structural covers and indoor work. This one material choice prevents a category of failure that is very hard to diagnose, because the part looks fine once it cools down."
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-7-2",
+          "number": "7.2",
+          "title": "Mechanical robustness — the unglamorous list",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Every fastener gets thread-lock or a nylon-insert nut. Vibration undoes plain nuts within hours of running. This is the most common single cause of a robot that worked yesterday."
+            },
+            {
+              "type": "p",
+              "text": "• Strain-relieve every wire where it leaves a moving part or a connector. Wires break at the joint, always. A zip tie 20 mm from the connector, anchored to the chassis, prevents most of it."
+            },
+            {
+              "type": "p",
+              "text": "• No breadboards and no bare jumper wires on a mobile robot. They work on a desk and disconnect on a paver joint. Solder, or use locking connectors (JST-XH, Molex-style) with proper crimps."
+            },
+            {
+              "type": "p",
+              "text": "• Label both ends of every cable. When something fails in the field with a crowd watching, you will not have the diagram in your head."
+            },
+            {
+              "type": "p",
+              "text": "• Loctite or stake the wheel grub screws. A wheel slipping on its shaft looks exactly like an encoder fault and wastes an entire debugging session."
+            },
+            {
+              "type": "p",
+              "text": "• Design for disassembly. If replacing a motor means removing eleven parts, you will not do it in the field. Aim for any commonly-failing part to be replaceable in under ten minutes with the tools you carry."
+            },
+            {
+              "type": "p",
+              "text": "• Carry the spares. One motor driver, one motor, one microcontroller, one charged battery, and the crimped cables to fit them."
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-7-3",
+          "number": "7.3",
+          "title": "The staged test ladder",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Never move up two rungs at once. Each stage exists to catch a class of failure cheaply, and a failure caught on the bench costs minutes where the same failure found in front of an audience costs the project."
+            },
+            {
+              "type": "pre",
+              "text": "1 BENCH        wheels up, bench supply, current metered\n   catches:    wiring errors, sign errors, software crashes\n   exit:       runs 10 min with no reset; current draw as predicted\n2 LAB FLOOR    real battery, real load, flat smooth surface\n   catches:    power sag, tuning that only worked unloaded\n   exit:       completes the task 5 times; 5 V rail stays above 4.7 V\n3 CORRIDOR     real surface, real lighting, longer runs\n   catches:    odometry drift, sensor range issues, thermal creep\n   exit:       10 minutes continuous, no intervention"
+            },
+            {
+              "type": "p",
+              "text": "4 OUTDOOR SHADE real ground, real dust, no direct sun"
+            },
+            {
+              "type": "p",
+              "text": "catches: clearance, slip, vibration loosening, wheel traction"
+            },
+            {
+              "type": "p",
+              "text": "exit: full route 3 times, logged"
+            },
+            {
+              "type": "pre",
+              "text": "5 OUTDOOR SUN  the real deployment condition, 11:00-15:00\n   catches:    everything optical. This is where most robots first fail.\n   exit:       full route 3 times on 2 different days\n6 SUPERVISED   real environment, real people, someone always within\n   DEPLOYMENT  arm's reach of the e-stop\n   catches:    human interaction, crowd behaviour, endurance\n   exit:       8 of 10 runs with zero intervention"
+            },
+            {
+              "type": "p",
+              "text": "Log EVERY failure with its stage. Failures cluster by stage, and the cluster tells you which domain seam (1.1) you under-engineered."
+            },
+            {
+              "type": "p",
+              "text": "Figure 7.1 — Most student robots jump from stage 2 to stage 6 on demo day. That is the same as not testing."
+            },
+            {
+              "type": "pre",
+              "text": "CHECKLIST — Before the robot leaves the lab                 □ Calibration routine run on site, on the actual surface\n□ Hardware e-stop cuts motor power, tested at full speed    □ Enclosure closed; vents filtered or sealed\n□ Software watchdog stops the robot on loss of comms        □ Structural prints in PETG/ABS, not PLA\n□ Speed limited to walking pace or below                    □ Cables labelled at both ends\n□ Tilt cut-out tested by lifting one side                   □ Spares kit packed: driver, motor, MCU, crimped leads\n□ All fasteners thread-locked or nylon-nutted               □ Tools packed: driver set, multimeter, tape, zip ties, spare\n□ Every wire strain-relieved at both ends\n                                                                fasteners\n□ No breadboard, no loose jumpers anywhere                  □ Permission obtained from campus security or facilities\n□ Battery secured mechanically, not by friction             □ Contact label with a phone number on the robot\n□ Low-voltage cut-off set and verified                      □ Two people present: one operating, one watching the\n□ Pack fully charged; a spare pack charged and carried          surroundings\n□ All optical sensors verified outdoors, in sun             □ Failure log sheet printed and on a clipboard\n                                                            □ Phone charged, for video of any failure"
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-7-4",
+          "number": "7.4",
+          "title": "Safety, seriously",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "These machines are small, but a 4 kg robot at walking pace among people, with pinch points and a lithium battery, deserves the same habits you would apply to something larger. Four non-negotiables:"
+            },
+            {
+              "type": "p",
+              "text": "• The e-stop is hardware. A big, obvious, red, normally-closed switch that breaks the motor supply through a relay or contactor — not a variable your software checks. If the firmware hangs, the e-stop must still work."
+            },
+            {
+              "type": "p",
+              "text": "• Guard the pinch points. Gears, belts and the arm’s shoulder joint. A cover that costs ten minutes to print prevents a genuinely nasty injury to a curious onlooker."
+            },
+            {
+              "type": "p",
+              "text": "• Lithium batteries get respect. Charge in a fire-safe bag or on a non-flammable surface, never unattended, never in a hot car, never a pack that is puffed or damaged. Physically secure the pack so it cannot be crushed in a collision."
+            },
+            {
+              "type": "p",
+              "text": "• Someone is always watching the environment, not the robot. The person with the e-stop should be looking at where the robot is going and who is nearby, while the second person watches the laptop."
+            },
+            {
+              "type": "p",
+              "text": "Fix Field failure log — one row per event, filled at the time"
+            },
+            {
+              "type": "pre",
+              "text": "Time  Stag  What happened  Suspected seam                   Evidence\n      e                    (§1.1)                           captured"
+            },
+            {
+              "type": "p",
+              "text": "Fill this in the field, not from memory afterwards. ‘Suspected seam’ forces you to attribute the failure to mechanical, electrical, software or the environment — and after ten rows the pattern is usually unmistakable."
+            },
+            {
+              "type": "p",
+              "text": "BUILD THIS — Take one robot all the way to stage 6 Two weeks, and it is the part of the project people remember. 1 Complete the pre-deployment checklist honestly. Any unticked item is a decision, not an oversight — write down why you"
+            },
+            {
+              "type": "p",
+              "text": "accepted it. 2 Work up the ladder in §7.3, one stage at a time, logging every failure with its stage and suspected seam. 3 At stage 5, measure something thermal: enclosure internal temperature after twenty minutes in the sun, and the shoulder"
+            },
+            {
+              "type": "p",
+              "text": "or motor temperature by hand. Record numbers. 4 At stage 6, deliberately have a colleague walk in front of the robot, stand still in its path, and pick it up while running. All"
+            },
+            {
+              "type": "p",
+              "text": "three will happen for real. 5 Count interventions per run across ten runs. That single number is the honest result of the whole project. 6 Write a one-page post-mortem: the three failures that cost the most time, which domain seam each belonged to, and what"
+            },
+            {
+              "type": "p",
+              "text": "you would design differently. This page is worth more to a future employer than a photograph of the robot."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "A",
+      "title": "Reference",
+      "intro": [],
+      "topics": [
+        {
+          "id": "robotics-mechatronics-A-1",
+          "number": "A.1",
+          "title": "The debugging decision tree",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "ROBOT IS NOT BEHAVING. Work down this list in order. Do not skip."
+            },
+            {
+              "type": "p",
+              "text": "1 Is it powered, and does it STAY powered? Meter on the 5 V rail while the motors run. Below 4.7 V -&gt; power problem, not a software problem. Stop here and fix it. (2.7)"
+            },
+            {
+              "type": "p",
+              "text": "2 Does it do the same wrong thing every time?"
+            },
+            {
+              "type": "p",
+              "text": "REPEATABLE -&gt; logic, calibration or wiring. Tractable."
+            },
+            {
+              "type": "p",
+              "text": "RANDOM -&gt; power, ground, connector, or a loose fastener."
+            },
+            {
+              "type": "p",
+              "text": "Wiggle every connector with the robot running."
+            },
+            {
+              "type": "p",
+              "text": "3 Did it work before? What changed? Code, a battery swap, a part replaced, the surface, the temperature, the time of day, someone else touching it. Something changed. Find the change before forming a theory."
+            },
+            {
+              "type": "p",
+              "text": "4 Are the SENSORS telling the truth? Print raw values and move the robot by hand. Do not debug a control loop that is being fed nonsense. Half of all \"PID won't tune\" problems are sensor problems."
+            },
+            {
+              "type": "p",
+              "text": "5 Are the ACTUATORS doing what you commanded? Command a fixed output with the loop disabled. Does the wheel turn at the expected speed, in the expected direction?"
+            },
+            {
+              "type": "p",
+              "text": "6 Is the LOOP RATE what you think? Print the actual interval. Jitter or a slow loop invalidates every gain you tuned. (3.3)"
+            },
+            {
+              "type": "p",
+              "text": "7 Is anything SATURATING? Log the pre-clamp controller output. If it is pinned at the limit, no amount of tuning helps - you have an actuator sizing problem."
+            },
+            {
+              "type": "p",
+              "text": "8 ONLY NOW look at the control algorithm."
+            },
+            {
+              "type": "p",
+              "text": "\"What changed?\" and \"What is it actually measuring?\""
+            },
+            {
+              "type": "p",
+              "text": "Steps 1–3 resolve the majority of field failures and take about five minutes"
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-A-2",
+          "number": "A.2",
+          "title": "The kit that should be in your bag",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Category Items"
+            },
+            {
+              "type": "pre",
+              "text": "Measure        Multimeter · clamp meter or a shunt for current · vernier caliper · steel tape · printed protractor · luggage scale for torque\n               tests\nAssemble       Precision driver set · hex keys · crimping tool and JST/Dupont crimps · soldering iron · heat-shrink · thread-lock · zip ties ·\n               double-sided foam tape"
+            },
+            {
+              "type": "p",
+              "text": "Spares Motor driver · one motor · one MCU · assorted fasteners · pre-crimped leads · fuses · one charged battery"
+            },
+            {
+              "type": "pre",
+              "text": "Field          Clipboard and printed log sheets · chalk or tape to mark test points · a phone for video · a torch · a cloth for the sensor\n               window\nBench          Adjustable bench supply with current limit — the single most useful instrument you can own. Set the limit low and it\n               protects your board while you find your wiring mistake"
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-A-3",
+          "number": "A.3",
+          "title": "Bill of materials worksheet",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Lead time BOM — fill the last two columns after the parts arrive"
+            },
+            {
+              "type": "p",
+              "text": "Subsystem Part & spec Qty Claimed Measured ₹"
+            },
+            {
+              "type": "p",
+              "text": "The Measured column is the one that matters: actual stall current, actual mass, actual battery capacity, actual servo torque at your supply voltage. Fill it in and you will never again be surprised by a hobby part."
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-A-4",
+          "number": "A.4",
+          "title": "A twelve-week plan",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Weeks Focus Deliverable"
+            },
+            {
+              "type": "p",
+              "text": "1 Ch 1 — system diagram, power budget, One page that names every seam and who owns it"
+            },
+            {
+              "type": "p",
+              "text": "interface document"
+            },
+            {
+              "type": "p",
+              "text": "2 Ch 2 — requirement, derating, BOM, ordering A verified BOM with measured columns started"
+            },
+            {
+              "type": "p",
+              "text": "3 Ch 3 — one motor, encoder, deadband, Logged step responses and four deadband numbers"
+            },
+            {
+              "type": "p",
+              "text": "feedforward, PID"
+            },
+            {
+              "type": "p",
+              "text": "4–5 Project 1 — line follower, indoor stages 1–3 Ambient-cancelled sensing and tuned gains"
+            },
+            {
+              "type": "p",
+              "text": "6 Project 1 — outdoor stages 4–6 Interventions per 20 m, in shade and in sun"
+            },
+            {
+              "type": "p",
+              "text": "7–8 Project 2 — arm, torque budget, IK, Repeatability spread and measured backlash in mm"
+            },
+            {
+              "type": "p",
+              "text": "calibration"
+            },
+            {
+              "type": "pre",
+              "text": "9–10  Project 3 — odometry calibration, heading             4 m square closing error, working hardware e-stop\n11    fusion, safety layer                                  Failures logged by node"
+            },
+            {
+              "type": "p",
+              "text": "Project 3 — route graph, indoor stages 3–5"
+            },
+            {
+              "type": "p",
+              "text": "12 Ch 7 — outdoor stages, endurance, Interventions per run over 10 runs, and a one-page post-mortem"
+            },
+            {
+              "type": "p",
+              "text": "post-mortem"
+            }
+          ]
+        },
+        {
+          "id": "robotics-mechatronics-A-5",
+          "number": "A.5",
+          "title": "Glossary",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "                         Free play before an output responds after a direction reversal\n Term                    The command range below which the actuator does not move at all\n Backlash                Commanding the predictable part directly, so the loop corrects only error\n Deadband                Preventing the integrator accumulating while the output is saturated\n Feedforward             The output spike from differentiating a step change in setpoint\n Anti-windup             Commanding more than the actuator can deliver\n Derivative kick         Current drawn when the motor is powered but held stationary — the number that sizes wiring, fuses and\n Saturation              drivers\n Stall current           Two-channel encoder giving both count and direction\n                         Counts per revolution, measured at the output shaft after gearing\n Quadrature encoder      Estimating position by integrating wheel motion\n CPR                     Navigating from a known start by accumulating motion estimates\n Odometry                Travelling a graph of known places, resetting position at each\n Dead reckoning          The external signal that says ‘arrived’, independent of odometry\n Topological navigation  Blending a fast-but-drifting signal with a slow-but-stable one\n Termination condition   Designing for a margin above the calculated requirement\n Complementary filter    All current returns meeting at a single point\n Derating\n Star ground\nTerm                     Meaning\nBrownout                 Supply voltage dipping far enough to reset the controller\nkg·cm                    Servo torque unit: mass held at one centimetre from the shaft"
+            },
+            {
+              "type": "p",
+              "text": "On the LiDAR question in §6.1. Entry-level 2D LiDAR prices have fallen sharply, driven largely by the robot-vacuum market, and units around ₹5,000–₹9,000 are now readily available including in India. The argument in this guide is not that you cannot afford one — it is that entry units are typically specified for indoor ambient light of roughly 2 klux while direct sunlight exceeds 100 klux, that sunlight-capable units cost several times more, and that metric SLAM is the wrong architecture for fixed campus routes anyway. If your bot runs indoors, revisit that decision: cheap LiDAR plus a Linux board is a perfectly good architecture there. Check current prices and lux ratings before you choose."
+            },
+            {
+              "type": "p",
+              "text": "And the sentence to take away. Robustness is not the boring cousin of sophistication — it is the harder engineering problem. Anyone can make a robot work once, in a lab, with the person who built it standing next to it. Making it work ten times out of ten, outdoors, in the heat, with a stranger operating it, requires you to have thought about the power rail, the connectors, the calibration procedure, the failure states and the people. That is the whole discipline, and the parts of it that look unglamorous are the parts that decide whether the thing exists."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

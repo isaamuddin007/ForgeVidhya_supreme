@@ -1,0 +1,1379 @@
+{
+  "slug": "pick-me",
+  "title": "How Not to Play the Pick Me",
+  "tagline": "Stop auditioning, start diagnosing — build real leverage instead of chasing approval.",
+  "modules": [
+    {
+      "number": "1",
+      "title": "The Pattern, Described Without Contempt",
+      "intro": [
+        {
+          "type": "p",
+          "text": "‘Pick me’ is a signalling problem, not a confidence problem. It is a cluster of observable behaviours that transmit one message to the other side of the table: my alternatives are poor and I need this more than you do. Everything else follows from that transmission."
+        },
+        {
+          "type": "p",
+          "text": "Start here because most advice on this subject is contemptuous. It tells people who are anxious about their livelihood to ‘just have standards’, which is roughly as useful as telling someone with no money to stop worrying about rent. The behaviours in this chapter are adaptive. They are what a reasonable person does when they believe they have no leverage. The problem is not that you are weak; it is that the belief is usually more pessimistic than your actual situation, and the behaviours it produces make the situation worse than it needed to be."
+        }
+      ],
+      "topics": [
+        {
+          "id": "pick-me-1-1",
+          "number": "1.1",
+          "title": "The distinction that does all the work",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Enthusiasm is not the problem. Wanting something is not the problem. Being warm, eager, generous and responsive are professional assets and this guide will not ask you to give any of them up. The problem is a specific substitution:"
+            },
+            {
+              "type": "p",
+              "text": "┌──────────────────────────────────────┐ ┌──────────────────────────────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ \"Here is what I can do for this.\" │ │ \"Here is what I will accept │"
+            },
+            {
+              "type": "p",
+              "text": "│ │ │ in order to be allowed in.\" │"
+            },
+            {
+              "type": "p",
+              "text": "├──────────────────────────────────────┤ ├──────────────────────────────────────┤"
+            },
+            {
+              "type": "p",
+              "text": "│ adds information about you │ │ removes conditions from you │"
+            },
+            {
+              "type": "p",
+              "text": "│ raises the other side's estimate │ │ lowers the other side's estimate │"
+            },
+            {
+              "type": "p",
+              "text": "│ survives a \"no\" │ │ is destroyed by a \"no\" │"
+            },
+            {
+              "type": "p",
+              "text": "│ you still have a position after │ │ you have no position left │"
+            },
+            {
+              "type": "p",
+              "text": "└──────────────────────────────────────┘ └──────────────────────────────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "Both look like \"wanting it a lot.\" Only one of them costs you something to send."
+            },
+            {
+              "type": "p",
+              "text": "Figure 1.1 — The two are easy to confuse from the inside and trivial to tell apart from the outside. Ask: after this sentence, do I have more terms or fewer?"
+            }
+          ]
+        },
+        {
+          "id": "pick-me-1-2",
+          "number": "1.2",
+          "title": "The twelve signals — a self-inventory",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Score each one honestly for the last ninety days. 0 = never, 1 = sometimes, 2 = this is my default. There is no shame in the number; there is only information in it."
+            },
+            {
+              "type": "p",
+              "text": "# Behaviour What it transmits"
+            },
+            {
+              "type": "pre",
+              "text": "1 You name a salary figure before they do, and         ‘I expect to be rejected on price’\n     shade it low                                      ‘My contacting you is an imposition’"
+            },
+            {
+              "type": "p",
+              "text": "2 You apologise in the first line of emails that require no apology"
+            },
+            {
+              "type": "pre",
+              "text": "3 You accept scope changes without ever                ‘My time has no defined value’\n     mentioning the change\n4 You reply to non-urgent messages within minutes,     ‘Nothing else is competing for me’\n     at all hours                                      ‘My refusal requires your approval to be valid’"
+            },
+            {
+              "type": "p",
+              "text": "5 You over-explain your reasons when declining anything"
+            },
+            {
+              "type": "pre",
+              "text": "6 You describe your work with adjectives               ‘I have nothing checkable’\n     (passionate, hard-working) not results\n7 You agree with the room before you have finished     ‘My judgement is not part of what you are hiring’\n     forming a view                                    ‘Please tell me whether I am acceptable’"
+            },
+            {
+              "type": "p",
+              "text": "8 You ask for feedback more often than you deliver conclusions"
+            },
+            {
+              "type": "pre",
+              "text": "9 Your outreach ends in ‘let me know if you hear of    ‘I am transferring my search onto you’\n     anything’\n1 You do unpaid work to ‘prove yourself’ after you     ‘My prior evidence does not count’\n0 have already proven yourself                         ‘I had no alternatives’"
+            },
+            {
+              "type": "p",
+              "text": "1 You accept the first offer without asking a single 1 question about it"
+            },
+            {
+              "type": "p",
+              "text": "1 You feel relief — not satisfaction — when chosen your self-worth was on the table, and it was theirs to settle"
+            },
+            {
+              "type": "p",
+              "text": "• 0–6: situational. Specific relationships or specific rooms trigger it. Go straight to Chapters 5 and 6. • 7–14: patterned. It is now a professional style rather than a reaction. Work Chapters 2–4 in order before touching anything"
+            },
+            {
+              "type": "p",
+              "text": "else. • 15–24: structural. Your self-concept at work is running almost entirely on external supply. Chapter 7 is the load-bearing one;"
+            },
+            {
+              "type": "p",
+              "text": "start there and come back."
+            }
+          ]
+        },
+        {
+          "id": "pick-me-1-3",
+          "number": "1.3",
+          "title": "Why it lowers your value — the mechanism",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "This is not mysticism about ‘energy’. It is inference. People form estimates of your worth from the costs you appear willing to bear, because costly behaviour is informative and cheap talk is not. Anyone can claim to be excellent. Only someone with alternatives can decline. So when you drop conditions unprompted, an observer updates — correctly, given the evidence you handed them — towards ‘this person has no alternatives’. Four specific transmissions do most of the damage:"
+            },
+            {
+              "type": "p",
+              "text": "1 Unprompted concession. You discount before anyone pushes. The other side learns your ceiling is soft and re-anchors permanently lower. This is the single most expensive one, and it is usually done in the first ten minutes."
+            },
+            {
+              "type": "p",
+              "text": "2 Total availability. Instant replies at all hours signal that nothing else is competing for your capacity. Capacity that nobody else wants is priced accordingly."
+            },
+            {
+              "type": "p",
+              "text": "3 Over-disclosure of need. ‘I really need this role’ converts a professional conversation into a request for help. Sympathy is a weak and unreliable basis for a commercial decision, and it never survives contact with a budget."
+            },
+            {
+              "type": "p",
+              "text": "4 Evaluation-seeking. Constantly asking how you did positions the other person as judge and you as candidate — a hierarchy that persists long after you are hired, and one that you set up yourself."
+            },
+            {
+              "type": "p",
+              "text": "The asymmetry nobody mentions"
+            },
+            {
+              "type": "p",
+              "text": "A senior person and a fresh graduate can perform the exact same behaviour and get opposite readings. When a partner replies at midnight it is read as commitment; when a junior does it, it is read as having nothing else on. This is unfair and it is also the operating environment. The response is not to fake seniority — that reads badly and fails fast. It is to make sure the checkable evidence in §4 is doing the work, so your behaviour is interpreted through competence rather than through status."
+            },
+            {
+              "type": "p",
+              "text": "EXERCISE — Find the sentence you always say"
+            },
+            {
+              "type": "p",
+              "text": "Fifteen minutes. Get the raw material for the rest of this guide."
+            },
+            {
+              "type": "p",
+              "text": "1 Open your sent mail. Read the last twenty professional messages you wrote. Highlight every apology, every hedge (‘just’, ‘sorry to bother’, ‘if that’s okay’, ‘no worries if not’), and every place you conceded something nobody had asked you to concede."
+            },
+            {
+              "type": "p",
+              "text": "2 Count them. Write the number down. This is your baseline and you will re-run this exercise in thirty days. 3 Find the one that repeats most. Write it out word for word — that is your signature move, and naming it is most of the work of"
+            },
+            {
+              "type": "p",
+              "text": "stopping it."
+            },
+            {
+              "type": "p",
+              "text": "4 Now write what you would have said if the recipient had been a friend of equal standing asking you the same thing. Keep both versions. Chapter 4 will turn the second one into your default."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "2",
+      "title": "The Scarcity Mindset",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Scarcity is not just a feeling about the world. It is a cognitive state that narrows what you can attend to, and a narrowed field of attention is precisely the condition under which you make concessions you would not make with a wider view."
+        }
+      ],
+      "topics": [
+        {
+          "id": "pick-me-2-1",
+          "number": "2.1",
+          "title": "What scarcity does to thinking",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Mullainathan and Shafir’s work on scarcity describes two effects. The first is tunnelling: a pressing shortfall captures attention and produces genuinely sharper focus on the shortfall itself — while everything outside the tunnel gets systematically neglected. The second is a bandwidth tax: the mental load of managing the shortfall consumes capacity that is then unavailable for other judgement. In the study most often cited, Mani and colleagues (Science, 2013) tested sugarcane farmers in Tamil Nadu before and after harvest — the same people, poor at one point in the year and comfortable at another — and found measurably worse performance on reasoning tasks during the pre-harvest squeeze."
+            },
+            {
+              "type": "p",
+              "text": "An honest note on the evidence Parts of the scarcity literature have had a mixed replication record: a later high-powered self-replication by the original authors found the attention and focus effects robust while some downstream results, including cognitive fatigue, held up less well. Treat ‘scarcity narrows attention’ as well-supported and any specific effect size you see quoted online as provisional. Being able to say which part of a finding is solid is itself a competence signal — and a small demonstration of the posture this whole guide is teaching."
+            },
+            {
+              "type": "p",
+              "text": "Job scarcity behaves the same way. When you believe there is one opportunity, the tunnel closes around getting this one. Inside the tunnel, giving something up always looks rational, because the only visible outcome is winning or losing this specific thing. The cost of the concession sits outside the tunnel, in a future you cannot currently see."
+            }
+          ]
+        },
+        {
+          "id": "pick-me-2-2",
+          "number": "2.2",
+          "title": "Where your worth is staked",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Crocker and Wolfe’s work on contingencies of self-worth makes a point that reframes this entire topic: the question is not how much self-esteem you have, but what you have made it conditional on. Two people can report identical confidence; the one who has staked it on others’ approval will behave completely differently under evaluation, because for them a rejection is not information about a role — it is information about their standing as a person."
+            },
+            {
+              "type": "p",
+              "text": "This is why ‘believe in yourself’ fails as advice. It targets the level of the belief and leaves the contingency untouched. The work in Chapter 7 is contingency work: moving the stake from being selected to meeting a standard you set and can verify. Carl Rogers called this the shift from an external to an internal locus of evaluation, and it remains the most accurate description of the target state anyone has written."
+            }
+          ]
+        },
+        {
+          "id": "pick-me-2-3",
+          "number": "2.3",
+          "title": "The three beliefs, and what is actually true",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "The scarcity belief      Why it feels true                   The more accurate version\n‘There is one seat.’\n                         You applied to one posting and can  There is one visible seat. Most roles are never posted, most teams have\n                         see one outcome                     unfunded needs, and the number of organisations with your problem is\n                                                             large\n‘They hold all the       They decide yes or no, and they     They also have a vacancy costing them money, a hiring manager under\npower.’                  decide when                         pressure, and a real chance of choosing wrong. Asymmetric, yes. Absolute,\n                                                             no\n‘I must be chosen.’      Selection is the visible event and\n                         rejection is painful                Selection is a two-sided match. Roughly half of the information that\n                                                             determines whether it works is information only you hold"
+            },
+            {
+              "type": "p",
+              "text": "Notice that the accurate versions are not more optimistic — they are more complete. That is the whole correction. Abundance thinking is not positive thinking; it is the practice of keeping the parts of the picture that the tunnel deletes."
+            }
+          ]
+        },
+        {
+          "id": "pick-me-2-4",
+          "number": "2.4",
+          "title": "The loop",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "┌──────────────────────────────────────────────────────────────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ │"
+            },
+            {
+              "type": "p",
+              "text": "▼ │"
+            },
+            {
+              "type": "p",
+              "text": "perceived scarcity ──▶ attention narrows to \"get chosen\" ──▶ concessions, │"
+            },
+            {
+              "type": "p",
+              "text": "(\"one seat, they (everything else drops out over-availability,│"
+            },
+            {
+              "type": "p",
+              "text": "decide, I need it\") of view) self-erasure │"
+            },
+            {
+              "type": "p",
+              "text": "│ │"
+            },
+            {
+              "type": "p",
+              "text": "▼ │"
+            },
+            {
+              "type": "p",
+              "text": "outcome is read as ◀── worse terms, lower offers, ◀── observers infer │"
+            },
+            {
+              "type": "p",
+              "text": "proof of low worth less respect, more scope weak alternatives│"
+            },
+            {
+              "type": "p",
+              "text": "│ │"
+            },
+            {
+              "type": "p",
+              "text": "└───────────────────────────────────────────────────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "\"See — I was right that I had no leverage.\""
+            },
+            {
+              "type": "p",
+              "text": "Figure 2.1 — The loop is self-confirming, which is why it is stable and why it does not respond to encouragement. It breaks at the behaviour, not at the feeling."
+            }
+          ]
+        },
+        {
+          "id": "pick-me-2-5",
+          "number": "2.5",
+          "title": "When the scarcity is real",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Everything above assumes your perception is more pessimistic than your situation. Sometimes it is not. If your notice period ends in six weeks, you have two months of savings, you support a family, your visa is tied to employment, or you are the first in your family to attempt this kind of work — your constraint is material, not cognitive, and no reframing exercise will pay a bill."
+            },
+            {
+              "type": "p",
+              "text": "In that situation the advice inverts. Take the job. Accept the imperfect offer. Being unemployed is not a superior negotiating position and pretending otherwise is a luxury belief. What changes is the sequencing, not the principles:"
+            },
+            {
+              "type": "p",
+              "text": "• Separate survival decisions from identity decisions. Accepting a role you are overqualified for is a resource decision. It becomes an identity problem only if you let it re-price your self-estimate. Write down, on the day you accept, why you are accepting and what would have to change for you to move. That document is what protects the contingency."
+            },
+            {
+              "type": "p",
+              "text": "• Buy runway first; leverage is downstream of runway. Everything in Chapters 3–6 works better the more months you have. Building three months of savings is a confidence intervention, not just a financial one."
+            },
+            {
+              "type": "p",
+              "text": "• Widen the funnel before you sharpen the pitch. Scarcity is partly an arithmetic fact about your pipeline. Twelve live conversations produce different behaviour from one, regardless of mindset — and the behaviour change is what the other side actually observes."
+            },
+            {
+              "type": "p",
+              "text": "• Do the internal work in the low-stakes rooms. Practise Chapter 5’s refusals with a vendor, a classmate, a recruiter you do not care about. Do not run your first experiment in the interview you cannot afford to lose."
+            },
+            {
+              "type": "p",
+              "text": "Where this guide stops If your sense of worth is low across every domain — not just work — or if it predates your career entirely, then what you are dealing with is not a professional positioning problem and this guide is the wrong tool. Career coaching operates on behaviour and framing; it does not treat depression, anxiety disorders, or the effects of a childhood spent earning approval. A good therapist will get you further in three months than any amount of scripting. That is a routing decision, not a verdict on you."
+            },
+            {
+              "type": "p",
+              "text": "EXERCISE — The scarcity audit Thirty minutes with a pen. This exercise recovers what the tunnel is deleting. 1 Write the sentence that runs underneath your job search or your current role. Be specific and unflattering: ‘If I don’t get this,"
+            },
+            {
+              "type": "p",
+              "text": "I’ve wasted two years.’ 2 Underneath, list every fact you can check that bears on that sentence. Not reassurances — facts. Openings you know of."
+            },
+            {
+              "type": "p",
+              "text": "People who have replied to you. Skills with market demand. Months of runway. Previous times you were wrong about this. 3 Count your live options: conversations that could plausibly become something within ninety days. Most people find the"
+            },
+            {
+              "type": "p",
+              "text": "number is not one. If it genuinely is one, you have just identified your actual project — and it is pipeline, not mindset. 4 Write the three concessions you have already made in advance, before anyone asked. Next to each, write what you would"
+            },
+            {
+              "type": "p",
+              "text": "need to see to withdraw it. 5 Finish with one line: ‘The thing I actually control this week is ___.’ Do that thing. Tunnels close around outcomes; they open"
+            },
+            {
+              "type": "p",
+              "text": "around actions."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "3",
+      "title": "The Abundance Pivot",
+      "intro": [
+        {
+          "type": "p",
+          "text": "The pivot is one sentence: stop trying to be selected and start trying to be useful about a specific problem. Not because usefulness is more virtuous, but because it changes what the other person is doing while you talk — from judging you to thinking with you."
+        }
+      ],
+      "topics": [
+        {
+          "id": "pick-me-3-1",
+          "number": "3.1",
+          "title": "Audition versus diagnosis",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "In an audition there is a performer and a judge, one correct answer, and a verdict. In a diagnosis there are two people looking at a third thing — the problem — and the question is not ‘are you good enough’ but ‘is this the right fit for this problem’. The second framing is not a trick. It is a more accurate description of what a hiring decision actually is, which is why it holds up under pressure and false confidence does not."
+            },
+            {
+              "type": "p",
+              "text": "┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ │ perform│ judge │ └────┬───┘ └────┬───┘"
+            },
+            {
+              "type": "p",
+              "text": "└────────┘ └────────┘ └────────┬──────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "▼"
+            },
+            {
+              "type": "p",
+              "text": "• one right answer ┌─────────────────┐ • their verdict is the outcome • you leave with nothing if \"no\" │ THE PROBLEM │ • questions feel risky └─────────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "• two-sided fit assessment"
+            },
+            {
+              "type": "p",
+              "text": "• \"no\" is information, not a verdict"
+            },
+            {
+              "type": "p",
+              "text": "• you leave with market knowledge either way"
+            },
+            {
+              "type": "p",
+              "text": "• questions are the main contribution"
+            },
+            {
+              "type": "p",
+              "text": "Figure 3.1 — Same meeting, same room, different geometry. In the second, refusing to answer a bad question is a contribution rather than a failure."
+            }
+          ]
+        },
+        {
+          "id": "pick-me-3-2",
+          "number": "3.2",
+          "title": "The three questions that move the frame",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "You do not announce a reframe; you enact it by changing what you ask. These three questions, asked early and genuinely, relocate the conversation. They work because they are the questions a colleague would ask — and people respond to the role you put them in."
+            },
+            {
+              "type": "p",
+              "text": "1 ‘What made this role open now?’ — surfaces whether it is growth, backfill, or someone burning out. You need this to decide anything, and asking it signals you are evaluating too."
+            },
+            {
+              "type": "p",
+              "text": "2 ‘If this goes well, what is different in six months?’ — converts a job description into a success definition. Half of interviewers have not articulated this, and helping them do it is the first piece of work you do for them."
+            },
+            {
+              "type": "p",
+              "text": "3 ‘What has already been tried here that didn’t work?’ — the highest-value question in any professional conversation. It gets you the real constraints and it is impossible to ask from an audition posture."
+            }
+          ]
+        },
+        {
+          "id": "pick-me-3-3",
+          "number": "3.3",
+          "title": "The value hypothesis",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Replace ‘please consider me’ with a falsifiable claim about their situation. A value hypothesis is deliberately provisional — you are offering a reading, not asserting you have solved anything from the outside. That provisionality is what makes it land instead of reading as arrogance."
+            },
+            {
+              "type": "p",
+              "text": "THE VALUE HYPOTHESIS (four lines, no more)"
+            },
+            {
+              "type": "p",
+              "text": "OBSERVATION Something specific and checkable about their situation. From their careers page, product, filings, job ad, or a customer's public complaint. Not \"I admire your mission.\""
+            },
+            {
+              "type": "pre",
+              "text": "INFERENCE         What that probably implies about a cost or constraint\n                  they are carrying. Hedged honestly: \"which usually means\".\nCAPABILITY        The narrow thing you have done before that bears on it,\n                  with one piece of evidence attached."
+            },
+            {
+              "type": "p",
+              "text": "INVITATION A low-cost next step that is easy to refuse."
+            },
+            {
+              "type": "p",
+              "text": "\"You've posted three support roles in two months and your help centre was last updated in November. [OBSERVATION] That usually means ticket volume is being solved with headcount rather than deflection, which gets expensive fast. [INFERENCE] At my last job I cut repeat tickets 40% by rewriting the top 20 help articles and adding a triage rule - I've attached the before/after numbers. [CAPABILITY] If that's a live problem, I'd be glad to walk through what I'd look at first. If it isn't, no reply needed.\" [INVITATION]"
+            },
+            {
+              "type": "p",
+              "text": "The structure is doing the work: observation before claim, evidence before offer, and an exit that costs them nothing"
+            },
+            {
+              "type": "p",
+              "text": "Note the last line. Making refusal easy is not weakness — it is the clearest possible signal that you are not dependent on this particular reply. It is also the single highest-response-rate sentence in cold professional outreach, for exactly that reason."
+            }
+          ]
+        },
+        {
+          "id": "pick-me-3-4",
+          "number": "3.4",
+          "title": "Optionality is not a mindset — it is a number",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "You cannot talk yourself into abundance while holding one live conversation. The feeling follows the pipeline, not the other way round. Three ways to make the number real, in ascending order of effort and payoff:"
+            },
+            {
+              "type": "p",
+              "text": "Lever What it does Concretely, this week"
+            },
+            {
+              "type": "p",
+              "text": "Widen the funnel Turns ‘this one’ into ‘one of several’, which Get to five live conversations. Live means a human has replied changes your behaviour before it changes your beliefs"
+            },
+            {
+              "type": "pre",
+              "text": "Build a non-employer Even small independent income breaks the       One paid freelance piece, however small. The amount matters\n                                                                    less than the existence\nincome floor         ‘they decide whether I eat’ premise\nAccumulate portable  Assets you keep when the role ends:            One artefact per quarter that is yours, public, and dated\nevidence             published work, a repository, references, a\n                     track record"
+            },
+            {
+              "type": "p",
+              "text": "SCRIPT — Moving from candidate to counterpart"
+            },
+            {
+              "type": "p",
+              "text": "“I'd be grateful for any opportunity — I'm open to anything, honestly.”"
+            },
+            {
+              "type": "p",
+              "text": "INSTEAD"
+            },
+            {
+              "type": "p",
+              "text": "“I'm focused on roles where the main problem is onboarding drop-off, because that's what I spent the last two years on. Is that close to what this role is really about?”"
+            },
+            {
+              "type": "p",
+              "text": "“I hope I answered that okay?”"
+            },
+            {
+              "type": "p",
+              "text": "INSTEAD"
+            },
+            {
+              "type": "p",
+              "text": "“Happy to go deeper on any of that. What's the part you're least sure about after this conversation? I'd rather address it now than have it sit there.”"
+            },
+            {
+              "type": "p",
+              "text": "“I know I don't have all the requirements, but I learn very fast.”"
+            },
+            {
+              "type": "p",
+              "text": "INSTEAD"
+            },
+            {
+              "type": "p",
+              "text": "“I haven't used Kafka in production — I've used RabbitMQ at similar volume, and the concepts carry. What I'd want to know is how much of this role is queue work versus the data-modelling side, where I'm much stronger.”"
+            },
+            {
+              "type": "p",
+              "text": "Notice what the third pair does: it names the gap first, without apology, then redirects to evidence and ends with a question. Naming your own gap before they find it is the strongest available competence signal."
+            },
+            {
+              "type": "p",
+              "text": "EXERCISE — Write three value hypotheses Ninety minutes. This is the highest-return exercise in the guide. 1 Pick three organisations. Not dream companies — organisations whose work you can actually observe from outside. 2 For each, spend fifteen minutes finding one checkable observation. Job ads, changelogs, app store reviews, a public"
+            },
+            {
+              "type": "p",
+              "text": "complaint, an annual report, a hiring spree in one function. Write it as a fact, not an opinion. 3 Write the four lines. Force yourself to hedge the inference honestly — ‘which usually means’, not ‘which means you clearly"
+            },
+            {
+              "type": "p",
+              "text": "need’. 4 Attach one piece of real evidence to the capability line. If you have none for that claim, you have found a gap: either pick a"
+            },
+            {
+              "type": "p",
+              "text": "different claim or go build the evidence. 5 Send one. Not all three — one. Then note what you felt as you pressed send. That feeling is the thing you are training, and it"
+            },
+            {
+              "type": "p",
+              "text": "only comes down through repetition."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "4",
+      "title": "Authentic Personal Branding",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Bragging and begging are the same error in opposite directions: both ask the listener to take your word for your worth. The exit is not a better adjective. It is handing over evidence and letting them do the concluding."
+        }
+      ],
+      "topics": [
+        {
+          "id": "pick-me-4-1",
+          "number": "4.1",
+          "title": "The self-promotion dilemma is real",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "You are not imagining the bind. A consistent finding across several decades of social psychology is that self-promotion tends to raise perceived competence while lowering perceived likeability, and that the penalty is not distributed evenly. Rudman’s and Heilman’s work on backlash effects found the likeability cost of assertive self-presentation falls harder on women, and the same pattern shows up for anyone whose visible status already sits below the room’s default — which includes most junior people, most career changers, and anyone from a culture where open self-praise is read as poor form. So the standard advice — ‘own your achievements, be your own advocate’ — is incomplete rather than wrong. It tells you to pay a cost without telling you how to reduce it. The reduction is structural:"
+            },
+            {
+              "type": "p",
+              "text": "Specificity is the humility mechanism A claim invites a judgement about your character: ‘I’m an excellent communicator’ asks the listener to decide whether you are boastful. Evidence invites a judgement about a fact: ‘I rewrote the onboarding emails and completion went from 31% to 52% over six weeks’ asks them to assess a number. The second sentence makes a larger claim and reads as more modest, because you have surrendered the conclusion to them. This is the entire technique. Everything else in this chapter is an application of it."
+            }
+          ]
+        },
+        {
+          "id": "pick-me-4-2",
+          "number": "4.2",
+          "title": "Four forms of evidence",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "‘I have no achievements yet’ is almost always a category error — people search only for the second form and conclude they are empty-handed. There are four, and the first and fourth are available to a student on day one."
+            },
+            {
+              "type": "p",
+              "text": "Form What it is Example sentence Best for"
+            },
+            {
+              "type": "p",
+              "text": "Artifact Something that exists and can be ‘Here’s the dashboard — it’s still what the Juniors, career changers"
+            },
+            {
+              "type": "p",
+              "text": "looked at team uses on Mondays.’"
+            },
+            {
+              "type": "pre",
+              "text": "Outcome   A measured change you                     ‘Repeat tickets fell 40% over the quarter we      Anyone with operational data\n          contributed to                            ran it.’"
+            },
+            {
+              "type": "p",
+              "text": "Process A method you can describe well ‘I start by pulling the last 50 tickets and When results were team-owned or enough to be examined tagging them by root cause — here’s why that confidential"
+            },
+            {
+              "type": "p",
+              "text": "order matters.’"
+            },
+            {
+              "type": "pre",
+              "text": "Perspective A specific, defensible view about       ‘Most onboarding flows fail at verification, not  Everyone. Judgement is the most\n                      the domain                    at signup — and the fix is usually copy, not      under-sold asset\n                                                    engineering.’"
+            },
+            {
+              "type": "p",
+              "text": "Perspective is the one people leave on the table. You do not need seniority to have looked closely at something. A student who can say precisely why most campus recruitment portals fail, with three examples, has demonstrated more than one who lists six certifications — because judgement is the scarce input and credentials are the abundant one."
+            }
+          ]
+        },
+        {
+          "id": "pick-me-4-3",
+          "number": "4.3",
+          "title": "Claim → Evidence → Consequence",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "CLAIM        The narrowest true version of what you did.\nEVIDENCE     Narrow is credible; broad is suspicious.\nCONSEQUENCE  The checkable part - number, artifact, named method, or\n             a third party who would confirm it.\n             Why it mattered to someone who was not you."
+            },
+            {
+              "type": "p",
+              "text": "Rule: never state a claim you cannot immediately follow with evidence. If you have no evidence, you do not have a claim - you have a hope."
+            },
+            {
+              "type": "p",
+              "text": "WEAK \"I'm passionate about data and very detail-oriented.\" BETTER (claim, claim, no evidence, no consequence) STRONG \"I rebuilt our weekly sales report in SQL.\" (claim + implied artifact, but no consequence)"
+            },
+            {
+              "type": "p",
+              "text": "\"I rebuilt the weekly sales report in SQL so it ran itself. It had been four hours of manual work every Monday; the ops lead now spends that time on collections instead.\" (narrow claim, checkable evidence, consequence belonging to someone else)"
+            },
+            {
+              "type": "p",
+              "text": "THE POSITIONING STATEMENT (two sentences - for bios, intros, openers)"
+            },
+            {
+              "type": "p",
+              "text": "\"I help [specific who] with [specific problem], usually by [method]. Most recently, [one concrete piece of evidence].\""
+            },
+            {
+              "type": "p",
+              "text": "\"I help early-stage fintech teams cut onboarding drop-off, usually by fixing the verification step rather than the signup form. Most recently I took one client's completion rate from 31% to 52%.\""
+            },
+            {
+              "type": "p",
+              "text": "Read the strong version aloud. It contains no adjectives about you at all"
+            },
+            {
+              "type": "p",
+              "text": "SCRIPT — Stating an accomplishment three ways"
+            },
+            {
+              "type": "p",
+              "text": "“I was basically the one who saved that project, honestly.”"
+            },
+            {
+              "type": "p",
+              "text": "“I took over the migration when it was six weeks late. I cut the scope to the three tables that mattered, and we shipped in nine days. The reporting outage everyone was worried about didn't happen.”"
+            },
+            {
+              "type": "p",
+              "text": "“The migration was in trouble, so I cut the scope hard and we got it out. Cutting scope was the whole trick, honestly — nothing clever.”"
+            },
+            {
+              "type": "p",
+              "text": "“Rescued a six-week-late data migration by reducing scope to three critical tables; shipped in nine days with no reporting downtime.”"
+            },
+            {
+              "type": "p",
+              "text": "“The team shipped it in nine days. My part was arguing for cutting scope to three tables — that was the call that made the timeline possible, and it wasn't a popular one at the time.”"
+            },
+            {
+              "type": "p",
+              "text": "The last one is the most useful and the least practised. Naming your specific contribution inside a team win is precise, not disloyal — and vagueness there is read as having contributed nothing."
+            },
+            {
+              "type": "p",
+              "text": "EXERCISE — Build the evidence inventory Two hours. You will use this document for years; it is also the raw material for Chapter 7. 1 Open a spreadsheet with five columns: What I did | Form (artifact/outcome/process/perspective) | The checkable"
+            },
+            {
+              "type": "p",
+              "text": "part | Who it mattered to | Who would confirm it. 2 Fill twenty rows. Go back three years. Include coursework, club work, freelance jobs, the thing you fixed that nobody noticed,"
+            },
+            {
+              "type": "p",
+              "text": "the argument you won. 3 Any row where the ‘checkable part’ column is empty is a claim, not evidence. Either go find the number, or move it to the"
+            },
+            {
+              "type": "p",
+              "text": "perspective form and write the specific view you developed from it. 4 Write the C-E-C sentence for your five strongest rows. Read them aloud. Cut every adjective describing you. 5 Write your positioning statement. Test it: if a competent stranger could not repeat it back after hearing it once, it is still too"
+            },
+            {
+              "type": "p",
+              "text": "abstract. 6 Update this on the first of every month. Ten minutes. Most people cannot remember what they did last quarter, which is why"
+            },
+            {
+              "type": "p",
+              "text": "they fall back on adjectives."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "5",
+      "title": "Boundaries",
+      "intro": [
+        {
+          "type": "p",
+          "text": "A yes that was never in doubt carries no information. The value of your agreement is a function of your capacity to withhold it — which is why people who cannot say no are simultaneously the most used and the least consulted people in an organisation."
+        }
+      ],
+      "topics": [
+        {
+          "id": "pick-me-5-1",
+          "number": "5.1",
+          "title": "What a boundary actually is",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "A boundary is a statement about your own behaviour, not a demand about someone else’s. ‘Stop messaging me at night’ attempts to control them and invites a negotiation you will probably lose. ‘I check messages at 9 a.m.; if something is genuinely urgent, call’ describes what you do, requires no permission, and is enforceable by you alone. Nearly every failed boundary conversation is the first form wearing the clothes of the second. Three mechanisms convert refusal into perceived value: • Information. If you accept everything, your acceptance says nothing about your judgement. Selective agreement is a"
+            },
+            {
+              "type": "p",
+              "text": "signal; universal agreement is noise. • Reliability. Overcommitment produces quiet failure — late work, dropped threads, degraded quality. People who say no less"
+            },
+            {
+              "type": "p",
+              "text": "often are, mechanically, less trustworthy on what they said yes to. • Role clarity. The person who does everything is understood to specialise in nothing. Specialists are consulted; generalists"
+            },
+            {
+              "type": "p",
+              "text": "are assigned."
+            }
+          ]
+        },
+        {
+          "id": "pick-me-5-2",
+          "number": "5.2",
+          "title": "The hidden ledger",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Every yes has a price, but the price is paid later and by a different part of your life, so it never appears in the decision. Before agreeing to anything non-trivial, make the ledger explicit — out loud if you can, on paper if you cannot."
+            },
+            {
+              "type": "p",
+              "text": "1. What comes off the list? Time is conserved. If nothing comes off, you have not agreed to do it - you have agreed to do it badly, or on a weekend."
+            },
+            {
+              "type": "p",
+              "text": "2. Who else could do this? If the honest answer is \"four people\", you are being chosen for availability, not for capability. Those are different forms of being wanted."
+            },
+            {
+              "type": "p",
+              "text": "3. What does it establish? The first exception becomes the standard. Ask: am I comfortable if this is now the default expectation forever?"
+            },
+            {
+              "type": "p",
+              "text": "4. Am I saying yes to the work, Both are legitimate. But if it is the"
+            },
+            {
+              "type": "p",
+              "text": "or to the approval? second, you are buying approval with"
+            },
+            {
+              "type": "p",
+              "text": "hours, at a very poor exchange rate."
+            },
+            {
+              "type": "p",
+              "text": "Question 3 is the one that catches people. Precedents are set silently and priced later"
+            }
+          ]
+        },
+        {
+          "id": "pick-me-5-3",
+          "number": "5.3",
+          "title": "The refusal ladder — for when a flat no is not available",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "‘Just say no’ is advice from people with leverage. If your manager controls your appraisal, or you are three months into a first job, a bare refusal may genuinely cost you. The answer is not to capitulate; it is to use a rung of the ladder that matches your actual power. Every rung below preserves the relationship and the principle."
+            },
+            {
+              "type": "pre",
+              "text": "Run Move          What it sounds like                                     Costs you\ng"
+            },
+            {
+              "type": "p",
+              "text": "1 The trade ‘I can take that on. Which of the other two should slip?’ Almost nothing. Works at any seniority"
+            },
+            {
+              "type": "pre",
+              "text": "2  The price      ‘Yes — that’s about three days. Should I start          Nothing. Makes the cost visible without refusing\n                  Thursday?’"
+            },
+            {
+              "type": "p",
+              "text": "3 The scope cut ‘I can’t do the full analysis by Friday. I can get you the Very little. Often more useful to them anyway"
+            },
+            {
+              "type": "p",
+              "text": "top-line number.’"
+            },
+            {
+              "type": "p",
+              "text": "4 The deferral ‘Not this week. If it can wait until the 14th, yes.’ Small. Requires you to actually deliver on the 14th"
+            },
+            {
+              "type": "p",
+              "text": "5 The conditional ‘I’ll do it if we can drop the Tuesday report — it’s had Some. Needs a fact to lean on"
+            },
+            {
+              "type": "p",
+              "text": "yes no readers in a month.’"
+            },
+            {
+              "type": "p",
+              "text": "6 The clean no ‘I’m not going to be able to take that on.’ Most. Also the one that changes how you are treated"
+            },
+            {
+              "type": "p",
+              "text": "Rungs 1–3 are available to literally everyone, including an intern in week one. Most people skip straight from silent yes to agonising over rung 6, and so never use the ninety per cent of the ladder that is free."
+            },
+            {
+              "type": "p",
+              "text": "SCRIPT — Six situations, six sentences"
+            },
+            {
+              "type": "p",
+              "text": "“Happy to add the extra pages — that's outside what we scoped, so it'd be another ₹18,000 and about a week. Shall I send a revised note?”"
+            },
+            {
+              "type": "p",
+              "text": "“I'd rather give you something useful than something rushed. I do paid one-hour sessions for exactly this — or if you send two specific questions by email, I'll answer those properly, free.”"
+            },
+            {
+              "type": "p",
+              "text": "“Got it — I'll pick this up Monday morning. If it can't wait, call me.”"
+            },
+            {
+              "type": "p",
+              "text": "“Thanks for putting that together. It's below what I can accept — I'm working towards ₹X, based on what similar roles are paying for this scope. Is there room, or should we leave it here?”"
+            },
+            {
+              "type": "p",
+              "text": "“I can help, though I'd want to check with Priya first — I've got the launch through the 20th. Can we confirm after this?”"
+            },
+            {
+              "type": "p",
+              "text": "“That's not something I'm going to take on. Thanks for thinking of me.”"
+            },
+            {
+              "type": "p",
+              "text": "The last one contains no reason. This is deliberate: a reason is an invitation to negotiate the reason. Say it, stop talking, and let the pause sit."
+            },
+            {
+              "type": "p",
+              "text": "What happens immediately after a boundary Three things, reliably. First, a silence that feels much longer than it is — roughly two seconds. Do not fill it; filling it is where you concede. Second, one test, usually within a fortnight, to see whether the boundary was real. Your answer to the test is the boundary; the first statement was only an announcement. Third, a strong urge to over-deliver on something else to compensate. Notice it and do not act on it — that is the pattern reasserting itself through the back door, and it undoes the signal you just sent."
+            },
+            {
+              "type": "p",
+              "text": "EXERCISE — Run the ladder for real One week. Small stakes only — you are training a reflex, not winning a war. 1 List five requests you accepted in the last month that you resented. Next to each, write which rung you could have used. 2 Pick the lowest-stakes one and rehearse the sentence aloud, five times, until it sounds boring. Boring is the target:"
+            },
+            {
+              "type": "p",
+              "text": "boundaries fail when they are delivered with heat, because the heat is what people respond to. 3 Use rung 1 or 2 once this week. Not rung 6 — do not start at the top. 4 Write down what actually happened versus what you predicted. Almost everyone over-predicts the consequence by a wide"
+            },
+            {
+              "type": "p",
+              "text": "margin, and this written gap is what eventually rewires the reflex. 5 When the test comes — and it will — hold. Once. That is the whole exercise."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "6",
+      "title": "Networking Without Asking to Be Rescued",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Most networking advice tells you to give first and then quietly expects a return. People detect this instantly, because a favour with an invoice attached feels different from a favour. The version that works requires giving up the guarantee."
+        }
+      ],
+      "topics": [
+        {
+          "id": "pick-me-6-1",
+          "number": "6.1",
+          "title": "Reciprocity, and its limit",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Cialdini’s reciprocity principle is robust: people feel obligation after receiving. But the principle contains its own defeat condition — the obligation depends on the gift reading as a gift. Anything experienced as a manoeuvre produces the opposite reaction, and experienced people recognise instrumental generosity quickly, because they have been on the receiving end of it hundreds of times. Which means the practical rule is uncomfortable: give in ways you are willing to see produce nothing. Not as saintliness — as the only version that is not detectable as a manoeuvre."
+            },
+            {
+              "type": "p",
+              "text": "Adam Grant’s research in Give and Take adds the necessary correction. Givers cluster at both ends of success distributions — top and bottom. What separates them is not how much they give but whether they give with any self-regard. Grant calls the successful pattern otherish: generous and self-protective at the same time. Selfless givers get depleted and exploited; otherish givers cap the cost, give in their area of strength, and say no to the rest. If Chapter 5 felt self-serving, this is the answer to that discomfort — boundaries are what make sustained generosity possible."
+            }
+          ]
+        },
+        {
+          "id": "pick-me-6-2",
+          "number": "6.2",
+          "title": "Which ties actually produce jobs",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Granovetter’s 1973 ‘strength of weak ties’ argued that opportunity flows through acquaintances rather than close friends, because close friends know what you already know. It stayed correlational for almost fifty years. In 2022, Rajkumar and colleagues published a causal test in Science: a set of randomised experiments on LinkedIn’s connection recommendations, covering more than 20 million people over five years, during which roughly 2 billion new ties and 600,000 new jobs were created. Three findings are directly actionable:"
+            },
+            {
+              "type": "p",
+              "text": "• The relationship is an inverted U, not a straight line. Moderately weak ties produced the most job mobility — not the very weakest, and not the strongest. The strongest ties produced the least. Complete strangers are not the answer either."
+            },
+            {
+              "type": "p",
+              "text": "• The target is a specific kind of person: someone you genuinely know, share some overlapping world with, and rarely interact with. The ex-colleague from two jobs ago. The senior from college. The person you worked with on one project in 2023."
+            },
+            {
+              "type": "p",
+              "text": "• It varies by industry. Weak ties drove mobility more in highly digital industries; in less digital industries, strong ties mattered more. If you are in construction, manufacturing or field sales, weight your effort towards deeper relationships rather than volume."
+            },
+            {
+              "type": "p",
+              "text": "The single highest-yield hour in this guide Not cold outreach to strangers, and not leaning harder on your three closest contacts. It is reconnecting with fifteen people you already know and have not spoken to in over a year. That is precisely the population the research points at, and it is the one almost everyone skips — because a reconnect after silence feels more embarrassing than messaging a stranger. The embarrassment is the reason it is under-exploited."
+            }
+          ]
+        },
+        {
+          "id": "pick-me-6-3",
+          "number": "6.3",
+          "title": "The five currencies you already hold",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "‘I have nothing to offer someone senior’ is false, and it is the belief that turns networking into begging. You hold five things that senior people are frequently short of — none of which require experience."
+            },
+            {
+              "type": "p",
+              "text": "Currency What it looks like Why it is valuable to them"
+            },
+            {
+              "type": "pre",
+              "text": "Attention        Reading their work properly and responding to the      Almost nobody does this. Most ‘engagement’ is performative\n                 argument, not the headline\nInformation      ‘Your competitor shipped this on Tuesday’ · ‘Students  You see parts of the market they structurally cannot see\n                 are all using X now’\nAccess           A useful introduction between two people in your       Being a connector is high-status and costs you nothing\n                 network"
+            },
+            {
+              "type": "p",
+              "text": "Work A small artefact made unprompted — a teardown, a fix, Converts you from a request into a contributor before you ask"
+            },
+            {
+              "type": "p",
+              "text": "a dataset, a summary anything"
+            },
+            {
+              "type": "pre",
+              "text": "Specific         ‘Your signup flow breaks on a mid-range Android in low Genuinely scarce. Most people never report the bug\nfeedback         bandwidth — here’s a screenshot’"
+            }
+          ]
+        },
+        {
+          "id": "pick-me-6-4",
+          "number": "6.4",
+          "title": "Asks, and how to make them cheap",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Giving first does not mean never asking. It means asking in a form that is easy to grant and easy to refuse. A good ask is specific, small, time-bounded, and pre-refused — you supply the exit before they have to construct one."
+            },
+            {
+              "type": "p",
+              "text": "\"Can I pick your brain?\" -&gt; unbounded time, no agenda, all cost on them. Reads as: do my thinking. \"Let me know if you hear of anything!\" -&gt; transfers your search onto someone who now has a vague open loop and no way to succeed at it."
+            },
+            {
+              "type": "pre",
+              "text": "SPECIFIC     One question, not a category. \"Should I specialise in\n             payments or in fraud?\" beats \"any career advice?\"\nSMALL        Fifteen minutes, or a two-line reply. Name the size.\nBOUNDED      Give a decision date so the request expires by itself.\nPRE-REFUSED  \"If it's not a good week, ignore this entirely.\""
+            },
+            {
+              "type": "p",
+              "text": "\"I'm choosing between a payments team and a fraud team, and I keep going in circles. You've done both. Two lines on what you'd tell your younger self would genuinely settle it - and if this is a bad week, ignore it, no follow-up.\""
+            },
+            {
+              "type": "p",
+              "text": "Every element reduces the cost of granting the request. Cheap asks get answered"
+            },
+            {
+              "type": "p",
+              "text": "SCRIPT — Three messages that do not beg"
+            },
+            {
+              "type": "p",
+              "text": "“Hi Arun — it's been about two years, since the Chennai project. I saw your team shipped the new pricing page; the tier comparison is much clearer than the old one. I'm moving into product analytics and doing a bit of mapping of who's doing interesting work in the space. No ask — just glad to see it going well.”"
+            },
+            {
+              "type": "p",
+              "text": "“Hi Meera — I use your app daily and hit a consistent failure on OTP retry over patchy 4G. I wrote up the repro steps and a screen recording, attached. Sending it because it was annoying me and it seemed fixable, not because I want anything. If it's useful, glad to have helped.”"
+            },
+            {
+              "type": "p",
+              "text": "“Following up on the OTP note — glad it was useful. One question if you have two minutes: I'm deciding between going deeper on mobile QA or moving toward product analytics. You've hired for both. Which do you think is harder to hire for right now? Two lines is plenty, and no reply is a perfectly fine answer.”"
+            },
+            {
+              "type": "p",
+              "text": "“Hi sir, I am very passionate and hardworking. Please guide me. Any opportunity in your esteemed organisation would be a great learning for me.”"
+            },
+            {
+              "type": "p",
+              "text": "The last one asks the reader to construct the entire interaction — the problem, the fit, the next step — on your behalf. That is the real reason it goes unanswered; it is not rudeness, it is workload."
+            }
+          ]
+        },
+        {
+          "id": "pick-me-6-5",
+          "number": "6.5",
+          "title": "The ledger and the cadence",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Relationships decay without contact and nobody’s memory is good enough to manage sixty of them. Keep a plain sheet: name, how we met, what they care about, last contact, what I gave, what they gave. This is not cynical bookkeeping — it is the thing that lets you show up with the right context a year later, which is exactly what makes contact feel personal rather than transactional. Two contacts a year per person is enough for a weak tie to stay warm; three unanswered messages with no reply means stop, and that is fine."
+            },
+            {
+              "type": "p",
+              "text": "EXERCISE — Fifteen reconnects"
+            },
+            {
+              "type": "p",
+              "text": "Two hours, then twenty minutes a week. This is the exercise with the highest measured base rate of producing an actual job. 1 List fifteen people you genuinely know, have not spoken to in over a year, and who work somewhere adjacent to where you"
+            },
+            {
+              "type": "p",
+              "text": "want to be. Ex-colleagues, seniors, project collaborators. This is the moderately-weak-tie population the research identifies. 2 Write each one a message with no ask in it. Reference something specific and recent about them. Two to four sentences. If"
+            },
+            {
+              "type": "p",
+              "text": "you cannot find something specific, spend three minutes looking — that search is the actual work. 3 Send five per week for three weeks. Expect roughly a third to reply, and expect that to feel like a poor rate until you"
+            },
+            {
+              "type": "p",
+              "text": "remember the alternative was zero. 4 Start the ledger sheet the same day. Log every one. 5 Only in week four, and only to people who replied warmly, make one small specific ask using the structure above. Not before."
+            },
+            {
+              "type": "p",
+              "text": "The sequence is the method."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "7",
+      "title": "Self-Authorization",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Every technique so far is unstable while your self-estimate is still settled by other people. Self-authorization is the practice of holding the pen yourself: setting the standard, gathering the evidence, and reaching the verdict — then treating external feedback as data about fit rather than as a ruling on your worth."
+        }
+      ],
+      "topics": [
+        {
+          "id": "pick-me-7-1",
+          "number": "7.1",
+          "title": "Confidence is built, not summoned",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Bandura’s work on self-efficacy identified four sources, and they are not equally powerful. Ranked by strength, with what each one means in practice:"
+            },
+            {
+              "type": "pre",
+              "text": "Source               Strength    What it means                               Do this\nMastery experience   Strongest\n                                 Having actually done the thing, especially  Deliberately attempt slightly-too-hard tasks. Log the\n                                 after difficulty                            outcome\nVicarious            Strong      Watching someone comparable to you          Find models one step ahead, not ten. Distant heroes\nexperience                       succeed                                     do nothing\nSocial persuasion    Moderate    Credible people telling you that you can    Weight specific feedback from people who have\n                                                                             seen your work\nPhysiological state  Modifiable  How your body reads the situation —         Sleep, rehearsal, arriving early. Relabel arousal as\n                                 misinterpreted as verdict                   readiness"
+            },
+            {
+              "type": "p",
+              "text": "Note the ordering. ‘Believing in yourself’ sits third, and the first two are things you do, not things you feel. Confidence is a residue of accumulated evidence, which is why it cannot be installed by a speech."
+            }
+          ]
+        },
+        {
+          "id": "pick-me-7-2",
+          "number": "7.2",
+          "title": "The standards document",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The core move: define what good looks like before you are evaluated. If you enter a review, an interview or a delivery without a written standard, whatever you are told becomes the standard by default — and you will absorb whatever verdict arrives, including inconsistent ones."
+            },
+            {
+              "type": "p",
+              "text": "WRITE THIS BEFORE THE THING HAPPENS - half a page, kept somewhere you will find it"
+            },
+            {
+              "type": "p",
+              "text": "\"Ship the analytics dashboard so the ops team stops asking for manual pulls.\""
+            },
+            {
+              "type": "p",
+              "text": "- loads under 3 seconds on a normal connection - covers the five questions ops actually asks - someone else can maintain it without asking me - it is used more than twice a week after a month"
+            },
+            {
+              "type": "p",
+              "text": "- technically elegant, nobody uses it - I become the permanent dependency"
+            },
+            {
+              "type": "p",
+              "text": "- I will not ship it without documentation - I will not agree to add a sixth question before the first five work"
+            },
+            {
+              "type": "p",
+              "text": "Heavily: the ops lead, who uses it daily. Set aside: opinions on the colour scheme from people who never open it."
+            },
+            {
+              "type": "p",
+              "text": "The point of point 5 is not to reject criticism. It is to decide in advance who you are building for, so praise from the wrong source does not distract you and criticism from the wrong source does not derail you"
+            }
+          ]
+        },
+        {
+          "id": "pick-me-7-3",
+          "number": "7.3",
+          "title": "Decoupling outcome from worth",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The mechanical error underneath ‘pick me’ is treating a selection outcome as a measurement of personal value. It is not, and the reason is structural rather than consoling: selection decisions are made under heavy noise. Internal candidates, budget changes, a manager’s preference for someone who reminds them of themselves, the role being cancelled, your CV never being opened. None of these are measurements of you, and all of them produce the same email."
+            },
+            {
+              "type": "p",
+              "text": "• Treat rejections as sampling, not verdicts. One rejection is one draw from a noisy distribution. It is nearly information-free. Twenty rejections with zero first interviews is a signal about your materials. Twenty first interviews with zero second rounds is a signal about your interview evidence. Pattern is data; instance is weather."
+            },
+            {
+              "type": "p",
+              "text": "• Know your base rate. Track applications, first-round conversions and offers for three months. Most people discover their real rate is somewhere between three and ten per cent — and that a run of nine ‘no’s is entirely expected rather than a message about their worth."
+            },
+            {
+              "type": "p",
+              "text": "• Separate the two questions. ‘Did I meet my standard?’ is yours to answer, from the standards document. ‘Did they choose me?’ is theirs. Answer the first before you read their email, and you will find you already know how the day went."
+            },
+            {
+              "type": "p",
+              "text": "• Name the impostor pattern accurately. Clance and Imes described it in 1978: high performers attributing success to luck or timing while attributing failure to themselves. It is an attribution habit, not a fact about your competence. The evidence inventory from §4.3 is the direct countermeasure, because it is very hard to argue with your own dated list."
+            }
+          ]
+        },
+        {
+          "id": "pick-me-7-4",
+          "number": "7.4",
+          "title": "The rejection protocol",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "A REPEATABLE 24-HOUR RESPONSE (decide this now, use it later)"
+            },
+            {
+              "type": "pre",
+              "text": "HOUR 0   Feel it. Do not reframe immediately - suppression rebounds.\n         Tell one person. Do not send any email for one hour."
+            },
+            {
+              "type": "p",
+              "text": "HOUR 1 Write two lines in the log: what stage it died at | what I would do differently If the honest second line is \"nothing\", write \"nothing\". Sometimes it really was noise, and recording that matters."
+            },
+            {
+              "type": "p",
+              "text": "HOUR 2 Send the reply. Short, warm, no pleading, no post-mortem request unless you actually want the answer: \"Thanks for letting me know, and for the time. If anything"
+            },
+            {
+              "type": "p",
+              "text": "changes, I'd be glad to talk again. Good luck with the hire.\""
+            },
+            {
+              "type": "p",
+              "text": "HOUR 24 Look at the pattern, not the instance. Three or more rejections at the same stage = fix that stage. Otherwise, change nothing. Over-correcting after a single no is the most common way people make their materials worse."
+            },
+            {
+              "type": "p",
+              "text": "ALWAYS Do not withdraw from the pipeline for a week. Withdrawal after rejection is the behaviour that turns one no into a three-week gap, and the gap is what actually costs you."
+            },
+            {
+              "type": "p",
+              "text": "Deciding this in advance is the point — you will not design a good protocol while you are inside the feeling"
+            }
+          ]
+        },
+        {
+          "id": "pick-me-7-5",
+          "number": "7.5",
+          "title": "Your board of directors",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Replace the diffuse crowd whose approval you seek with four named people whose judgement you have actually chosen. This is a real intervention, not a metaphor: it converts ‘what will people think’ — unanswerable, therefore endless — into ‘what would these four think’, which is answerable and has a stopping point."
+            },
+            {
+              "type": "p",
+              "text": "• The practitioner — does your work, better than you. Judges craft. • The one step ahead — two to four years further on. Judges trajectory, and supplies the vicarious-experience source from"
+            },
+            {
+              "type": "p",
+              "text": "§7.1. • The outsider — different field entirely. Notices what your industry has normalised and you no longer see. • The one who knew you before — remembers you outside your job title, and is therefore the only one who can tell you"
+            },
+            {
+              "type": "p",
+              "text": "when your worth has quietly become contingent again."
+            },
+            {
+              "type": "p",
+              "text": "EXERCISE — Authorize yourself, in writing"
+            },
+            {
+              "type": "p",
+              "text": "Ninety minutes now, then ten minutes a week. This is the load-bearing exercise. 1 Write the standards document for the single most important thing you are working on or interviewing for. All five sections."
+            },
+            {
+              "type": "p",
+              "text": "Before the outcome, not after. 2 Open the evidence inventory from Chapter 4. Add a column: ‘what this proves I can do’. Write it in your own words, not a"
+            },
+            {
+              "type": "p",
+              "text": "recruiter’s. 3 Name your four board members. Actual names. If a slot is empty, that empty slot is a project for this quarter. 4 Write your rejection protocol on one page and put it where you will find it on a bad day. You are writing it for a version of"
+            },
+            {
+              "type": "p",
+              "text": "yourself who will not be able to think clearly. 5 Every Friday, ten minutes: one line on what you did that met your own standard, and one line on the evidence for it. Thirty of"
+            },
+            {
+              "type": "p",
+              "text": "those lines is a different person — not because of the feeling they produce, but because you can no longer honestly claim you have nothing to show."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "8",
+      "title": "The Field Manual",
+      "intro": [],
+      "topics": [
+        {
+          "id": "pick-me-8-1",
+          "number": "8.1",
+          "title": "The substitution table",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Situation The pick-me move The replacement"
+            },
+            {
+              "type": "pre",
+              "text": "Asked for salary             Name a low number to stay in the          ‘What range is budgeted for this role?’ — then respond to a real\nexpectations first           running                                   number\nYou do not meet every        Apologise, then promise to learn fast     Name the gap plainly, then redirect to adjacent evidence (§3.4)\nrequirement\nA recruiter goes quiet       Follow up four times, each more           One follow-up with new information attached. Then move on\n                             apologetic"
+            },
+            {
+              "type": "p",
+              "text": "Asked to do unpaid ‘test’ Do it, extensively, to prove commitment Offer a bounded sample, or a paid trial. Both are normal asks work beyond a reasonable sample"
+            },
+            {
+              "type": "p",
+              "text": "Praised for something ‘Oh it was nothing, the team did it all’ ‘Thank you — the scope call was the part I’d defend.’ (§4.4)"
+            },
+            {
+              "type": "pre",
+              "text": "Asked for an opinion in a    Agree with whoever spoke last             ‘I’d want to check one thing before I answer — do we know X?’\nmeeting\nSomeone senior offers        Accept, because access feels scarce       ‘I can do one at that rate to see how we work together. After that\n‘exposure’ instead of                                                  it’s ₹X.’\nmoney"
+            },
+            {
+              "type": "p",
+              "text": "An offer arrives Accept immediately out of relief ‘Thank you — I’d like to look at it properly. Can I come back Thursday?’ You need an introduction ‘Let me know if you hear of anything’ One named person, one sentence they can forward verbatim (§6.4)"
+            },
+            {
+              "type": "pre",
+              "text": "You were rejected            Withdraw, spiral, rewrite everything      Run the 24-hour protocol. Change nothing until three at the\n                                                                       same stage (§7.4)"
+            }
+          ]
+        },
+        {
+          "id": "pick-me-8-2",
+          "number": "8.2",
+          "title": "A thirty-day sequence",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Days Do this You will have"
+            },
+            {
+              "type": "p",
+              "text": "1–3 Chapter 1 inventory + Chapter 2 scarcity audit Your score, your signature sentence, your real option count"
+            },
+            {
+              "type": "p",
+              "text": "4–7 Chapter 4 evidence inventory — twenty rows A document that ends ‘I have nothing to show’ permanently"
+            },
+            {
+              "type": "pre",
+              "text": "Days    Do this                                        You will have\n8–10\n11–14   C-E-C sentences and the positioning            Language that states value without a single adjective\n15–21   statement\n22–25\n26–30   Chapter 3: write three value hypotheses, send The first outreach you have ever sent from a position\nDay 31  one\n        Chapter 6: fifteen reconnects, five per week,  A live network and a ledger, instead of a contact list\n        no asks"
+            },
+            {
+              "type": "p",
+              "text": "Chapter 5: use rungs 1–2 three times Evidence that the predicted consequence did not arrive"
+            },
+            {
+              "type": "p",
+              "text": "Chapter 7: standards document, board of four, A verdict you issue yourself, in writing, before theirs arrives protocol"
+            },
+            {
+              "type": "p",
+              "text": "Re-run the Chapter 1 inventory A comparison. Do not skip this — the change is invisible without it"
+            }
+          ]
+        },
+        {
+          "id": "pick-me-8-3",
+          "number": "8.3",
+          "title": "Where the ideas came from",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Idea in this guide                                  Source\nTunnelling and the bandwidth tax (§2.1)             Mullainathan & Shafir, Scarcity (2013); Mani, Mullainathan, Shafir & Zhao, ‘Poverty\n                                                    impedes cognitive function’, Science 341 (2013). See the replication caveat in §2.1\nWhat your self-worth is staked on (§2.2)            Crocker & Wolfe, ‘Contingencies of self-worth’, Psychological Review (2001); Carl Rogers\n                                                    on locus of evaluation\nThe self-promotion / likeability bind               Rudman (1998) and Heilman on backlash effects against assertive self-presentation\n(§4.1)\nOtherish giving (§6.1)                              Adam Grant, Give and Take (2013); Cialdini, Influence, on reciprocity\nWhich ties produce jobs (§6.2)                      Granovetter, ‘The strength of weak ties’ (1973); Rajkumar, Saint-Jacques, Bojinov,\n                                                    Brynjolfsson & Aral, ‘A causal test of the strength of weak ties’, Science 377 (2022)\nThe four sources of confidence (§7.1)               Bandura on self-efficacy; Deci & Ryan’s self-determination theory on autonomy,\n                                                    competence and relatedness\nThe impostor attribution pattern (§7.3)             Clance & Imes (1978), and the substantial later literature extending it beyond the original\n                                                    sample"
+            },
+            {
+              "type": "p",
+              "text": "A closing note on what this is not. Nothing here is a technique for appearing to have leverage you do not have. That fails, quickly, and it fails worst against the experienced people whose respect you actually want. Everything in this guide works by making something true and then letting it be visible: real evidence, real alternatives, real standards, real generosity. The reason the ‘pick me’ posture lowers your value is that it is an accurate signal about a real situation. The remedy is not to send a better signal. It is to change the situation, and then stop apologising for it."
+            },
+            {
+              "type": "p",
+              "text": "The behavioural change usually arrives before the feeling does. You will use rung 2 of the ladder while your hands shake, send the value hypothesis while certain it is presumptuous, and let a silence sit while every instinct says to fill it. That gap between what you are doing and what you feel is not hypocrisy — it is what learning this looks like from the inside. Keep the written records. On the day you cannot remember why you believed you had anything to offer, they will be the only argument that works."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

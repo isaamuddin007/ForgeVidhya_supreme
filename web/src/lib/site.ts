@@ -121,7 +121,12 @@ export const services: Service[] = [
 // non-engineering items are life-skill workshops (no dedicated pages yet).
 // ============================================================
 
-export type CategoryProgram = { title: string; blurb: string };
+export type CategoryProgram = {
+  title: string;
+  blurb: string;
+  /** Slug of the knowledge-base course this program opens (see lib/courses). */
+  courseSlug?: string;
+};
 
 export type ProgramCategory = {
   id: "ai-and-tech" | "core-engineering" | "non-tech";
@@ -143,9 +148,9 @@ export const programCategories: ProgramCategory[] = [
     from: "#00bfff",
     to: "#0080bf",
     programs: [
-      { title: "AI Automation Fundamentals", blurb: "Replace repetitive work with autonomous AI agents." },
-      { title: "AI Production Engineering", blurb: "Take AI demos from prototype to reliable real-world systems." },
-      { title: "Imagination to Life with AI", blurb: "Turn your ideas into apps, art, and products — no team required." },
+      { title: "AI Automation Fundamentals", blurb: "Replace repetitive work with autonomous AI agents.", courseSlug: "ai-automation-fundamentals" },
+      { title: "AI Production Engineering", blurb: "Take AI demos from prototype to reliable real-world systems.", courseSlug: "ai-production-engineering" },
+      { title: "Imagination to Life with AI", blurb: "Turn your ideas into apps, art, and products — no team required.", courseSlug: "imagination-to-life" },
     ],
   },
   {
@@ -156,11 +161,11 @@ export const programCategories: ProgramCategory[] = [
     from: "#ff9500",
     to: "#cc7700",
     programs: [
-      { title: "Applied AI & Artificial Intelligence", blurb: "Using AI to solve real problems, not just passing exams." },
-      { title: "Embedded Systems & IoT", blurb: "The nervous system — sensing and reacting to the physical world." },
-      { title: "CAD Design & Digital Manufacturing", blurb: "The skeleton — turning ideas into manufacturable parts." },
-      { title: "Robotics & Mechatronics", blurb: "The body — making machines move with purpose." },
-      { title: "Renewable Energy & Electric Mobility", blurb: "The power — clean energy and the vehicles it drives." },
+      { title: "Applied AI & Artificial Intelligence", blurb: "Using AI to solve real problems, not just passing exams.", courseSlug: "applied-ai-indian-problems" },
+      { title: "Embedded Systems & IoT", blurb: "The nervous system — sensing and reacting to the physical world.", courseSlug: "embedded-systems-iot" },
+      { title: "CAD Design & Digital Manufacturing", blurb: "The skeleton — turning ideas into manufacturable parts.", courseSlug: "cad-digital-manufacturing" },
+      { title: "Robotics & Mechatronics", blurb: "The body — making machines move with purpose.", courseSlug: "robotics-mechatronics" },
+      { title: "Renewable Energy & Electric Mobility", blurb: "The power — clean energy and the vehicles it drives.", courseSlug: "renewable-energy-mobility" },
     ],
   },
   {
@@ -171,10 +176,10 @@ export const programCategories: ProgramCategory[] = [
     from: "#00bfff",
     to: "#ff9500",
     programs: [
-      { title: "How to negotiate terms in an interview", blurb: "Ask for what you're worth — and get it." },
-      { title: "How to manage your expenses", blurb: "Make your first income actually last." },
-      { title: "How to invest in AI tools using a special formula", blurb: "A simple formula for spending on AI that pays back." },
-      { title: "How to not play the pick me please in the real world", blurb: "Build real leverage instead of chasing approval." },
+      { title: "How to negotiate terms in an interview", blurb: "Ask for what you're worth — and get it.", courseSlug: "negotiate-interview-terms" },
+      { title: "How to manage your expenses", blurb: "Make your first income actually last.", courseSlug: "manage-expenses" },
+      { title: "How to invest in AI tools using a special formula", blurb: "A simple formula for spending on AI that pays back.", courseSlug: "invest-in-ai-tools" },
+      { title: "How to not play the pick me please in the real world", blurb: "Build real leverage instead of chasing approval.", courseSlug: "pick-me" },
     ],
   },
 ];

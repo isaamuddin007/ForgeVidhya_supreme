@@ -1,0 +1,2510 @@
+{
+  "slug": "embedded-systems-iot",
+  "title": "Embedded Systems & IoT",
+  "tagline": "Frugal engineering — the nervous system that senses and reacts, built to work in the field, not the lab.",
+  "modules": [
+    {
+      "number": "1",
+      "title": "Choosing Hardware That Survives",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Every component choice in this chapter is one that works fine on a bench in an air-conditioned lab and fails in a metal box on a wall in Nagpur in May. The failures are predictable, which means they are preventable at the selection stage and expensive at every stage after."
+        }
+      ],
+      "topics": [
+        {
+          "id": "embedded-systems-iot-1-1",
+          "number": "1.1",
+          "title": "Indian mains is not 230 V",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Nominal is 230 V at 50 Hz. Real supply in many places swings far wider — sagging under load in the evening, spiking when a large motor nearby switches off, and dropping out entirely without warning. Design the input stage for the range you will actually see, not the number on the label."
+            },
+            {
+              "type": "p",
+              "text": "THE INPUT PROTECTION STACK (mains-powered devices, in order from the socket)"
+            },
+            {
+              "type": "p",
+              "text": "│ │ CHOKE │ │"
+            },
+            {
+              "type": "p",
+              "text": "N ─────────────────────┴───────────┴───────────────────┘ ▼"
+            },
+            {
+              "type": "p",
+              "text": "[ TVS ]──▶ +3V3 LDO"
+            },
+            {
+              "type": "p",
+              "text": "│ or buck"
+            },
+            {
+              "type": "p",
+              "text": "E ──────────────────────────────────── chassis / earth ▼"
+            },
+            {
+              "type": "p",
+              "text": "MCU + peripherals"
+            },
+            {
+              "type": "pre",
+              "text": "FUSE   slow-blow, sized for inrush. The last line, not the first.\nNTC    inrush limiter - stops the SMPS input cap from tripping the fuse\nMOV    on every power-up. Cheap, and it doubles fuse life.\n       clamps surges. It DEGRADES with every event - a MOV that has\nCHOKE  eaten three surges is not the part you specified. Pair it with\nSMPS   a thermal fuse in commercial designs.\n       common-mode noise, both directions. Your device should not\nTVS    pollute the mains either.\n       use a certified encapsulated module (HLK-PM01 class, ~Rs 200-350)\n       rather than building your own. It is isolated, it is tested,\n       and your time is worth more.\n       clamps transients that got past everything upstream."
+            },
+            {
+              "type": "p",
+              "text": "Brownout, not surge, is what kills Indian embedded devices. A supply that sags to 150 V leaves the SMPS producing a drooping rail, and an MCU running at 2.4 V does not stop - it does something RANDOM, like writing garbage to flash. Enable the MCU's brownout detector and set it high enough to actually fire. This is one configuration bit and it prevents a whole class of field corruption."
+            },
+            {
+              "type": "p",
+              "text": "Use a certified isolated SMPS module. A student building their own mains supply is spending a week to produce something less safe than a ₹250 part"
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-1-2",
+          "number": "1.2",
+          "title": "Heat, and the component that always dies first",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The electrolytic capacitor arithmetic — do this once and you will never buy an 85 °C part again Electrolytic capacitor life roughly halves for every 10 °C above its rated temperature, and doubles for every 10 °C below. The rule is L = L₀ × 2^((T_rated − T_actual)/10). Take a sealed enclosure on a wall in an Indian summer: 42 °C ambient, plus internal rise, gives roughly 65 °C inside. A 2000-hour part rated at 85 °C gives 2000 × 2² = 8,000 hours — under eleven months. The same 2000-hour part rated at 105 °C gives 2000 × 2⁴ = 32,000 hours — about three and a half years. That is a four-fold difference in product life for a component that costs a few rupees more. Specify 105 °C electrolytics in anything that will sit in an Indian enclosure, or use solid polymer or ceramic where the capacitance allows."
+            },
+            {
+              "type": "pre",
+              "text": "Component               The trap                                         What to specify\nElectrolytic caps\nMicrocontroller         85 °C parts in a hot box — see above             105 °C, low-ESR, with generous voltage headroom (derate to ~70%\nLinear regulator                                                         of rating)\n                        Commercial grade is 0–70 °C. An enclosure\nSD card                 interior exceeds that easily                     Industrial temperature grade (−40 to +85 °C) for anything deployed\n                                                                         outdoors or in a sealed box\n                        Dropout × current is heat, dissipated in a tiny\n                        package. 5 V to 3.3 V at 200 mA is 0.34 W in a   Use a buck converter above roughly 100 mA, or accept the heat and\n                        SOT-23                                           give the LDO copper to dump it into\n                        Consumer cards fail on power loss during a       Industrial-grade card, or better: write to onboard flash and batch to\n                        write, and wear out with frequent small writes   SD rarely (§5.4)\nComponent               The trap                                          What to specify\nLiPo battery\n                        Swells and degrades fast above 45 °C; must        LiFePO₄ tolerates heat far better, or place the battery away from the\nCrystal / oscillator    not be charged below 0 °C                         hot side and add a temperature interlock\nConnectors and          Frequency drifts with temperature;                TCXO if timestamps matter, or resynchronise from the network\nheaders                 timekeeping wanders over a season                 whenever you connect\n                        Vibration and thermal cycling loosen unlatched    Latching connectors (JST-XH/PH), and strain relief on every cable\n                        headers                                           that leaves the board"
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-1-3",
+          "number": "1.3",
+          "title": "Dust and water",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Choose sealed-with-a-heatsink over vented-with-a-fan. A vent is a dust entrance and a fan is a moving part that fails. Conduct heat to an external surface instead — an aluminium plate or the enclosure wall itself."
+            },
+            {
+              "type": "p",
+              "text": "• IP54 is enough indoors; IP65 outdoors; IP67 only where submersion is credible. And note that an IP65 enclosure with an unsealed cable gland is not IP65. The gland is the part people get wrong."
+            },
+            {
+              "type": "p",
+              "text": "• Conformal-coat the board for humid or coastal deployments. Acrylic is easiest to apply and to rework; silicone flexes and handles heat; polyurethane is toughest and hardest to repair. Mask the connectors and the antenna before coating."
+            },
+            {
+              "type": "p",
+              "text": "• Breathe, do not seal absolutely. A fully sealed box heats in the sun, cools at night, and pulls in humid air through any imperfection — which then condenses inside. A Gore-type vent membrane equalises pressure while blocking water and dust, and costs very little."
+            },
+            {
+              "type": "p",
+              "text": "• Put the drain at the bottom. Assume water will get in. A small weep hole at the lowest point turns a flooded enclosure into a damp one."
+            },
+            {
+              "type": "p",
+              "text": "• Mount cable entries facing down, with a drip loop before them, so water runs away from the gland rather than into it."
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-1-4",
+          "number": "1.4",
+          "title": "Connectivity — and the 2G problem you must know about",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Read this before you buy a SIM800L The SIM800L is the cheapest and most documented cellular module in the Indian maker ecosystem, and it is 2G only. That matters more every year:"
+            },
+            {
+              "type": "p",
+              "text": "Jio has never operated a 2G network at all — it is 4G/VoLTE only, so a SIM800L will never register on a Jio SIM, no matter what you do. Airtel still runs 2G but has shut it down across several circles and metro areas. Vi has signalled a partial shutdown in the 2026–27 window. BSNL and rural 2G on the 900 MHz band are expected to persist for some years, but nobody will guarantee how many."
+            },
+            {
+              "type": "p",
+              "text": "Practical rule: SIM800L is fine to learn AT commands on, and fine for a semester project you will dismantle. For anything intended to run for two or three years, specify a 4G Cat-1 module — the A7670E covers the Indian LTE bands (B3, B5, B8, B40, B41), the A7670G adds GNSS so one module does both connectivity and location, and the SIM7080G gives you LTE Cat-M1 and NB-IoT for low-power work. The AT command set is close enough that migration is minor."
+            },
+            {
+              "type": "p",
+              "text": "Option Range / coverage Power Cost Use it when"
+            },
+            {
+              "type": "pre",
+              "text": "Wi-Fi (ESP32)         Local, needs an access      High — connection       ₹350–700     Mains power available and a known network\n                      point                       takes seconds at                     exists. Bad for battery devices\n                                                  100–150 mA"
+            },
+            {
+              "type": "p",
+              "text": "BLE 10–50 m to a phone or Very low ₹350–900 Wearables and anything that pairs with a"
+            },
+            {
+              "type": "p",
+              "text": "gateway phone (Project 3)"
+            },
+            {
+              "type": "pre",
+              "text": "2G GSM                Wide but shrinking; never 0.7 mA idle, 2 A peak ₹150–400         Learning, and short-life projects only. See the\n                                                                                       warning above\n                      on Jio                      burst\n4G Cat-1 (A7670E)     Wherever there is 4G,       Higher idle than 2G;    ₹1,200–2,50 The default for a real deployment with mains\n                      which is nearly             still bursty\n                      everywhere                                          0            or a decent battery\nLTE-M / NB-IoT        Good, but operator          Designed for low        ₹1,500–3,00  Battery devices sending small payloads —\n                      support in India is patchy  power; long sleep with  0            confirm operator coverage at your site\n                                                  PSM                                  first\nLoRa (SX1276)         2–15 km to your own         120 mA TX, ~1 µA        ₹400–900     Many nodes over a farm or campus where you\n                      gateway                     sleep                   per node     can put up one gateway. Project 2"
+            },
+            {
+              "type": "p",
+              "text": "Test coverage before you commit. Take a phone to the exact spot the device will live, in the exact enclosure position, and check the signal. A metal box on a metal pole is an effective Faraday cage, and ‘there is signal at the gate’ does not mean there is signal inside the pump house."
+            },
+            {
+              "type": "p",
+              "text": "BUILD THIS — Choose your stack before you buy anything"
+            },
+            {
+              "type": "p",
+              "text": "An hour, and it will save you a re-spin."
+            },
+            {
+              "type": "p",
+              "text": "1 Write the deployment environment down as numbers: worst ambient temperature, whether it is sealed, whether there is mains, whether there is dust or rain."
+            },
+            {
+              "type": "p",
+              "text": "2 Pick a microcontroller and check its temperature grade against your worst case. Most hobby boards are commercial grade."
+            },
+            {
+              "type": "p",
+              "text": "3 Choose connectivity using the table in §1.4, then go and measure the signal at the actual location with a phone. Record the bars and the network type."
+            },
+            {
+              "type": "p",
+              "text": "4 List every electrolytic capacitor in your design and confirm each is 105 °C. Compute expected life at your internal temperature using the formula in §1.2."
+            },
+            {
+              "type": "p",
+              "text": "5 Write one sentence for each of the four stressors saying what you have done about it. ‘Nothing yet’ is a valid answer and becomes your task list."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "2",
+      "title": "Schematic to Enclosure",
+      "intro": [
+        {
+          "type": "p",
+          "text": "The workflow exists to make mistakes cheap. A error caught in the schematic costs minutes; the same error caught after the boards arrive costs three weeks and a re-spin. Every stage below has a review gate for exactly that reason."
+        }
+      ],
+      "topics": [
+        {
+          "id": "embedded-systems-iot-2-1",
+          "number": "2.1",
+          "title": "The stages, and what each one is for",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "1 REQUIREMENTS   what it must do, where it lives, what it costs, how long\n                 it must run. One page. Numbers, not adjectives.\n          │      GATE: can someone else build the block diagram from this?\n          ▼\n2 BLOCK DIAGRAM  boxes and arrows: power in, sensors, MCU, radio, outputs.\n                 Mark every voltage rail and every interface.\n          │      GATE: is every box a part you can actually buy today?\n          ▼\n3 SCHEMATIC      the real design. Power tree, decoupling, protection,\n                 test points, connectors.\n          │      GATE: schematic review by a second person (2.2)\n          ▼\n4 PCB LAYOUT     placement first, routing second. Ground plane, thermal,\n                 antenna keep-out, mechanical fit.\n          │      GATE: DFM check against YOUR fab's rules + 3D fit check\n          ▼\n5 FABRICATION    order boards + stencil + parts. 1-3 weeks (2.5)\n          │      GATE: parts in hand BEFORE boards arrive, not after\n          ▼\n6 BRING-UP       the ordered procedure in 2.4. Never plug in and hope.\n          │      GATE: all rails correct, current draw as predicted\n          ▼\n7 FIRMWARE       peripheral by peripheral, each proven before the next\n          │      GATE: every peripheral has a standalone test that passes\n          ▼\n8 ENCLOSURE      fit, thermal, ingress, antenna position, cable entry\n          │      GATE: assembled unit passes bench test INSIDE the box\n          ▼\n9 FIELD TEST     chapter 7"
+            },
+            {
+              "type": "p",
+              "text": "THE RULE: never skip a gate because you are confident. Confidence is exactly the state in which people order 20 boards with a swapped footprint."
+            },
+            {
+              "type": "p",
+              "text": "Stages 1 and 2 take an afternoon and prevent most re-spins. Students skip straight to stage 3 and pay for it at stage 5"
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-2-2",
+          "number": "2.2",
+          "title": "Schematic discipline",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Draw the power tree first, as a separate sheet. Every source, every regulator, every rail, with the expected current on each. If you cannot total the current, you cannot choose the regulator."
+            },
+            {
+              "type": "p",
+              "text": "• One decoupling capacitor per supply pin, 100 nF, placed in the layout right at the pin — not merely present in the schematic. Add bulk capacitance where current is bursty (a radio needs far more than the datasheet minimum; see §4.4)."
+            },
+            {
+              "type": "p",
+              "text": "• Name every net. SDA, VBAT, MOTOR_EN. Unnamed nets become unreadable in three weeks and unreviewable by anyone else."
+            },
+            {
+              "type": "p",
+              "text": "• Add test points on every rail and every critical signal. A 1 mm pad costs nothing at design time and is the difference between debugging in ten minutes and soldering wires onto a QFN pin."
+            },
+            {
+              "type": "p",
+              "text": "• Fit 0 Ω links and DNP footprints at your uncertainties. Not sure whether you need a pull-up, a filter or that extra series resistor? Put the footprint down, populate it if needed. A footprint you did not use costs nothing; one you did not place costs a re-spin."
+            },
+            {
+              "type": "p",
+              "text": "• Bring out a debug header — UART at minimum, SWD/JTAG if your MCU supports it. Every board you will ever want to debug in the field is one you did not put a header on."
+            },
+            {
+              "type": "p",
+              "text": "• Get it reviewed by a human. Print it, hand it to someone, and make them trace the power path and one signal path aloud. Most fatal errors are found in that twenty minutes."
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-2-3",
+          "number": "2.3",
+          "title": "PCB layout, practically",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Rule              Number                                       Why\nLayer count\nTrace width       2-layer for simple work; 4-layer once        A continuous ground plane on an inner layer solves noise problems that are\n                  you have a radio or fast signals             otherwise very hard to chase. The cost difference is now small\nDecoupling\nplacement         ~0.25 mm per 1 A on 1 oz outer copper        Undersized power traces heat and drop voltage. Use a calculator, do not guess\nGround            as a working starting point; check\nAntenna keep-out  against IPC-2221 for your temperature\n                  rise\nThermal\nMounting holes    100 nF within a few millimetres of the       A decoupling cap 20 mm away with a long return path is decoration\nSilkscreen        pin, with a short via to ground\n                  One continuous plane. Do not slice it        Every slot in a ground plane forces return current to detour, which is how you\n                  with traces                                  create an antenna you did not want\n                  No copper — no plane, no traces —            Copper near the antenna detunes it. This is the most common reason a radio\n                  under or near a PCB or chip antenna.         that worked on a dev board performs badly on a custom board\n                  Follow the module datasheet exactly\n                  Copper pour and thermal vias under           A SOT-23 regulator dissipating 0.3 W needs somewhere to put it\n                  regulators and drivers"
+            },
+            {
+              "type": "p",
+              "text": "Place them and check the 3D fit before ‘It does not fit the enclosure’ is an entirely avoidable and very common second"
+            },
+            {
+              "type": "p",
+              "text": "ordering spin"
+            },
+            {
+              "type": "p",
+              "text": "Polarity marks, pin 1, connector labels, Future you, assembling twenty boards at 1 a.m., will be grateful version and date"
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-2-4",
+          "number": "2.4",
+          "title": "Bring-up — the ordered procedure",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "PROTOCOL — Board bring-up — follow in order, do not skip ahead"
+            },
+            {
+              "type": "p",
+              "text": "STEP 0 VISUAL, before any power Inspect every solder joint under magnification. Look for bridges, tombstoned parts, wrong orientation on every polarised component. Check the diode and electrolytic polarity marks against the BOM. Ten minutes here saves a destroyed board."
+            },
+            {
+              "type": "p",
+              "text": "STEP 1 CONTINUITY, with the board unpowered Measure resistance from every rail to ground. A dead short on 3V3-to-GND means STOP - find it before applying power. Expect a few hundred ohms to a few kilohms, not zero."
+            },
+            {
+              "type": "p",
+              "text": "Use a bench supply with the current limit set LOW - say 100 mA. If you do not have one, a USB power bank through an ammeter, or a resistor in series, is a frugal substitute. Apply power. Watch the current. It should be small and stable. If the limit trips, you have found a fault without releasing smoke."
+            },
+            {
+              "type": "p",
+              "text": "Every regulator output, with a meter, against the schematic. Write the measured values on a printout of the power tree. Do not proceed until every rail is within tolerance."
+            },
+            {
+              "type": "p",
+              "text": "STEP 4 CURRENT DRAW vs PREDICTION Compare against your chapter 3 estimate. A large discrepancy is information: something is on that should not be, or vice versa."
+            },
+            {
+              "type": "p",
+              "text": "STEP 5 PROGRAM IT - the smallest possible program Blink an LED. Nothing else. This proves power, clock, reset and the programming interface all work. If the blink fails, the problem is in those four things, not in your application."
+            },
+            {
+              "type": "p",
+              "text": "UART first (so you can print). Then I2C - scan the bus and confirm every expected address responds. Then each sensor. Then the radio, last, because it is the biggest current draw and the most likely to expose a power problem."
+            },
+            {
+              "type": "p",
+              "text": "STEP 7 ONLY NOW run the application firmware. Step 2 is the one that saves boards. A current-limited supply turns ‘I destroyed the prototype’ into ‘I found a short in thirty seconds’."
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-2-5",
+          "number": "2.5",
+          "title": "Getting boards made: India versus China",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Route                   Typical cost, 10 boards Lead time                           When it wins\n                        50×50 mm 2-layer\nIndian fab (PCB         ₹1,500–₹4,000 depending                3–7 days + 1–2 days  Speed within India, no customs risk, GST invoice for\nPower, Lion Circuits    on options                             courier              institutional purchase, support in your timezone and\nand similar)                                                                        language. Usually the right choice for a student\n                                                                                    project on a deadline\nChinese fab (JLCPCB, ₹400–₹1,500 including                     2–4 days fab + 5–15  Unbeatable on unit cost, and their assembly service with\nPCBWay and similar) basic shipping                             days shipping, plus  in-house parts is genuinely cheap. Costs you time, customs\n                                                               customs              paperwork, and a possible duty bill\nAssembly (SMT)          Adds ₹2,000–₹8,000 for a               Add 3–7 days         Any board with QFN, BGA or 0402 parts. Hand-soldering\nservice                 small run, plus a stencil and                               these is possible and miserable and your yield will be poor\n                        setup charge\nHand assembly           Your time, plus a ₹500                 An evening           0805 and larger, low quantities, and when you need it\n                        stencil if you buy one                                      tonight. Use solder paste, a stencil and a hot plate rather\n                                                                                    than an iron"
+            },
+            {
+              "type": "p",
+              "text": "Always order a stencil if you are hand-placing SMD parts — it costs a few hundred rupees and transforms both speed and yield. And order 20–30% more passives than the BOM says: you will lose some to the floor, and 0402 parts are effectively invisible once dropped."
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-2-6",
+          "number": "2.6",
+          "title": "Firmware that survives being left alone",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Firmware on your desk gets restarted whenever it misbehaves. Firmware in a field does not. Six structural decisions separate code that runs for a month unattended from code that needs someone to power-cycle it every Tuesday."
+            },
+            {
+              "type": "p",
+              "text": "• Enable the watchdog, and feed it in exactly one place. A watchdog fed from several places — or worse, from inside an interrupt — will happily keep a hung program alive. Feed it once, at the top of the main loop, only after the loop has completed a full pass."
+            },
+            {
+              "type": "p",
+              "text": "• No blocking calls anywhere in the main path. Not delay(), not a synchronous network call without a timeout, not a while loop waiting for a sensor that may never answer. Every wait needs a timeout and a path for what happens when it expires."
+            },
+            {
+              "type": "p",
+              "text": "• Define fail-safe defaults explicitly. What does the device do when the sensor reads out of range, when the server is unreachable, when the clock is wrong, when the battery is nearly flat? Write the answer down for each. Undefined behaviour in the field means whatever the last programmer happened to leave in a variable."
+            },
+            {
+              "type": "p",
+              "text": "• Bounds-check everything that comes from outside — sensor readings, downlink commands, stored configuration. A sensor returning 0xFFFF because its bus glitched should be rejected as invalid, not logged as a real reading and averaged into your data."
+            },
+            {
+              "type": "p",
+              "text": "• Persist what must survive a reset, and nothing more. Cumulative counters, sequence numbers and configuration go in flash or RTC memory; write them rarely and atomically, because a power cut mid-write is how flash gets corrupted."
+            },
+            {
+              "type": "p",
+              "text": "• Report your firmware version in every heartbeat. When twenty units are deployed and three behave oddly, the first question is always which build they are running — and you will not remember."
+            },
+            {
+              "type": "p",
+              "text": "• Decide about over-the-air updates deliberately. OTA adds real risk: a bad update can brick every unit at once. It also saves a day of travel per site visit. If you implement it, keep a known-good fallback image and roll out to one unit before all of them."
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-2-7",
+          "number": "2.7",
+          "title": "The enclosure, which is part of the electronics",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The box is not packaging. It sets your thermal performance, your ingress rating, your antenna performance and whether anyone can service the device — and it is routinely designed last, after the PCB outline is already fixed, which is how boards end up not fitting."
+            },
+            {
+              "type": "p",
+              "text": "• Choose the enclosure before you finalise the PCB outline. Buy the actual box, measure it, and draw the board to fit — including standoff positions, connector cutout heights and the lid’s internal ribs, which are what actually collide with your tall capacitors."
+            },
+            {
+              "type": "p",
+              "text": "• Metal is a Faraday cage. A metal enclosure will destroy your Wi-Fi, LoRa or cellular link. Use ABS or polycarbonate, or bring an external antenna outside on a pigtail. Polycarbonate survives UV far better than ABS outdoors."
+            },
+            {
+              "type": "p",
+              "text": "• Plan the thermal path. A sealed box with a regulator dissipating a watt needs somewhere to send it: a metal plate bonded to the enclosure wall, or a thermal pad to a heatsink on the outside. Do not vent — see §1.3."
+            },
+            {
+              "type": "p",
+              "text": "• Cable entries face down, with a drip loop. Glands sized to the cable, tightened properly. An oversized gland on a thin cable seals nothing."
+            },
+            {
+              "type": "p",
+              "text": "• Design for the tenth unit, not the first. Can you assemble it in five minutes? Can you open it in the field without losing screws in the grass? Captive screws and a hinged lid are worth the extra rupees."
+            },
+            {
+              "type": "p",
+              "text": "• Prototype in cardboard first. A full-size cardboard mock-up of the enclosure, with the PCB inside, catches connector clashes and cable-routing problems in twenty minutes and costs nothing."
+            },
+            {
+              "type": "p",
+              "text": "BUILD THIS — Take one simple board through the whole workflow"
+            },
+            {
+              "type": "p",
+              "text": "Two to three weeks, most of it waiting for parts and boards."
+            },
+            {
+              "type": "p",
+              "text": "1 Design something deliberately simple: an ESP32, a regulator, one sensor, a connector, and test points. The goal is the process, not the product."
+            },
+            {
+              "type": "p",
+              "text": "2 Draw the power tree as its own sheet with the current on every rail."
+            },
+            {
+              "type": "p",
+              "text": "3 Get the schematic reviewed by another person who traces the power path aloud."
+            },
+            {
+              "type": "p",
+              "text": "4 Run the DFM check against your chosen fab’s actual design rules — they differ, and the cheap options have looser minimums."
+            },
+            {
+              "type": "p",
+              "text": "5 Order boards, a stencil, and 30% extra passives. Order the parts first, so they arrive before the boards do."
+            },
+            {
+              "type": "p",
+              "text": "6 Bring it up with the §2.4 procedure and write down the measured value of every rail. Keep that sheet — it becomes the reference when a later board misbehaves."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "3",
+      "title": "Making It Last Weeks on a Charge",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Battery life is not a firmware optimisation applied at the end. It is a budget you compute at the start, in milliamp-hours per day, and then defend against every design decision that follows."
+        }
+      ],
+      "topics": [
+        {
+          "id": "embedded-systems-iot-3-1",
+          "number": "3.1",
+          "title": "The method",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Break the device’s life into states, put a current and a duration on each, and add them up. Everything else in this chapter is a consequence of doing this arithmetic honestly."
+            },
+            {
+              "type": "p",
+              "text": "mAh per event = current (mA) x duration (seconds) / 3600"
+            },
+            {
+              "type": "p",
+              "text": "WORKED: a LoRa soil node reporting once an hour"
+            },
+            {
+              "type": "p",
+              "text": "state current duration mAh per hour"
+            },
+            {
+              "type": "p",
+              "text": "------------------------------------------------------------"
+            },
+            {
+              "type": "p",
+              "text": "deep sleep 0.020 mA 3600 s 0.0200"
+            },
+            {
+              "type": "p",
+              "text": "wake + sample 40 mA 2s 0.0222"
+            },
+            {
+              "type": "p",
+              "text": "LoRa transmit 120 mA 0.5 s 0.0167"
+            },
+            {
+              "type": "p",
+              "text": "--------"
+            },
+            {
+              "type": "p",
+              "text": "firmware load 0.0589 mAh/hour"
+            },
+            {
+              "type": "p",
+              "text": "= 1.41 mAh/day"
+            },
+            {
+              "type": "p",
+              "text": "Battery: 2 x 18650 = 5000 mAh, usable at 80% = 4000 mAh Naive life = 4000 / 1.41 = 2,830 days = SEVEN YEARS"
+            },
+            {
+              "type": "p",
+              "text": "That number is wrong, and believing it is the classic beginner error."
+            },
+            {
+              "type": "p",
+              "text": "self-discharge, Li-ion ~2.5% per month"
+            },
+            {
+              "type": "p",
+              "text": "5000 x 0.025 / 30 = 4.17 mAh/day"
+            },
+            {
+              "type": "p",
+              "text": "regulator quiescent current, a mediocre LDO at 50 uA"
+            },
+            {
+              "type": "p",
+              "text": "0.050 mA x 24 = 1.20 mAh/day"
+            },
+            {
+              "type": "p",
+              "text": "----"
+            },
+            {
+              "type": "p",
+              "text": "REAL total = 1.41 + 4.17 + 1.20 = 6.78 mAh/day"
+            },
+            {
+              "type": "p",
+              "text": "Real life = 4000 / 6.78 = 590 days = about 19 months"
+            },
+            {
+              "type": "p",
+              "text": "At low duty cycles, self-discharge and quiescent current DOMINATE. Halving your sleep current from 20 to 10 uA saves 0.24 mAh/day - about 3% of the budget. Replacing a 50 uA LDO with a 1 uA one saves 1.18 mAh/day - about 17%. Choosing a lower-self-discharge chemistry saves more than both. Optimise the biggest line in the table, not the one you can see in your code."
+            },
+            {
+              "type": "p",
+              "text": "Do this table before you write firmware. It tells you which decision matters, and it is almost never the one you expected"
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-3-2",
+          "number": "3.2",
+          "title": "Sleep currents, honestly",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Part              Deep sleep                  Active                         The trap\nESP32 / ESP32-C3                              40–80 mA; 150–250 mA           A dev board is not the module. The USB-serial chip, the power\n                  10–20 µA (bare module,      on Wi-Fi TX                    LED and a cheap LDO can push a ‘sleeping’ dev board to 20–50\n                  RTC on)                                                    mA — a thousand times the datasheet figure. Measure your\n                                              5–8 mA; ~15 mA BLE TX          actual board\nnRF52840          1–3 µA                                                     The best low-power radio option here, but the toolchain is a\nSTM32L4                                       5–10 mA                        steeper climb\nATmega328P        0.3–2 µA (stop mode)        5–15 mA                        Excellent, but you supply your own radio\nSIM800L (2G)      ~0.1 µA (power-down,                                       The bare chip is superb; an Arduino Uno board draws tens of\n                  bare chip)                  ~350 mA average while          milliamps asleep because of its regulator and LEDs\nSX1276 (LoRa)     0.7 mA idle, ~20 µA in      transmitting, 2 A peak         See §3.3 — leaving it idle costs more than using it\n                  sleep mode                  bursts\n                                              120 mA TX, 10 mA RX            Cheap on power because transmissions are short. Airtime is\n                  ~1 µA                                                      regulated — keep payloads small"
+            },
+            {
+              "type": "p",
+              "text": "The counterintuitive result about cellular modules Take a SIM800L reporting once an hour. Leaving it powered but idle costs 0.7 mA × 1 h = 0.70 mAh. Actually registering and sending an SMS — roughly ten seconds at an average of 200 mA — costs 0.56 mAh. Idling the module costs more than using it. So do not put the module to sleep between reports — power it off completely with a P-channel MOSFET or a load switch on its supply, and bring it up only when you have something to send. Budget the registration time, which is the expensive part: keep the module off for 59 minutes and 50 seconds of every hour."
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-3-3",
+          "number": "3.3",
+          "title": "Peak current, and why your device resets when it transmits",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "A cellular module transmits in bursts that can pull two amps for a couple of milliseconds. Your battery has internal resistance; your wiring has resistance; your regulator has a response time. The voltage at the module dips, and if it dips far enough your microcontroller browns out and resets — which is why so many first GSM projects reboot every time they try to send."
+            },
+            {
+              "type": "p",
+              "text": "A tired 18650 has an internal resistance around 150 mOhm. Add 100 mOhm of thin wire and a connector. V_dip = I x R = 2 A x 0.25 Ohm = 0.5 V"
+            },
+            {
+              "type": "p",
+              "text": "A cell at 3.7 V sags to 3.2 V during the burst. The SIM800L needs at least 3.4 V. It resets, or it fails to register, or it corrupts the AT command mid-sequence - and the fault is intermittent, which is the worst kind."
+            },
+            {
+              "type": "p",
+              "text": "THE FIXES, in order of effectiveness 1. BULK CAPACITANCE right at the module's power pins. 1000-2200 uF low-ESR electrolytic, PLUS a 100 nF ceramic. The cap supplies the burst; the battery recharges it between bursts. This single component fixes most GSM instability. 2. SHORT, THICK POWER WIRING to the module. At 2 A, 100 mm of thin jumper wire is a meaningful resistance. Do not power a GSM module through a breadboard. 3. A HEALTHY CELL, or a supercapacitor in parallel for pulse support. 4. SEPARATE the MCU supply from the module supply, or at minimum give the MCU its own bulk cap and a decent brownout threshold, so a module dip cannot reset your controller."
+            },
+            {
+              "type": "p",
+              "text": "Power a GSM module from a microcontroller board's 3V3 or 5V pin. Those regulators supply 150-300 mA. The module needs 2 A. This is the single most common cause of \"my SIM800L does not work\"."
+            },
+            {
+              "type": "p",
+              "text": "If a cellular project behaves erratically, assume power before you assume firmware. It is power roughly nine times out of ten"
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-3-4",
+          "number": "3.4",
+          "title": "Measuring microamps without a lab",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• The problem: a multimeter in current mode has a burden voltage — it drops volts across its own shunt — and it cannot follow a device that swings between 20 µA and 200 mA. Switch ranges mid-measurement and many meters momentarily open the circuit, resetting your device."
+            },
+            {
+              "type": "p",
+              "text": "• Frugal method 1 — the capacitor discharge test. Charge a known capacitor (say 1 F supercap or a large electrolytic) to a known voltage, run the device from it alone, and time the voltage drop. I_avg = C × ΔV / Δt. Crude, but it measures average current over a full duty cycle, which is exactly what your budget needs."
+            },
+            {
+              "type": "p",
+              "text": "• Frugal method 2 — the long run. Fully charge a battery of known capacity, run the device until it dies, and divide. It takes days and it is the most honest number you will get, because it includes self-discharge, temperature and everything you forgot."
+            },
+            {
+              "type": "p",
+              "text": "• Frugal method 3 — shunt plus multimeter in volts mode. Put a 1 Ω or 10 Ω resistor in the supply line and measure the voltage across it. No range switching, no burden-voltage surprise. 10 Ω gives 10 mV per milliamp — readable on any meter."
+            },
+            {
+              "type": "p",
+              "text": "• If you can borrow one thing, borrow a dedicated current profiler or a USB power analyser. But do not let its absence stop you: method 2 with a stopwatch and a calendar beats a precise instrument you do not have."
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-3-5",
+          "number": "3.5",
+          "title": "Choosing the battery",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Chemistry Self-discharge Temperature Use it for"
+            },
+            {
+              "type": "p",
+              "text": "Li-ion 18650 / pouch ~2–3% per month Degrades fast above 45 °C; The default. Cheap, available everywhere, good energy"
+            },
+            {
+              "type": "p",
+              "text": "do not charge below 0 °C density"
+            },
+            {
+              "type": "pre",
+              "text": "LiFePO₄                 ~2–3% per month  Much better heat tolerance;        Anything in a hot enclosure or outdoors in an Indian\n                                         long cycle life                    summer. Lower voltage (3.2 V) — check your regulator’s\n                                                                            dropout"
+            },
+            {
+              "type": "p",
+              "text": "LiSOCl₂ primary ~1% per year Wide range Non-rechargeable, but for a device that must sit for five years reporting occasionally, self-discharge is the whole game and this wins outright"
+            },
+            {
+              "type": "pre",
+              "text": "Alkaline AA             ~2–3% per year   Poor at high current               Field-replaceable anywhere in India, which is sometimes\n                                                                            worth more than efficiency\nSupercapacitor          High             Excellent                          Not for energy storage — for supplying current bursts\n                                                                            alongside a battery (§3.3)"
+            },
+            {
+              "type": "p",
+              "text": "Derate published capacity by 20–30% for real conditions, and again for age. A ₹120 ‘9800 mAh’ 18650 from a street market does not contain 9800 mAh; genuine 18650 cells top out around 3500 mAh. Capacity claims are the most common counterfeit in Indian electronics retail (§7.3)."
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-3-6",
+          "number": "3.6",
+          "title": "Solar sizing — and what the answer tells you",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Take the soil node from chapter 5, reporting every 30 minutes."
+            },
+            {
+              "type": "pre",
+              "text": "firmware load                                                                    2.35 mAh/day\nself-discharge (5000 mAh pack, 2.5%/month)                                       4.17 mAh/day\nregulator quiescent (50 uA)                                                      1.20 mAh/day\n                                                                                 ------------\n                                                                     TOTAL       7.71 mAh/day\n                                                            at 3.7 V        = 0.029 Wh/day\nWHAT PANEL DOES THAT NEED?                                                  (~0.6 after controller\n   usable = panel_W x PSH x system_efficiency                                losses, dust and angle)\n0.5 W panel, good sun (4.5 PSH)          1.35 Wh/day                         47x the need\n0.5 W panel, monsoon (1.0 PSH)           0.30 Wh/day                         11x the need\n1.0 W panel, monsoon (1.0 PSH)           0.60 Wh/day                         21x the need\n5.0 W panel, monsoon (1.0 PSH)           3.00 Wh/day                        105x the need"
+            },
+            {
+              "type": "p",
+              "text": "five dark days = 5 x 7.71 = 39 mAh a single 2600 mAh cell at 80% usable = 270 DAYS of autonomy"
+            },
+            {
+              "type": "p",
+              "text": "SO THE HONEST ANSWER IS: a 1 W panel and one cell is ample, and the BOM in 5.5 is generously oversized."
+            },
+            {
+              "type": "p",
+              "text": "- panels get dusty and are rarely cleaned; output falls over a season - cells age and lose capacity, and a node should last years - the minimum practical panel and cell you can actually buy are already bigger than the calculation demands - the difference between a 1 W and a 5 W panel is about Rs 200, and margin is cheap insurance against the thing you forgot"
+            },
+            {
+              "type": "p",
+              "text": "If your node genuinely NEEDS a 5 W panel, your load is roughly a hundred times what a well-designed node draws. Do not buy a bigger panel - go and find the leak. It will be one of: a sensor left powered between readings (5.4) a radio sleeping instead of powered off (3.2) a dev board's USB-serial chip and power LED (3.2) a linear regulator with high quiescent current Oversizing the panel to cover a leak is the most expensive way to fix a firmware bug."
+            },
+            {
+              "type": "p",
+              "text": "BUILD THIS — Compute and then measure your budget Half a day of work, several days of waiting. 1 Write the state table for your device — every state, its current, its duration. Include the states you would rather forget, like"
+            },
+            {
+              "type": "p",
+              "text": "the time spent waiting to register on a network. 2 Add self-discharge and regulator quiescent current. Compute what fraction of the total your firmware actually controls. 3 Now measure your board’s real sleep current using one of the methods in §3.4. Compare it against the datasheet. On a"
+            },
+            {
+              "type": "p",
+              "text": "dev board expect to be shocked. 4 Find the single largest line in your budget and attack that one. Write down what it was. 5 Run the long-duration test in method 2 on a fully charged battery. Compare the measured life against your computed life,"
+            },
+            {
+              "type": "p",
+              "text": "and write one paragraph explaining the gap. That paragraph is where the learning is."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "4",
+      "title": "Project 1 — Smart Energy Meter with SMS Alerts",
+      "intro": [
+        {
+          "type": "p",
+          "text": "The cheapest, safest and most accurate way to measure a building’s energy consumption is not to measure it at all — it is to read the meter the utility already installed and calibrated, by counting the light it flashes."
+        }
+      ],
+      "topics": [
+        {
+          "id": "embedded-systems-iot-4-1",
+          "number": "4.1",
+          "title": "Two approaches, and why we pick the second",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "CT clamp + voltage sensing Meter LED pulse counting"
+            },
+            {
+              "type": "pre",
+              "text": "What it does Measures current and voltage directly and         Counts the calibration LED on the utility meter, which flashes a fixed number\n                        computes real power                    of times per kWh\nAccuracy    Depends entirely on your calibration and           Exactly as accurate as the utility meter, which is legally calibrated and is\n            your power-factor handling                         also the thing you are billed on\nMains       Voltage sensing requires connection to live        None whatsoever. A photodiode looking at a flashing LED through the\ncontact     mains                                              meter window"
+            },
+            {
+              "type": "p",
+              "text": "Cost ₹800–1,500 ₹30–100"
+            },
+            {
+              "type": "pre",
+              "text": "Effort      Sampling, RMS, power factor, calibration           Count edges, do one division\n            against a reference\nLimitation  Per-circuit or per-appliance breakdown is          Whole-premises total only — no per-appliance detail\n            possible"
+            },
+            {
+              "type": "p",
+              "text": "Unless you specifically need per-circuit breakdown, pulse counting wins on every axis that matters. It is the frugal-engineering answer: let the calibrated instrument that already exists do the hard part."
+            },
+            {
+              "type": "p",
+              "text": "The safety argument, stated plainly"
+            },
+            {
+              "type": "p",
+              "text": "Almost every Indian electronic meter has a red calibration LED that pulses at a rate printed on its faceplate — commonly 1600 or 3200 impulses per kWh, sometimes 1000. A phototransistor taped over that LED involves no electrical connection to anything. Your circuit is galvanically isolated from mains by an air gap and a plastic window."
+            },
+            {
+              "type": "p",
+              "text": "Do not open the meter, do not break its seal, and do not tap its terminals. The seal is a legal device and breaking it is a serious matter regardless of the electrical risk. Everything in this project happens outside the meter."
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-4-2",
+          "number": "4.2",
+          "title": "The pulse-counting arithmetic",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Every pulse represents a FIXED quantity of energy:"
+            },
+            {
+              "type": "p",
+              "text": "energy per pulse (Wh) = 1000 / N where N = impulses per kWh"
+            },
+            {
+              "type": "p",
+              "text": "N = 1000 imp/kWh -&gt; 1.0000 Wh per pulse N = 1600 imp/kWh -&gt; 0.6250 Wh per pulse N = 3200 imp/kWh -&gt; 0.3125 Wh per pulse"
+            },
+            {
+              "type": "p",
+              "text": "INSTANTANEOUS POWER, from the time between two pulses:"
+            },
+            {
+              "type": "p",
+              "text": "P (watts) = 3,600,000 / (N x T) T = seconds between pulses"
+            },
+            {
+              "type": "p",
+              "text": "at N = 3200: 200 W -&gt; a pulse every 5.625 s 1000 W -&gt; a pulse every 1.125 s 3000 W -&gt; a pulse every 0.375 s"
+            },
+            {
+              "type": "p",
+              "text": "CUMULATIVE ENERGY is simply the pulse count:"
+            },
+            {
+              "type": "p",
+              "text": "kWh = pulses / N"
+            },
+            {
+              "type": "p",
+              "text": "- Read N off the meter faceplate. Do not assume it. - At low load the interval is long. Below about 100 W you may wait 10 seconds between pulses, so instantaneous power is noisy - average over several pulses before reporting it. - The pulse itself is short (typically 10-100 ms). Sample fast enough or use an interrupt, which is what we do."
+            },
+            {
+              "type": "p",
+              "text": "One division and one counter. Compare this to the sampling, RMS and power-factor work the CT-clamp route requires"
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-4-3",
+          "number": "4.3",
+          "title": "Circuit",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "UTILITY METER SENSOR HEAD (taped over the LED window)"
+            },
+            {
+              "type": "p",
+              "text": "┌──────────────┐ ┌──────────────────────────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ │ │ +3V3 │"
+            },
+            {
+              "type": "p",
+              "text": "│ ● cal LED │══ light ════════▶│ │ │"
+            },
+            {
+              "type": "p",
+              "text": "│ (red, 3200 │ │ ┌┴┐ 10k │"
+            },
+            {
+              "type": "p",
+              "text": "│ imp/kWh) │ │ └┬┘ │"
+            },
+            {
+              "type": "p",
+              "text": "│ │ │ ├────────────▶ to MCU GPIO │"
+            },
+            {
+              "type": "p",
+              "text": "└──────────────┘ │ │ (interrupt) │"
+            },
+            {
+              "type": "p",
+              "text": "NO ELECTRICAL CONNECTION │ ▼─┴─ phototransistor │"
+            },
+            {
+              "type": "p",
+              "text": "AT ALL. Just light. │ ─── (e.g. TEPT5600) or an │"
+            },
+            {
+              "type": "p",
+              "text": "│ │ IR photodiode + comparator│"
+            },
+            {
+              "type": "p",
+              "text": "│ GND │"
+            },
+            {
+              "type": "p",
+              "text": "└──────────────────────────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "HLK-PM01 ──▶ 5 V ──┬──▶ buck ──▶ 3V3 ──▶ ESP32 ──┬── GPIO ◀── sensor head"
+            },
+            {
+              "type": "p",
+              "text": "(mains, isolated, │ │"
+            },
+            {
+              "type": "p",
+              "text": "certified module) │ ├── UART ──▶ CELLULAR MODULE"
+            },
+            {
+              "type": "p",
+              "text": "│ │ (see 4.4)"
+            },
+            {
+              "type": "p",
+              "text": "└──▶ Li-ion charger ──▶ 18650 ─┘ backup, so the device"
+            },
+            {
+              "type": "p",
+              "text": "reports the outage too"
+            },
+            {
+              "type": "p",
+              "text": "A power cut is exactly the event the user wants to know about. A meter monitor that dies with the mains cannot report the one thing it is best placed to observe. Size the cell for the alert plus a margin - it does not need to run for days."
+            },
+            {
+              "type": "p",
+              "text": "Shroud the phototransistor in black heatshrink so it sees only the LED and not room light or sunlight through the window. Verify with a scope or, frugally, by printing the raw GPIO state at 1 kHz and confirming you see clean pulses at the expected rate against a known load."
+            },
+            {
+              "type": "p",
+              "text": "Figure 4.1 — Verify the pulse rate against a known load before trusting anything: switch on a 1000 W heater and confirm you see a pulse every 1.125 s at 3200 imp/kWh."
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-4-4",
+          "number": "4.4",
+          "title": "The cellular module decision",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "This is where §1.4 becomes concrete. If this device is a semester project you will dismantle, a SIM800L with an Airtel or BSNL SIM is cheap and well documented — but understand that it will never work on a Jio SIM, and that Airtel has already withdrawn 2G in several circles. If it is meant to run for years, specify a 4G Cat-1 module such as the A7670E, which covers the Indian LTE bands and uses a nearly identical AT command set. The extra ₹1,000 buys you a device that still works in 2029."
+            },
+            {
+              "type": "p",
+              "text": "// Pulse counting + threshold alerting. ESP32, Arduino framework. // The whole measurement is one ISR and one division."
+            },
+            {
+              "type": "pre",
+              "text": "const uint8_t PIN_PULSE = 27;                                  // READ THIS OFF THE METER\nconst uint32_t IMP_PER_KWH = 3200;                             // 20 ms debounce guard\nconst uint32_t MIN_PULSE_US = 20000;"
+            },
+            {
+              "type": "p",
+              "text": "volatile uint32_t pulseCount = 0; volatile uint32_t lastPulseUs = 0; volatile uint32_t lastIntervalUs = 0;"
+            },
+            {
+              "type": "p",
+              "text": "void IRAM_ATTR onPulse() { // reject contact bounce / noise uint32_t now = micros(); uint32_t dt = now - lastPulseUs; if (dt &lt; MIN_PULSE_US) return; lastIntervalUs = dt; lastPulseUs = now; pulseCount++;"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "void setup() { pinMode(PIN_PULSE, INPUT_PULLUP); attachInterrupt(digitalPinToInterrupt(PIN_PULSE), onPulse, FALLING);"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "float instantaneousWatts() { uint32_t dt; noInterrupts(); dt = lastIntervalUs; interrupts(); if (dt == 0) return 0; // P = 3,600,000 / (N x T_seconds), T = dt/1e6 return 3600000.0f / (IMP_PER_KWH * (dt / 1000000.0f));"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "float totalKwh() { uint32_t c; noInterrupts(); c = pulseCount; interrupts(); return (float)c / IMP_PER_KWH;"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "// ---- alerting: three rules that are actually useful void checkAlerts() {"
+            },
+            {
+              "type": "p",
+              "text": "float w = instantaneousWatts(); float today = totalKwh() - kwhAtMidnight;"
+            },
+            {
+              "type": "p",
+              "text": "// 1. sustained overload - a threshold that must HOLD, not a spike if (w &gt; WATT_LIMIT) { overSeconds++; } else { overSeconds = 0; } if (overSeconds &gt; 60 &amp;&amp; !sentOverload) {"
+            },
+            {
+              "type": "p",
+              "text": "sendSms(\"Load %.0f W above limit for 1 min\", w); sentOverload = true; }"
+            },
+            {
+              "type": "p",
+              "text": "// 2. daily budget if (today &gt; KWH_BUDGET &amp;&amp; !sentBudget) {"
+            },
+            {
+              "type": "p",
+              "text": "sendSms(\"Daily use %.1f kWh exceeded budget\", today); sentBudget = true; }"
+            },
+            {
+              "type": "p",
+              "text": "// 3. THE WATCHDOG NOBODY WRITES: no pulses at all. // Silence means either a genuine power cut, or your sensor has slipped // off the LED. Both are worth an SMS, and the second is invisible // without this check. if (millis() - (lastPulseUs / 1000) &gt; NO_PULSE_TIMEOUT_MS &amp;&amp; !sentSilent) {"
+            },
+            {
+              "type": "p",
+              "text": "sendSms(\"No meter pulses for %d min - power cut or sensor fault\","
+            },
+            {
+              "type": "p",
+              "text": "sentSilent = true; } }"
+            },
+            {
+              "type": "p",
+              "text": "// Reset the sent* latches at midnight. Without latches, a threshold // crossing at 2 a.m. sends you an SMS every loop iteration until dawn - // which is both annoying and, at Rs 0.50-1.00 per SMS, expensive."
+            },
+            {
+              "type": "p",
+              "text": "Alert rule 3 is the one that separates a working deployment from a silent failure. A monitor that stops reporting looks exactly like a building using no power"
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-4-5",
+          "number": "4.5",
+          "title": "Bill of materials",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Item             Spec                                          Qt ₹ each    Note\n                                                               y"
+            },
+            {
+              "type": "p",
+              "text": "ESP32 DevKit WROOM-32 or C3 1 350–500 Measure its real sleep current (§3.2)"
+            },
+            {
+              "type": "pre",
+              "text": "Isolated SMPS    HLK-PM01, 230 V AC → 5 V 0.6 A,               1 250–400    Buy, do not build. This is the mains-facing part\nmodule           certified"
+            },
+            {
+              "type": "p",
+              "text": "Phototransistor TEPT5600 or equivalent, visible-light 1 20–40 Shroud it in black heatshrink"
+            },
+            {
+              "type": "p",
+              "text": "Buck converter MP1584 or similar, 5 V → 3.3 V 1 50–80 Or use the dev board’s regulator if the current allows"
+            },
+            {
+              "type": "p",
+              "text": "Cellular module SIM800L (learning) or A7670E 1 250–400 / Read §4.4 before choosing (deployment) 1,200–2,500"
+            },
+            {
+              "type": "p",
+              "text": "Bulk capacitor 1000 µF 16 V, 105 °C, low-ESR 1 20–35 At the module’s power pins. Non-negotiable (§3.3)"
+            },
+            {
+              "type": "p",
+              "text": "Li-ion charger TP4056 with protection 1 35–60 For outage reporting"
+            },
+            {
+              "type": "pre",
+              "text": "18650 cell +     Genuine 2600–3000 mAh                         1 200–300    Weigh it — 45–48 g (§7.2)\nholder"
+            },
+            {
+              "type": "p",
+              "text": "Enclosure ABS, IP54, wall-mount 1 200–350 Non-metallic (§2.7)"
+            },
+            {
+              "type": "pre",
+              "text": "Passives, wire,  Assorted                                      — 150–250    Order 30% extra\nglands"
+            },
+            {
+              "type": "p",
+              "text": "Indicative total: roughly ₹1,600–₹2,400 with a SIM800L, or ₹2,600–₹4,500 with a 4G module. Prices move constantly — fill in the worksheet in §7.1 with your own quotes before ordering."
+            },
+            {
+              "type": "p",
+              "text": "PROTOCOL — Test protocol — Project 1"
+            },
+            {
+              "type": "pre",
+              "text": "STAGE 1       SENSOR HEAD, on the bench\n              - point the phototransistor at a blinking LED you control at a"
+            },
+            {
+              "type": "p",
+              "text": "known rate. Confirm the count matches exactly over 1000 pulses. - shine a torch on it. If the count changes, your shroud is"
+            },
+            {
+              "type": "p",
+              "text": "inadequate - fix it now, not on site."
+            },
+            {
+              "type": "p",
+              "text": "- tape the head over the meter LED. Switch on a resistive load"
+            },
+            {
+              "type": "p",
+              "text": "of known rating (a 1000 W heater; incandescent bulbs). - confirm the computed watts match within a few percent. - confirm the pulse interval matches 3,600,000/(N x P)."
+            },
+            {
+              "type": "p",
+              "text": "- log for 24 h. Compare your kWh total against the meter's own"
+            },
+            {
+              "type": "p",
+              "text": "display reading over the same period. - PASS: within 1%. Any larger error means missed or double-"
+            },
+            {
+              "type": "p",
+              "text": "counted pulses - check your debounce and your shroud."
+            },
+            {
+              "type": "p",
+              "text": "- send 20 SMS in succession while watching the 3V3 rail with a"
+            },
+            {
+              "type": "p",
+              "text": "meter. It must not dip enough to reset the MCU (3.3). - test with the SIM you will actually deploy. If it is 2G,"
+            },
+            {
+              "type": "p",
+              "text": "confirm registration at the actual installation location."
+            },
+            {
+              "type": "p",
+              "text": "- cut the mains: does it run on battery and send the alert? - cover the sensor: does the no-pulse watchdog fire? - remove the SIM: does it fail gracefully and retry, or hang? - pull the antenna: does it recover when reconnected?"
+            },
+            {
+              "type": "p",
+              "text": "- PASS: no resets, no missed days, SMS count matches events. Check the SMS bill - an alert storm is a real failure mode."
+            },
+            {
+              "type": "p",
+              "text": "Stage 3 against the meter’s own display is the measurement that matters. Everything else is a proxy for it."
+            },
+            {
+              "type": "p",
+              "text": "BUILD THIS — Build and calibrate the meter monitor Two weekends. 1 Find your meter and read the impulse constant off the faceplate. Do not assume 3200. 2 Build the sensor head and prove it on a bench LED before going anywhere near the meter. 3 Complete stage 2 with a known resistive load and record the error. 4 Run stage 3 for 24 hours and compare against the meter display. Get within 1% before adding any cellular code. 5 Add the cellular module with proper bulk capacitance (§3.3) and complete stage 4. 6 Implement all three alert rules including the no-pulse watchdog, then run stage 5 failure injection. A project that has not"
+            },
+            {
+              "type": "p",
+              "text": "been deliberately broken has not been tested."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "5",
+      "title": "Project 2 — Offline-First Soil Monitoring",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Two things kill farm IoT deployments: the probe corrodes away inside a month, and the network drops for a day and the data is gone forever. Both are design decisions, and both are made before you write any firmware."
+        }
+      ],
+      "topics": [
+        {
+          "id": "embedded-systems-iot-5-1",
+          "number": "5.1",
+          "title": "Resistive probes do not work. Use capacitive",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The single most important sentence in this chapter The cheap two-prong soil moisture sensor sold everywhere for ₹40 measures resistance by passing current between two exposed metal electrodes. Passing current through damp, ion-rich soil is electrolysis. The electrodes oxidise and erode, the readings drift upward as they do, and within a few weeks — sometimes days in fertilised soil — the probe is both physically eaten and numerically meaningless. A capacitive probe measures the dielectric constant of the surrounding soil through an insulating coating. No exposed metal, no current through the soil, no corrosion. It costs ₹150–400 instead of ₹40 and it is the difference between a project and a demonstration. One caveat worth knowing: many cheap ‘capacitive’ boards have exposed via barrels or an unsealed top edge. Seal the top of the board and the cable entry with epoxy before it goes in the ground, whatever the seller claims."
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-5-2",
+          "number": "5.2",
+          "title": "Calibration — what the number actually means",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "A capacitive probe gives you an ADC count, not a moisture percentage. The mapping from one to the other depends on your soil — clay, loam and sand with identical water content read differently, and salinity shifts it again. Two levels of calibration, and you should do at least the first:"
+            },
+            {
+              "type": "p",
+              "text": "LEVEL 1 - TWO-POINT, takes ten minutes, gives relative moisture"
+            },
+            {
+              "type": "p",
+              "text": "raw_dry = reading in air (or in oven-dried soil) raw_wet = reading fully submerged in water moisture% = 100 x (raw_dry - raw) / (raw_dry - raw_wet)"
+            },
+            {
+              "type": "p",
+              "text": "Good enough for \"is it drier than yesterday\" and for threshold irrigation triggers. NOT a volumetric water content, and do not report it as one."
+            },
+            {
+              "type": "p",
+              "text": "LEVEL 2 - GRAVIMETRIC, the frugal way to get real numbers You need a kitchen scale (0.1 g) and an oven or a hot plate."
+            },
+            {
+              "type": "p",
+              "text": "1. Take a soil sample from beside the probe. Note the probe reading."
+            },
+            {
+              "type": "p",
+              "text": "2. Weigh the wet sample. -&gt; W_wet"
+            },
+            {
+              "type": "p",
+              "text": "3. Dry it thoroughly - 105 C for 24 h, or until the mass stops"
+            },
+            {
+              "type": "p",
+              "text": "falling on repeated weighings."
+            },
+            {
+              "type": "p",
+              "text": "4. Weigh it dry. -&gt; W_dry"
+            },
+            {
+              "type": "p",
+              "text": "gravimetric water content = (W_wet - W_dry) / W_dry"
+            },
+            {
+              "type": "p",
+              "text": "5. Repeat across 5-6 different moisture levels, from nearly dry to saturated, recording the probe reading each time."
+            },
+            {
+              "type": "p",
+              "text": "6. Fit a curve (usually close to linear over the useful range)."
+            },
+            {
+              "type": "p",
+              "text": "Now your ADC count maps to a real, defensible water content FOR THAT SOIL. Redo it if you move to a different field."
+            },
+            {
+              "type": "p",
+              "text": "Not a percentage. Two thresholds:"
+            },
+            {
+              "type": "p",
+              "text": "FIELD CAPACITY - the soil holds all it can against gravity."
+            },
+            {
+              "type": "p",
+              "text": "Irrigating past this wastes water and leaches"
+            },
+            {
+              "type": "p",
+              "text": "nutrients."
+            },
+            {
+              "type": "p",
+              "text": "REFILL POINT - the level at which the crop starts to suffer."
+            },
+            {
+              "type": "p",
+              "text": "This is the trigger to irrigate."
+            },
+            {
+              "type": "p",
+              "text": "Establish these two numbers with the farmer, in the field, and report"
+            },
+            {
+              "type": "p",
+              "text": "against them. \"Moisture 34%\" means nothing to anyone. \"Below refill"
+            },
+            {
+              "type": "p",
+              "text": "point, irrigate today\" is a decision."
+            },
+            {
+              "type": "p",
+              "text": "Level 1 plus the two thresholds is a genuinely useful product. Level 2 is what makes your report defensible to an agronomist"
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-5-3",
+          "number": "5.3",
+          "title": "Offline-first, properly",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "‘Offline-first’ does not mean ‘retry the upload’. It means the device is fully functional with no network at all, stores everything it measures, and treats connectivity as an opportunistic bonus rather than a precondition."
+            },
+            {
+              "type": "p",
+              "text": "SAMPLE ──▶ TIMESTAMP ──▶ APPEND TO RING BUFFER ──▶ (try to) UPLOAD"
+            },
+            {
+              "type": "p",
+              "text": "│ │ │ │"
+            },
+            {
+              "type": "p",
+              "text": "│ RTC, not │ flash or SD │ if it fails,"
+            },
+            {
+              "type": "p",
+              "text": "│ network time │ survives power loss │ NOTHING is lost"
+            },
+            {
+              "type": "p",
+              "text": "│ │ oldest-first eviction │"
+            },
+            {
+              "type": "p",
+              "text": "▼ ▼ ▼"
+            },
+            {
+              "type": "p",
+              "text": "every 30 min ┌────────────────┐ on success, mark"
+            },
+            {
+              "type": "p",
+              "text": "regardless of │ seq | ts | val │ records ACKed and"
+            },
+            {
+              "type": "p",
+              "text": "connectivity │ 1041 | .. | .. │◀─┐ free the space"
+            },
+            {
+              "type": "p",
+              "text": "│ 1042 | .. | .. │ │"
+            },
+            {
+              "type": "p",
+              "text": "│ 1043 | .. | .. │ │ on failure, sleep"
+            },
+            {
+              "type": "p",
+              "text": "└────────────────┘ │ and try next cycle"
+            },
+            {
+              "type": "p",
+              "text": "│ │"
+            },
+            {
+              "type": "p",
+              "text": "└───────────┘"
+            },
+            {
+              "type": "p",
+              "text": "server dedupes on (device_id, seq)"
+            },
+            {
+              "type": "p",
+              "text": "1. AN RTC IS NOT OPTIONAL. Without one, a device that boots offline has"
+            },
+            {
+              "type": "p",
+              "text": "no idea what time it is, and every record it stores is worthless. A DS3231 costs Rs 150 and holds time for years on a coin cell. Resync it from the network whenever you do connect."
+            },
+            {
+              "type": "p",
+              "text": "2. SEQUENCE NUMBERS, not timestamps, are the identity. Clocks drift and get reset; a monotonic counter does not. Send both; dedupe on seq."
+            },
+            {
+              "type": "p",
+              "text": "3. AT-LEAST-ONCE, NOT AT-MOST-ONCE. Delete a record only after the server acknowledges it. Duplicates are harmless if the server dedupes; lost readings are gone forever."
+            },
+            {
+              "type": "p",
+              "text": "4. OLDEST-FIRST EVICTION, and size the buffer for your worst realistic outage. At one record per 30 minutes, 48 records is a day. Storing 30 days is 1,440 records - a few tens of kilobytes. There is no excuse for losing data to a two-day network outage."
+            },
+            {
+              "type": "p",
+              "text": "UPLOAD OLDEST-FIRST TOO. If the link is marginal and you only get three records through, you want the three oldest, so the gap stays contiguous and the server can see exactly where the hole is."
+            },
+            {
+              "type": "p",
+              "text": "Figure 5.1 — Test this by unplugging the antenna for two days. A device that loses those readings is not offline-first, whatever the architecture diagram says."
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-5-4",
+          "number": "5.4",
+          "title": "Power and the node itself",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Element        Choice                                             Why\nMCU\nSensor         ESP32-C3 or an STM32L0/L4 with a LoRa Deep sleep dominates the budget. Measure your actual board (§3.2), not the\nRadio          module                                             datasheet\nClock\nStorage        Capacitive probe, sealed, at root depth            One depth tells you less than you think — the surface dries first and the\nPower          (typically 15–30 cm); two depths if you            roots are lower\n               can afford it\nEnclosure\n               LoRa to a farm gateway; cellular only if           LoRa transmits for half a second at 120 mA. Cellular registration costs far\n               there is no gateway                                more energy than the payload"
+            },
+            {
+              "type": "p",
+              "text": "DS3231 RTC §5.3 rule 1"
+            },
+            {
+              "type": "p",
+              "text": "Onboard flash (LittleFS) in preference to SD cards corrupt on power loss during a write, and a node in a field will lose"
+            },
+            {
+              "type": "p",
+              "text": "SD power unexpectedly"
+            },
+            {
+              "type": "pre",
+              "text": "               Small solar panel (2–5 W) + Li-ion or              Size the battery for five days of no sun — monsoon overcast, not average\n               LiFePO₄ + a charge controller with load            insolation. LiFePO₄ if the enclosure gets hot\n               disconnect"
+            },
+            {
+              "type": "p",
+              "text": "IP65 with a vent membrane, cable gland §1.3. And mount it high enough that it is not hit by a tiller or eaten by a goat facing down, mounted above flood level"
+            },
+            {
+              "type": "p",
+              "text": "// Deep-sleep cycle. The whole node's firmware, structurally."
+            },
+            {
+              "type": "p",
+              "text": "RTC_DATA_ATTR uint32_t seq = 0; // survives deep sleep on ESP32"
+            },
+            {
+              "type": "p",
+              "text": "void setup() { // ~200 ms, sensor powered via a readSensors(); // GPIO so it draws NOTHING asleep // from DS3231, works offline Record r = { .seq = ++seq, .ts = rtcNow(), // to flash. THIS is the product. .raw = soilRaw, .t = tempC, .vbat= batteryMv() };"
+            },
+            {
+              "type": "p",
+              "text": "ringAppend(&amp;r);"
+            },
+            {
+              "type": "pre",
+              "text": "   if (shouldTryUpload()) {                       // e.g. every 4th wake, or when\n      if (radioJoin()) {                          // the buffer is over half full\n          uploadOldestFirst();                    // delete only on ACK\n          rtcSyncFromNetwork();\n      }                                           // power OFF, not sleep (3.2)\n      radioOff();"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "esp_sleep_enable_timer_wakeup(30ULL * 60 * 1000000); // 30 minutes"
+            },
+            {
+              "type": "p",
+              "text": "esp_deep_sleep_start(); // setup() runs again on wake"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "pre",
+              "text": "void loop() { }                                   // never reached, and that is the\n                                                  // point: no idle loop, no leakage"
+            },
+            {
+              "type": "p",
+              "text": "// 1. Power the sensor from a GPIO (or a load switch) and turn it off // before sleeping. A capacitive probe left powered draws ~5 mA // continuously - which is 120 mAh/day, roughly 20x your entire // computed budget from chapter 3. // 2. Upload less often than you sample. Sampling is cheap; joining a // network is expensive. Batch four or eight records per upload."
+            },
+            {
+              "type": "p",
+              "text": "Detail 1 has ended more solar-powered node deployments than any firmware bug. Check what your sensor draws when idle, and switch it"
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-5-5",
+          "number": "5.5",
+          "title": "The node circuit",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "SOLAR ──▶┌──────────────┐ ┌─────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "5 V/1 W │ CHARGE CTRL │───────▶│ 18650 Li-ion│ (or LiFePO4 if hot)"
+            },
+            {
+              "type": "p",
+              "text": "│ CN3065 class │◀───────│ + protection│"
+            },
+            {
+              "type": "p",
+              "text": "│ + load │ └──────┬───────┘"
+            },
+            {
+              "type": "p",
+              "text": "│ disconnect │ │ VBAT 3.0-4.2 V"
+            },
+            {
+              "type": "p",
+              "text": "└──────────────┘ │"
+            },
+            {
+              "type": "p",
+              "text": "▼"
+            },
+            {
+              "type": "p",
+              "text": "┌───────────────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ LOW-Iq REGULATOR │ &lt;- pick a 1-2 uA"
+            },
+            {
+              "type": "p",
+              "text": "│ 3.3 V │ part, not 50 uA"
+            },
+            {
+              "type": "p",
+              "text": "└───────┬───────────────┘ (3.1)"
+            },
+            {
+              "type": "p",
+              "text": "│ 3V3"
+            },
+            {
+              "type": "p",
+              "text": "┌─────────────────────────────┼──────────────────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ │ │"
+            },
+            {
+              "type": "p",
+              "text": "▼ ▼ ▼"
+            },
+            {
+              "type": "p",
+              "text": "┌──────────┐ I2C ┌────────────────┐ SPI ┌───────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ DS3231 │◀─────────────▶│ ESP32-C3 │◀───────▶│ SX1276 LoRa │"
+            },
+            {
+              "type": "p",
+              "text": "│ RTC │ │ │ │ 865-867 MHz │"
+            },
+            {
+              "type": "p",
+              "text": "│ + CR2032 │ │ GPIO ──────┐ │ └───────┬───────┘"
+            },
+            {
+              "type": "p",
+              "text": "└──────────┘ │ (sensor │ │ │"
+            },
+            {
+              "type": "p",
+              "text": "│ power) │ │ ▼"
+            },
+            {
+              "type": "p",
+              "text": "│ analogue out │──▶│ ADC │ (outside the"
+            },
+            {
+              "type": "p",
+              "text": "│ buried 15-30 cm │ └────────────────┘ enclosure)"
+            },
+            {
+              "type": "p",
+              "text": "└──────────────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "1. The probe's VCC comes from a GPIO, not from 3V3. Powered continuously"
+            },
+            {
+              "type": "p",
+              "text": "it draws ~5 mA = 120 mAh/day, which is roughly 15x the ENTIRE budget computed in 3.6. Switch it on, wait for it to settle, read, switch off. 2. The regulator's quiescent current is a design parameter, not an afterthought. A 50 uA part costs you 1.2 mAh/day; a 1 uA part costs 0.024. At this duty cycle that is a bigger lever than any firmware. 3. The antenna is OUTSIDE the box and the box is not metal. An antenna inside a sealed plastic enclosure loses range; inside a metal one it loses everything."
+            },
+            {
+              "type": "p",
+              "text": "ALSO: bring the ADC reference and the probe ground back to the same point. A long shared ground with the LoRa module's transmit current running through it will shift your readings every time you send."
+            },
+            {
+              "type": "p",
+              "text": "Figure 5.2 — Every element that draws current when idle is either switched by a GPIO or chosen for low quiescent current. That discipline, not the sleep code, is what makes the battery last."
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-5-6",
+          "number": "5.6",
+          "title": "Bill of materials",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Item                Spec                                       Qt ₹ each        Note\n                                                               y"
+            },
+            {
+              "type": "p",
+              "text": "MCU board ESP32-C3 or ESP32 WROOM 1 350–500 Deep sleep current measured, not assumed"
+            },
+            {
+              "type": "pre",
+              "text": "Capacitive soil     v1.2/v2 corrosion-resistant                1–2 150–300      Not resistive (§5.1). Seal the top edge with epoxy\nprobe"
+            },
+            {
+              "type": "p",
+              "text": "RTC module DS3231 + CR2032 1 150–250 Mandatory for offline timestamps (§5.3)"
+            },
+            {
+              "type": "pre",
+              "text": "LoRa module         SX1276 / RA-02, 865–867 MHz India 1           350–550       Check the band — module variants differ by region\n                    band\nAntenna +           Tuned to the band, external to the         1 150–250        Outside the enclosure\npigtail             box"
+            },
+            {
+              "type": "p",
+              "text": "Solar panel 5 W, 6 V 1 350–550 Size for five overcast days"
+            },
+            {
+              "type": "pre",
+              "text": "Solar charge        CN3065 or similar, MPPT-ish                1 120–200        With load disconnect if possible\nmodule\n18650 cells +       2 × 2600–3000 mAh, or LiFePO₄              1 400–600        LiFePO₄ if the box gets hot (§3.5)\nholder"
+            },
+            {
+              "type": "p",
+              "text": "Enclosure IP65 ABS + vent membrane + gland 1 300–500 Gland facing down, drain at the low point"
+            },
+            {
+              "type": "pre",
+              "text": "Epoxy, cable,       Assorted                                   — 200–350        Sealing is the project\nmounting"
+            },
+            {
+              "type": "p",
+              "text": "Indicative total: roughly ₹2,700–₹4,000 per node, excluding the LoRa gateway (a one-off ₹3,000–₹8,000 shared across all nodes, which is what makes LoRa economical once you have more than three or four)."
+            },
+            {
+              "type": "p",
+              "text": "PROTOCOL — Test protocol — Project 2"
+            },
+            {
+              "type": "p",
+              "text": "STAGE 1 PROBE, in a bucket - two-point calibration in air and water - bury in soil, water it, watch the reading move. Confirm the"
+            },
+            {
+              "type": "p",
+              "text": "direction and the timescale are sensible (soil responds over minutes to hours, not seconds)."
+            },
+            {
+              "type": "p",
+              "text": "STAGE 2 SEALING - do this before the probe goes anywhere near a field - submerge the sealed probe and cable entry in water for 48 h - remove, dry the outside, and check readings are unchanged - open it and look for moisture inside. This is the test that"
+            },
+            {
+              "type": "p",
+              "text": "predicts whether you have a device in three months."
+            },
+            {
+              "type": "pre",
+              "text": "STAGE 3  POWER, measured not calculated\n         - run the node on a fully charged battery with the solar panel"
+            },
+            {
+              "type": "p",
+              "text": "COVERED. Time how long it survives. - PASS: at least 5 days. If it dies in one, find the leak"
+            },
+            {
+              "type": "p",
+              "text": "(usually a sensor or radio left powered - 5.4)."
+            },
+            {
+              "type": "p",
+              "text": "STAGE 4 OFFLINE BEHAVIOUR - the defining test - disconnect the antenna or power down the gateway for 48 h - PASS: every reading taken during the outage appears on the"
+            },
+            {
+              "type": "p",
+              "text": "server after reconnection, in order, with correct timestamps and no duplicates and no gaps. - then pull the battery mid-write and repeat. Records already stored must survive."
+            },
+            {
+              "type": "p",
+              "text": "- leave the sealed enclosure in direct sun for a full day."
+            },
+            {
+              "type": "p",
+              "text": "Log internal temperature. Compare against your component ratings (1.2). Expect 15-25 C above ambient in a dark box."
+            },
+            {
+              "type": "p",
+              "text": "- one node, one field, one farmer who has agreed to look at it - log every intervention. PASS: fewer than two interventions"
+            },
+            {
+              "type": "p",
+              "text": "in 30 days, and the farmer can state what the data told him."
+            },
+            {
+              "type": "p",
+              "text": "Stage 4 is the one this project exists to teach. Any node can report when the network is up."
+            },
+            {
+              "type": "p",
+              "text": "BUILD THIS — Build a node that survives a lost weekend Three weekends, plus a month in the ground. 1 Buy a capacitive probe, not a resistive one. If you already own a resistive one, bury it alongside and photograph both after"
+            },
+            {
+              "type": "p",
+              "text": "four weeks — it is a lesson you will not forget. 2 Do the two-point calibration, then the gravimetric calibration on at least four moisture levels. Plot the curve. 3 Build the ring buffer and prove it with the antenna disconnected for 48 hours before you build anything else. 4 Measure the real sleep current of your assembled node. Find and switch off everything that is drawing current it should not"
+            },
+            {
+              "type": "p",
+              "text": "be. 5 Complete the 48-hour submersion test on the sealed probe before field deployment. 6 Deploy for 30 days with a real farmer, and agree the two thresholds from §5.2 with them before you start. Report against"
+            },
+            {
+              "type": "p",
+              "text": "those thresholds, not in percentages."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "6",
+      "title": "Project 3 — Wearable Fall Detection and Location",
+      "intro": [
+        {
+          "type": "p",
+          "text": "A fall detector that cries wolf is worse than no detector at all, because within a fortnight nobody responds to it. The engineering problem is not detecting falls — it is not detecting everything else."
+        }
+      ],
+      "topics": [
+        {
+          "id": "embedded-systems-iot-6-1",
+          "number": "6.1",
+          "title": "Before the engineering: this device watches a person",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Design the safety function. Refuse the surveillance function."
+            },
+            {
+              "type": "p",
+              "text": "A device worn by a worker that knows where they are and whether they are moving is a safety device and a surveillance device built from identical hardware. Which one it becomes is decided by design choices, not by intentions — and function creep is the default outcome unless you design against it."
+            },
+            {
+              "type": "p",
+              "text": "What honest design looks like here: location resolved to a zone, not a coordinate, because a rescuer needs to know which bay to run to and nobody needs to know which machine someone stood at for how long. Data retained for days, not years, with automatic deletion. No continuous location logging — store location only when an alarm fires. No productivity metrics, no idle-time reports, no per-worker dashboards, and say so in writing."
+            },
+            {
+              "type": "p",
+              "text": "And the part engineers skip: the workers wearing it should be told what it records, what it does not, who can see it, and how long it is kept — in their language — before deployment, not after. A device introduced without that conversation gets left in a locker, which means it protects nobody. Consent is not only an ethical requirement here; it is the thing that makes the safety function work at all."
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-6-2",
+          "number": "6.2",
+          "title": "The fall detection algorithm",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "A simple ‘acceleration exceeded 3 g’ threshold produces false alarms constantly — setting the device down hard, a dropped tool, jumping off a step. A real fall has a signature in sequence, and requiring all four phases in order removes most false positives at no cost in sensitivity."
+            },
+            {
+              "type": "p",
+              "text": "|a| ┌── 3. impact: |a| &gt; 2.5 g"
+            },
+            {
+              "type": "p",
+              "text": "(g) │"
+            },
+            {
+              "type": "p",
+              "text": "3┤ ●"
+            },
+            {
+              "type": "p",
+              "text": "│ ╱╲"
+            },
+            {
+              "type": "p",
+              "text": "2┤ ╱╲"
+            },
+            {
+              "type": "p",
+              "text": "│ ╱ ╲"
+            },
+            {
+              "type": "p",
+              "text": "1 ┤━━━━━━━━━━━━━╲ ╱ ╲━━━━━━━━━━━━━━━━━━━━━━━━━"
+            },
+            {
+              "type": "p",
+              "text": "│ normal ╲╱ ┆ 4. stillness:"
+            },
+            {
+              "type": "p",
+              "text": "0┤ ┆ ┆ variance &lt; threshold"
+            },
+            {
+              "type": "p",
+              "text": "└──────────────┴──────────┴────────── for 2-5 s ────────▶ t"
+            },
+            {
+              "type": "p",
+              "text": "│"
+            },
+            {
+              "type": "p",
+              "text": "└── 2. free fall: |a| &lt; 0.5 g for 80-150 ms"
+            },
+            {
+              "type": "p",
+              "text": "PLUS 1. a pre-fall reference orientation, and 5. ORIENTATION CHANGE &gt; 60 degrees between before and after"
+            },
+            {
+              "type": "p",
+              "text": "free fall distinguishes a fall from a bump or a shove"
+            },
+            {
+              "type": "p",
+              "text": "impact distinguishes a fall from sitting down heavily"
+            },
+            {
+              "type": "p",
+              "text": "orientation distinguishes a person on the ground from a person"
+            },
+            {
+              "type": "p",
+              "text": "who stumbled and recovered - THE most valuable stage"
+            },
+            {
+              "type": "p",
+              "text": "stillness distinguishes an injured person from one who fell,"
+            },
+            {
+              "type": "p",
+              "text": "got up, and is walking it off"
+            },
+            {
+              "type": "p",
+              "text": "┌──────────────────────────────────────────────────────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ On detection: buzz loudly, flash, and give the wearer │"
+            },
+            {
+              "type": "p",
+              "text": "│ 20-30 seconds to press a button to cancel. │"
+            },
+            {
+              "type": "p",
+              "text": "│ Only then does the alarm go out. │"
+            },
+            {
+              "type": "p",
+              "text": "│ │"
+            },
+            {
+              "type": "p",
+              "text": "│ This single feature removes almost all remaining false │"
+            },
+            {
+              "type": "p",
+              "text": "│ alarms and costs 30 seconds in a real emergency - which │"
+            },
+            {
+              "type": "p",
+              "text": "│ is an acceptable trade when the alternative is a system │"
+            },
+            {
+              "type": "p",
+              "text": "│ everyone ignores. │"
+            },
+            {
+              "type": "p",
+              "text": "└──────────────────────────────────────────────────────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "Figure 6.1 — Tune thresholds on real data from real people, not from the datasheet. §6.5 explains how to collect it safely."
+            },
+            {
+              "type": "p",
+              "text": "// Staged fall detection. Runs on the IMU sample stream at 50-100 Hz."
+            },
+            {
+              "type": "p",
+              "text": "typedef enum { NORMAL, FREEFALL, IMPACT_SEEN, CONFIRMING, ALARM } FallState;"
+            },
+            {
+              "type": "p",
+              "text": "FallState st = NORMAL;"
+            },
+            {
+              "type": "p",
+              "text": "uint32_t tState = 0;"
+            },
+            {
+              "type": "p",
+              "text": "float pitchBefore = 0;"
+            },
+            {
+              "type": "p",
+              "text": "void fallStep(float ax, float ay, float az, float dt) {"
+            },
+            {
+              "type": "p",
+              "text": "float mag = sqrtf(ax*ax + ay*ay + az*az); // in g"
+            },
+            {
+              "type": "p",
+              "text": "uint32_t now = millis();"
+            },
+            {
+              "type": "p",
+              "text": "switch (st) {"
+            },
+            {
+              "type": "p",
+              "text": "case NORMAL:"
+            },
+            {
+              "type": "p",
+              "text": "pitchBefore = estimatePitch(ax, ay, az); // rolling reference"
+            },
+            {
+              "type": "p",
+              "text": "if (mag &lt; FREEFALL_G) { st = FREEFALL; tState = now; }"
+            },
+            {
+              "type": "p",
+              "text": "break;"
+            },
+            {
+              "type": "p",
+              "text": "case FREEFALL:"
+            },
+            {
+              "type": "p",
+              "text": "if (mag &gt; IMPACT_G &amp;&amp; (now - tState) &gt; FREEFALL_MIN_MS) {"
+            },
+            {
+              "type": "p",
+              "text": "st = IMPACT_SEEN; tState = now; // fell, then landed"
+            },
+            {
+              "type": "p",
+              "text": "} else if ((now - tState) &gt; FREEFALL_MAX_MS) {"
+            },
+            {
+              "type": "p",
+              "text": "st = NORMAL; // too long: not a fall"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "break;"
+            },
+            {
+              "type": "p",
+              "text": "case IMPACT_SEEN:"
+            },
+            {
+              "type": "p",
+              "text": "if ((now - tState) &gt; SETTLE_MS) {"
+            },
+            {
+              "type": "p",
+              "text": "float dPitch = fabsf(estimatePitch(ax,ay,az) - pitchBefore);"
+            },
+            {
+              "type": "p",
+              "text": "bool still = (recentVariance() &lt; STILL_VAR);"
+            },
+            {
+              "type": "p",
+              "text": "if (dPitch &gt; ORIENT_DEG &amp;&amp; still) { st = CONFIRMING; tState = now;"
+            },
+            {
+              "type": "p",
+              "text": "startCancelWindow(); }"
+            },
+            {
+              "type": "p",
+              "text": "else st = NORMAL; // got up: not a fall"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "break;"
+            },
+            {
+              "type": "p",
+              "text": "case CONFIRMING: // the cancel window"
+            },
+            {
+              "type": "p",
+              "text": "if (cancelPressed()) { st = NORMAL; stopAlerting(); }"
+            },
+            {
+              "type": "p",
+              "text": "else if ((now - tState) &gt; CANCEL_MS) { st = ALARM; raiseAlarm(); }"
+            },
+            {
+              "type": "p",
+              "text": "break;"
+            },
+            {
+              "type": "p",
+              "text": "case ALARM: if (cancelPressed()) st = NORMAL; break;"
+            },
+            {
+              "type": "p",
+              "text": "} }"
+            },
+            {
+              "type": "p",
+              "text": "// STARTING THRESHOLDS - tune these on YOUR data (6.5)"
+            },
+            {
+              "type": "p",
+              "text": "// FREEFALL_G 0.5 g FREEFALL_MIN_MS 80 ms"
+            },
+            {
+              "type": "p",
+              "text": "// IMPACT_G 2.5 g FREEFALL_MAX_MS 400 ms"
+            },
+            {
+              "type": "p",
+              "text": "// ORIENT_DEG 60 deg SETTLE_MS 500 ms"
+            },
+            {
+              "type": "p",
+              "text": "// STILL_VAR tune CANCEL_MS 25,000 ms"
+            },
+            {
+              "type": "p",
+              "text": "// Log EVERY state transition, including the ones that return to NORMAL. // The near-misses are your tuning dataset and you cannot recreate them."
+            },
+            {
+              "type": "p",
+              "text": "Note that three of the five stages can return the machine to NORMAL. Most candidate events are rejected, which is exactly the intent"
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-6-3",
+          "number": "6.3",
+          "title": "Location: GPS does not work where the worker is",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The assumption that breaks this project GPS needs sky. Inside a factory shed with a metal roof, under a gantry, in a basement or a warehouse aisle, a GPS module will either report nothing or — worse — report a stale fix from the last time it saw sky, sending rescuers to the car park. For an indoor industrial deployment, use BLE beacons. Place inexpensive battery beacons at known points — one per bay, per line, per floor. The wearable records the strongest beacon it can hear and reports that zone. It is coarse, it is cheap, it works through people and machinery, it draws almost no power, and ‘Bay 4, Line 2’ is exactly what a rescuer needs. Precision beyond the zone is not useful to a rescuer and is useful to a surveillance system — see §6.1. Keep GPS only if the work is genuinely outdoors, and then use a module with GNSS built into the cellular modem (the A7670G) rather than a second chip."
+            },
+            {
+              "type": "pre",
+              "text": "Method             Works         Power                         Resolution       Note\nBLE beacons        indoors\n                                 Very low                      Zone (5–20 m)    The right default for a factory. ₹300–800 per\n                   Yes                                                          beacon, battery lasts a year or more\n                                 High (30–40 mA while          3–10 m outdoors\nGPS / GNSS         No            acquiring)                                     Fine outdoors, useless under a roof. Beware stale\n                                 Moderate                      Room-ish         fixes\nWi-Fi AP scan      Yes\n                                 Low (already                  Hundreds of      Works if the site already has dense Wi-Fi; needs a\nCellular cell-ID Yes             registered)                   metres           survey to build the map\n                                 Higher                        10–30 cm\nUWB                Yes                                                          Too coarse to send anyone to, but a useful fallback\n                                                                                that costs nothing extra"
+            },
+            {
+              "type": "p",
+              "text": "Excellent and expensive, and far more precision than a rescue needs"
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-6-4",
+          "number": "6.4",
+          "title": "Wearing it, powering it, keeping it alive",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Mount position changes everything. Waist or belt is the standard for fall detection because it approximates the body’s centre of mass. A wrist-worn device sees enormous acceleration from ordinary arm movement and is far harder to tune. If you must use the wrist, expect to raise thresholds and rely more heavily on the orientation and stillness stages."
+            },
+            {
+              "type": "p",
+              "text": "• Budget for the alarm, not the average. The device sleeps most of the time, wakes on IMU motion interrupt, and only powers the radio when something happens. Use the IMU’s own wake-on-motion feature so the MCU is not sampling continuously."
+            },
+            {
+              "type": "p",
+              "text": "• Charging discipline is a design problem. A device that needs daily charging will be flat when it matters. Aim for a week, use a magnetic or drop-in charger rather than a fiddly connector, and make the charge state visible at a glance from across a room."
+            },
+            {
+              "type": "p",
+              "text": "• Make it comfortable or it will not be worn. Weight, strap, sharp corners, heat against skin. A device in a locker has a detection rate of zero, and this is the most common failure mode of worker wearables — not technical, human."
+            },
+            {
+              "type": "p",
+              "text": "• Test tampering honestly. If the device is uncomfortable or distrusted, some people will leave it on a bench. Detecting ‘not being worn’ (via skin temperature or a total absence of motion) is legitimate safety engineering — but report it as ‘device not worn’ to the safety officer, not as an attendance metric to a supervisor. That distinction is the whole of §6.1 in one design decision."
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-6-5",
+          "number": "6.5",
+          "title": "Bill of materials",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Item Spec Qty ₹ each Note"
+            },
+            {
+              "type": "p",
+              "text": "MCU + BLE ESP32-C3 mini, or nRF52840 for best 1 350–900 nRF52 sleeps at ~2 µA against ESP32’s ~15 (§3.2)"
+            },
+            {
+              "type": "p",
+              "text": "battery life"
+            },
+            {
+              "type": "p",
+              "text": "IMU MPU6050, or LSM6DSL for 1 100–250 The wake-on-motion interrupt is what makes the"
+            },
+            {
+              "type": "p",
+              "text": "wake-on-motion battery budget work"
+            },
+            {
+              "type": "p",
+              "text": "LiPo cell 400–600 mAh, with protection circuit 1 180–300 Protected cell only, in a worn device"
+            },
+            {
+              "type": "pre",
+              "text": "Charger            TP4056 with protection, or a magnetic 1        40–250        Fiddly connectors mean uncharged devices (§6.4)\n                   pogo connector"
+            },
+            {
+              "type": "p",
+              "text": "Buzzer + button + Loud piezo; a button you can press with 1 60–120 The cancel window depends on both being usable"
+            },
+            {
+              "type": "p",
+              "text": "LED gloves"
+            },
+            {
+              "type": "pre",
+              "text": "Enclosure + strap  Belt clip or waist strap, rounded, light    1  250–450       Comfort determines whether it is worn at all\nBLE beacons        Battery-powered, one per zone                                Zone-level location that works indoors (§6.3)\n                                                               4+ 350–800"
+            },
+            {
+              "type": "p",
+              "text": "Indicative total: roughly ₹1,000–₹2,200 per wearable, plus ₹1,400–₹3,200 for a four-zone beacon set shared across all wearables at the site."
+            },
+            {
+              "type": "p",
+              "text": "PROTOCOL — Test protocol — Project 3"
+            },
+            {
+              "type": "p",
+              "text": "- stream and plot raw acceleration. Confirm 1 g at rest and the"
+            },
+            {
+              "type": "p",
+              "text": "axes point where you think they do. - verify sample rate is actually what you configured."
+            },
+            {
+              "type": "pre",
+              "text": "STAGE 2  COLLECT DATA - SAFELY. Never drop a person.\n         - falls: drop the device onto a thick mattress or a crash mat,"
+            },
+            {
+              "type": "p",
+              "text": "in each orientation, 20 times. Then have a volunteer perform CONTROLLED falls onto a mat, if your institution permits it and someone qualified supervises. - NOT-falls, and collect far more of these: sitting down hard, running, climbing stairs, jumping, setting the device down, dropping it from waist height onto a bench, a slap on the back, a lift starting and stopping. - LOG EVERY SESSION LABELLED. This dataset is the project."
+            },
+            {
+              "type": "p",
+              "text": "- replay the logged sessions through the algorithm offline. - report BOTH numbers: detection rate on the fall set AND"
+            },
+            {
+              "type": "p",
+              "text": "false alarms per 100 non-fall events. - a detector with 100% sensitivity and 40% false alarms is"
+            },
+            {
+              "type": "p",
+              "text": "worthless. State the trade-off you chose and why."
+            },
+            {
+              "type": "p",
+              "text": "- place beacons, walk the site, confirm the reported zone is"
+            },
+            {
+              "type": "p",
+              "text": "correct from every point in each zone including the corners and behind machinery. - confirm GPS is NOT relied on indoors (try it, watch it fail or report stale - this is worth seeing once)."
+            },
+            {
+              "type": "p",
+              "text": "- one week of normal wear without charging. Measure what is actually left."
+            },
+            {
+              "type": "p",
+              "text": "- volunteers wear it for a week during normal work - count false alarms and cancel-button presses - PASS: fewer than one false alarm per person per week. Above"
+            },
+            {
+              "type": "p",
+              "text": "that, nobody will trust it - and you must fix the algorithm, not train the humans to ignore it."
+            },
+            {
+              "type": "p",
+              "text": "Stage 3 is the honest one. Reporting sensitivity without reporting the false alarm rate is the standard way fall-detection projects overstate themselves."
+            },
+            {
+              "type": "p",
+              "text": "BUILD THIS — Build it, and report both numbers Three weekends. The deliverable is a labelled dataset and two percentages. 1 Get the ethics conversation done first: write the one-page statement from §6.1 covering what is recorded, what is not, who"
+            },
+            {
+              "type": "p",
+              "text": "sees it and for how long. Have it reviewed by someone who is not on your team. 2 Build the wearable at the waist position and stream raw IMU data. 3 Collect the labelled dataset in stage 2 — and collect at least three times as many non-falls as falls, because that ratio"
+            },
+            {
+              "type": "p",
+              "text": "reflects reality. 4 Implement the five-stage algorithm and the cancel window. Tune offline against the dataset. 5 Report detection rate and false alarms per 100 non-fall events. Both numbers, together, always. 6 Deploy the beacons and confirm zone accuracy from the corners of each zone, which is where it fails."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "7",
+      "title": "Sourcing and Field Testing",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Two things stand between a working prototype and a deployed device: getting real parts at a price you can defend, and finding out how it fails before a user does."
+        }
+      ],
+      "topics": [
+        {
+          "id": "embedded-systems-iot-7-1",
+          "number": "7.1",
+          "title": "Where to buy, and what each route costs you",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Route              Examples                                    Typical premium Lead time     When it wins\nLocal electronics  Lamington Road (Mumbai) · SP\nmarket             Road (Bengaluru) · Lajpat Rai               Cheapest for     Same day     You need it today, you want to test\n                   Market and Nehru Place (Delhi) ·            common parts                  before paying, or you want a\nIndian online      Ritchie Street (Chennai)                                                  shopkeeper to tell you your plan is\nretailers                                                      ~1.3–1.8× local  2–5 days     wrong. Unbeatable for passives,\n                   Robu · ElectronicsComp · Sunrom ·           market                        connectors, wire and enclosures\nAuthorised         Robokits · Evelta\ndistributors                                                   2–4× hobby pricing 3–10 days  Reliable stock, real product pages,\n                   Mouser · DigiKey · Element14 India                                        returns, GST invoice. The sensible\nChinese suppliers                                              0.5–0.8× Indian  2–4 weeks +  default for a project on a deadline\n                   LCSC (components) · AliExpress ·            online           customs\n                   JLCPCB (PCB + assembly)                                                   When authenticity and a real datasheet\n                                                                                             genuinely matter — an MCU, a\n                                                                                             regulator, anything going on a PCB you\n                                                                                             will manufacture"
+            },
+            {
+              "type": "p",
+              "text": "Bulk, BOM-level component orders, and PCB assembly. Costs you time and a possible duty bill; budget both"
+            },
+            {
+              "type": "p",
+              "text": "Price comparison worksheet — fill this for your own BOM before ordering"
+            },
+            {
+              "type": "p",
+              "text": "Part Local mkt ₹ India online ₹ Distributor ₹ China ₹ Qty Decision"
+            },
+            {
+              "type": "p",
+              "text": "A realistic pattern for common maker parts: an ESP32 dev board might run ₹300–400 in a local market, ₹450–550 from an Indian retailer, and ₹250–350 from AliExpress before three weeks of waiting. Prices move constantly — fill this in yourself rather than trusting any published figure, including these."
+            },
+            {
+              "type": "p",
+              "text": "The frugal strategy that actually works: prototype from the local market or an Indian retailer so you are never blocked; place one consolidated Chinese order for the parts you now know you need, in production quantity, while you continue developing; and buy anything critical or hard to authenticate from an authorised distributor regardless of price. Mixing routes deliberately beats optimising for any one of them."
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-7-2",
+          "number": "7.2",
+          "title": "Counterfeits, and how to catch them",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Assume the cheapest listing is the fake one Batteries are the worst category. A cell marked ‘9800 mAh’ is a lie: genuine 18650 cells top out around 3500 mAh. Weigh it — a real 3000 mAh 18650 weighs roughly 45–48 g; a counterfeit with a small cell and filler weighs 30–35 g. That single test, with a kitchen scale, catches most of them. USB-serial chips. Counterfeit FTDI FT232 parts have historically been disabled by driver updates. A genuine CH340 costs so little that faking it is pointless — which makes CH340-based boards a safer choice for student work. Sensors. BMP280 relabelled as BME280 (no humidity output, and you will spend a day debugging it) is extremely common. Read the chip ID register: the part tells you what it really is, and your code should check. Microcontrollers. Compare the marking against the manufacturer’s current datasheet. Genuine parts are usually laser-etched with crisp, slightly recessed characters; counterfeits are often printed and rub off with isopropyl alcohol. The general rule: for anything that matters, buy from an authorised distributor and pay the premium. For everything else, verify on arrival — read the ID register, weigh the cell, measure the capacitance, run the part hot for an hour."
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-7-3",
+          "number": "7.3",
+          "title": "Field testing — the staged ladder",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "1 BENCH          bench supply, room temperature, your desk\n   catches:      wiring, firmware logic, basic function\n   exit:         runs 24 h with no reset; current matches the budget\n2 BENCH, ABUSED  deliberately break it: pull power mid-write, remove\n                 the SIM, disconnect the antenna, short an input,\n   catches:      brown out the supply slowly with a variable supply\n   exit:         everything your error handling forgot\n                 recovers from every injected fault without a human\n3 HEAT SOAK      sealed enclosure, in the sun or in a car, all day.\n   catches:      Log internal temperature alongside operation.\n   exit:         thermal shutdown, clock drift, LDO overheating,\n                 capacitor and battery derating\n                 full function at the maximum internal temperature\n                 you recorded, with 10 C of margin\n4 WET AND DUSTY  hose test or a heavy monsoon shower; a day in a\n                 dusty yard. Then OPEN IT AND LOOK INSIDE.\n   catches:      gland sealing, condensation, ingress at the seam\n   exit:         no moisture inside after 48 h and a temperature cycle\n5 REAL LOCATION  installed where it will live, with the real network,\n   catches:      the real mains, the real mounting, for a week\n   exit:         signal at the actual spot, mains quality, vibration,\n                 the thing you could not have predicted\n                 7 days unattended, no intervention, no data gaps\n6 PILOT          three to five units, real users, 30 days, logged\n   catches:      human factors, tampering, charging discipline,\n                 the failure that only shows at scale\n   exit:         you can state a failure rate with a number"
+            },
+            {
+              "type": "p",
+              "text": "NEVER skip from 1 to 5. Stage 2 costs an afternoon and finds more defects than any other stage in the table."
+            },
+            {
+              "type": "p",
+              "text": "Figure 7.1 — Stage 2 is the one that separates engineers from enthusiasts. Deliberately breaking your own device is not pessimism; it is the cheapest testing available"
+            },
+            {
+              "type": "p",
+              "text": "CHECKLIST — Field deployment checklist — before any unit leaves the lab"
+            },
+            {
+              "type": "pre",
+              "text": "□ Runs 7 days on the bench without a reset or a manual         □ Battery sized for the worst case, not the average, and\n    intervention                                                   measured\n□ Every injected fault in stage 2 recovers automatically       □ Sensor and radio powered down (not merely asleep)\n                                                                   when idle\n□ Watchdog timer enabled and proven to fire                    □ Enclosure sealed, gland facing down, vent membrane\n                                                                   fitted, drain at the low point"
+            },
+            {
+              "type": "p",
+              "text": "□ Brownout detector enabled at a sensible threshold □ Conformal coating applied if humid or coastal"
+            },
+            {
+              "type": "p",
+              "text": "□ Firmware can be updated in the field, or you accept that □ Cables strain-relieved; no breadboard, no loose jumpers it cannot"
+            },
+            {
+              "type": "pre",
+              "text": "□ Internal enclosure temperature measured under                □ Mounted out of reach of water, machinery, animals and\n    worst-case sun                                                 curiosity"
+            },
+            {
+              "type": "p",
+              "text": "□ All electrolytics 105 °C; MCU industrial temperature grade □ Device labelled with a contact number and a serial number"
+            },
+            {
+              "type": "p",
+              "text": "□ Signal strength measured at the exact install point, in the □ Serial number recorded against install location and"
+            },
+            {
+              "type": "p",
+              "text": "enclosure firmware version"
+            },
+            {
+              "type": "pre",
+              "text": "□ Behaviour on network loss tested for at least 48 hours       □ A way to tell remotely that it is alive — a heartbeat, not\n                                                                   just alarms\n□ No data lost across an unexpected power cut mid-write        □ Log sheet printed and a named person responsible for the\n                                                                   site\n□ RTC fitted and holding time without power                    □ Spares on hand: one complete unit, plus the parts that\n                                                                   fail first"
+            },
+            {
+              "type": "p",
+              "text": "Build the heartbeat before you build the alerts"
+            },
+            {
+              "type": "p",
+              "text": "The most common silent failure in deployed IoT is a device that stops reporting and is never noticed — because ‘no alerts’ looks exactly like ‘everything is fine’. Send a periodic heartbeat containing battery voltage, uptime, firmware version and signal strength, and alert on its absence. This applies to all three projects and it is the single highest-value twenty lines of code in this guide."
+            },
+            {
+              "type": "p",
+              "text": "Evidence kept Fix / status Field failure log — one row per event, filled at the time"
+            },
+            {
+              "type": "p",
+              "text": "Date Unit S/N Symptom Suspected cause"
+            },
+            {
+              "type": "p",
+              "text": "Fill this in the field, not from memory. After ten rows the causes cluster, and the largest cluster is your next engineering task — which is usually not the one you would have guessed."
+            },
+            {
+              "type": "p",
+              "text": "BUILD THIS — Take one project through all six stages Six weeks, most of it waiting and observing. 1 Complete stage 2 abuse testing on whichever project you built. Write down every fault you injected and how the device"
+            },
+            {
+              "type": "p",
+              "text": "responded. 2 Do the heat soak: leave the sealed unit in a car or in direct sun for a full day with internal temperature logging. Compare"
+            },
+            {
+              "type": "p",
+              "text": "against your component ratings. 3 Run the water test and then open it and look inside. Photograph what you find. 4 Install at the real location and measure signal strength in the enclosure, in position. Not at the gate. 5 Run seven days unattended. Count interventions and data gaps. 6 Fill in the failure log for every event, then write a one-page summary naming the three failures that cost the most time and"
+            },
+            {
+              "type": "p",
+              "text": "what you would change in the design."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "A",
+      "title": "Reference",
+      "intro": [],
+      "topics": [
+        {
+          "id": "embedded-systems-iot-A-1",
+          "number": "A.1",
+          "title": "Formula reference",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "POWER"
+            },
+            {
+              "type": "p",
+              "text": "mAh per event = mA x seconds / 3600"
+            },
+            {
+              "type": "p",
+              "text": "daily budget = sum of all states + self-discharge + quiescent"
+            },
+            {
+              "type": "p",
+              "text": "battery life (days) = usable mAh / daily mAh"
+            },
+            {
+              "type": "p",
+              "text": "usable mAh ~ nameplate x 0.8, then derate again for age/heat"
+            },
+            {
+              "type": "p",
+              "text": "self-discharge Li-ion ~2.5%/month · LiSOCl2 ~1%/year"
+            },
+            {
+              "type": "p",
+              "text": "voltage dip on burst = I_peak x R_internal_total"
+            },
+            {
+              "type": "p",
+              "text": "capacitor for burst C &gt;= I x t / dV_allowed"
+            },
+            {
+              "type": "p",
+              "text": "THERMAL"
+            },
+            {
+              "type": "p",
+              "text": "electrolytic life L = L0 x 2^((T_rated - T_actual)/10)"
+            },
+            {
+              "type": "p",
+              "text": "2000 h @ 85 C part running at 65 C -&gt; 8,000 h (~11 months)"
+            },
+            {
+              "type": "p",
+              "text": "2000 h @105 C part running at 65 C -&gt; 32,000 h (~3.6 years)"
+            },
+            {
+              "type": "p",
+              "text": "LDO dissipation P = (Vin - Vout) x I"
+            },
+            {
+              "type": "p",
+              "text": "ENERGY METER (project 1)"
+            },
+            {
+              "type": "p",
+              "text": "Wh per pulse = 1000 / N N = impulses per kWh"
+            },
+            {
+              "type": "p",
+              "text": "watts = 3,600,000 / (N x T) T = seconds between pulses"
+            },
+            {
+              "type": "p",
+              "text": "kWh = pulses / N"
+            },
+            {
+              "type": "pre",
+              "text": "SOIL (project 2)        = 100 x (raw_dry - raw) / (raw_dry - raw_wet)\n   two-point moisture%  = (W_wet - W_dry) / W_dry\n   gravimetric content"
+            },
+            {
+              "type": "p",
+              "text": "FALL DETECTION (project 3)"
+            },
+            {
+              "type": "p",
+              "text": "|a| = sqrt(ax^2 + ay^2 + az^2) in g"
+            },
+            {
+              "type": "p",
+              "text": "at rest |a| = 1.0 g (use this to sanity-check axes)"
+            },
+            {
+              "type": "pre",
+              "text": "PCB                     ~0.25 mm per amp, 1 oz outer copper, as a starting\n   trace width          point - verify against IPC-2221 for your temp rise"
+            },
+            {
+              "type": "p",
+              "text": "The electrolytic life formula is the one to memorise. It explains more field failures than any other line here"
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-A-2",
+          "number": "A.2",
+          "title": "The kit",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": " Category               Multimeter · temperature-controlled soldering iron · solder wick and flux · side cutters · tweezers · breadboard and\n Essential              jumpers · USB-serial adapter · helping hands · magnifier or a phone macro lens"
+            },
+            {
+              "type": "p",
+              "text": "Worth saving for Bench power supply with an adjustable current limit — the single most useful instrument you can own, because it turns destroyed prototypes into found faults · hot air rework station · USB power analyser Frugal substitutes Current limit → a resistor in series and a meter · µA measurement → the capacitor discharge or long-run methods Field kit (§3.4) · reflow → a hot plate or a modified toaster oven · climate chamber → a closed car in the sun, which reaches 60–70 °C and is free Consumables to over-buy Printed log sheets and a clipboard · spare unit and spare parts · label maker · cable ties and glands · silicone sealant · a phone for photos and signal checks · a torch"
+            },
+            {
+              "type": "p",
+              "text": "0805 passives (30% extra) · headers · heatshrink · JST connectors and crimps · the exact MCU you are using — you will destroy at least one"
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-A-3",
+          "number": "A.3",
+          "title": "A twelve-week plan",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Weeks Focus Deliverable"
+            },
+            {
+              "type": "p",
+              "text": "1 Ch 1 — environment spec, component grades, A one-page environment spec with measured signal strength"
+            },
+            {
+              "type": "p",
+              "text": "connectivity survey"
+            },
+            {
+              "type": "p",
+              "text": "2–3 Ch 2 — schematic, review, layout, order A reviewed schematic and a power tree with currents"
+            },
+            {
+              "type": "p",
+              "text": "boards and parts"
+            },
+            {
+              "type": "p",
+              "text": "4 Ch 3 — power budget on paper, then A state table and the gap between computed and measured life kWh within 1% of the meter display over 24 hours measured on the bench"
+            },
+            {
+              "type": "p",
+              "text": "5–6 Project 1 — pulse counting, calibration,"
+            },
+            {
+              "type": "p",
+              "text": "cellular"
+            },
+            {
+              "type": "p",
+              "text": "7–8 Project 2 — capacitive probe, calibration, ring 48 hours offline with zero lost records"
+            },
+            {
+              "type": "p",
+              "text": "buffer"
+            },
+            {
+              "type": "pre",
+              "text": "9–10        Project 3 — IMU, labelled dataset, staged          Detection rate and false alarms per 100 non-fall events\n11          algorithm                                          A failure log with every injected fault and its outcome"
+            },
+            {
+              "type": "p",
+              "text": "Ch 7 — stage 2 abuse testing and heat soak on your best project"
+            },
+            {
+              "type": "pre",
+              "text": "Weeks  Focus                                                   Deliverable\n12                                                             Interventions and data gaps, counted, plus a design post-mortem\n       Ch 7 — real-location install and seven days\n       unattended"
+            }
+          ]
+        },
+        {
+          "id": "embedded-systems-iot-A-4",
+          "number": "A.4",
+          "title": "Glossary",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "                          MCU circuit that holds reset when the supply sags, preventing random behaviour\n Term                     What a regulator draws doing nothing — often the largest line in a low-duty-cycle budget\n Brownout detector        Fraction of time a device is active rather than asleep\n Quiescent current        Lowest MCU power state, usually retaining only an RTC and a little RAM\n Duty cycle               Voltage a meter drops across its own shunt when measuring current\n Deep sleep               Large local capacitor that supplies short current bursts the supply cannot\n Burden voltage           Thin protective lacquer over a populated board\n Bulk capacitance         Ingress protection: first digit dust, second digit water\n Conformal coating        Design for manufacture — checking a layout against the fab’s real rules\n IP rating                Do not populate — a footprint placed but left unfitted\n DFM                      Thin steel sheet for applying solder paste to pads\n DNP                      The ordered first-power procedure for a new board (§2.4)\n Stencil                  Fixed-size store that overwrites oldest entries when full\n Bring-up                 Delivery guarantee where duplicates are possible but loss is not\n Ring buffer              Periodic ‘I am alive’ message; you alert on its absence\n At-least-once            Pulses per kWh printed on an electricity meter\n Heartbeat                Soil sensor measuring dielectric through insulation — does not corrode\n Impulse constant         Water content measured by weighing wet then oven-dried soil\n Capacitive probe         Delay before an alarm is sent, allowing the wearer to dismiss it\n Gravimetric              LTE device categories; Cat-1 for general use, the other two for low-power IoT\n Cancel window\n Cat-1 / Cat-M1 / NB-IoT"
+            },
+            {
+              "type": "p",
+              "text": "On the cellular advice in §1.4 and §4.4. As of mid-2026, Reliance Jio operates no 2G network at all and never has, so 2G-only modules such as the SIM800L cannot register on a Jio SIM under any circumstances. Airtel continues to run 2G but has withdrawn it across several circles and metro areas; Vi has signalled a partial shutdown in the 2026–27 window; BSNL and rural 900 MHz coverage are expected to persist for some further years without any guarantee. For designs intended to run two years or more, specify a 4G Cat-1 module. Verify the current position before committing to a module — this is moving."
+            },
+            {
+              "type": "p",
+              "text": "And the habit that matters most. Everything expensive in this guide — the capacitor that died in eleven months, the module that browned out its own controller, the probe that corroded, the two days of readings lost to a network outage, the fall detector nobody trusted — was a decision made early and discovered late. The workflow in Chapter 2 exists to move that discovery earlier, and the abuse testing in Chapter 7 exists to move it earlier still. Break your own device on purpose, on a bench, on a Tuesday afternoon. It is much cheaper than finding out in a field in July."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

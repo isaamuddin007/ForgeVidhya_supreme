@@ -1,0 +1,1409 @@
+{
+  "slug": "invest-in-ai-tools",
+  "title": "How to Invest in AI Tools",
+  "tagline": "A simple formula for spending on AI that pays back — measurable returns, not hype, not FOMO.",
+  "modules": [
+    {
+      "number": "1",
+      "title": "Why AI Spending Escapes Scrutiny",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Nobody buys a ₹1 lakh machine without a business case. Almost everybody buys ₹1 lakh of annual software subscriptions without one — because it arrives ₹1,999 at a time, and ₹1,999 feels like a decision too small to analyse."
+        }
+      ],
+      "topics": [
+        {
+          "id": "invest-in-ai-tools-1-1",
+          "number": "1.1",
+          "title": "Four reasons the money goes unexamined",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• The unit is too small to trigger analysis. A monthly subscription is priced deliberately below the threshold at which people compare alternatives. Multiply by twelve before you decide, always — that single habit changes more purchases than any framework."
+            },
+            {
+              "type": "p",
+              "text": "• The benefit is invisible and the cost is visible. You see ₹1,999 leave your account every month. You do not see the three hours you did not spend. Unmeasured benefits lose arguments against measured costs, and then people cancel tools that were actually working."
+            },
+            {
+              "type": "p",
+              "text": "• Time saved feels like money earned. It usually is not. This is the central error, and Chapter 3 is largely about it. Saving four hours only makes you richer if something happens in those four hours that someone pays for."
+            },
+            {
+              "type": "p",
+              "text": "• Fear of missing out is a real force and a terrible budget. The stated reason for a subscription is productivity; the actual reason is often that a colleague mentioned it. There is nothing shameful in that — but it should be a ₹0 decision made on a free tier, not a ₹24,000 one."
+            }
+          ]
+        },
+        {
+          "id": "invest-in-ai-tools-1-2",
+          "number": "1.2",
+          "title": "What we are actually deciding",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "An AI subscription is a small capital allocation with an unusual shape: near-zero switching cost at the start, a learning investment in the middle, and a slow accumulation of dependency at the end. Treat it the way an investor treats any recurring commitment — with an expected return, a hurdle rate, a review date and an exit plan."
+            },
+            {
+              "type": "pre",
+              "text": "Question an investor asks                The AI-tool version\nWhat return do I expect, and by\nwhen?                                    How many hours per week, starting from which week? Write the number down before you\nWhat is my total cost, not my            subscribe, so you can be wrong about it later\nheadline cost?\nWhat is my hurdle rate?                  Subscription + learning time + the ongoing time to keep up as the tool changes + the cost of\n                                         migrating off it\nWhen do I review?\nHow do I exit?                           What else could that money and that learning time have bought? A course, a certification, a second\n                                         monitor, ten hours of sleep"
+            },
+            {
+              "type": "p",
+              "text": "A calendar reminder at 30 and 90 days, with the specific question: did the hours materialise?"
+            },
+            {
+              "type": "p",
+              "text": "Can I get my data out? What breaks if this company doubles its price or shuts down? (§6.3)"
+            },
+            {
+              "type": "p",
+              "text": "The one habit worth more than the rest of this guide"
+            },
+            {
+              "type": "p",
+              "text": "Write down the expected hours saved per week, in a file, with a date, before you pay. Then check it at 30 days."
+            },
+            {
+              "type": "p",
+              "text": "Almost nobody does this, and it is the only thing that converts a subscription from a feeling into a measurement. It also produces the most useful data you will ever have about your own estimates — most people discover they overestimate by roughly half, consistently, which is a correction you can then apply to every future decision (§3.3)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "2",
+      "title": "The Special Formula",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Here is the formula in full, with every term defined and a worked example. Learn it exactly as written first — Chapter 3 will then show you where it misleads, and you cannot correct a formula you have not understood."
+        }
+      ],
+      "topics": [
+        {
+          "id": "invest-in-ai-tools-2-1",
+          "number": "2.1",
+          "title": "The formula",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "NET ANNUAL VALUE = ( S x R x 52 ) - ( C + L x R )"
+            },
+            {
+              "type": "p",
+              "text": "S = EXPECTED TIME SAVINGS PER WEEK, in hours Your honest estimate of the hours this tool removes from your week. Not the vendor's claim. Not your best week. A normal week."
+            },
+            {
+              "type": "p",
+              "text": "R = YOUR HOURLY RATE, in rupees"
+            },
+            {
+              "type": "p",
+              "text": "For a salaried person: annual CTC / 2,000 working hours"
+            },
+            {
+              "type": "p",
+              "text": "For a freelancer: your actual billing rate"
+            },
+            {
+              "type": "p",
+              "text": "For a business owner: profit per hour worked, not revenue"
+            },
+            {
+              "type": "p",
+              "text": "(2,000 hours = roughly 40 hours x 50 weeks. Use YOUR number if"
+            },
+            {
+              "type": "p",
+              "text": "you work differently.)"
+            },
+            {
+              "type": "p",
+              "text": "C = ANNUAL COST, in rupees Monthly price x 12, or the annual price. Include GST. Include any add-ons you will actually buy."
+            },
+            {
+              "type": "p",
+              "text": "L = LEARNING TIME, in hours The framework's default is 10 hours - the time to get from \"installed\" to \"genuinely faster than before\". 3.4 argues this is too low for most tools."
+            },
+            {
+              "type": "p",
+              "text": "WORKED EXAMPLE - a freelance content writer"
+            },
+            {
+              "type": "p",
+              "text": "S = 6 hours per week saved on first drafts R = Rs 800 per hour (her actual billing rate) C = Rs 4,788 per year (ChatGPT Go at Rs 399/month) L = 10 hours"
+            },
+            {
+              "type": "p",
+              "text": "Net = (6 x 800 x 52) - (4,788 + 10 x 800) = 2,49,600 - 12,788 = Rs 2,36,812 per year"
+            },
+            {
+              "type": "p",
+              "text": "That is a 19x return on the subscription cost. Which is exactly the kind of number that should make you suspicious - and Chapter 3 is about why."
+            },
+            {
+              "type": "p",
+              "text": "The formula is a good first filter and a bad final answer. Its virtue is that it forces you to write down four numbers you were otherwise going to leave vague"
+            }
+          ]
+        },
+        {
+          "id": "invest-in-ai-tools-2-2",
+          "number": "2.2",
+          "title": "Hourly rate benchmarks for India",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Most people do not know their own hourly rate, and it is the term the whole formula pivots on. Compute it from your actual position, not from an aspiration."
+            },
+            {
+              "type": "p",
+              "text": "Who Typical annual ₹ per hour Note on the rate"
+            },
+            {
+              "type": "pre",
+              "text": "Student / intern       ₹0–₹3 L stipend   ₹0–150          Your rate is near zero in cash. Value your time in learning\n                                                         throughput instead — see §3.2\nJunior salaried (0–2   ₹3.5–₹6 L         ₹175–300        The formula is harshest here: low rate, low capture. Free tiers are\nyrs)                                                     usually the correct answer\nMid salaried (3–7 yrs) ₹8–₹15 L          ₹400–750        The band where a well-chosen paid tool starts to clear the bar — if\n                                                         someone else pays or capture is high\nSenior salaried (8+    ₹18–₹35 L         ₹900–1,750      High rate, but often the lowest capture of all — your saved hours get\nyrs)                                                     absorbed into more meetings\nFreelancer /           billed hourly     ₹500–3,000+     Use your billing rate, not a salary equivalent. This group\nconsultant                                               captures the most value and should be the most aggressive buyer\nSmall business owner profit-linked       profit ÷ hours  Use profit per hour, not revenue per hour. Revenue flatters the\n                                                         calculation enormously\nSalaried professional  highly variable   ₹1,000–5,000+ If you bill clients directly, you are effectively a freelancer for this\n— doctor, lawyer, CA                                              purpose\nin practice"
+            },
+            {
+              "type": "p",
+              "text": "These are illustrative ranges for orientation, not a salary survey. Compute your own: total annual earnings divided by hours actually worked. Most people find the second number is larger than they assumed, which lowers the rate."
+            },
+            {
+              "type": "p",
+              "text": "A trap in the rate itself"
+            },
+            {
+              "type": "p",
+              "text": "Do not use a rate you aspire to. If you earn ₹8 lakh, your rate is roughly ₹400/hour even if you believe your work is worth ₹1,500. Using the aspirational number inflates every result in this guide by a factor of three and turns the framework into a machine for justifying purchases you had already decided on — which is the most common way analytical frameworks get misused."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "3",
+      "title": "The Four Corrections",
+      "intro": [
+        {
+          "type": "p",
+          "text": "The formula in Chapter 2 will tell almost everyone that almost every tool is worth buying. That is a signal that something in it is wrong. Four corrections, in descending order of how much they matter."
+        }
+      ],
+      "topics": [
+        {
+          "id": "invest-in-ai-tools-3-1",
+          "number": "3.1",
+          "title": "Correction 1: capture rate — the big one",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The formula assumes an hour saved converts into your hourly rate in your pocket. That is true for a freelancer with more demand than time. It is close to false for a salaried employee. If you finish your work in four hours instead of eight, your employer receives the benefit; your salary is unchanged this month, and possibly next year too."
+            },
+            {
+              "type": "p",
+              "text": "CORRECTED: NET = ( S x K x R x 52 ) - ( C + L x R )"
+            },
+            {
+              "type": "p",
+              "text": "K = CAPTURE RATE - what fraction of the value actually reaches YOU"
+            },
+            {
+              "type": "p",
+              "text": "1.0 Freelancer or consultant with more demand than capacity."
+            },
+            {
+              "type": "p",
+              "text": "Every hour freed is an hour you bill to someone else."
+            },
+            {
+              "type": "p",
+              "text": "0.7-0.9 Business owner who can sell more of what they make."
+            },
+            {
+              "type": "p",
+              "text": "0.4-0.6 Freelancer whose demand is NOT unlimited - you free the"
+            },
+            {
+              "type": "p",
+              "text": "hour but there is no client waiting to fill it."
+            },
+            {
+              "type": "p",
+              "text": "0.2-0.4 Salaried, in a role measured on OUTPUT (sales, delivery,"
+            },
+            {
+              "type": "p",
+              "text": "billable projects). Value shows up eventually, in bonus,"
+            },
+            {
+              "type": "p",
+              "text": "rating or promotion - discounted and delayed."
+            },
+            {
+              "type": "p",
+              "text": "0.0-0.1 Salaried, in a role measured on PRESENCE or where output is"
+            },
+            {
+              "type": "p",
+              "text": "not attributable to you. In cash terms, near zero."
+            },
+            {
+              "type": "p",
+              "text": "0 Student, in cash. But see 3.2 - this is not the same as"
+            },
+            {
+              "type": "p",
+              "text": "\"no value\"."
+            },
+            {
+              "type": "p",
+              "text": "Capture rate is the term the vendor's ROI calculator will never include, because it is the term that makes half their case disappear"
+            }
+          ]
+        },
+        {
+          "id": "invest-in-ai-tools-3-2",
+          "number": "3.2",
+          "title": "What to do if your capture rate is low",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "A low capture rate is not a reason to avoid AI tools. It is a reason to change how you pay for them and what you do with the time. Four moves, in order of effectiveness:"
+            },
+            {
+              "type": "p",
+              "text": "• Make your employer pay. This is the single highest-return action in the entire guide. If the value accrues to the company, the company should carry the cost — and the business case is easy to write because their capture rate is 1.0. Take them the formula with their numbers in it, not yours."
+            },
+            {
+              "type": "p",
+              "text": "• Convert saved time into something that compounds. An hour freed and absorbed into more of the same work is worth nothing to you. The same hour spent on a skill that raises your rate, on visible work that earns a promotion, or on a side income has a capture rate far above 0.2. Decide in advance what the hours are for, or they will be absorbed by default."
+            },
+            {
+              "type": "p",
+              "text": "• Value the hours honestly as leisure. If four hours a week come back to you as time with your family or sleep, that is real value — it just is not rupees, and you should say so rather than dressing it up in a spreadsheet. Ask instead: would I pay ₹1,999 a month for four extra hours a week? Many people would, and that is a legitimate and clear-eyed yes."
+            },
+            {
+              "type": "p",
+              "text": "• Use the free tier and stop. At capture rates near zero and a junior salary, the honest answer is often that the free tier is sufficient and the paid tier is not. This guide is as willing to say no as yes."
+            }
+          ]
+        },
+        {
+          "id": "invest-in-ai-tools-3-3",
+          "number": "3.3",
+          "title": "Correction 2: your estimate is too high",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Halve your estimate until you have measured it"
+            },
+            {
+              "type": "p",
+              "text": "Estimated time savings are systematically optimistic, for the same reason project estimates are: you imagine the smooth case. You do not imagine the prompt that needed four attempts, the output you had to fact-check line by line, the day the service was throttled, or the twenty minutes lost to reading about a new feature."
+            },
+            {
+              "type": "p",
+              "text": "Apply a discount factor D = 0.5 to any unmeasured estimate. Then replace it with a measured number after 30 days. If your measurement comes back at 0.8, congratulations — you now have a calibrated estimate and can use a gentler discount in future. Most people find they land between 0.4 and 0.6, and the ones who track it become dramatically better at this decision."
+            }
+          ]
+        },
+        {
+          "id": "invest-in-ai-tools-3-4",
+          "number": "3.4",
+          "title": "Correction 3: learning is not a one-time 10 hours",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Ten hours is roughly right to become competent with a general chat assistant. It is far too low for anything with a workflow — an automation platform, a coding agent, a design tool. And it ignores ongoing cost: these products change every few weeks, and keeping up is a real recurring tax on your attention."
+            },
+            {
+              "type": "pre",
+              "text": "Tool type                 Initial        Ongoing per  Note\n                          learning       year\nGeneral chat assistant    5–10 h         10–20 h      Low barrier, but the ceiling is high — most people never get past\n                                                      basic prompting\nResearch / search         3–5 h          5–10 h       The easiest category to adopt; behaves like a search engine you\nassistant                                             already understand\nCoding assistant          10–20 h        20–30 h      The learning is in knowing when to distrust it, which takes longer\n                                                      than learning to use it\nAutomation / workflow     20–40 h        20–30 h      You are building software. Price it as such\nplatform\nDomain-specific tool      15–30 h        15–25 h      Steep, and the payoff is concentrated in people who use it daily\n(design, legal, medical)"
+            }
+          ]
+        },
+        {
+          "id": "invest-in-ai-tools-3-5",
+          "number": "3.5",
+          "title": "Correction 4: the risks the formula ignores",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Price risk. Introductory and promotional pricing is customer acquisition, not philanthropy. Assume today’s price is a floor, and ask what happens to your calculation at 2×. If the answer is ‘it still works’, buy with confidence."
+            },
+            {
+              "type": "p",
+              "text": "• Discontinuation risk. Small AI products are shut down or acquired regularly. The larger the tool’s role in your workflow, the more this matters (§6.3)."
+            },
+            {
+              "type": "p",
+              "text": "• Quality risk. The formula counts hours, not output quality. A tool that saves three hours and slightly degrades your work has a negative return that no time measurement will reveal. Judge the output, not just the clock."
+            },
+            {
+              "type": "p",
+              "text": "• Confidentiality risk. If your work involves client data, patient records, unpublished financials or anything under contract, check what the tool does with your inputs before you paste them. A single breach of a client confidentiality clause costs more than a decade of subscriptions."
+            },
+            {
+              "type": "p",
+              "text": "• Skill-atrophy risk. Speculative, and worth naming. If a tool does the part of the work that was building your judgement, you are trading present hours for future capability. That may be a fine trade — make it deliberately."
+            }
+          ]
+        },
+        {
+          "id": "invest-in-ai-tools-3-6",
+          "number": "3.6",
+          "title": "The corrected formula, and what it does to the examples",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "NET ANNUAL VALUE = ( S x D x K x R x 52 ) - ( C + (L + M) x R )"
+            },
+            {
+              "type": "p",
+              "text": "S = estimated weekly hours saved D = estimate discount (0.5 until measured)"
+            },
+            {
+              "type": "p",
+              "text": "K = capture rate (3.1) R = hourly rate (2.2)"
+            },
+            {
+              "type": "p",
+              "text": "C = annual cost incl. GST L = initial learning hours"
+            },
+            {
+              "type": "p",
+              "text": "M = ongoing maintenance hours/year (3.4)"
+            },
+            {
+              "type": "p",
+              "text": "EXAMPLE A - Priya, freelance content writer"
+            },
+            {
+              "type": "p",
+              "text": "S=6 D=0.5 K=0.85 R=800 C=4,788 L=10 M=20"
+            },
+            {
+              "type": "p",
+              "text": "Naive formula : Rs 2,36,812"
+            },
+            {
+              "type": "p",
+              "text": "Corrected : (3 x 0.85 x 800 x 52) - (4,788 + 30 x 800)"
+            },
+            {
+              "type": "p",
+              "text": "= 1,06,080 - 28,788 = Rs 77,292"
+            },
+            {
+              "type": "p",
+              "text": "Still a 16x return on the subscription. CLEAR BUY."
+            },
+            {
+              "type": "p",
+              "text": "EXAMPLE B - Arjun, salaried engineer at Rs 12 L"
+            },
+            {
+              "type": "p",
+              "text": "S=4 D=0.5 K=0.25 R=600 C=20,400 L=10 M=20"
+            },
+            {
+              "type": "p",
+              "text": "Naive formula : Rs 98,400"
+            },
+            {
+              "type": "p",
+              "text": "Corrected : (2 x 0.25 x 600 x 52) - (20,400 + 30 x 600)"
+            },
+            {
+              "type": "p",
+              "text": "= 15,600 - 38,400 = Rs -22,800"
+            },
+            {
+              "type": "p",
+              "text": "NEGATIVE. The naive formula was wrong by Rs 1.2 lakh."
+            },
+            {
+              "type": "p",
+              "text": "EXAMPLE C - Arjun again, but his EMPLOYER pays the Rs 20,400"
+            },
+            {
+              "type": "p",
+              "text": "Corrected = 15,600 - 18,000 = Rs -2,400"
+            },
+            {
+              "type": "p",
+              "text": "Still marginally negative - because his own LEARNING TIME alone"
+            },
+            {
+              "type": "p",
+              "text": "(30 hours x Rs 600 = Rs 18,000) exceeds what he personally captures."
+            },
+            {
+              "type": "p",
+              "text": "Not \"do not use the tool\". It tells him that the cash case is roughly a wash, so the decision must be made on other grounds - and he should be explicit about which: - his employer's return is strongly positive (K=1.0 for them), so the company should pay, and he should say so - if he redirects the freed hours into a skill that raises his rate, K rises sharply and the case transforms - if he values four hours a week of his life at more than nothing, that is a legitimate reason that needs no spreadsheet What he should NOT do is claim a Rs 98,000 return that does not exist."
+            },
+            {
+              "type": "p",
+              "text": "The point of the corrections is not pessimism. It is that the corrected number tells you what kind of decision you are making, which the naive number hides"
+            },
+            {
+              "type": "p",
+              "text": "EXERCISE — Calibrate your own four parameters Thirty minutes. You will reuse these numbers in every exercise that follows. 1 Compute your real hourly rate: total annual earnings divided by hours actually worked. Be honest about the second"
+            },
+            {
+              "type": "p",
+              "text": "number. 2 Assign yourself a capture rate from §3.1 and write one sentence justifying it. If you claim above 0.5 while salaried, name"
+            },
+            {
+              "type": "p",
+              "text": "specifically how the value reaches you. 3 Set D = 0.5 for now. Put a calendar reminder at 30 days to replace it with a measured value. 4 For any tool you already pay for, run both formulas. Note the gap between them. 5 If the corrected number is negative for a tool you currently pay for, do not cancel it yet — first ask whether the right fix is"
+            },
+            {
+              "type": "p",
+              "text": "cancelling, getting someone else to pay, or changing what you do with the hours."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "4",
+      "title": "Exercise 1 — Audit Your Own Week",
+      "intro": [
+        {
+          "type": "p",
+          "text": "You cannot estimate hours saved on a workflow you have never measured. This exercise takes one week of light logging and produces the three specific tasks worth spending money on — which is almost never the three you would have guessed."
+        }
+      ],
+      "topics": [
+        {
+          "id": "invest-in-ai-tools-4-1",
+          "number": "4.1",
+          "title": "Log first, judge later",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "For five working days, record what you spend time on in thirty-minute blocks. Not precisely — approximately, in a notebook or a phone note. Three columns: what you did, roughly how long, and one word for how it felt (routine, hard, waiting). Do not change your behaviour, and do not skip the boring entries; the boring entries are the whole point."
+            },
+            {
+              "type": "p",
+              "text": "Digital input? Week log — five days, thirty-minute resolution"
+            },
+            {
+              "type": "pre",
+              "text": "Day Task                                 Approx.                           Routine / hard /\n                                         minutes                           waiting"
+            },
+            {
+              "type": "p",
+              "text": "The last column matters more than it looks. A task whose input already exists as text, a spreadsheet or a file is a candidate; a task whose input is a conversation, a physical object or something in your head is usually not."
+            }
+          ]
+        },
+        {
+          "id": "invest-in-ai-tools-4-2",
+          "number": "4.2",
+          "title": "What makes a task worth automating",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Signal Why it matters Score 0–2"
+            },
+            {
+              "type": "pre",
+              "text": "Frequency              Weekly or more. A quarterly task will never repay the 0 rarely · 1 weekly · 2 daily\n                       learning curve, however annoying it is"
+            },
+            {
+              "type": "p",
+              "text": "Digital input The material already exists as text, data or a 0 none · 1 partial · 2 fully digital document. If you must first gather it from people, that gathering is the real task"
+            },
+            {
+              "type": "p",
+              "text": "Tolerance for error A draft you will review is a good candidate. Anything 0 low · 1 medium · 2 high sent unchecked to a client, a regulator or a patient is not"
+            },
+            {
+              "type": "pre",
+              "text": "Clear success          You can tell in ten seconds whether the output is        0 unclear · 1 partial · 2 obvious\ncriterion              acceptable. If judging takes as long as doing, you\n                       have saved nothing\nYou are the            The task is waiting on you, not on someone else.         0 no · 1 partly · 2 yes\nbottleneck             Speeding up a step that then waits three days for\n                       approval saves nothing"
+            },
+            {
+              "type": "p",
+              "text": "Boring to you Genuine, and often decisive. Tasks you dread get 0 enjoyable · 1 neutral · 2 dreaded postponed, and the postponement costs more than the task"
+            },
+            {
+              "type": "p",
+              "text": "10–12: strong candidate, pursue it. 6–9: partial — automate the drafting step and keep the judgement step. Below 6: leave it alone; the learning curve will exceed the return."
+            },
+            {
+              "type": "p",
+              "text": "Three patterns that score high for almost everyone"
+            },
+            {
+              "type": "p",
+              "text": "Turning one format into another. Notes into a summary, a transcript into minutes, a spreadsheet into a paragraph, a long document into a brief. High frequency, digital input, obviously checkable, and genuinely tedious."
+            },
+            {
+              "type": "p",
+              "text": "First drafts of anything routine. Status updates, follow-up emails, job descriptions, proposals against a template. The draft is 60% of the work and 10% of the value — which is exactly the ratio you want to attack."
+            },
+            {
+              "type": "p",
+              "text": "Structured extraction. Pulling specific fields out of many documents — invoices, CVs, contracts, forms. Tedious, error-prone when done by a tired human, and easily spot-checked."
+            },
+            {
+              "type": "p",
+              "text": "And the pattern that scores low for almost everyone: anything requiring you to know something the tool cannot see — office politics, a client’s history, an unwritten constraint. That is where your value is, and it is not the part to outsource."
+            },
+            {
+              "type": "p",
+              "text": "EXERCISE — Produce your three tasks One week of logging, then forty-five minutes of analysis. 1 Log five working days as in §4.1. Do not change your behaviour while logging. 2 Group the log into repeating tasks. Most people find eight to twelve distinct recurring tasks fill the majority of their week. 3 Score every task on the six signals in §4.2. 4 Take the top three. For each, write one sentence: ‘I spend about ___ hours a week doing ___, and the part a tool could take"
+            },
+            {
+              "type": "p",
+              "text": "is ___.’ 5 Estimate S — hours saved per week — for each of the three, remembering that a tool takes the drafting part, not the"
+            },
+            {
+              "type": "p",
+              "text": "judging part. Halve whatever you first wrote down. 6 Keep these three. Chapter 5 scores tools against them, and Chapter 7 sequences them."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "5",
+      "title": "Exercise 2 — Scoring Tools for Indian Use",
+      "intro": [
+        {
+          "type": "p",
+          "text": "A global review ranks tools on capability. An Indian buyer has four more questions — what it does in your language, what happens when the network drops, what it actually costs in rupees, and who answers when it breaks."
+        }
+      ],
+      "topics": [
+        {
+          "id": "invest-in-ai-tools-5-1",
+          "number": "5.1",
+          "title": "The four India-specific criteria",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Criterion What to actually test Why it changes the answer"
+            },
+            {
+              "type": "pre",
+              "text": "Language support       Run your real work in your real language. Test   Support for Hindi is broadly decent across major tools; support for other\n                       the script you use (Devanagari, Tamil, Bangla)   Indian languages varies a great deal by tool and by task. A tool that\n                       and romanised Hinglish, which is how most        summarises English beautifully may produce stilted Marathi\n                       people actually type. Check output quality, not\n                       just whether it responds\nOffline capability     What can you do with no connection? Almost       If you work while commuting, in a plant, on a site or anywhere with\n                       nothing, for cloud chat tools. Check whether     patchy data, a cloud-only tool has hours in the week where it\n                       drafts are preserved when the connection drops   contributes zero — which directly reduces S in your formula\n                       mid-response\nINR pricing and        Is there a rupee price, or is it USD? Does UPI   USD billing adds a forex markup of roughly 2–4% on many Indian cards.\npayment                work, or do you need a card that accepts         No GST invoice means a business cannot claim input credit, which\n                       international transactions? Is a GST invoice     materially changes the effective cost for a freelancer or firm\n                       available?\nLocal support and      Where do you complain? Is there support in       For a ₹399 consumer plan this rarely matters. For a ₹20,000-a-year\nrecourse               your timezone? What is the refund policy, and    business dependency it matters a great deal, and it is the criterion\n                       can you actually reach a human?                  buyers discover only when something has already gone wrong"
+            },
+            {
+              "type": "p",
+              "text": "One more, if your work touches other people’s data"
+            },
+            {
+              "type": "p",
+              "text": "If you handle client files, patient information, employee records or unpublished financials, add a fifth criterion: what does this tool do with what I paste into it? Check whether inputs are used for training, whether there is a business tier that changes that, and where the data is processed."
+            },
+            {
+              "type": "p",
+              "text": "India’s Digital Personal Data Protection Act framework makes this a compliance question and not only an ethical one for anyone processing personal data at any scale. A free consumer tier is rarely the right place for a client’s confidential documents, whatever its capability."
+            }
+          ]
+        },
+        {
+          "id": "invest-in-ai-tools-5-2",
+          "number": "5.2",
+          "title": "The market as it stood in mid-2026",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Read the date on this section before you use it"
+            },
+            {
+              "type": "p",
+              "text": "AI pricing in India moved repeatedly through 2025 and 2026. OpenAI launched an India-exclusive ChatGPT Go tier at ₹399/month in August 2025 and later confirmed rupee billing for Plus (₹1,999) and Pro (₹19,900), with UPI support. Google introduced a comparable AI Plus plan in India at around ₹399/month in late 2025. Anthropic’s Claude Pro remained billed in US dollars at around $20/month, without India-specific rupee pricing. Perplexity Pro and most international tiers sat at about $20/month."
+            },
+            {
+              "type": "p",
+              "text": "Several large promotions ran alongside: a free year of ChatGPT Go, eighteen months of Google AI Pro bundled by Jio for younger subscribers on qualifying plans, a student offer from Google, and an Airtel–Perplexity bundle — which reportedly unravelled in early 2026, and is the reason this guide treats promotions as temporary by default. Verify every figure before you act on it."
+            },
+            {
+              "type": "p",
+              "text": "Tool India price (mid-2026) Strongest at India notes"
+            },
+            {
+              "type": "pre",
+              "text": "ChatGPT                Go ₹399/mo · Plus ₹1,999/mo ·  General-purpose assistant,                       Rupee billing, UPI supported. The Go tier is\n(OpenAI)               Pro ₹19,900/mo · Team          broad ecosystem, image and                       India-first and is the cheapest serious paid option\n                       ₹2,099/seat                    voice                                            here\nGemini (Google)        AI Plus ≈₹399/mo · AI Pro      Anything already inside Google                   Rupee billing. Jio bundle has offered long free\n                       ≈₹1,950/mo                     Workspace; long documents;                       access to qualifying subscribers. Strongest choice\n                                                      research in NotebookLM                           if your work already lives in Docs and Drive\nClaude                 Pro ≈$20/mo, billed in USD     Long document analysis,                          No India-specific rupee pricing as of mid-2026, so\n(Anthropic)                                           nuanced writing, coding                          expect card forex charges. Check GST invoicing if\n                                                                                                       you need to claim it\nPerplexity             Pro ≈$20/mo (telco bundles     Sourced, cited research and                      Its citation model makes it the natural verification\n                       have varied)                   fact-checking                                    layer alongside whichever assistant you use for\n                                                                                                       drafting\nA domain tool          Varies widely                  One narrow job, done far better                  Score these hardest — narrow tools have the\n(design, legal,                                       than a general assistant                         steepest learning curves and the highest\ncoding,                                                                                                discontinuation risk (§6.3)\nmeetings)"
+            },
+            {
+              "type": "p",
+              "text": "Capability across the general assistants converges quickly and changes every few months. Do not choose on a capability comparison that will be stale before your first renewal — choose on fit to the three tasks from Chapter 4, and on the four criteria in §5.1."
+            }
+          ]
+        },
+        {
+          "id": "invest-in-ai-tools-5-3",
+          "number": "5.3",
+          "title": "Three things no pricing page tells you",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• ‘Unlimited’ is never unlimited. Every plan on the market applies dynamic throttling, and providers say so in their own documentation — limits vary with market and system conditions. Budget for hitting a wall at the worst possible moment, and keep a second tool’s free tier as a fallback."
+            },
+            {
+              "type": "p",
+              "text": "• Promotional pricing is a funnel, not a gift. A free year is a customer acquisition cost, and it is designed to make cancelling feel like a loss twelve months later. Accept the free year — and put a calendar reminder two weeks before it expires to run the formula properly, as a fresh decision rather than a renewal."
+            },
+            {
+              "type": "p",
+              "text": "• The headline tier is rarely the tier you need. Most individuals are well served by a ₹399-class plan or a free tier. The ₹1,999 tiers matter for heavy daily use; the ₹20,000 tiers are for a small minority. Start at the bottom and move up only when you have hit a documented limit."
+            },
+            {
+              "type": "p",
+              "text": "WORKSHEET — Tool scoring worksheet — one sheet per tool"
+            },
+            {
+              "type": "p",
+              "text": "TOOL: ______________________ Evaluated on: ____________"
+            },
+            {
+              "type": "pre",
+              "text": "MY THREE TASKS FROM CHAPTER 4            Does this tool do it?                            Hours/week saved\n1. ______________________________         yes / partly / no                                ______\n2. ______________________________         yes / partly / no                                ______\n3. ______________________________         yes / partly / no                                ______\n                                                       TOTAL S =                           ______ h/week\nMY PARAMETERS (from 3.6)                 K = ______   D = 0.5 (or measured)\n     R = Rs ______ /hour\n     L = ______ hours                    M = ______ hours/year"
+            },
+            {
+              "type": "p",
+              "text": "COST"
+            },
+            {
+              "type": "p",
+              "text": "Headline price Rs ______ /month x 12 = Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "Forex markup if billed in USD (~2-4%) + Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "GST recoverable? (yes reduces effective cost) - Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "ANNUAL COST C = Rs ______"
+            },
+            {
+              "type": "pre",
+              "text": "INDIA CRITERIA                                                                            score 0-2\n     works in the language I actually use                                                  ______\n     usable when my connection is poor                                                     ______\n     INR pricing, UPI, GST invoice                                                         ______\n     support and recourse I could actually use                                             ______"
+            },
+            {
+              "type": "p",
+              "text": "NET = (S x D x K x R x 52) - (C + (L + M) x R) = Rs ______________ per year"
+            },
+            {
+              "type": "p",
+              "text": "[ ] Buy now [ ] Free tier first, re-score in 30 days"
+            },
+            {
+              "type": "p",
+              "text": "[ ] Ask employer to pay [ ] No - and the reason is: ____________"
+            },
+            {
+              "type": "p",
+              "text": "Anything scoring 0 on a critical India criterion is a NO regardless of the rupee figure. A tool that cannot handle your language does not save you the hours you assumed it would."
+            },
+            {
+              "type": "p",
+              "text": "Score at least three tools against the same three tasks. Comparing tools against each other is far less useful than comparing each one against the work you actually do."
+            },
+            {
+              "type": "p",
+              "text": "EXERCISE — Score five tools properly"
+            },
+            {
+              "type": "p",
+              "text": "Two hours, spread over a fortnight of free-tier use. 1 Choose five candidates: two general assistants, one research tool, and two domain-specific tools relevant to your three"
+            },
+            {
+              "type": "p",
+              "text": "tasks. 2 Use the free tier of each for at least three real work sessions before scoring. Scoring from reviews rather than use"
+            },
+            {
+              "type": "p",
+              "text": "is how people buy the wrong tool. 3 Fill in one worksheet per tool. Use your own R, K, D, L and M throughout — not generic ones. 4 Test the language criterion with your actual work, in your actual language, not with a greeting. 5 Rank by net annual value, then check the India criteria subtotal. If your top tool by rupees scores badly on a criterion you"
+            },
+            {
+              "type": "p",
+              "text": "genuinely need, the second-ranked tool is your answer. 6 Write one line committing to the decision, including the review date. A decision without a review date is a subscription you"
+            },
+            {
+              "type": "p",
+              "text": "will still be paying for in 2028."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "6",
+      "title": "Risk, Cancellation and Lock-In",
+      "intro": [
+        {
+          "type": "p",
+          "text": "An investor spends as much attention on the exit as on the entry. With software subscriptions almost nobody does — which is why the average professional is paying for at least one thing they stopped using months ago."
+        }
+      ],
+      "topics": [
+        {
+          "id": "invest-in-ai-tools-6-1",
+          "number": "6.1",
+          "title": "Free tier first, always",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The free tiers of the major assistants in 2026 are genuinely capable, and for a large fraction of individual users they are sufficient. Treat the free tier not as a limited demo but as the default state you must be argued out of."
+            },
+            {
+              "type": "p",
+              "text": "• Use the free tier for a fortnight of real work before paying anything. Not test prompts — actual tasks from your Chapter 4 list."
+            },
+            {
+              "type": "p",
+              "text": "• Document the specific wall you hit. ‘I ran out of messages three times on Tuesday’ or ‘the free model could not handle a 40-page document’ is a reason to upgrade. ‘It seems better’ is not."
+            },
+            {
+              "type": "p",
+              "text": "• Upgrade to the cheapest paid tier that removes that specific wall, not to the flagship. In India that is often a ₹399-class plan rather than a ₹1,999 one, and the difference over a year is ₹19,000."
+            },
+            {
+              "type": "p",
+              "text": "• Take promotional free periods, and diarise the end date. A free year is worth having. It is also designed so that month thirteen arrives without a decision being made. Set the reminder for two weeks before expiry and run the formula fresh."
+            }
+          ]
+        },
+        {
+          "id": "invest-in-ai-tools-6-2",
+          "number": "6.2",
+          "title": "The cancellation discipline",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The annual subscription audit — forty minutes, once a year Open your bank or card statement and your UPI mandate list. Write down every recurring software charge, with its annual total. Most people are surprised by both the count and the sum. For each one, answer a single question: would I subscribe to this today, at this price, knowing what I now know? Not ‘have I used it’ — people justify sunk costs by using things occasionally. If the answer is no, cancel it today, while the statement is open. Cancelling later means never. Then check your UPI autopay mandates and card standing instructions specifically. A cancelled account with a live mandate keeps charging, and this is common enough to be worth checking every time."
+            },
+            {
+              "type": "pre",
+              "text": "Trap                   How it works                                  Defence\nAnnual prepay\n                       A discount for paying twelve months up        Never prepay annually on a first purchase. Take the monthly price for the\nSilent renewal         front, taken before you know whether the      first year, then switch to annual only after a full year of measured use\nSeat creep             tool works for you\nTier drift\nThe bundle             The promotional year ends and full price      Calendar reminder two weeks before every renewal date, with the\n                       begins with a notification you will not read  formula attached"
+            },
+            {
+              "type": "p",
+              "text": "Team plans bill per seat and seats are easier Quarterly seat review; remove anyone who has not logged in for a month to add than to remove"
+            },
+            {
+              "type": "p",
+              "text": "A limit is hit once, you upgrade permanently Upgrade for a month, then downgrade and see whether you notice. Most people do not"
+            },
+            {
+              "type": "p",
+              "text": "A tool arrives inside a product you already Bundled tools still cost learning time. Score them like any other pay for, so it feels free and never gets evaluated"
+            }
+          ]
+        },
+        {
+          "id": "invest-in-ai-tools-6-3",
+          "number": "6.3",
+          "title": "Lock-in, and the exit test",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Lock-in with AI tools is rarely contractual. It is behavioural and structural: your prompts, your saved workflows, your team’s habits, and your data all accumulate inside a product. The cost of leaving rises quietly with every month of use."
+            },
+            {
+              "type": "p",
+              "text": "THE EXIT TEST - ask these before you commit, not after"
+            },
+            {
+              "type": "p",
+              "text": "Can I get my data out in a usable format?"
+            },
+            {
+              "type": "p",
+              "text": "│"
+            },
+            {
+              "type": "p",
+              "text": "NO ──▶ HIGH RISK. Cap your dependency. Keep the source material"
+            },
+            {
+              "type": "p",
+              "text": "│ outside the tool - your own files, your own store."
+            },
+            {
+              "type": "p",
+              "text": "YES"
+            },
+            {
+              "type": "p",
+              "text": "│"
+            },
+            {
+              "type": "p",
+              "text": "▼"
+            },
+            {
+              "type": "p",
+              "text": "If this product doubled its price tomorrow, what would I do?"
+            },
+            {
+              "type": "p",
+              "text": "│"
+            },
+            {
+              "type": "p",
+              "text": "\"pay it, I have no choice\" ──▶ HIGH RISK. You have already lost the"
+            },
+            {
+              "type": "p",
+              "text": "│ negotiation. Build a fallback now."
+            },
+            {
+              "type": "p",
+              "text": "\"switch in a week\""
+            },
+            {
+              "type": "p",
+              "text": "│"
+            },
+            {
+              "type": "p",
+              "text": "▼"
+            },
+            {
+              "type": "p",
+              "text": "If this product shut down tomorrow, what stops working?"
+            },
+            {
+              "type": "p",
+              "text": "│"
+            },
+            {
+              "type": "p",
+              "text": "\"a workflow my business depends on\" ──▶ HIGH RISK, and rising with"
+            },
+            {
+              "type": "p",
+              "text": "│ every month you delay."
+            },
+            {
+              "type": "p",
+              "text": "\"one task, and I'd do it manually\""
+            },
+            {
+              "type": "p",
+              "text": "│"
+            },
+            {
+              "type": "p",
+              "text": "▼"
+            },
+            {
+              "type": "p",
+              "text": "Are my prompts and workflows portable?"
+            },
+            {
+              "type": "p",
+              "text": "│"
+            },
+            {
+              "type": "p",
+              "text": "\"they only work in this product's syntax\" ──▶ MEDIUM RISK. Keep your"
+            },
+            {
+              "type": "p",
+              "text": "│ prompt library in a"
+            },
+            {
+              "type": "p",
+              "text": "│ plain text file YOU own."
+            },
+            {
+              "type": "p",
+              "text": "YES"
+            },
+            {
+              "type": "p",
+              "text": "▼"
+            },
+            {
+              "type": "p",
+              "text": "ACCEPTABLE DEPENDENCY. Review annually."
+            },
+            {
+              "type": "p",
+              "text": "Depth of dependency should be proportional to the vendor's likely lifespan. A large provider's general assistant is a reasonable thing to build habits around. A twelve-person startup's niche tool is not somewhere to put your only copy of anything."
+            },
+            {
+              "type": "p",
+              "text": "Figure 6.1 — The cheapest insurance is keeping your source material and your prompt library in files you control. That single habit converts most lock-in into an inconvenience"
+            },
+            {
+              "type": "p",
+              "text": "CHECKLIST — Tool evaluation checklist — run before any new subscription"
+            },
+            {
+              "type": "p",
+              "text": "□ It maps to a specific task from my Chapter 4 audit □ I know what happens when my connection drops mid-task"
+            },
+            {
+              "type": "pre",
+              "text": "□ I have used the free tier for at least three real work     □ Price checked in INR including forex markup if billed\n    sessions                                                     abroad\n□ I can name the exact limit that makes the free tier        □ GST invoice available, if I need to claim it\n    insufficient"
+            },
+            {
+              "type": "p",
+              "text": "□ I estimated S, then halved it (D = 0.5) □ I know what the tool does with data I paste into it"
+            },
+            {
+              "type": "p",
+              "text": "□ I used my real hourly rate, not an aspirational one □ Nothing confidential goes in without checking the terms"
+            },
+            {
+              "type": "pre",
+              "text": "□ I assigned an honest capture rate and can justify it in a  □ I can export my data in a usable format\n    sentence"
+            },
+            {
+              "type": "p",
+              "text": "□ I included ongoing learning time, not just the initial hours □ I know what I would do if the price doubled"
+            },
+            {
+              "type": "p",
+              "text": "□ Net annual value computed with the corrected formula, □ Monthly billing chosen, not annual prepay, for the first"
+            },
+            {
+              "type": "p",
+              "text": "and it is positive year"
+            },
+            {
+              "type": "pre",
+              "text": "□ — or it is negative and I know which non-cash benefit I    □ Renewal or promo-expiry date is in my calendar with a\n    am buying                                                    reminder"
+            },
+            {
+              "type": "p",
+              "text": "□ I checked whether my employer should be paying for this □ Review date set at 30 days to check whether the hours"
+            },
+            {
+              "type": "p",
+              "text": "instead materialised"
+            },
+            {
+              "type": "pre",
+              "text": "□ Tested in the language I actually work in                  □ I have written down the expected hours saved, where I\n                                                                 will find it later"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "7",
+      "title": "Exercise 3 — Your Tool Stack Roadmap",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Buying four tools at once guarantees you will learn none of them properly. A roadmap sequences purchases so that each one is genuinely absorbed before the next arrives — and so that the skill from one makes the next cheaper to learn."
+        }
+      ],
+      "topics": [
+        {
+          "id": "invest-in-ai-tools-7-1",
+          "number": "7.1",
+          "title": "Why sequence beats selection",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Learning capacity is the scarce resource, not money. A ₹399 subscription costs you thirty hours of attention in its first year. You have perhaps sixty such hours available. That is two tools a year, learned properly — not six."
+            },
+            {
+              "type": "p",
+              "text": "• Skills transfer. Learning to prompt a general assistant well makes every subsequent AI tool substantially cheaper to learn, because the underlying skill (specifying precisely, checking output, knowing when to distrust it) is the same. This is why the general assistant goes first even if a domain tool looks more exciting."
+            },
+            {
+              "type": "p",
+              "text": "• Measurement needs isolation. If you adopt three tools in one month, you cannot attribute the hours you saved to any of them, and your D factor stays permanently uncalibrated. One at a time is what makes the numbers real."
+            },
+            {
+              "type": "p",
+              "text": "• Your capture rate can change. A roadmap should account for the fact that the freed hours from stage one might be invested in raising your rate, which changes the arithmetic for stage two."
+            }
+          ]
+        },
+        {
+          "id": "invest-in-ai-tools-7-2",
+          "number": "7.2",
+          "title": "The three stages",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Stage What you adopt The skill it builds Move on when"
+            },
+            {
+              "type": "pre",
+              "text": "1. Foundation  One general assistant, on a free or       Precise specification, checking      You use it daily without thinking, and\nmonths 1–4     ₹399-class tier                           output, knowing what it is bad at.   you have a measured D factor\n                                                         The transferable skill\n2. Workflow    One tool that sits inside a specific job  Integrating a tool into an existing  The task from Chapter 4 is genuinely\nmonths 5–10    you do often — research and citation,     process rather than working          faster, measured, and the habit is\n               coding, meetings, design, document        around it                            stable\n               analysis\n3. Automation  Something that runs without you — a       Systems thinking: inputs, failure    It has run unattended for a month and\nmonths 11+     scheduled workflow, a connected           modes, monitoring. The most          you trust its failure behaviour\n               pipeline, an agent handling a recurring   valuable and the steepest\n               task"
+            },
+            {
+              "type": "p",
+              "text": "Most people try to start at stage 3 because it is the most impressive, and abandon it because they have not built the judgement from stages 1 and 2. The sequence is the point."
+            }
+          ]
+        },
+        {
+          "id": "invest-in-ai-tools-7-3",
+          "number": "7.3",
+          "title": "Three roadmaps",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "CASE STUDY — Priya — freelance content writer, Bengaluru"
+            },
+            {
+              "type": "p",
+              "text": "R = ₹800/hr billable · K = 0.85 · demand exceeds her capacity"
+            },
+            {
+              "type": "pre",
+              "text": "POSITION       The most favourable case in this guide. Every hour freed is an hour she can bill to another client, so her capture\n               rate is near the top of the range and paid tools clear the bar easily.\nSTAGE 1        General assistant on the ₹399 tier for drafting and restructuring. Corrected net value roughly ₹77,000/year\n               against a ₹4,788 cost — an unambiguous buy.\nSTAGE 2        A research tool with citations, as a verification layer. Her risk is not speed, it is publishing something wrong for a\n               client."
+            },
+            {
+              "type": "p",
+              "text": "STAGE 3 A simple automation for her invoicing and follow-up emails — the admin that eats her unbillable hours."
+            },
+            {
+              "type": "pre",
+              "text": "THE TRAP       Filling every freed hour with more low-rate work. Her highest-return use of stage-1 savings is raising her rate,\nSHE MUST       not increasing volume — which compounds, where volume does not.\nAVOID"
+            },
+            {
+              "type": "p",
+              "text": "What to take from this: High capture rate means buy early and buy confidently. The discipline she needs is about what she does with the hours, not about whether to spend the money."
+            },
+            {
+              "type": "p",
+              "text": "CASE STUDY — Arjun — salaried engineer, ₹12 L, Pune"
+            },
+            {
+              "type": "p",
+              "text": "R = ₹600/hr · K ≈ 0.25 · the value of his time goes to his employer"
+            },
+            {
+              "type": "p",
+              "text": "POSITION The uncomfortable case from §3.6. A ₹20,400 coding assistant scores roughly −₹22,800 on his own numbers — and would still be slightly negative even if the company paid, because his learning time alone exceeds what he personally captures."
+            },
+            {
+              "type": "p",
+              "text": "WHAT HE Takes the formula to his manager with the company’s numbers in it, where the capture rate is 1.0 and the DOES FIRST return is strongly positive. Getting the employer to pay is his single highest-return action."
+            },
+            {
+              "type": "pre",
+              "text": "STAGE 1        Free tier, until he has documented the specific wall he hits. For a salaried engineer this is often sufficient for a\n               year."
+            },
+            {
+              "type": "p",
+              "text": "STAGE 2 The company-paid coding assistant, once approved — and he tracks the hours so the renewal case writes itself."
+            },
+            {
+              "type": "pre",
+              "text": "STAGE 3        He spends the freed hours on something that raises his rate rather than absorbing more tickets. That decision,\n               not the tool, is what changes his capture rate at the next appraisal."
+            },
+            {
+              "type": "p",
+              "text": "What to take from this: For salaried professionals the question is rarely ‘is this tool good’. It is ‘who should be paying, and what am I doing with the time’ — and answering both turns a negative return into a positive one."
+            },
+            {
+              "type": "p",
+              "text": "CASE STUDY — Meera — owner, 12-person textile export firm, Surat"
+            },
+            {
+              "type": "p",
+              "text": "profit per working hour ≈ ₹1,100 · K ≈ 0.7 · can convert capacity into orders"
+            },
+            {
+              "type": "pre",
+              "text": "POSITION       Strong capture, because freed capacity turns into fulfilled orders. But her constraint is not her own hours — it is\n               her team’s, and tools bought for a team carry adoption risk her own purchases do not.\nSTAGE 1        She adopts the general assistant herself first, for buyer correspondence and translating specifications. She\n               learns it before she asks anyone else to.\nSTAGE 2        A document-extraction tool for purchase orders and invoices — her highest-scoring Chapter 4 task, and one\n               where errors are checkable.\nSTAGE 3        A workflow that generates order acknowledgements automatically, with a human approval step retained (see\n               the automation guide in this series)."
+            },
+            {
+              "type": "p",
+              "text": "HER SPECIFIC Team seats she keeps paying for after people stop using them; and buyer data going into a consumer free tier."
+            },
+            {
+              "type": "p",
+              "text": "RISKS She needs the seat review from §6.2 and the data check from §5.1."
+            },
+            {
+              "type": "p",
+              "text": "What to take from this: Business owners have the best capture rate and the worst adoption risk. Buy for yourself first, prove it, then buy seats — never the other way round."
+            },
+            {
+              "type": "p",
+              "text": "WORKSHEET — Roadmap worksheet"
+            },
+            {
+              "type": "p",
+              "text": "MY PARAMETERS R = Rs ______/hr K = ______ D = ______"
+            },
+            {
+              "type": "p",
+              "text": "STAGE 1 - FOUNDATION months 1 to ______"
+            },
+            {
+              "type": "p",
+              "text": "Tool: ______________________"
+            },
+            {
+              "type": "p",
+              "text": "Task it attacks (ch 4): ______________________"
+            },
+            {
+              "type": "p",
+              "text": "Tier: free / Rs ______ per month"
+            },
+            {
+              "type": "p",
+              "text": "Expected S: ______ h/wk Net value: Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "I move to stage 2 when: ______________________"
+            },
+            {
+              "type": "p",
+              "text": "Review date: ______________________"
+            },
+            {
+              "type": "pre",
+              "text": "STAGE 2 - WORKFLOW                       months ______ to ______\n     Tool:                               ______________________\n     Task it attacks:                    ______________________\n     Expected S: ______ h/wk             Net value: Rs ______\n     I move to stage 3 when:             ______________________"
+            },
+            {
+              "type": "p",
+              "text": "STAGE 3 - AUTOMATION month ______ onward"
+            },
+            {
+              "type": "p",
+              "text": "What runs without me: ______________________"
+            },
+            {
+              "type": "p",
+              "text": "What happens when it fails: ______________________"
+            },
+            {
+              "type": "p",
+              "text": "Total annual spend, all stages: Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "As a % of my annual income: ______ %"
+            },
+            {
+              "type": "p",
+              "text": "What the freed hours are FOR: ______________________"
+            },
+            {
+              "type": "p",
+              "text": "(if you cannot answer this line, your capture rate is 0)"
+            },
+            {
+              "type": "p",
+              "text": "One new tool at a time. Nothing new until the previous one is measured, or dropped."
+            },
+            {
+              "type": "p",
+              "text": "The line about what the freed hours are for is the one people leave blank, and it is the line that determines whether any of this produced value."
+            },
+            {
+              "type": "p",
+              "text": "EXERCISE — Write your roadmap An hour, and then twelve months of following it. 1 Fill in your three parameters from Chapter 3 at the top. 2 Assign your three tasks from Chapter 4 across the three stages. Foundation gets the broadest task, automation gets the"
+            },
+            {
+              "type": "p",
+              "text": "most repetitive. 3 Choose the stage-1 tool from your Chapter 5 scoring. Start on the free tier. 4 Write the specific condition that lets you move to stage 2. Not a date — a condition, such as ‘I have measured D and the"
+            },
+            {
+              "type": "p",
+              "text": "habit is daily’. 5 Total your planned annual spend and express it as a percentage of your income. If it is above about 2–3% and your"
+            },
+            {
+              "type": "p",
+              "text": "capture rate is low, revisit. 6 Answer the freed-hours line honestly. Then put every review date in your calendar today, before you close this document."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "A",
+      "title": "Reference",
+      "intro": [],
+      "topics": [
+        {
+          "id": "invest-in-ai-tools-A-1",
+          "number": "A.1",
+          "title": "The formula card",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "AS STATED (chapter 2) NET = ( S x R x 52 ) - ( C + L x R )"
+            },
+            {
+              "type": "p",
+              "text": "CORRECTED (chapter 3) - use this one NET = ( S x D x K x R x 52 ) - ( C + (L + M) x R )"
+            },
+            {
+              "type": "p",
+              "text": "S hours saved per week, your honest estimate"
+            },
+            {
+              "type": "p",
+              "text": "D estimate discount 0.5 until you have measured it"
+            },
+            {
+              "type": "p",
+              "text": "K capture rate 1.0 freelancer with excess demand"
+            },
+            {
+              "type": "p",
+              "text": "0.7-0.9 business owner"
+            },
+            {
+              "type": "p",
+              "text": "0.4-0.6 freelancer, demand-limited"
+            },
+            {
+              "type": "p",
+              "text": "0.2-0.4 salaried, output-measured"
+            },
+            {
+              "type": "p",
+              "text": "0.0-0.1 salaried, presence-measured"
+            },
+            {
+              "type": "p",
+              "text": "R your real hourly rate annual earnings / hours actually worked"
+            },
+            {
+              "type": "p",
+              "text": "C annual cost incl. GST and forex markup"
+            },
+            {
+              "type": "p",
+              "text": "L initial learning hours 5-10 chat · 10-20 coding · 20-40 workflow"
+            },
+            {
+              "type": "p",
+              "text": "M ongoing hours per year typically 10-30"
+            },
+            {
+              "type": "p",
+              "text": "BREAKEVEN - how many hours you must ACTUALLY save per week S_breakeven = ( C + (L + M) x R ) / ( D x K x R x 52 )"
+            },
+            {
+              "type": "p",
+              "text": "Worked, for a Rs 20,400/year tool at D=0.5, K=0.25, L+M=30:"
+            },
+            {
+              "type": "p",
+              "text": "Rs 250/hr (junior) -&gt; 17.2 h/week almost certainly not"
+            },
+            {
+              "type": "p",
+              "text": "Rs 600/hr (mid) -&gt; 9.8 h/week unlikely"
+            },
+            {
+              "type": "p",
+              "text": "Rs 1,200/hr (senior) -&gt; 7.2 h/week possible, but measure it"
+            },
+            {
+              "type": "p",
+              "text": "Run this before you buy. If the breakeven exceeds a quarter of your working week, the cash case fails and you should either get someone else to pay or be honest that you are buying something other than money."
+            },
+            {
+              "type": "p",
+              "text": "The breakeven form is the most useful single line in this guide, because it converts an argument about value into a number you can check against a week"
+            }
+          ]
+        },
+        {
+          "id": "invest-in-ai-tools-A-2",
+          "number": "A.2",
+          "title": "The decision tree, in short",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Does it map to a task from my week log? NO ──▶ stop. You are buying a feeling. YES ▼"
+            },
+            {
+              "type": "p",
+              "text": "Have I used the free tier for three real sessions? NO ──▶ do that first. Most decisions end here, correctly. YES ▼"
+            },
+            {
+              "type": "p",
+              "text": "Can I name the exact limit I hit? NO ──▶ the free tier is sufficient. Stop. YES ▼"
+            },
+            {
+              "type": "p",
+              "text": "Is the CORRECTED net value positive? YES ──▶ buy the cheapest tier that removes that limit. Monthly. NO ▼"
+            },
+            {
+              "type": "p",
+              "text": "Should my employer be paying for this? YES ──▶ take them the formula with THEIR capture rate. Best move. NO ▼"
+            },
+            {
+              "type": "p",
+              "text": "Am I knowingly buying something other than money - leisure, learning, output quality?"
+            },
+            {
+              "type": "p",
+              "text": "YES ──▶ legitimate. Say so out loud, set a budget, buy it. NO ──▶ do not buy. Revisit in six months."
+            },
+            {
+              "type": "p",
+              "text": "Figure A.1 — Note how many paths end in ‘do not buy’ or ‘stay on free’. A framework that always says yes is a marketing document"
+            }
+          ]
+        },
+        {
+          "id": "invest-in-ai-tools-A-3",
+          "number": "A.3",
+          "title": "A ninety-day plan",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Days   Do                                            You will have\n                                                     An honest picture of where your hours go\n1–7    Ch 4 — log your week, do not change\n                                                     Three specific, named candidate tasks\n       anything                                      Your own parameters, written down\n                                                     Five scored worksheets and a documented wall\n8–10   Ch 4 — score tasks, pick three                A cancellation list and probably some recovered money\n11–14  Ch 3 — compute R, assign K, set D             One tool, monthly billing, review date in the calendar\n15–45  Ch 5 — free tiers of five tools on real work  A measured D factor to replace the 0.5 guess\n46–50  Ch 6 — run the annual subscription audit on   A renewal decision made on evidence, and a calibrated estimate for every\n       what you already pay for                      future purchase"
+            },
+            {
+              "type": "p",
+              "text": "51–55 Ch 7 — write the roadmap, buy stage 1 only 56–85 Use it daily. Track actual hours saved each week"
+            },
+            {
+              "type": "p",
+              "text": "86–90 Re-run the formula with measured numbers"
+            }
+          ]
+        },
+        {
+          "id": "invest-in-ai-tools-A-4",
+          "number": "A.4",
+          "title": "Glossary",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "                        The fraction of the value of saved time that actually reaches you rather than your employer or nobody\n Term                   The haircut applied to an unmeasured savings estimate; 0.5 until you have measured\n Capture rate (K)       Annual earnings divided by hours actually worked — not an aspiration\n Estimate discount (D)  Hours per week you must genuinely save for a tool to pay for itself in cash\n Hourly rate (R)        The corrected formula’s output; the cash case, stated in rupees per year\n Breakeven hours        The default state a purchase must argue you out of\n Net annual value       Customer acquisition cost presented as a gift; always temporary\n Free tier              Usage limits that vary with demand, applied on every plan including ‘unlimited’ ones\n Promotional pricing    Accumulated data, habits and workflows that raise the cost of leaving\n Dynamic throttling     The four questions in §6.3 asked before committing, not after\n Lock-in                Team plans growing because seats are easier to add than remove\n Exit test              Permanently upgrading after hitting a limit once\n Seat creep             The annual review of every recurring charge against the question ‘would I buy this today’\n Tier drift\n Subscription audit"
+            },
+            {
+              "type": "p",
+              "text": "On the prices in this guide. The India-specific figures in §5.2 — ChatGPT Go at ₹399 and Plus at ₹1,999 with rupee billing and UPI, Google’s comparable ₹399-class AI Plus plan, Claude Pro billed in US dollars without India-specific pricing, and"
+            },
+            {
+              "type": "p",
+              "text": "Perplexity Pro at around $20 — reflect published pricing as of mid-2026. The promotions described, including the free year of ChatGPT Go, the Jio bundle of Google AI Pro and the Airtel–Perplexity offer, were live or recently concluded at that date; at least one ended earlier than announced, which is precisely why this guide treats every promotion as temporary. Re-check the official pricing page before any decision. Capability rankings between these tools change every few months and are deliberately not offered here."
+            },
+            {
+              "type": "p",
+              "text": "And the honest summary of the whole framework. The formula you were given is a good instrument for forcing four vague beliefs into four written numbers. It is a bad instrument for making the final call, because it silently assumes that time saved becomes money earned — and for most salaried professionals in India, it does not. Once you add capture rate, halve your estimate, count the learning honestly and price the risk, a lot of purchases that looked like nineteen-times returns turn out to be roughly break-even. That is not an argument against AI tools. It is an argument for buying fewer of them, learning those properly, getting someone else to pay where the value lands with them, and deciding in advance what the freed hours are actually for."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2253 @@
+{
+  "slug": "renewable-energy-mobility",
+  "title": "Renewable Energy & Electric Mobility",
+  "tagline": "Safety first, then deployable, then optimal — clean energy and the vehicles it drives, built for Indian conditions.",
+  "modules": [
+    {
+      "number": "1",
+      "title": "Designing for Indian Conditions",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Every derating factor in this chapter is a number that a textbook treats as a footnote and an Indian installation treats as the main event. Together they are the difference between a system that meets its generation estimate and one that quietly under-performs for a decade."
+        }
+      ],
+      "topics": [
+        {
+          "id": "renewable-energy-mobility-1-1",
+          "number": "1.1",
+          "title": "The derating stack",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "A module rated 550 W is rated at Standard Test Conditions: 1000 W/m², cell temperature 25 °C, AM1.5 spectrum. Those conditions occur on an Indian rooftop almost never. What you actually get is the nameplate multiplied by a chain of losses:"
+            },
+            {
+              "type": "p",
+              "text": "Loss Typical India Cause and what you do about it"
+            },
+            {
+              "type": "p",
+              "text": "Temperature 8–16% Module power falls roughly 0.3–0.4% per °C above 25 °C. At 42 °C ambient a roof-mounted cell can sit near 65 °C — that is 40 °C above STC, so 12–16% gone before anything else. Mitigate: 100 mm+ clearance under the module for airflow, never flush-mount on a hot roof"
+            },
+            {
+              "type": "p",
+              "text": "Soiling 3–25% Dust, bird droppings, pollen, construction dust, cement plant fallout. In Rajasthan, Delhi-NCR and Gujarat, uncleaned arrays can lose well over 20% by the end of the dry season. Mitigate: a cleaning schedule (§2.6), and tilt ≥ 10° so rain sheds rather than pools"
+            },
+            {
+              "type": "pre",
+              "text": "Mismatch and  2–8%                            Modules in a string perform to the weakest. A single shaded module drags the string. Mitigate: shading\nshading                                       survey (§2.2), string layout by shade group, module-level electronics only where a real obstruction\n                                              exists\nDC and AC wiring 2–4%                         I²R losses. Long DC runs on undersized cable are the usual culprit. Mitigate: size cable for ≤ 2% drop\n                                              (§2.5), not merely for ampacity\nInverter      2–5%                            Conversion efficiency, plus poor performance when loaded far below rating. Mitigate: size the inverter\n                                              to the array, typically 1.1–1.3 DC:AC ratio\nAvailability  1–5%                            Grid outages (a grid-tied inverter must shut down when the grid fails), faults, maintenance. Mitigate:\n                                              this is where hybrid or off-grid architectures earn their cost"
+            },
+            {
+              "type": "p",
+              "text": "Multiply them out and a well-built Indian rooftop system runs at a Performance Ratio of about 0.75–0.82. Use 0.78 for a first estimate and measure your own after six months."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-1-2",
+          "number": "1.2",
+          "title": "Monsoon and dust are one design problem, not two",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The seasonal cycle you are designing against"
+            },
+            {
+              "type": "p",
+              "text": "Dry season (roughly Feb–June). Soiling accumulates steadily — in dusty regions the loss climbs by a percent or two every month with no rain to clear it. Generation is high but the array is getting progressively dirtier, and this is when cleaning pays for itself."
+            },
+            {
+              "type": "p",
+              "text": "Monsoon (June–Sept). Generation drops sharply on overcast days — plan for the worst month, not the average. But rain also cleans the array for free, so soiling loss falls to near zero. The design risks shift to water ingress, corrosion, and lightning."
+            },
+            {
+              "type": "p",
+              "text": "Post-monsoon (Oct–Jan). Usually the best generation of the year: clean modules, clear skies, cooler cells. If your system does not perform in November, something is wrong that has nothing to do with the weather."
+            },
+            {
+              "type": "p",
+              "text": "• Design the water path, do not just seal. Junction boxes face downward, cable glands enter from below, and every enclosure has a drip loop before it and a drainage point at its lowest corner. Water always gets in eventually; what matters is whether it can get out."
+            },
+            {
+              "type": "p",
+              "text": "• Use the right ingress protection and mean it. IP65 minimum for outdoor enclosures, IP67 where standing water is possible. An IP65 box with an unsealed cable entry is an IP20 box."
+            },
+            {
+              "type": "p",
+              "text": "• Earthing and lightning are not optional in India. Module frames and mounting structure bonded to a dedicated earth; a surge protection device on both the DC and AC side. A single nearby strike will take out an unprotected inverter, and it is the most common insurance claim in Indian rooftop solar."
+            },
+            {
+              "type": "p",
+              "text": "• Tilt for rain, not only for yield. A near-flat array traps dust and pooled water. Even where the optimum tilt is low, keep at least 10–15° so the monsoon does your cleaning."
+            },
+            {
+              "type": "p",
+              "text": "• Corrosion. Coastal and high-humidity sites need stainless or hot-dip galvanised hardware. Ordinary zinc-plated bolts will be rust stains within two monsoons."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-1-3",
+          "number": "1.3",
+          "title": "Grid instability and what it does to your design",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Indian distribution networks vary enormously by location. In many places you must design for voltage that wanders well outside nominal, frequency excursions, and outages of hours. This decides your architecture more than any other single factor:"
+            },
+            {
+              "type": "pre",
+              "text": "Architecture  Behaviour when the grid fails                        Use when\nGrid-tied     Shuts down completely. Anti-islanding protection is\n              mandatory and required by regulation — it protects   Reliable grid, net metering available, lowest cost per kWh. The\nOff-grid      line workers, so it is not something to defeat       default for PM Surya Ghar rooftop\nHybrid        Unaffected — there is no grid to lose\n                                                                   No connection available, or the grid is unusable. Requires\n              Continues supplying selected critical loads from     batteries, which dominate the cost\n              battery; reconnects when the grid returns\n                                                                   Frequent outages, and some loads genuinely cannot be\n                                                                   interrupted. Costs more; specify the critical loads honestly or the\n                                                                   battery grows without limit"
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-1-4",
+          "number": "1.4",
+          "title": "Affordability decides whether it gets built",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "A technically superior system that nobody can finance does not reduce any emissions. Learn to speak in the two numbers that decision-makers actually use — payback period and levelised cost of energy — and to state your assumptions alongside them."
+            },
+            {
+              "type": "p",
+              "text": "payback (years) = (capital cost - subsidy) / annual savings"
+            },
+            {
+              "type": "p",
+              "text": "3 kW rooftop, roughly Rs 1,90,000 installed, PM Surya Ghar subsidy Rs 78,000"
+            },
+            {
+              "type": "p",
+              "text": "Generation = 3 kWp x 5.0 PSH x 0.78 PR x 365 = 4,270 kWh/year"
+            },
+            {
+              "type": "p",
+              "text": "Savings at a tariff of Rs 8/kWh = Rs 34,160/year"
+            },
+            {
+              "type": "p",
+              "text": "Payback = (1,90,000 - 78,000) / 34,160 = 3.3 years"
+            },
+            {
+              "type": "p",
+              "text": "Without the subsidy it is 5.6 years. That gap IS the policy working."
+            },
+            {
+              "type": "p",
+              "text": "LEVELISED COST OF ENERGY - the number that lets you compare technologies LCOE = (lifetime cost) / (lifetime energy delivered)"
+            },
+            {
+              "type": "p",
+              "text": "Lifetime cost = capital - subsidy + O&amp;M over 25 yr"
+            },
+            {
+              "type": "p",
+              "text": "= 1,12,000 + (25 x Rs 3,000) = Rs 1,87,000"
+            },
+            {
+              "type": "p",
+              "text": "Lifetime energy = 4,270 kWh/yr, degrading ~0.5%/yr over 25 yr"
+            },
+            {
+              "type": "p",
+              "text": "~ 4,270 x 25 x 0.94 = 1,00,345 kWh"
+            },
+            {
+              "type": "p",
+              "text": "LCOE = 1,87,000 / 1,00,345 = Rs 1.86 / kWh"
+            },
+            {
+              "type": "p",
+              "text": "Compare that against a grid tariff of Rs 8/kWh and the case makes itself. Compare it against a diesel genset at Rs 20-25/kWh and it is not close."
+            },
+            {
+              "type": "p",
+              "text": "Every number above depends on: peak sun hours at YOUR site, the tariff YOU pay (slab tariffs mean the marginal unit may cost far more than the average), whether you get the subsidy, and a discount rate if you are being rigorous. Quote a range, not a single figure."
+            },
+            {
+              "type": "p",
+              "text": "Run this before you design anything. If the payback exceeds the customer’s planning horizon, the correct engineering response is to change the design, not to argue with them"
+            },
+            {
+              "type": "p",
+              "text": "DO THIS NOW — Build your own derating stack An hour. Do this for a real roof you can stand on. 1 Find the peak sun hours for your district (§2.1). Write down the source and the month-by-month figures, not just the"
+            },
+            {
+              "type": "p",
+              "text": "annual average. 2 Estimate each loss in §1.1 for that specific site. Justify each in one line — ‘soiling 12% because the site is 400 m from a"
+            },
+            {
+              "type": "p",
+              "text": "cement road and cleaning will realistically be quarterly’. 3 Multiply them out to get your own Performance Ratio. Compare it against 0.78. 4 Compute expected annual generation for a 3 kWp system and the simple payback at your local tariff. 5 Now redo the payback for the worst monsoon month rather than the annual average, and note how differently the system"
+            },
+            {
+              "type": "p",
+              "text": "looks. Designing to the average is how off-grid systems end up undersized."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "2",
+      "title": "The Lifecycle",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Most failed installations were decided at the assessment stage. By the time anyone is on the roof with a drill, the important decisions have already been made — and the expensive mistakes are the ones made before the first component was ordered."
+        }
+      ],
+      "topics": [
+        {
+          "id": "renewable-energy-mobility-2-1",
+          "number": "2.1",
+          "title": "Resource assessment",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Source                 What you get                                 Note\nNASA POWER             Free global irradiance and weather by        The fastest free starting point. Coarse grid, so it smooths local\n                       latitude/longitude, monthly and daily,       effects\nMNRE / NIWE resource   decades of history\nmaps                   Indian solar and wind resource atlases       Authoritative for India; wind data from NIWE is the reference for\nSolargis / PVGIS /                                                  any wind claim\ncommercial datasets    Higher-resolution GHI, DNI, temperature;     Some free tiers; the paid data is what a bankable project uses\nA pyranometer on site  typical meteorological year files\n                       Actual measured irradiance at your location  The only way to settle a dispute. Worth borrowing for a week even\n                                                                    on a student project"
+            },
+            {
+              "type": "p",
+              "text": "Convert irradiance to peak sun hours (PSH): the daily GHI in kWh/m² is numerically the number of hours of 1000 W/m² equivalent. Most of India sits between 4.5 and 6.0 PSH annually — Rajasthan and Gujarat at the top, the north-east and Kerala lower. Use the worst month for off-grid sizing and the annual average for grid-tied. That single choice is the most common sizing error in student projects."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-2-2",
+          "number": "2.2",
+          "title": "Site survey — what to actually record",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "CHECKLIST — Site survey"
+            },
+            {
+              "type": "p",
+              "text": "□ Latitude, longitude, and site elevation □ Distance from array to inverter, and inverter to the meter"
+            },
+            {
+              "type": "p",
+              "text": "□ Available roof area, and its structural condition □ Earthing pit location and existing earth resistance"
+            },
+            {
+              "type": "p",
+              "text": "□ Roof type: RCC, metal sheet, tile — decides the mounting □ Access for installation and for future cleaning — is there a"
+            },
+            {
+              "type": "p",
+              "text": "system safe path?"
+            },
+            {
+              "type": "pre",
+              "text": "□ True south direction (use a compass and correct for      □ Water availability for cleaning\n    magnetic declination)\n□ Shading survey at 9 a.m., noon and 3 p.m., in winter     □ Consumer number and DISCOM name (needed for any\n                                                               subsidy application)"
+            },
+            {
+              "type": "p",
+              "text": "□ Nearby obstructions: water tank, parapet, trees, and the □ Twelve months of past electricity bills neighbour’s future floor"
+            },
+            {
+              "type": "p",
+              "text": "□ Existing sanctioned load and connection type (single or three phase)"
+            },
+            {
+              "type": "p",
+              "text": "Shading deserves its own paragraph. Survey in winter, when the sun is lowest and shadows are longest — a survey done in May will miss the shadow that covers a third of your array every December morning. And check the parapet wall: it is the single most commonly overlooked shading object on Indian rooftops."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-2-3",
+          "number": "2.3",
+          "title": "Load assessment and sizing",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "WORKSHEET — System sizing worksheet"
+            },
+            {
+              "type": "p",
+              "text": "STEP 1 - THE LOAD (do this from measurement or bills, never from guessing)"
+            },
+            {
+              "type": "p",
+              "text": "Appliance Watts Hours/day Qty Wh/day"
+            },
+            {
+              "type": "p",
+              "text": "---------------------------------------------------------"
+            },
+            {
+              "type": "p",
+              "text": "LED lights 9 6 8 432"
+            },
+            {
+              "type": "p",
+              "text": "Ceiling fan 55 8 4 1,760"
+            },
+            {
+              "type": "p",
+              "text": "Refrigerator 150 8* 1 1,200 *duty cycle, not runtime"
+            },
+            {
+              "type": "p",
+              "text": "TV 80 5 1 400"
+            },
+            {
+              "type": "p",
+              "text": "Pump 750 0.5 1 375"
+            },
+            {
+              "type": "p",
+              "text": "Misc / standby 40 24 1 960 &lt;- measure this (ch 5)"
+            },
+            {
+              "type": "p",
+              "text": "---------------------------------------------------------"
+            },
+            {
+              "type": "p",
+              "text": "TOTAL 5,127 Wh/day = 5.13 kWh/day"
+            },
+            {
+              "type": "p",
+              "text": "For GRID-TIED (offset annual consumption):"
+            },
+            {
+              "type": "p",
+              "text": "kWp = annual kWh / (PSH_annual x PR x 365)"
+            },
+            {
+              "type": "p",
+              "text": "= 1,872 / (5.0 x 0.78 x 365) = 1.31 kWp"
+            },
+            {
+              "type": "p",
+              "text": "-&gt; round UP to standard module count; check roof area at ~7 m2/kWp"
+            },
+            {
+              "type": "p",
+              "text": "For OFF-GRID (must meet the load in the WORST month):"
+            },
+            {
+              "type": "p",
+              "text": "kWp = daily kWh / (PSH_worst x PR x battery_eff)"
+            },
+            {
+              "type": "p",
+              "text": "= 5.13 / (3.5 x 0.75 x 0.90) = 2.17 kWp"
+            },
+            {
+              "type": "p",
+              "text": "Note it is 65% larger than the grid-tied figure. That is the real"
+            },
+            {
+              "type": "p",
+              "text": "cost of independence, and it is why hybrid usually wins."
+            },
+            {
+              "type": "p",
+              "text": "STEP 3 - BATTERY (off-grid or hybrid only)"
+            },
+            {
+              "type": "p",
+              "text": "usable kWh = daily load x days of autonomy"
+            },
+            {
+              "type": "p",
+              "text": "= 5.13 x 1.5 = 7.70 kWh"
+            },
+            {
+              "type": "p",
+              "text": "nameplate = usable / (depth of discharge x round-trip efficiency)"
+            },
+            {
+              "type": "p",
+              "text": "lead-acid : 7.70 / (0.50 x 0.80) = 19.3 kWh (!!)"
+            },
+            {
+              "type": "p",
+              "text": "LFP : 7.70 / (0.85 x 0.93) = 9.7 kWh"
+            },
+            {
+              "type": "p",
+              "text": "-&gt; LFP costs more per kWh of nameplate and LESS per kWh you can use,"
+            },
+            {
+              "type": "p",
+              "text": "and lasts 4-8x the cycles. Compare on cost per usable kWh per cycle,"
+            },
+            {
+              "type": "p",
+              "text": "never on cost per nameplate kWh."
+            },
+            {
+              "type": "p",
+              "text": "continuous rating &gt;= sum of loads likely to run together (not all loads)"
+            },
+            {
+              "type": "p",
+              "text": "surge rating &gt;= motor starting current (a pump can draw 3-6x running)"
+            },
+            {
+              "type": "p",
+              "text": "DC:AC ratio 1.1 - 1.3 for grid-tied"
+            },
+            {
+              "type": "p",
+              "text": "Step 3 is where lead-acid quietly loses. Halving the depth of discharge doubles the pack you must buy, and the cycle life difference then compounds on top of that."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-2-4",
+          "number": "2.4",
+          "title": "String sizing — the calculation that protects the inverter",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Modules in series must satisfy TWO limits at the same time, computed at OPPOSITE temperature extremes. Getting this wrong destroys inverters."
+            },
+            {
+              "type": "pre",
+              "text": "MODULE      Voc 49.5 V · Vmp 41.2 V\n            Voc temp coefficient -0.27 %/C\nINVERTER    Vmp temp coefficient -0.35 %/C\nSITE        max DC input 1000 V · MPPT window 200 - 850 V\n            lowest expected cell temp 0 C · highest cell temp 70 C"
+            },
+            {
+              "type": "p",
+              "text": "UPPER LIMIT - set by the COLDEST morning, because Voc RISES as it cools"
+            },
+            {
+              "type": "p",
+              "text": "Voc(0 C) = 49.5 x [1 + (-0.0027) x (0 - 25)]"
+            },
+            {
+              "type": "p",
+              "text": "= 49.5 x 1.0675 = 52.84 V"
+            },
+            {
+              "type": "p",
+              "text": "max modules in series = 1000 / 52.84 = 18.9 -&gt; 18 modules"
+            },
+            {
+              "type": "p",
+              "text": "This is the one people get wrong. They size at 25 C, get 20 modules, and the string exceeds 1000 V on the first cold clear morning in January - before the inverter has even started, at open circuit, when nothing is drawing current and Voc is at its absolute maximum."
+            },
+            {
+              "type": "p",
+              "text": "LOWER LIMIT - set by the HOTTEST afternoon, because Vmp FALLS as it heats"
+            },
+            {
+              "type": "p",
+              "text": "Vmp(70 C) = 41.2 x [1 + (-0.0035) x (70 - 25)]"
+            },
+            {
+              "type": "p",
+              "text": "= 41.2 x 0.8425 = 34.71 V"
+            },
+            {
+              "type": "p",
+              "text": "min modules in series = 200 / 34.71 = 5.8 -&gt; 6 modules"
+            },
+            {
+              "type": "p",
+              "text": "Below this the string drops out of the MPPT window on hot afternoons and the inverter simply stops tracking - you lose the generation with no fault indication at all."
+            },
+            {
+              "type": "p",
+              "text": "RESULT: 6 to 18 modules per string. Design at 16 - 17 for headroom, not at 18. Module Voc tolerance and future colder-than-expected mornings both eat the margin."
+            },
+            {
+              "type": "p",
+              "text": "ALWAYS use YOUR site's record low temperature, not the seasonal average, and YOUR module's datasheet coefficients, not the values above."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-2-4-2",
+          "number": "2.4",
+          "title": "Component sourcing in India",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Component   What to specify                             Indicative ₹   Watch\nPV module                                               (verify)\n            Mono PERC or TOPCon, 545–600 Wp,                           ALMM listing is mandatory for PM Surya Ghar. Check the\n            ALMM-listed if any subsidy is involved      ₹18–28 per Wp  model number on the list, not the brand\nInverter    Grid-tied / hybrid / off-grid; MPPT count;  ₹6–15 per W    Match MPPT voltage window to your string design. Cheap\n            IP65; BIS certified                         ₹1,500–12,000  inverters fail first in heat\nCharge\ncontroller  MPPT, not PWM, above about 200 W                           PWM wastes 15–30% on a mismatched panel/battery\n                                                                       voltage. MPPT pays back quickly\nBattery     LFP (LiFePO₄) preferred; state usable       ₹8,000–16,000  Demand a real datasheet and cycle-life curve. Unbranded\n            kWh, C-rate, cycle life at stated DoD       per kWh        cells with no data are the commonest way a project fails\n                                                                       in year two\nBMS         Cell count, continuous and peak             ₹600–6,000     A BMS rated at your peak current, not your average. See\nDC cable                                                               Chapter 6\n            current, balancing type, communication\n                                                                       Ordinary PVC house wire degrades in UV within a couple\n            Solar-grade, double-insulated,              ₹30–120 per m  of years. This is not a place to save money\n            UV-resistant, tinned copper\nProtection  DC-rated MCB/fuse, DC isolator, SPD on ₹500–5,000          Must be DC-rated. An AC breaker in a DC circuit may\n            both sides                                                 not extinguish the arc (§3.1)\nMounting    Hot-dip galvanised or aluminium;            ₹3–8 per Wp    Wind uplift is the load case that matters, not weight\n            designed for local wind speed"
+            },
+            {
+              "type": "p",
+              "text": "Sourcing routes: national distributors and OEM dealers for modules and inverters; local electrical wholesale markets for cable, protection and hardware; online marketplaces for small components and dev boards. Prices move with module and cell markets — always re-quote."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-2-5",
+          "number": "2.5",
+          "title": "Installation essentials",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Size cable for voltage drop, not just current. Target ≤ 2% on the DC side and ≤ 1% on the AC side. A cable that is thermally adequate can still waste several percent of your generation for twenty-five years."
+            },
+            {
+              "type": "p",
+              "text": "• Torque every electrical connection to specification and mark it. Loose DC connections heat, oxidise, and are the leading cause of rooftop solar fires. A paint pen witness mark makes a loosened joint visible at a glance during maintenance."
+            },
+            {
+              "type": "p",
+              "text": "• Crimp MC4 connectors with the correct tool and pull-test every one. A hand-squeezed MC4 is a future arc."
+            },
+            {
+              "type": "p",
+              "text": "• Earth the frames, the structure and the inverter to a dedicated earth pit; measure the earth resistance and record it."
+            },
+            {
+              "type": "p",
+              "text": "• Label everything — strings, polarity, isolators, and a clear placard at the main panel saying that the building has a solar installation with a second source of supply. A fire crew needs to know that before they cut anything."
+            },
+            {
+              "type": "p",
+              "text": "• Leave a maintenance path. If cleaning requires walking on modules, the array will not be cleaned."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-2-6",
+          "number": "2.6",
+          "title": "Monitoring and maintenance",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Measure the Performance Ratio, not just the kWh. PR is actual generation divided by what the measured irradiance should have produced. It normalises for weather, which raw kWh does not — a system generating less in July is not necessarily faulty, but a system whose PR has fallen from 0.80 to 0.68 definitely is."
+            },
+            {
+              "type": "p",
+              "text": "Task Frequency What it catches"
+            },
+            {
+              "type": "pre",
+              "text": "Read generation and compare                   Weekly                 Anything sudden — a tripped breaker, a failed string\nagainst expectation"
+            },
+            {
+              "type": "p",
+              "text": "Compute Performance Ratio Monthly Gradual degradation that raw kWh hides"
+            },
+            {
+              "type": "p",
+              "text": "Visual inspection: cracks, Quarterly Most physical failures before they become electrical ones discolouration, water in junction boxes, rodent damage"
+            },
+            {
+              "type": "p",
+              "text": "Clean the modules Site-dependent: The largest recoverable loss on most Indian sites monthly in dusty regions, quarterly elsewhere; not needed during monsoon"
+            },
+            {
+              "type": "p",
+              "text": "Check and re-torque connections; Annually Loose and hot joints before they arc thermal-scan with an IR camera under load"
+            },
+            {
+              "type": "pre",
+              "text": "String-level I–V curve or per-string Annually                        A weak or failing module hiding inside a healthy-looking array\ncurrent comparison"
+            },
+            {
+              "type": "p",
+              "text": "Clean early in the morning with plain water and a soft brush. Never spray cold water on hot glass — thermal shock cracks modules — and never clean an array standing on it."
+            },
+            {
+              "type": "p",
+              "text": "DO THIS NOW — Size a real system end to end Three hours. Use an actual building you have access to. 1 Collect twelve months of electricity bills and extract monthly kWh. This is your load, and it is far better than any appliance"
+            },
+            {
+              "type": "p",
+              "text": "estimate. 2 Do the site survey checklist properly, including the winter shading assessment. 3 Fill in the sizing worksheet in §2.3 for both grid-tied and off-grid. Note the ratio between the two array sizes. 4 Price it from the sourcing table, then check every module you have chosen against the ALMM list. 5 Compute payback and LCOE from §1.4 both with and without the PM Surya Ghar subsidy. 6 Write one paragraph recommending an architecture — grid-tied, hybrid or off-grid — and defend it using the outage"
+            },
+            {
+              "type": "p",
+              "text": "frequency at that specific site, not a general preference."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "3",
+      "title": "Safety: Working with DC",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Everyone arrives with instincts trained on mains AC. Almost all of them are wrong for photovoltaic strings and battery packs. This chapter is short, and it is the one chapter in this guide that is not negotiable."
+        }
+      ],
+      "topics": [
+        {
+          "id": "renewable-energy-mobility-3-1",
+          "number": "3.1",
+          "title": "Why DC is more dangerous than the voltage suggests",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• A DC arc does not go out on its own. Alternating current crosses zero a hundred times a second, and an arc extinguishes at each crossing — this is what lets an ordinary switch break an AC circuit. DC has no zero crossing. Once struck, a DC arc sustains itself and will happily burn until something melts. This is why every isolator, breaker and fuse in a DC circuit must be DC-rated at or above the system voltage. An AC-rated device in a DC circuit may weld shut or burn rather than interrupt."
+            },
+            {
+              "type": "p",
+              "text": "• A photovoltaic array cannot be switched off. If there is light on it, it is generating. You can open the circuit downstream, but the module terminals and the cable up to your isolator remain live. Covering an array with an opaque sheet reduces but does not reliably eliminate output. Treat every PV conductor as live at all times during daylight."
+            },
+            {
+              "type": "p",
+              "text": "• A battery cannot be switched off either. It has no off state. A pack is a very low impedance source that will deliver hundreds of amps into a short without any warning noise, and the result is molten metal rather than a tripped breaker."
+            },
+            {
+              "type": "p",
+              "text": "• Current, not voltage, injures you. The often-quoted figure is that currents in the low tens of milliamps through the chest can be fatal. Whether that happens depends on skin resistance, path and duration — which is why wet hands, a cut, or a path from one hand to the other are what turn a survivable contact into a lethal one."
+            },
+            {
+              "type": "p",
+              "text": "The voltage thresholds you need to know"
+            },
+            {
+              "type": "p",
+              "text": "Below about 60 V DC is generally treated as extra-low voltage and is the band in which supervised student work is reasonable. It is not ‘safe’ — a 48 V pack will still deliver an arc that destroys a spanner and your eyesight — but the electrocution risk is much reduced."
+            },
+            {
+              "type": "p",
+              "text": "60 V DC and above is treated as hazardous live in vehicle standards, and IEC practice treats 120 V DC as the ripple-free extra-low-voltage limit in dry conditions. A typical solar string runs 300–600 V DC and an EV traction pack 350–800 V DC. Both are lethal and both are outside the scope of unsupervised student work."
+            },
+            {
+              "type": "p",
+              "text": "The projects in this guide are scoped to stay below 60 V DC precisely so that they can be built in a college lab. Where a real installation exceeds that — the charging station in Chapter 4 — the guide tells you which parts must be done by a licensed contractor."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-3-2",
+          "number": "3.2",
+          "title": "Lithium batteries: the failure mode to respect",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "A lithium cell that is over-charged, over-discharged, punctured, crushed, overheated or internally short-circuited can enter thermal runaway: an exothermic reaction that heats the cell, which accelerates the reaction, which heats it further. Once started it cannot be stopped by removing the electrical fault, and it can propagate cell to cell through a pack."
+            },
+            {
+              "type": "p",
+              "text": "• It vents toxic gas. Electrolyte decomposition products include hydrogen fluoride. A pack venting in an enclosed room is a serious inhalation hazard independent of the fire risk. Never charge or test packs in an unventilated space."
+            },
+            {
+              "type": "p",
+              "text": "• It can reignite. Hours later. A pack that has been in thermal runaway is not safe because the flames stopped; it needs prolonged cooling and isolated storage."
+            },
+            {
+              "type": "p",
+              "text": "• Do not fight a pack fire as a student. Evacuate, raise the alarm, call the fire service and tell them it is a lithium battery. For a genuinely small incipient event, copious water is the correct cooling agent for lithium-ion (this is the opposite of the rule for lithium metal primary cells, which is where the ‘never water’ folklore comes from). The realistic student control is prevention plus containment, not extinguishing."
+            },
+            {
+              "type": "p",
+              "text": "• Containment is cheap. Charge and test packs inside a metal box or on a non-combustible surface, away from anything that burns, with a bucket of dry sand and a fire blanket within reach and a clear path to the door."
+            },
+            {
+              "type": "p",
+              "text": "• Second-life cells carry unknown history. A pack pulled from a crashed or flood-damaged vehicle may have mechanical or internal damage you cannot see. Chapter 6 sets specific rules for this."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-3-3",
+          "number": "3.3",
+          "title": "Procedures that actually prevent incidents",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "TEST - VERIFY - TEST (the only correct way to confirm something is dead) 1. Test your meter on a known live source. It works. 2. Test the conductor you believe is dead. It reads zero. 3. Test your meter on the known live source AGAIN. It still works. Only now is the conductor proven dead. Step 3 catches the blown fuse or flat battery in your meter, which is exactly how people are killed by circuits they \"checked\"."
+            },
+            {
+              "type": "p",
+              "text": "Work with one hand; keep the other in your pocket or behind your back. A hand-to-hand path crosses the heart. A hand-to-same-side path may not. Stand on a dry insulating mat. Never lean on the chassis or the rack."
+            },
+            {
+              "type": "p",
+              "text": "Open the isolator, lock it open, and hang a tag with YOUR name and the date. One person controls one lock. Never rely on a switch someone else could close while you have your hands inside the enclosure."
+            },
+            {
+              "type": "p",
+              "text": "Remove watch, rings, chain, metal bracelet. A ring across a pack terminal becomes a heating element welded to your finger. Use insulated tools. Tape over the exposed metal of any spanner you must bring near terminals. Never place a tool on top of a battery."
+            },
+            {
+              "type": "p",
+              "text": "Always: safety glasses, closed shoes, cotton or FR clothing (not synthetic - it melts onto skin) Battery work: nitrile gloves under insulating gloves, face shield when making or breaking a high-current connection Rooftop: harness and anchor above about 2 m, and NEVER on a wet roof"
+            },
+            {
+              "type": "p",
+              "text": "Never work alone on any energised system. The second person is not there to help; they are there to disconnect power and call for help."
+            },
+            {
+              "type": "p",
+              "text": "Photograph every connection before you disconnect it. On a battery or an array you will not remember the polarity an hour later, and reversed polarity destroys equipment and starts fires"
+            },
+            {
+              "type": "p",
+              "text": "CHECKLIST — Hard limits for student work — these are limits, not guidance"
+            },
+            {
+              "type": "pre",
+              "text": "□ Nothing above 60 V DC without a qualified supervisor       □ Sand bucket and fire blanket within arm’s reach\n    physically present                                           whenever a pack is on charge"
+            },
+            {
+              "type": "p",
+              "text": "□ No work on any live circuit — isolate, lock out, then □ No metal jewellery, no loose sleeves, insulated tools only test-verify-test □ PV array treated as live in all daylight, always □ Never work alone on an energised system □ Polarity checked twice before every connection is made □ A means of cutting power that can be reached without □ No opening of an EV traction pack, ever, at student level approaching the fault □ No opening or repair of a distribution board or meter — □ Emergency numbers written on the wall, not looked up on licensed electrician only a phone □ Grid connection of any kind is done by a licensed □ Anyone may stop the work at any time, for any reason, contractor, not by you without being questioned □ All DC protection devices DC-rated at or above system voltage"
+            },
+            {
+              "type": "p",
+              "text": "□ Every battery charged and tested in a metal container, ventilated area"
+            },
+            {
+              "type": "p",
+              "text": "DO THIS NOW — Write and rehearse your lab’s emergency procedure"
+            },
+            {
+              "type": "p",
+              "text": "One hour, with everyone who will work on the project present."
+            },
+            {
+              "type": "p",
+              "text": "1 Walk the room. Identify where power is cut — for the bench, for the room, for the building. Confirm each is reachable without passing the bench."
+            },
+            {
+              "type": "p",
+              "text": "2 Write, on one page: what to do if a pack starts smoking; what to do if someone is in contact with a live conductor (cut power first, never grab them); who to call; where the nearest hospital is."
+            },
+            {
+              "type": "p",
+              "text": "3 Put the page on the wall. Put the emergency numbers on it. Do not leave them on a phone. 4 Rehearse the two-minute version out loud with your team. Everyone should be able to say where the isolator is without"
+            },
+            {
+              "type": "p",
+              "text": "looking."
+            },
+            {
+              "type": "p",
+              "text": "5 Do the test-verify-test procedure on a known circuit until it is automatic. It takes four repetitions to become a habit and it is the habit that matters most."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "4",
+      "title": "Project 1 — Solar Charging and Battery Swapping for E-Rickshaws",
+      "intro": [
+        {
+          "type": "p",
+          "text": "An e-rickshaw driver’s constraint is not range. It is the eight hours his vehicle is plugged in and not earning. Battery swapping converts that into a five-minute stop — which is why the design problem is logistics and economics at least as much as it is power electronics."
+        }
+      ],
+      "topics": [
+        {
+          "id": "renewable-energy-mobility-4-1",
+          "number": "4.1",
+          "title": "The problem, in the driver’s numbers",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "FIELD NOTE — Why swapping, not just charging"
+            },
+            {
+              "type": "p",
+              "text": "The economics that decide whether anyone uses your station"
+            },
+            {
+              "type": "p",
+              "text": "THE VEHICLE A typical e-rickshaw carries a 48 V pack of roughly 100 Ah — about 4.8 kWh — giving 80–100 km. Most are still lead-acid, which needs 8–10 hours to charge properly."
+            },
+            {
+              "type": "pre",
+              "text": "THE LOST  Charging at home overnight is fine until demand exceeds one charge. A driver who could earn through a second\nDAY       shift cannot, because the vehicle is tethered to a socket."
+            },
+            {
+              "type": "p",
+              "text": "THE BATTERY A lead-acid pack lasts roughly 12–18 months and costs ₹20,000–₹28,000 to replace. Amortised, that is often the"
+            },
+            {
+              "type": "p",
+              "text": "COST single largest operating cost after the driver’s own time — and it is paid in one painful lump."
+            },
+            {
+              "type": "pre",
+              "text": "WHAT      The driver stops owning the battery. He pays per swap — typically in the ₹80–₹150 range depending on city\nSWAPPING  and operator — and drives away in five minutes. Battery degradation, charging discipline and replacement\nCHANGES   become the station’s problem, which is exactly where they belong, because the station can charge properly and\n          monitor health."
+            },
+            {
+              "type": "p",
+              "text": "THE CATCH Swapping only works if the packs are physically and electrically standardised. This is the real barrier in India and the reason most swapping networks operate captive fleets rather than open access."
+            },
+            {
+              "type": "p",
+              "text": "What to take from this: Design the logistics first — how many packs are in circulation, how long each takes to charge, how many slots you need. The solar array is the easy part and the part students always start with."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-4-2",
+          "number": "4.2",
+          "title": "Sizing the station",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "WORKSHEET — Charging station sizing worksheet"
+            },
+            {
+              "type": "pre",
+              "text": "   vehicles served per day                       s = 1.5\n   swaps per vehicle per day                     E = 4.8 kWh\n   usable energy per pack                        eta = 0.90\n   charging efficiency (charger + battery)\ndaily energy delivered = N x s x E               = 12 x 1.5 x 4.8 = 86.4 kWh\n                                                                                 = 96.0 kWh\ndaily energy DRAWN       = 86.4 / 0.90"
+            },
+            {
+              "type": "p",
+              "text": "charge time per pack (lithium, 0.5C) t = 2.5 h"
+            },
+            {
+              "type": "p",
+              "text": "station operating hours H = 14 h"
+            },
+            {
+              "type": "pre",
+              "text": "charges per slot per day = H / t = 14/2.5                         = 5.6\n                                                                  = 3.2\nslots needed = swaps / charges-per-slot = 18 / 5.6               USE 6 SLOTS"
+            },
+            {
+              "type": "p",
+              "text": "-&gt; round UP and add buffer for peak clustering"
+            },
+            {
+              "type": "p",
+              "text": "(demand is not uniform: mornings and evenings are peaks)"
+            },
+            {
+              "type": "p",
+              "text": "packs in vehicles = 12"
+            },
+            {
+              "type": "p",
+              "text": "packs charging or charged and waiting = 6-8"
+            },
+            {
+              "type": "p",
+              "text": "packs in maintenance / reserve =2"
+            },
+            {
+              "type": "p",
+              "text": "At roughly Rs 40,000 per LFP pack this is Rs 8-9 lakh - and it is"
+            },
+            {
+              "type": "p",
+              "text": "usually the single largest line item in the whole project. Compute it"
+            },
+            {
+              "type": "p",
+              "text": "BEFORE you cost the solar."
+            },
+            {
+              "type": "p",
+              "text": "Fully off-grid: kWp = daily drawn / (PSH_worst x PR) = 96.0 / (3.5 x 0.75) = 36.6 kWp plus a buffer battery bank for evening charging: very large, very expensive. Rarely the right answer."
+            },
+            {
+              "type": "p",
+              "text": "Solar-assisted grid-tied (RECOMMENDED):"
+            },
+            {
+              "type": "p",
+              "text": "size the array to the DAYTIME charging load and let the grid cover"
+            },
+            {
+              "type": "p",
+              "text": "evenings and monsoon days"
+            },
+            {
+              "type": "p",
+              "text": "kWp = 60 kWh (daytime share) / (5.0 x 0.78) = 15.4 kWp"
+            },
+            {
+              "type": "p",
+              "text": "-&gt; array ~15 kWp, ~110 m2 of roof or canopy"
+            },
+            {
+              "type": "p",
+              "text": "-&gt; the canopy doubles as shade for the swap cabinet and the queue,"
+            },
+            {
+              "type": "p",
+              "text": "which is worth more to users than you would expect"
+            },
+            {
+              "type": "pre",
+              "text": "STEP 5 - CHECK IT AGAINST REALITY             15 kWp needs ~105-110 m2\n   roof/canopy area available?                6 slots x 1.5 kW = 9 kW plus overhead\n   sanctioned load sufficient?                -&gt; likely needs a load enhancement\n                                              almost certainly required\n   three-phase supply available?"
+            },
+            {
+              "type": "p",
+              "text": "Step 4 is the important judgement. Full off-grid more than doubles the array and adds a large stationary battery on top of the swap packs. Solar-assisted grid-tied gets most of the benefit for a fraction of the capital — deployable beats ideal."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-4-3",
+          "number": "4.3",
+          "title": "Architecture",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "┌──────────────┐ DC ┌───────────────┐ ┌──────────────────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ ~15 kWp │ string │ INVERTER │───────▶│ RCD + MCBs per circuit │"
+            },
+            {
+              "type": "p",
+              "text": "│ on canopy │ 350- │ 3-phase │ │ energy meter │"
+            },
+            {
+              "type": "p",
+              "text": "└──────────────┘ 600 V └───────────────┘ └────────┬─────────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "│ WORK ONLY (ch 3) │"
+            },
+            {
+              "type": "p",
+              "text": "│ ▼"
+            },
+            {
+              "type": "p",
+              "text": "┌────┴─────┐ ┌────────────────────────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ isolator │ GRID ────────────────▶│ ┌────┬────┬────┬────┬────┬───┐│"
+            },
+            {
+              "type": "p",
+              "text": "│ + SPD │ (evenings, monsoon) │ │ 1 │ 2 │ 3 │ 4 │ 5 │ 6 ││"
+            },
+            {
+              "type": "p",
+              "text": "└──────────┘ │ └────┴────┴────┴────┴────┴───┘│"
+            },
+            {
+              "type": "p",
+              "text": "│ each slot: │"
+            },
+            {
+              "type": "p",
+              "text": "┌─────────────────────────────────────┐ │ - 48 V charger, CAN/RS485 │"
+            },
+            {
+              "type": "p",
+              "text": "│ MONITORING │◀──┤ - temperature sensor │"
+            },
+            {
+              "type": "p",
+              "text": "│ per-slot energy, pack SoH, │ │ - individual isolation │"
+            },
+            {
+              "type": "p",
+              "text": "│ temperature, swap events, faults │ │ - fire-rated separation │"
+            },
+            {
+              "type": "p",
+              "text": "│ -&gt; Chapter 5 tooling applies here │ │ - forced ventilation │"
+            },
+            {
+              "type": "p",
+              "text": "└─────────────────────────────────────┘ └────────────────────────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "PV string side (350-600 V DC) and the AC board -&gt; licensed contractor"
+            },
+            {
+              "type": "p",
+              "text": "48 V pack side, slot control, monitoring, UI -&gt; student scope"
+            },
+            {
+              "type": "p",
+              "text": "Figure 4.1 — Note where the boundary sits. Students can design and build the entire 48 V swap cabinet, its control and its monitoring. Nobody unlicensed touches the string wiring or the distribution board."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-4-4",
+          "number": "4.4",
+          "title": "Designing the swap cabinet",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• One slot, one isolation. Each slot needs its own DC-rated isolator and fuse, so a single faulty pack can be removed without shutting the station."
+            },
+            {
+              "type": "p",
+              "text": "• Thermal separation between slots. If one pack vents, the design intent is that the failure stops there. Steel dividers, spacing, and vents that direct gas upward and outward rather than into the next slot."
+            },
+            {
+              "type": "p",
+              "text": "• Forced ventilation, always on when charging. Interlock it: no fan, no charging. Vent to outside air, never into the enclosure or the room."
+            },
+            {
+              "type": "p",
+              "text": "• Temperature sensing per slot, with charging inhibited above a set limit. Ambient in an Indian summer already sits near the top of the safe charging window for many chemistries, and a charging pack adds its own heat."
+            },
+            {
+              "type": "p",
+              "text": "• Mechanical keying and a positive latch. A pack must be impossible to insert reversed and impossible to leave half-seated — a partially engaged high-current connector arcs and welds."
+            },
+            {
+              "type": "p",
+              "text": "• Track every pack. Serial number, cycle count, capacity trend, temperature history. The station’s asset is the fleet of packs, and pack health is your profit and loss. A pack whose capacity has fallen below about 80% goes out of rotation — and becomes the input to Chapter 6."
+            },
+            {
+              "type": "p",
+              "text": "• Design the queue. Shade, a place to sit, a clear indicator of which slot is ready. Drivers choose stations on convenience, and a station nobody chooses generates no revenue however elegant its power electronics."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-4-5",
+          "number": "4.5",
+          "title": "Slot control logic",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "// One slot, as a state machine. Runs on the cabinet controller. // Everything here is at 48 V - student scope (ch 3)."
+            },
+            {
+              "type": "p",
+              "text": "typedef enum { EMPTY, INSERTED, VERIFYING, CHARGING, READY, FAULT, LOCKED_OUT } SlotState;"
+            },
+            {
+              "type": "p",
+              "text": "void slotStep(Slot *s, float dt) { switch (s-&gt;state) {"
+            },
+            {
+              "type": "p",
+              "text": "case EMPTY: if (s-&gt;presenceSwitch &amp;&amp; s-&gt;latchClosed) s-&gt;state = INSERTED; break;"
+            },
+            {
+              "type": "p",
+              "text": "case INSERTED: // never energise on presence alone"
+            },
+            {
+              "type": "p",
+              "text": "s-&gt;contactor = OFF;"
+            },
+            {
+              "type": "p",
+              "text": "if (readPackId(s) &amp;&amp; packIsKnown(s-&gt;packId)) s-&gt;state = VERIFYING;"
+            },
+            {
+              "type": "p",
+              "text": "else { s-&gt;fault = FAULT_UNKNOWN_PACK; s-&gt;state = FAULT; }"
+            },
+            {
+              "type": "p",
+              "text": "break;"
+            },
+            {
+              "type": "p",
+              "text": "case VERIFYING: // check BEFORE closing the contactor"
+            },
+            {
+              "type": "p",
+              "text": "if (s-&gt;packVoltage &lt; V_MIN || s-&gt;packVoltage &gt; V_MAX) {"
+            },
+            {
+              "type": "p",
+              "text": "s-&gt;fault = FAULT_VOLTAGE_RANGE; s-&gt;state = FAULT; break;"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "if (s-&gt;packTemp &gt; T_CHARGE_MAX || s-&gt;packTemp &lt; T_CHARGE_MIN) {"
+            },
+            {
+              "type": "p",
+              "text": "s-&gt;fault = FAULT_TEMPERATURE; s-&gt;state = FAULT; break;"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "if (!ventilationRunning()) break; // interlock: no fan, no charge"
+            },
+            {
+              "type": "p",
+              "text": "s-&gt;contactor = ON; s-&gt;state = CHARGING; s-&gt;t = 0;"
+            },
+            {
+              "type": "p",
+              "text": "break;"
+            },
+            {
+              "type": "p",
+              "text": "case CHARGING: s-&gt;t += dt; s-&gt;wh += s-&gt;volts * s-&gt;amps * dt / 3600.0f; if (s-&gt;packTemp &gt; T_CHARGE_MAX || !ventilationRunning() || s-&gt;amps &gt; I_MAX || s-&gt;t &gt; T_TIMEOUT) { s-&gt;contactor = OFF; s-&gt;fault = FAULT_CHARGING; s-&gt;state = FAULT; break; } if (chargeComplete(s)) { s-&gt;contactor = OFF; s-&gt;state = READY; logCycle(s-&gt;packId, s-&gt;wh); } break;"
+            },
+            {
+              "type": "p",
+              "text": "case READY:"
+            },
+            {
+              "type": "p",
+              "text": "s-&gt;contactor = OFF; // de-energised while waiting"
+            },
+            {
+              "type": "p",
+              "text": "s-&gt;readyLamp = ON;"
+            },
+            {
+              "type": "p",
+              "text": "if (!s-&gt;presenceSwitch) { s-&gt;state = EMPTY; s-&gt;readyLamp = OFF; }"
+            },
+            {
+              "type": "p",
+              "text": "break;"
+            },
+            {
+              "type": "p",
+              "text": "case FAULT:"
+            },
+            {
+              "type": "p",
+              "text": "s-&gt;contactor = OFF; s-&gt;faultLamp = ON;"
+            },
+            {
+              "type": "p",
+              "text": "alertOperator(s-&gt;id, s-&gt;fault);"
+            },
+            {
+              "type": "p",
+              "text": "if (s-&gt;fault == FAULT_TEMPERATURE || s-&gt;fault == FAULT_CHARGING)"
+            },
+            {
+              "type": "p",
+              "text": "s-&gt;state = LOCKED_OUT; // requires a human, not a timer"
+            },
+            {
+              "type": "p",
+              "text": "break;"
+            },
+            {
+              "type": "p",
+              "text": "case LOCKED_OUT: // only a person with a key clears s-&gt;contactor = OFF; // this. A thermal fault must never break; // auto-retry. } }"
+            },
+            {
+              "type": "p",
+              "text": "// 1. The contactor is closed only after verification, never on insertion."
+            },
+            {
+              "type": "p",
+              "text": "// 2. The slot is de-energised whenever it is not actively charging."
+            },
+            {
+              "type": "p",
+              "text": "// 3. A thermal fault latches. Auto-retry after a temperature fault is"
+            },
+            {
+              "type": "p",
+              "text": "// how a warm pack becomes a fire."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-4-5-2",
+          "number": "4.5",
+          "title": "Cost, revenue and the policy hook",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Educational institutions can get charging infrastructure funded"
+            },
+            {
+              "type": "p",
+              "text": "Under the PM E-DRIVE charging infrastructure guidelines issued in 2025 for a rollout of around 72,300 public charging points, a tiered subsidy structure applies — and government premises, residential colonies, hospitals and educational institutions are eligible for up to 100% subsidy on upstream infrastructure and charging equipment, provided they guarantee free public access."
+            },
+            {
+              "type": "p",
+              "text": "For a college project this is directly actionable: a campus station that is publicly accessible may have its charging equipment and upstream electrical work funded. Chapter 7 covers how to check current eligibility, and note that PM E-DRIVE is fund-limited — it closes when the allocation is exhausted, whatever the stated terminal date."
+            },
+            {
+              "type": "p",
+              "text": "Station cost and revenue model"
+            },
+            {
+              "type": "p",
+              "text": "Line item Basis Capital ₹ Annual ₹ Notes"
+            },
+            {
+              "type": "p",
+              "text": "Capital rows: PV array and canopy · inverter · swap cabinet and chargers · battery fleet (usually the largest) · civil and electrical · load enhancement. Annual rows: grid energy purchased · O&M and cleaning · pack replacement provision · staffing. Revenue: swaps/day × price × 365. Then compute payback both with and without the PM E-DRIVE subsidy — the difference is usually what decides whether the project is viable."
+            },
+            {
+              "type": "p",
+              "text": "DO THIS NOW — Design the station for your own campus A week. The deliverable is a defensible sizing document, not a render. 1 Count the e-rickshaws that actually operate within two kilometres of your campus. Stand at the gate and count for an hour"
+            },
+            {
+              "type": "p",
+              "text": "at morning and evening peak. That number, not an assumption, is your demand. 2 Interview five drivers: what they pay to charge now, how long it takes, what a dead battery costs them, and what they"
+            },
+            {
+              "type": "p",
+              "text": "would pay for a five-minute swap. Their answers will change your design. 3 Fill in the sizing worksheet in §4.2. Compute both the off-grid and the solar-assisted grid-tied array, and state which you"
+            },
+            {
+              "type": "p",
+              "text": "recommend and why. 4 Compute the number of packs in circulation and price it. Notice that it dominates the capital cost. 5 Design the swap cabinet to the requirements in §4.4, keeping everything you build at 48 V and marking clearly on your"
+            },
+            {
+              "type": "p",
+              "text": "drawing which parts require a licensed contractor. 6 Fill in the cost model and compute payback with and without the PM E-DRIVE subsidy. Then write the one-page proposal"
+            },
+            {
+              "type": "p",
+              "text": "you would actually hand to your college administration."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "5",
+      "title": "Project 2 — A Home Energy Audit Tool",
+      "intro": [
+        {
+          "type": "p",
+          "text": "The cheapest kilowatt-hour is the one nobody uses. An energy audit routinely finds 10–20% of a household bill in places the occupant has never suspected — and the instrument that finds it costs under ₹3,000 and never touches a live conductor."
+        }
+      ],
+      "topics": [
+        {
+          "id": "renewable-energy-mobility-5-1",
+          "number": "5.1",
+          "title": "What an audit actually finds",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Finding            Typical share of           Usual fix\n                   bill\nStandby / phantom 5–10%                       Set-top box, router, TV, microwave clock, chargers left plugged in. A switched power strip\nload                                          recovers most of it for a few hundred rupees\nAn ageing          10–25% of the bill         A 12-year-old fridge can use two to three times a current 5-star model. Measure it over 24 h\nrefrigerator       on its own                 before assuming"
+            },
+            {
+              "type": "p",
+              "text": "Water heating 10–20% in winter A timer, a lower thermostat setting, or insulation on the tank and pipe run"
+            },
+            {
+              "type": "pre",
+              "text": "Pumping            5–15% where there Usually a float switch that has failed, so the pump runs long after the tank is full. One of the\n                   is an overhead tank highest-return fixes there is\nAir conditioning   large and highly           Every degree of setpoint is worth several percent. Filter cleaning matters more than people\nsetpoint           variable                   believe\nLighting           3–10%                      Mostly already fixed by LEDs. Check for the forgotten tube light in a store room that has been\n                                              on for two years"
+            },
+            {
+              "type": "p",
+              "text": "Note the ordering. Students almost always propose lighting first because it is visible; the money is usually in the fridge, the pump and standby."
+            },
+            {
+              "type": "p",
+              "text": "The safety boundary for this project"
+            },
+            {
+              "type": "p",
+              "text": "You will not open the distribution board and you will not touch a live conductor. A split-core current transformer clips around the outside of an insulated cable and measures the magnetic field. That is the whole reason this project is appropriate for students."
+            },
+            {
+              "type": "p",
+              "text": "One specific rule: never disconnect a current transformer from its burden while current is flowing in the cable it surrounds. An open-circuited CT develops a dangerously high voltage across its terminals. Use an SCT-013-030 type, which has the burden resistor built in and outputs a safe voltage directly — it removes the hazard by construction rather than by procedure."
+            },
+            {
+              "type": "p",
+              "text": "Any clamping around a conductor inside a panel is done by a licensed electrician. Clamping around the flexible cord of a single appliance, outside any enclosure, is student work."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-5-2",
+          "number": "5.2",
+          "title": "The instrument",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Part               Rough ₹                    Measures                 Note\n                                              —\nESP32 dev board    350–700                    Current, non-invasively  Wi-Fi for logging; enough ADC speed to sample a 50 Hz\n                                              Mains voltage waveform   waveform\nSCT-013-030 CT     600–1,200\nclamp              150–300                                             Voltage output with built-in burden — choose this over the\n                                                                       -000 version\nZMPT101B module\n                                                                       This one does connect to mains. Use only a pre-made,\nDS18B20 × 3        80–200 each                Temperature: fridge      enclosed module, and have a supervisor check it. If in doubt,\n                                              interior, room, geyser   omit it and see §5.4\nBH1750 lux sensor  120–250\nSD card module     100–250                    Illumination             Cheap, digital, and reveals a great deal about duty cycles"
+            },
+            {
+              "type": "p",
+              "text": "— Tells you whether lights are on in an empty room"
+            },
+            {
+              "type": "p",
+              "text": "Log locally as well as over Wi-Fi. Networks drop during exactly the events you want"
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-5-3",
+          "number": "5.3",
+          "title": "Getting a real measurement, not a plausible one",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "// Sampling a 50 Hz waveform on an ESP32 to get REAL power. // The CT output is bipolar; the ADC is 0-3.3 V single-ended. So the signal // is DC-biased to mid-rail (1.65 V) with a divider and a coupling capacitor, // and we subtract that offset in software with a slow-tracking filter."
+            },
+            {
+              "type": "pre",
+              "text": "const int PIN_I = 34, PIN_V = 35;             // SCT-013-030: 30 A per 1 V output\nconst float I_CAL = 30.0 / 1.0;               // determine by comparing with a meter\nconst float V_CAL = 0.0;"
+            },
+            {
+              "type": "p",
+              "text": "float offsetI = 2048, offsetV = 2048; // tracked, not assumed"
+            },
+            {
+              "type": "p",
+              "text": "void measure(float *Vrms, float *Irms, float *realP, float *pf) {"
+            },
+            {
+              "type": "p",
+              "text": "const int CYCLES = 20; // 20 cycles at 50 Hz = 400 ms"
+            },
+            {
+              "type": "p",
+              "text": "unsigned long t0 = millis();"
+            },
+            {
+              "type": "p",
+              "text": "double sumI2 = 0, sumV2 = 0, sumVI = 0;"
+            },
+            {
+              "type": "p",
+              "text": "long n = 0;"
+            },
+            {
+              "type": "p",
+              "text": "while (millis() - t0 &lt; (CYCLES * 20)) { // whole cycles only, or the"
+            },
+            {
+              "type": "p",
+              "text": "int rawI = analogRead(PIN_I); // RMS figure wanders"
+            },
+            {
+              "type": "p",
+              "text": "int rawV = analogRead(PIN_V);"
+            },
+            {
+              "type": "p",
+              "text": "// slow high-pass: tracks the DC bias without following the signal offsetI += (rawI - offsetI) / 1024.0; offsetV += (rawV - offsetV) / 1024.0;"
+            },
+            {
+              "type": "p",
+              "text": "double i = rawI - offsetI; double v = rawV - offsetV;"
+            },
+            {
+              "type": "p",
+              "text": "sumI2 += i * i; // &lt;-- this is what makes it sumV2 += v * v; sumVI += v * i; // REAL power, not apparent n++; }"
+            },
+            {
+              "type": "p",
+              "text": "*Irms = sqrt(sumI2 / n) * I_CAL_SCALE; *Vrms = sqrt(sumV2 / n) * V_CAL_SCALE; *realP = (sumVI / n) * I_CAL_SCALE * V_CAL_SCALE; *pf = (*Vrms * *Irms &gt; 1.0) ? (*realP / (*Vrms * *Irms)) : 0.0; }"
+            },
+            {
+              "type": "p",
+              "text": "// Apparent power (Vrms x Irms) OVERSTATES what you are billed for on a // domestic meter, sometimes badly. A ceiling fan at low speed, an old // tube choke, a laptop charger or a fridge compressor can all sit at a // power factor of 0.5-0.7. Measuring current alone and multiplying by // 230 V would tell you the fan uses 90 W when it actually draws 55 W. // If you only measure current, report VA and SAY SO - do not call it watts."
+            },
+            {
+              "type": "p",
+              "text": "Sampling for a whole number of cycles is not fussiness. A partial cycle biases the RMS calculation and your readings will drift for reasons you cannot find"
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-5-4",
+          "number": "5.4",
+          "title": "Calibrate before you trust it",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Calibrate current against a known load. A resistive heater or an incandescent bulb of known wattage has a power factor of essentially 1, so watts equal volts times amps. Adjust I_CAL_SCALE until your reading matches."
+            },
+            {
+              "type": "p",
+              "text": "• Calibrate voltage against a multimeter, or against the utility meter if you can read it. • Cross-check the total against the electricity meter. Note the meter reading, run your instrument for 24 hours, and"
+            },
+            {
+              "type": "p",
+              "text": "compare. Agreement within about 10% is a good result for this hardware; beyond that, find the error before you present any savings figure. • If you cannot safely measure voltage, do not. Log current only, report in amperes and VA, and use a plug-in energy meter (available for a few hundred rupees) as your reference for appliance-level real power. An honest VA measurement is far better than a watts figure you cannot defend."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-5-5",
+          "number": "5.5",
+          "title": "The audit protocol",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "WORKSHEET — Home energy audit — run in this order"
+            },
+            {
+              "type": "p",
+              "text": "Collect 12 months of bills. Plot kWh by month. The shape tells you what is seasonal (cooling, water heating) before you measure anything. Note the tariff SLABS - the marginal unit may cost far more than the average, which changes every savings calculation."
+            },
+            {
+              "type": "p",
+              "text": "DAY 1 THE STANDBY BASELINE (the single highest-value hour) At 2 a.m., or with everyone out, switch off everything the household believes is off. Measure the whole-house current. Whatever is left is your phantom load, running 8,760 hours a year. example: 45 W standby x 8,760 h = 394 kWh/yr = Rs 3,150 at Rs 8/kWh Then switch circuits off one at a time to locate it."
+            },
+            {
+              "type": "p",
+              "text": "Clamp each major appliance in turn, or use a plug-in meter. Record: rated W | measured W | hours/day | duty cycle | kWh/day Refrigerator and AC MUST be measured over a full 24 hours - their duty cycle is the whole story and a spot reading tells you nothing."
+            },
+            {
+              "type": "p",
+              "text": "Fridge interior temperature (should be 3-5 C; every degree colder costs) Fridge door seal: close it on a paper strip - if it pulls out easily, the seal is gone and the compressor is running to cool the kitchen Geyser thermostat setting and standing loss (measure overnight) Pump run time vs tank fill time - a failed float switch is common AC filter condition, setpoint, and whether doors are open"
+            },
+            {
+              "type": "p",
+              "text": "Rank findings by ANNUAL RUPEES SAVED, not by percentage and not by how interesting the engineering is. For each: cost to fix, saving per year, payback. Anything with a payback under a year gets done this month."
+            },
+            {
+              "type": "p",
+              "text": "The standby baseline on Day 1 usually finds more money per hour invested than everything else combined, and it needs no permission and no rewiring."
+            },
+            {
+              "type": "p",
+              "text": "Savings worksheet Measured kWh/yr ₹/yr saved Cost to fix Payback"
+            },
+            {
+              "type": "p",
+              "text": "Finding"
+            },
+            {
+              "type": "p",
+              "text": "Rank by the ₹/yr column. Present the top three, not all twelve — an audit report that lists everything gets ignored, and one that names three actions with rupee figures gets acted on."
+            },
+            {
+              "type": "p",
+              "text": "DO THIS NOW — Audit a real household One week of measurement, one evening of analysis. 1 Build and calibrate the instrument. Do not proceed until it agrees with the utility meter within 10% over 24 hours. 2 Run the Day 1 standby baseline. Convert the result into rupees per year at the household’s marginal tariff and show them"
+            },
+            {
+              "type": "p",
+              "text": "that number — it is usually the moment the project becomes real to them. 3 Measure the refrigerator over a full 24 hours and compute its annual consumption. 4 Complete the savings worksheet and rank by rupees. 5 Implement the top finding, then measure again for a week to verify the saving actually appeared. A predicted saving is"
+            },
+            {
+              "type": "p",
+              "text": "a hypothesis; a measured one is a result. 6 Write the one-page report. Three actions, three rupee figures, three paybacks."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "6",
+      "title": "Project 3 — A BMS for Second-Life Cells",
+      "intro": [
+        {
+          "type": "p",
+          "text": "An EV battery retired at 70–80% of its original capacity still holds years of useful stationary life. Realising that value depends almost entirely on the battery management system — and on knowing which cells to refuse before you ever connect them."
+        },
+        {
+          "type": "p",
+          "text": "The scope of this project, and why it is drawn here Build at a single module, at or below 60 V, and preferably below 30 V. A Nissan Leaf module is about 7.4 V; a Tesla module about 22 V; a 4S LFP pack is 12.8 V. Any of these teaches every concept in this chapter. Do not open, disassemble or reconfigure a complete EV traction pack. Those run at 350–800 V DC, they are lethal, and the interlocks and service-disconnect procedures that make them survivable are specialist training. Nothing in this chapter should be read as preparation for that work. Everything below — the protection thresholds, the balancing, the state-of-health test, the code — is identical in principle at 12 V and at 400 V. Learn it where a mistake costs a fuse."
+        }
+      ],
+      "topics": [
+        {
+          "id": "renewable-energy-mobility-6-1",
+          "number": "6.1",
+          "title": "Incoming inspection — what to reject",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Second-life cells arrive with an unknown history. Some of them should never be connected to anything. Inspect every module before it enters your workspace, and record the results."
+            },
+            {
+              "type": "p",
+              "text": "CHECKLIST — Reject the module if any of these is true"
+            },
+            {
+              "type": "p",
+              "text": "□ Any swelling, bulging or deformation of a cell or pouch □ Any cell below about 2.0 V for LFP or 2.5 V for NMC — deep discharge causes internal copper plating and a □ Any sign of leakage, residue or crystallisation at a latent short terminal □ Cell-to-cell voltage spread greater than roughly 0.3 V at □ Any smell of solvent or sweetness — that is electrolyte rest □ Visible mechanical damage, dents, or crushed corners □ Terminal corrosion or damaged busbar threads □ Evidence of water or flood exposure (silt, corrosion, tide marks) □ No traceable origin — you cannot assess a history nobody can tell you"
+            },
+            {
+              "type": "p",
+              "text": "□ Any module from a vehicle known to have been in a fire or a serious collision"
+            },
+            {
+              "type": "p",
+              "text": "A rejected module is not rubbish to be thrown away — it is hazardous waste with a legal disposal route. See §7.6 on the Battery Waste Management Rules, and hand it to a registered recycler."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-6-2",
+          "number": "6.2",
+          "title": "What a BMS must actually do",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Function What it means Consequence of omitting it"
+            },
+            {
+              "type": "p",
+              "text": "Measure Every cell voltage individually, pack current, Pack voltage alone hides a dying cell completely — one cell at 2.0 V"
+            },
+            {
+              "type": "p",
+              "text": "and at least two temperatures and one at 4.0 V looks identical to two at 3.0 V"
+            },
+            {
+              "type": "pre",
+              "text": "Protect   Disconnect on over-voltage, under-voltage,          This is the function that prevents fires. It is not optional and it must act\n          over-current, over-temperature and                  in hardware, not only in software\n          under-temperature\nBalance   Equalise cell states of charge, usually by          Without balancing, pack usable capacity falls to that of the weakest\n          bleeding charge from the highest cells              cell and the spread widens every cycle\nEstimate  State of charge and state of health                 You cannot manage what you cannot see; SoH is what tells you when\n                                                              to retire a module"
+            },
+            {
+              "type": "p",
+              "text": "Report Log and communicate faults and trends A pack that fails silently teaches you nothing and warns you of nothing"
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-6-3",
+          "number": "6.3",
+          "title": "Protection thresholds",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "SET THESE FROM YOUR CELL DATASHEET. The figures below are typical, not authoritative - a wrong threshold is how a good pack becomes a fire."
+            },
+            {
+              "type": "pre",
+              "text": "cell over-voltage cutoff    LFP (LiFePO4)           NMC / NCA\ncell over-voltage recover   3.65 V                  4.20 V\ncell under-voltage cutoff   3.40 V                  4.05 V\nabsolute floor (reject)     2.50 V                  3.00 V\nbalance start (top of chg)  2.00 V                  2.50 V\nbalance threshold (delta)   3.40 V                  4.00 V\ncharge temperature window   20 - 50 mV              20 - 50 mV\ndischarge temp window       0 to 45 C               0 to 45 C\nnominal cell voltage        -20 to 60 C             -20 to 60 C\n                            3.2 V                   3.6 - 3.7 V"
+            },
+            {
+              "type": "p",
+              "text": "Charging a lithium cell below freezing causes metallic lithium to plate on the anode. It is cumulative, it is invisible, and it eventually produces an internal short. In most of India this rarely matters - but it matters in the hills, and in an unheated room in a north Indian January. Interlock it: no charge below 0 C, no exceptions."
+            },
+            {
+              "type": "p",
+              "text": "DEFENCE IN DEPTH - three layers, and you need all three 1. SOFTWARE the MCU opens the contactor on a fault 2. HARDWARE the analogue front-end asserts a protection output independently of the MCU, so a hung MCU is not fatal 3. PASSIVE a correctly sized fuse in the pack, and a thermal fuse. It does not need firmware and cannot be argued with."
+            },
+            {
+              "type": "p",
+              "text": "Layer 3 is what saves you when layers 1 and 2 both have bugs, which on a first student BMS they will"
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-6-4",
+          "number": "6.4",
+          "title": "Architecture",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "┌──────────────────────────────────────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ MODULE (e.g. 4S LFP, 12.8 V nominal) │"
+            },
+            {
+              "type": "p",
+              "text": "│ ┌────┐ ┌────┐ ┌────┐ ┌────┐ │ ┌──────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ │ C1 │──│ C2 │──│ C3 │──│ C4 │─────────────┼───┬───▶│ FUSE │──▶ load /"
+            },
+            {
+              "type": "p",
+              "text": "│ └─┬──┘ └─┬──┘ └─┬──┘ └─┬──┘ │ │ └──────────┘ charger"
+            },
+            {
+              "type": "p",
+              "text": "│ │ │ │ │ ││"
+            },
+            {
+              "type": "p",
+              "text": "└─────┼───────┼───────┼───────┼────────────────┘ │ ┌──────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ │ │ │ sense taps └───▶│ CONTACTOR│"
+            },
+            {
+              "type": "p",
+              "text": "▼ ▼ ▼ ▼ (fused, 100 R) │ or MOSFET│"
+            },
+            {
+              "type": "p",
+              "text": "┌───────────────────────────────────┐ └────▲─────┘"
+            },
+            {
+              "type": "p",
+              "text": "│ e.g. BQ76920 / BQ76952 / LTC6811 │────────────────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "│ - per-cell ADC │ independent hardware protect"
+            },
+            {
+              "type": "p",
+              "text": "│ - passive balancing FETs │"
+            },
+            {
+              "type": "p",
+              "text": "│ - over/under voltage comparators │ ┌──────────────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ - coulomb counter │◀──I2C──│ MCU (ESP32) │"
+            },
+            {
+              "type": "p",
+              "text": "└───────────────────────────────────┘ │ - SoC / SoH │"
+            },
+            {
+              "type": "p",
+              "text": "▲ │ - balancing policy │"
+            },
+            {
+              "type": "p",
+              "text": "│ thermistors │ - logging, telemetry │"
+            },
+            {
+              "type": "p",
+              "text": "┌─────┴──────┐ │ - software protect │"
+            },
+            {
+              "type": "p",
+              "text": "│ NTC x 2 │ └──────────────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "└────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "Use an AFE chip rather than measuring cells with the MCU's ADC. Cell sensing is a common-mode problem: cell 4's terminals sit 9.6 V above ground, and a naive divider-per-cell arrangement is inaccurate, temperature-dependent, and drains cells unevenly - which creates the very imbalance you are trying to fix."
+            },
+            {
+              "type": "p",
+              "text": "Figure 6.1 — Always fuse the sense wires. A shorted sense lead becomes a direct path across several cells, and it is the most common way a home-built BMS starts a fire."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-6-5",
+          "number": "6.5",
+          "title": "Balancing, and estimating state",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• Passive balancing bleeds the highest cells through a resistor as heat. Simple, cheap, built into most AFE chips, and slow — typically 50–200 mA. It is what you should build. Balance only near the top of charge, where cell voltages actually separate."
+            },
+            {
+              "type": "p",
+              "text": "• Active balancing moves charge from strong cells to weak ones. Far more efficient and considerably more complex. Not a first project."
+            },
+            {
+              "type": "p",
+              "text": "• State of charge by voltage alone fails on LFP. The LFP discharge curve is almost flat between roughly 20% and 80% — a swing of a few tens of millivolts covers most of the usable range, so open-circuit voltage cannot resolve it. NMC has a steeper curve and is more forgiving."
+            },
+            {
+              "type": "p",
+              "text": "• So use coulomb counting, corrected at the ends. Integrate current in and out to track charge, and re-zero the estimate whenever the pack reaches a known point — full charge, or a rest at a voltage on the steep part of the curve. Coulomb counting drifts; the end-point corrections are what stop the drift accumulating."
+            },
+            {
+              "type": "p",
+              "text": "• State of health is capacity, measured. Not guessed from voltage, not inferred from age. See the test below."
+            },
+            {
+              "type": "p",
+              "text": "WORKSHEET — Capacity and state-of-health test — the number that matters"
+            },
+            {
+              "type": "p",
+              "text": "EQUIPMENT adjustable DC load or a known resistive load, a coulomb counter or shunt + ADC, thermocouple, metal container, sand bucket, fire blanket, ventilation, second person present"
+            },
+            {
+              "type": "p",
+              "text": "1. Bring the module to full charge at low current (0.2C or less) with balancing enabled. Let it rest 2 hours. Record every cell voltage."
+            },
+            {
+              "type": "p",
+              "text": "2. Discharge at a constant, modest rate (0.2C) to the under-voltage cutoff of the FIRST cell to reach it - not to a pack-level voltage. The weakest cell defines the module. Log Ah continuously."
+            },
+            {
+              "type": "p",
+              "text": "3. Measured capacity = the Ah delivered. SoH = measured capacity / original rated capacity"
+            },
+            {
+              "type": "p",
+              "text": "example: a Leaf module rated 60 Ah delivers 44 Ah SoH = 44 / 60 = 73% -&gt; viable for stationary use"
+            },
+            {
+              "type": "p",
+              "text": "4. Rest 2 hours. Record every cell voltage again. Compute the spread."
+            },
+            {
+              "type": "p",
+              "text": "spread &lt; 30 mV healthy, balanced"
+            },
+            {
+              "type": "p",
+              "text": "30 - 100 mV needs balancing; usable"
+            },
+            {
+              "type": "p",
+              "text": "&gt; 100 mV after balancing -&gt; one cell is failing. RETIRE the module."
+            },
+            {
+              "type": "p",
+              "text": "5. Repeat at a higher rate (0.5C) and compare. A large capacity drop with rate indicates high internal resistance, which is the other ageing mechanism and the one that causes heating under load."
+            },
+            {
+              "type": "p",
+              "text": "SoH &gt; 80% good stationary second life"
+            },
+            {
+              "type": "p",
+              "text": "70 - 80% usable, derate the expected capacity accordingly"
+            },
+            {
+              "type": "p",
+              "text": "&lt; 70% marginal; only worth it if the module was free"
+            },
+            {
+              "type": "p",
+              "text": "any cell that will not hold balance -&gt; the module is done. Recycle it."
+            },
+            {
+              "type": "p",
+              "text": "Do this test on every incoming module and keep the records. The measured capacity, not the label, is what you design your system around."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-6-6",
+          "number": "6.6",
+          "title": "The protection loop",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "// BMS main loop. Software layer only - the AFE hardware protection and // the pack fuse (6.3) sit underneath this and do not depend on it."
+            },
+            {
+              "type": "p",
+              "text": "#define NCELLS 4 float vcell[NCELLS], packI, tempC[2];"
+            },
+            {
+              "type": "p",
+              "text": "typedef enum { IDLE, CHARGING, DISCHARGING, PROTECT, FAULT_LATCH } BmsState; BmsState state = IDLE; uint32_t protectEnteredMs = 0;"
+            },
+            {
+              "type": "p",
+              "text": "void bmsLoop(float dt) { afeReadCells(vcell, NCELLS); packI = afeReadCurrent(); afeReadTemps(tempC, 2);"
+            },
+            {
+              "type": "p",
+              "text": "float vmax = maxOf(vcell, NCELLS), vmin = minOf(vcell, NCELLS); float spread = vmax - vmin; float tmax = fmaxf(tempC[0], tempC[1]);"
+            },
+            {
+              "type": "p",
+              "text": "// ---- coulomb counting, corrected at the ends"
+            },
+            {
+              "type": "p",
+              "text": "coulombs += packI * dt; // signed: + charge, - load"
+            },
+            {
+              "type": "p",
+              "text": "if (vmax &gt;= V_FULL &amp;&amp; fabsf(packI) &lt; I_REST) coulombs = capacityAs;"
+            },
+            {
+              "type": "p",
+              "text": "if (vmin &lt;= V_EMPTY) coulombs = 0;"
+            },
+            {
+              "type": "p",
+              "text": "soc = 100.0f * coulombs / capacityAs;"
+            },
+            {
+              "type": "p",
+              "text": "// ---- protection, evaluated EVERY cycle regardless of state"
+            },
+            {
+              "type": "p",
+              "text": "uint16_t f = 0;"
+            },
+            {
+              "type": "p",
+              "text": "if (vmax &gt; V_CELL_OV) f |= F_OVERVOLT;"
+            },
+            {
+              "type": "p",
+              "text": "if (vmin &lt; V_CELL_UV) f |= F_UNDERVOLT;"
+            },
+            {
+              "type": "p",
+              "text": "if (fabsf(packI) &gt; I_MAX) f |= F_OVERCURRENT;"
+            },
+            {
+              "type": "p",
+              "text": "if (tmax &gt; T_MAX) f |= F_OVERTEMP;"
+            },
+            {
+              "type": "p",
+              "text": "if (packI &gt; 0 &amp;&amp; tempC[0] &lt; T_CHARGE_MIN) f |= F_COLD_CHARGE; // see 6.3"
+            },
+            {
+              "type": "p",
+              "text": "if (spread &gt; SPREAD_FAULT) f |= F_IMBALANCE;"
+            },
+            {
+              "type": "p",
+              "text": "if (f) {"
+            },
+            {
+              "type": "p",
+              "text": "openContactor(); // act first, log second"
+            },
+            {
+              "type": "p",
+              "text": "logFault(f, vcell, packI, tempC);"
+            },
+            {
+              "type": "p",
+              "text": "state = (f &amp; (F_OVERTEMP | F_COLD_CHARGE)) ? FAULT_LATCH : PROTECT;"
+            },
+            {
+              "type": "p",
+              "text": "protectEnteredMs = millis();"
+            },
+            {
+              "type": "p",
+              "text": "return; // do nothing else this cycle"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "// ---- recovery: hysteresis AND a dwell time, never an instant retry"
+            },
+            {
+              "type": "p",
+              "text": "if (state == PROTECT) {"
+            },
+            {
+              "type": "p",
+              "text": "bool clear = (vmax &lt; V_CELL_OV_RECOVER) &amp;&amp; (vmin &gt; V_CELL_UV_RECOVER)"
+            },
+            {
+              "type": "p",
+              "text": "&amp;&amp; (tmax &lt; T_MAX - 5.0f);"
+            },
+            {
+              "type": "p",
+              "text": "if (clear &amp;&amp; (millis() - protectEnteredMs &gt; RECOVER_DWELL_MS)) {"
+            },
+            {
+              "type": "p",
+              "text": "closeContactor(); state = IDLE;"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "return;"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "if (state == FAULT_LATCH) return; // needs a human. By design."
+            },
+            {
+              "type": "p",
+              "text": "// ---- passive balancing: only near top of charge, only one cell at a time if (vmax &gt; V_BALANCE_START &amp;&amp; spread &gt; SPREAD_BALANCE)"
+            },
+            {
+              "type": "p",
+              "text": "afeEnableBalance(indexOfMax(vcell, NCELLS)); else"
+            },
+            {
+              "type": "p",
+              "text": "afeDisableBalance();"
+            },
+            {
+              "type": "p",
+              "text": "state = (packI &gt; I_REST) ? CHARGING : (packI &lt; -I_REST) ? DISCHARGING : IDLE;"
+            },
+            {
+              "type": "p",
+              "text": "}"
+            },
+            {
+              "type": "p",
+              "text": "// Two design decisions worth arguing about, and here is the argument: // - Thermal faults LATCH. A pack that overheated once will overheat // again, and an automatic retry loop on a warm pack is exactly how a // recoverable fault becomes a fire. // - Recovery needs hysteresis AND dwell. Without both, a pack sitting // at the threshold chatters the contactor thousands of times an hour // and welds it closed - after which you have no protection at all."
+            },
+            {
+              "type": "p",
+              "text": "DO THIS NOW — Build and prove the BMS"
+            },
+            {
+              "type": "p",
+              "text": "Three weekends. Every step happens with a supervisor and the fire kit present."
+            },
+            {
+              "type": "p",
+              "text": "1 Source one low-voltage module (4S LFP, or a single Leaf or Tesla module). Run the incoming inspection checklist and record every observation with photographs."
+            },
+            {
+              "type": "p",
+              "text": "2 Build the sense harness with a fuse in every sense lead. Check every connection twice for polarity before powering anything."
+            },
+            {
+              "type": "p",
+              "text": "3 Bring up the AFE and read all cell voltages. Verify each against a multimeter before you trust a single reading from the chip."
+            },
+            {
+              "type": "p",
+              "text": "4 Implement protections in software, then test each one deliberately — trigger over-voltage with a bench supply, trigger over-temperature with a hair dryer, trigger over-current with a known load. An untested protection is not a protection."
+            },
+            {
+              "type": "p",
+              "text": "5 Run the capacity test and compute SoH. Compare against the module’s original rating. 6 Enable balancing and run three full cycles. Plot the cell spread at the top of each charge. A falling spread means it is"
+            },
+            {
+              "type": "p",
+              "text": "working; a spread that will not close means you have found a bad cell, which is itself a successful result."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "7",
+      "title": "The Policy Navigator",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Policy is not paperwork bolted on at the end. It routinely changes which design wins — a subsidy can halve a payback period, and a metering rule can decide whether an extra kilowatt of array is worth installing at all. Read this before you finalise a design, not after."
+        },
+        {
+          "type": "p",
+          "text": "How to use this chapter Everything here was verified in mid-2026. Schemes are amended, extended, exhausted and replaced — and several below carry explicit terminal dates that fall within the next two years. Use this chapter to learn the structure: who administers what, what the eligibility hinges on, and where the money actually comes from. Then confirm every number on the official portal on the day you apply."
+        }
+      ],
+      "topics": [
+        {
+          "id": "renewable-energy-mobility-7-1",
+          "number": "7.1",
+          "title": "PM Surya Ghar: Muft Bijli Yojana — residential rooftop solar",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Item               Position as verified mid-2026\nWhat it is\n                   India’s flagship residential rooftop solar scheme, launched 13 February 2024 under MNRE, targeting one crore\nCentral subsidy    households\nFree units         ₹30,000 per kW for the first 2 kW, plus ₹18,000 for the third kW. So ₹30,000 at 1 kW, ₹60,000 at 2 kW, and ₹78,000\n                   capped at 3 kW and above, regardless of how much larger the system is\nHousing societies\nEligibility        Up to 300 units per month for qualifying households — the ‘muft bijli’ in the name reflects that a correctly sized system\n                   offsets most bills to near zero\nEquipment\nHow the money      A separate provision of ₹18,000 per kW for common-area installations, up to 500 kW\narrives\nFinance            Residential electricity connection with sanctioned load generally up to 10 kW; valid consumer number; Aadhaar-linked\nScale so far       application in the name of the person the bill is in\nState top-ups\nApply at           Modules must be ALMM-listed (§7.3). This is the condition most often failed"
+            },
+            {
+              "type": "p",
+              "text": "Direct Benefit Transfer to your bank account after DISCOM inspection and commissioning — typically 30–45 days, not at purchase"
+            },
+            {
+              "type": "p",
+              "text": "Collateral-free loans available through public sector banks for the balance"
+            },
+            {
+              "type": "p",
+              "text": "Roughly 40 lakh households solarised by mid-2026, with central assistance disbursed well past ₹17,000 crore"
+            },
+            {
+              "type": "p",
+              "text": "Several states add their own subsidy on top — always check your state nodal agency separately"
+            },
+            {
+              "type": "p",
+              "text": "pmsuryaghar.gov.in"
+            },
+            {
+              "type": "p",
+              "text": "Why roughly one application in three is rejected"
+            },
+            {
+              "type": "p",
+              "text": "The common causes are administrative rather than technical: the electricity bill is in a parent’s or spouse’s name but the Aadhaar used is the applicant’s; the sanctioned load or connection category does not match; documents are illegible; the chosen vendor is not empanelled; or the installed module model is not actually on the ALMM list even though the brand is. Check the specific model number against the list before installation, not after."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-7-2",
+          "number": "7.2",
+          "title": "Net metering — and why the variant matters more than the rate",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Metering policy is set by each state’s electricity regulatory commission, so the rules genuinely differ across the country. What does not differ is the structure. There are three arrangements, and which one you get changes the economics of your design substantially:"
+            },
+            {
+              "type": "pre",
+              "text": "Arrangement          How it works                                      Effect on your design\nNet metering\n                     Exported units are netted against imported        The best case for the consumer. Oversizing slightly is rational, because\nNet billing / net    units. You are billed on the net. In effect,      surplus carries full retail value\nfeed-in              export is credited at the retail tariff\n                                                                       Self-consumption becomes much more valuable than export. Size\nGross metering       Import is billed at the retail tariff; export is  closer to the daytime load, and consider shifting loads into daylight\n                     credited at a separate, usually lower, rate       hours\n                     All generation is sold to the DISCOM at a fixed   The system becomes a small generation business rather than a\n                     tariff; all consumption is bought at retail       bill-offset. The economics depend entirely on the feed-in rate"
+            },
+            {
+              "type": "p",
+              "text": "• Check the capacity cap. Most states limit net metering for residential consumers, commonly at around 10 kW, and often also cap total rooftop solar as a percentage of the distribution transformer capacity — which means your neighbour installing first can consume the available headroom."
+            },
+            {
+              "type": "p",
+              "text": "• Check the settlement period. Monthly, half-yearly or annual settlement changes how much of your seasonal surplus survives to be used."
+            },
+            {
+              "type": "p",
+              "text": "• Check what happens to unused credit at the end of the settlement period. Some states pay for it at a low rate; some simply lapse it."
+            },
+            {
+              "type": "p",
+              "text": "• Get the technical feasibility approval before you buy anything. The DISCOM must confirm the connection can accept your system. Projects have been bought and then refused connection."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-7-3",
+          "number": "7.3",
+          "title": "ALMM — the list that decides whether you qualify",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The Approved List of Models and Manufacturers is maintained by MNRE. List-I covers solar modules and List-II covers solar cells. For government-supported projects — which includes PM Surya Ghar — equipment must be ALMM-listed. Two practical consequences: the module model number must appear on the list, not merely the manufacturer’s name; and listings are added and removed over time, so verify on the current published list rather than on a vendor’s assurance or an old PDF."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-7-4",
+          "number": "7.4",
+          "title": "PM E-DRIVE — electric mobility incentives",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Item                 Position as verified mid-2026\nWhat it is\n                     PM Electric Drive Revolution in Innovative Vehicle Enhancement, notified 29 September 2024 and effective from 1\nOutlay               October 2024, under the Ministry of Heavy Industries. It replaced FAME-I and FAME-II"
+            },
+            {
+              "type": "p",
+              "text": "Terminal dates ₹10,900 crore. In August 2025 the scheme was extended from two years to four within the same outlay — no additional money Fund-limited e-2W: 31 July 2026 · e-rickshaws and e-carts: 31 March 2028 · e-trucks, e-buses, e-ambulances and testing How the incentive agencies: 31 March 2028 · the e-3W L5 category closed on 26 December 2025 reaches you Vehicle eligibility The scheme closes if the allocation is exhausted before the terminal date. Do not assume a stated end date is a guarantee of availability Charging infrastructure Applied at the point of purchase — no separate application. Aadhaar face verification at the dealer generates an e-voucher signed by buyer and dealer; the OEM is reimbursed later Scale so far Portal Advanced battery, CMVR registration, ex-factory price below the prescribed threshold, a battery warranty for the life of the vehicle, and adequate after-sales support. e-3Ws must be registered for commercial use"
+            },
+            {
+              "type": "p",
+              "text": "Around ₹2,000 crore, with guidelines issued in 2025 for roughly 72,300 public charging points and a tiered subsidy structure. Government premises, residential colonies, hospitals and educational institutions are eligible for up to 100% subsidy on upstream infrastructure and charging equipment, subject to guaranteeing free public access"
+            },
+            {
+              "type": "p",
+              "text": "Over 22 lakh EVs supported by early 2026, including roughly 2.9 lakh electric three-wheelers"
+            },
+            {
+              "type": "p",
+              "text": "pmedrive.heavyindustries.gov.in"
+            },
+            {
+              "type": "p",
+              "text": "The line that matters for Chapter 4"
+            },
+            {
+              "type": "p",
+              "text": "If your college station is publicly accessible, the charging equipment and the upstream electrical work may be substantially or fully funded. That transforms the payback calculation in §4.5 — and it is exactly the kind of provision that student teams never check because it sounds like something only companies can access. Confirm current eligibility and the application route with your state nodal agency before you assume either way."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-7-5",
+          "number": "7.5",
+          "title": "State schemes and other central programmes",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "• State EV and solar policies stack on top of central ones, and they vary widely. As illustrative examples from 2026: Gujarat has offered capital subsidy on public EV charging installations along with electricity duty exemption and reduced road tax; Tamil Nadu has offered road tax waivers and land cost support; Punjab has offered charging station subsidies and purchase incentives for e-two-wheelers and e-autos; Rajasthan adds a state top-up on the PM Surya Ghar subsidy. Check your own state’s current policy — these change and several carry expiry dates."
+            },
+            {
+              "type": "p",
+              "text": "• PM-KUSUM supports solar in agriculture: standalone solar pumps, solarisation of existing grid-connected pumps, and small solar plants on farmers’ land. If your project touches irrigation, this is the relevant scheme rather than PM Surya Ghar."
+            },
+            {
+              "type": "p",
+              "text": "• Electricity duty and road tax exemptions are often where the quiet money is for a charging business — an exemption on duty applies every month for years, and compounds far beyond a one-time capital subsidy."
+            },
+            {
+              "type": "p",
+              "text": "• Discom empanelment. For rooftop solar, only vendors empanelled with your DISCOM can execute a subsidised installation. Check the list before selecting a vendor, not after."
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-7-6",
+          "number": "7.6",
+          "title": "Battery waste — a legal obligation, not an afterthought",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The Battery Waste Management Rules, 2022 place Extended Producer Responsibility on producers of all battery types, require registration and reporting on the CPCB portal, set recycling and recovery targets, and prohibit disposal of batteries in landfill or by incineration. For a student project the practical implications are direct and short: every cell you reject in §6.1, and every pack you eventually retire, must go to a registered recycler and not into a bin. Record where each one went. If your project ever becomes a product, the EPR obligations become yours, and designing for disassembly and recovery from the start is far cheaper than retrofitting it."
+            },
+            {
+              "type": "p",
+              "text": "CHECKLIST — Policy navigator — work through before finalising any design"
+            },
+            {
+              "type": "pre",
+              "text": "□ Identified which central scheme, if any, applies to this  □ Obtained (or confirmed the route to) DISCOM technical\n    project                                                     feasibility approval\n□ Checked the scheme is still open and funds are not        □ Checked state-level scheme stacking and any state\n    exhausted                                                   top-up\n□ Confirmed the terminal date falls after my expected       □ Confirmed the vendor is DISCOM-empanelled where\n    commissioning                                               required\n□ Verified eligibility line by line against the official    □ Confirmed the bill and Aadhaar are in the same name\n    guidelines"
+            },
+            {
+              "type": "p",
+              "text": "□ Every module or component checked against the current □ Identified the registered recycler for end-of-life batteries ALMM list, by model number"
+            },
+            {
+              "type": "pre",
+              "text": "□ Determined which metering arrangement my state            □ Recomputed payback both with and without every\n    actually offers                                             subsidy claimed\n□ Checked the net metering capacity cap and                 □ Written down the date I verified each figure, and the\n    transformer-level cap                                       source"
+            },
+            {
+              "type": "p",
+              "text": "DO THIS NOW — Build the policy case for your own project A day, mostly on official portals. 1 Identify every scheme that could apply — central and state. List them with their administering body and their portal. 2 For each, find the current guidelines document and read the eligibility section in full. Note the terminal date and whether it"
+            },
+            {
+              "type": "p",
+              "text": "is fund-limited. 3 Check one real product against the ALMM list by model number. Note how many vendor-advertised ‘ALMM approved’"
+            },
+            {
+              "type": "p",
+              "text": "products are harder to confirm than expected. 4 Find out which metering arrangement your state offers and what the capacity cap is. Cite the regulation, not a blog. 5 Recompute your payback from Chapter 1 with the subsidies you can actually substantiate. Show both figures side by side. 6 Write the one-page policy summary for your project, with a ‘verified on ’ line against every number. That dated line is what"
+            },
+            {
+              "type": "p",
+              "text": "makes the document trustworthy six months later."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "A",
+      "title": "Reference",
+      "intro": [],
+      "topics": [
+        {
+          "id": "renewable-energy-mobility-A-1",
+          "number": "A.1",
+          "title": "Formula reference",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "SOLAR                      = daily GHI in kWh/m2 (numerically equal)\n   peak sun hours (PSH)    = kWp x PSH x PR\n   daily generation        = actual kWh / (irradiance-predicted kWh)\n   performance ratio (PR)\n                              0.75 - 0.82 typical for good Indian rooftop\n   specific yield          = kWh generated per kWp per year\n   temperature derate         ~1,300 - 1,600 across most of India\n   cell temperature        = 1 - k x (T_cell - 25), k ~ 0.003 - 0.004 /C\n   array area              ~ T_ambient + (NOCT - 20)/800 x irradiance\n                           ~ 6 - 8 m2 per kWp for current modules\nBATTERY                    = nameplate x depth of discharge\n   usable energy           = daily load x autonomy / (DoD x round-trip eff)\n   nameplate needed        lead-acid ~0.80 · LFP ~0.92 - 0.95\n   round-trip efficiency   lead-acid 0.50 · LFP 0.80 - 0.90\n   typical DoD             current / capacity: 100 Ah at 0.5C = 50 A\n   C-rate                  measured capacity / rated capacity\n   state of health\nELECTRICAL                 P = mean(v x i) [needs simultaneous V and I]\n   real power\n   apparent power          S = Vrms x Irms\n   power factor\n   voltage drop            PF = P / S"
+            },
+            {
+              "type": "p",
+              "text": "string open-circuit V Vdrop = 2 x L x I x rho / A (DC, both ways)"
+            },
+            {
+              "type": "p",
+              "text": "target &lt;= 2% DC, &lt;= 1% AC"
+            },
+            {
+              "type": "p",
+              "text": "= Voc per module x modules in series"
+            },
+            {
+              "type": "p",
+              "text": "CHECK AT LOWEST EXPECTED TEMPERATURE - Voc"
+            },
+            {
+              "type": "p",
+              "text": "RISES as it gets colder, and this is how"
+            },
+            {
+              "type": "p",
+              "text": "inverters are destroyed"
+            },
+            {
+              "type": "pre",
+              "text": "ECONOMICS                  = (capital - subsidy) / annual saving\n   simple payback          = lifetime cost / lifetime energy delivered\n   LCOE"
+            },
+            {
+              "type": "p",
+              "text": "The string-voltage note is not decorative: sizing a string at 25 °C and commissioning it on a cold January morning has ended a lot of inverters"
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-A-2",
+          "number": "A.2",
+          "title": "Instruments and kit",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Category           Items\nElectrical\nmeasurement        Multimeter with DC current range · clamp meter (DC-capable, not AC-only) · plug-in energy meter · insulated\nSolar-specific     screwdriver set · IR thermometer\nBattery work       Irradiance meter or pyranometer (borrow one) · compass with declination correction · inclinometer · MC4 crimp tool ·\n                   DC clamp meter for string testing\nSafety kit —\nnon-negotiable     Adjustable DC electronic load · bench power supply with current limit · shunt and ADC or a coulomb counter ·\nDocumentation      thermocouples · insulated spanners"
+            },
+            {
+              "type": "p",
+              "text": "Safety glasses · insulating gloves rated for the voltage · face shield · fire blanket · bucket of dry sand · metal containment box for pack charging · lockout padlock and tags · insulating mat"
+            },
+            {
+              "type": "p",
+              "text": "Camera or phone for before-and-after wiring photographs · label printer · paint pen for torque witness marks · printed log sheets"
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-A-3",
+          "number": "A.3",
+          "title": "A twelve-week plan",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Weeks Focus Deliverable A wall-mounted procedure and a rehearsed team 1 Ch 3 safety — written procedure, emergency Your own PR figure, payback and LCOE A sizing document with grid-tied and off-grid options costed plan, kit assembled"
+            },
+            {
+              "type": "p",
+              "text": "2 Ch 1 — derating stack and economics for a"
+            },
+            {
+              "type": "p",
+              "text": "real site"
+            },
+            {
+              "type": "p",
+              "text": "3–4 Ch 2 — resource assessment, site survey, full"
+            },
+            {
+              "type": "p",
+              "text": "sizing"
+            },
+            {
+              "type": "pre",
+              "text": "Weeks  Focus                                           Deliverable\n5–6                                                    Agreement within 10% of the utility meter over 24 h\n       Ch 5 — build and calibrate the audit tool; run\n7      the standby baseline                            A ranked savings worksheet and a one-page report\n8–10                                                   A measured SoH figure and a balancing plot over three cycles\n       Ch 5 — complete a household audit\n11                                                     A defensible station design with the safety boundary marked\n       Ch 6 — incoming inspection, BMS build,\n12     protection testing, capacity test               A one-page policy summary with dated verification against every figure"
+            },
+            {
+              "type": "p",
+              "text": "Ch 4 — station sizing, cabinet design, cost model"
+            },
+            {
+              "type": "p",
+              "text": "Ch 7 — policy case, and write everything up"
+            }
+          ]
+        },
+        {
+          "id": "renewable-energy-mobility-A-4",
+          "number": "A.4",
+          "title": "Glossary",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "                    Global horizontal / direct normal irradiance\n Term               Peak sun hours — daily irradiation expressed as hours at 1000 W/m²\n GHI / DNI          Actual output divided by irradiance-predicted output\n PSH                kWh generated per kWp installed per year\n Performance ratio  Standard test conditions / nominal operating cell temperature\n Specific yield     Generation lost to dust and dirt on the module surface\n STC / NOCT         Maximum power point tracking — the controller function that extracts peak power as conditions change\n Soiling loss       Mandatory inverter function that shuts down on grid failure to protect line workers\n MPPT               Export netted against import at the retail tariff\n Anti-islanding     All generation sold at a fixed tariff, all consumption bought\n Net metering       MNRE’s Approved List of Models and Manufacturers\n Gross metering     Distribution company — your electricity utility\n ALMM               State Electricity Regulatory Commission — sets metering rules\n DISCOM             Direct Benefit Transfer — subsidy paid into your bank account\n SERC               Depth of discharge — how much of a battery you actually use\n DBT                State of charge (how full now) / state of health (capacity remaining versus new)\n DoD                Current expressed as a multiple of capacity\n SoC / SoH          Battery management system / analogue front end that senses cells\n C-rate             Self-sustaining exothermic failure of a lithium cell\n BMS / AFE          Extended Producer Responsibility under the Battery Waste Management Rules\n Thermal runaway    Levelised cost of energy — lifetime cost per kWh delivered\n EPR\n LCOE"
+            },
+            {
+              "type": "p",
+              "text": "Sources and dates. PM Surya Ghar figures — ₹30,000/kW to 2 kW, ₹18,000 for the third kW, ₹78,000 cap, ALMM requirement, roughly 40 lakh households by mid-2026 — are as published by MNRE and reported to Parliament in 2026. PM E-DRIVE details — the ₹10,900 crore outlay, the August 2025 extension to four years within the same outlay, the terminal dates of 31 July 2026 for e-2W and 31 March 2028 for e-rickshaws and e-carts, and the charging infrastructure guidelines including up to 100% support for educational institutions offering free public access — are as notified by the Ministry of Heavy Industries. Metering rules are set by state commissions and are not summarised here for that reason. Every one of these can change with a notification; verify before you rely on it."
+            },
+            {
+              "type": "p",
+              "text": "And the sentence this guide is built around. The best energy system is the one that is still running, safely, in year seven — not the one with the highest efficiency on a datasheet. That means designing for dust rather than for laboratory irradiance, for the worst monsoon month rather than the annual average, for the battery you can actually afford to replace, and for the person who will have to clean it. Deployable beats ideal, every time, and safety comes before both."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

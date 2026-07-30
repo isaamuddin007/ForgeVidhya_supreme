@@ -1,0 +1,1664 @@
+{
+  "slug": "manage-expenses",
+  "title": "How to Manage Your Expenses",
+  "tagline": "A practical money system for Indian students and first jobs — one that survives a bad month.",
+  "modules": [
+    {
+      "number": "1",
+      "title": "Start Where You Are",
+      "intro": [
+        {
+          "type": "p",
+          "text": "You cannot manage what you have not measured, and you cannot measure honestly if you are bracing for a verdict. So before anything else: this chapter contains no judgement. It contains a counting exercise."
+        }
+      ],
+      "topics": [
+        {
+          "id": "manage-expenses-1-1",
+          "number": "1.1",
+          "title": "Why this is harder in India than the books admit",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Most personal finance writing assumes a salaried person with a predictable monthly credit, a single account, and expenses that belong only to them. If that does not describe you, the standard advice will feel like it was written for someone else — because it was. Five structural differences:"
+            },
+            {
+              "type": "p",
+              "text": "• Money flows in both directions with family. You may receive an allowance and also be expected to contribute — to a sibling’s fees, a parent’s medicine, a wedding. Standard budgets have no category for this, and pretending it does not exist is why so many budgets collapse."
+            },
+            {
+              "type": "p",
+              "text": "• Income is irregular. Stipends arrive on the 7th or the 22nd depending on paperwork. Freelance payments arrive when the client feels like it. A budget built on ‘my monthly income’ breaks the first time it is late."
+            },
+            {
+              "type": "p",
+              "text": "• The amounts are small enough to feel not worth managing. On ₹12,000 a month, budgeting feels like accounting for crumbs. It is the opposite: the smaller the amount, the more a ₹1,500 gap hurts, and the more a system helps."
+            },
+            {
+              "type": "p",
+              "text": "• Cash and UPI are mixed. The chaiwala takes UPI, the auto sometimes does not, and your bank statement is a wall of merchant codes that mean nothing."
+            },
+            {
+              "type": "p",
+              "text": "• Social spending is not optional in the way budgets assume. Festivals, birthdays, farewells, contributions to a colleague’s gift, travel home. Calling these ‘discretionary’ is technically true and practically useless."
+            },
+            {
+              "type": "p",
+              "text": "A word about guilt If reading about money makes you feel a bit sick, that is common and it is worth naming. Many people carry a story about money that they did not choose — that there is never enough, that wanting things is selfish, that a family’s sacrifice must be repaid through visible frugality. Those stories affect decisions more than any spreadsheet does. You do not have to resolve any of that to use this guide. But notice when a reaction is about the arithmetic and when it is about the story. The two need different responses, and only one of them is fixed by a budget."
+            }
+          ]
+        },
+        {
+          "id": "manage-expenses-1-2",
+          "number": "1.2",
+          "title": "The only three numbers you need to start",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Not a budget. A measurement. Most people cannot answer these three questions within ₹2,000, and finding out is the entire first week of work."
+            },
+            {
+              "type": "p",
+              "text": "A. WHAT COMES IN, in a normal month"
+            },
+            {
+              "type": "p",
+              "text": "allowance from family Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "stipend / salary (in hand) Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "freelance / part-time Rs ______ &lt;- use your WORST recent month"
+            },
+            {
+              "type": "p",
+              "text": "scholarship / other Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "----------"
+            },
+            {
+              "type": "p",
+              "text": "IN = Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "B. WHAT GOES OUT NO MATTER WHAT (your \"fixed floor\")"
+            },
+            {
+              "type": "p",
+              "text": "hostel / PG rent Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "mess / food plan Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "phone + data Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "transport (pass, fuel) Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "loan EMI / fees instalment Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "money sent to family Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "----------"
+            },
+            {
+              "type": "p",
+              "text": "FLOOR = Rs ______"
+            },
+            {
+              "type": "pre",
+              "text": "C. WHAT IS ACTUALLY LEFT                                      &lt;- this is your real\n                                      IN - FLOOR = Rs ______       working money"
+            },
+            {
+              "type": "p",
+              "text": "Now the honest question: does C match what you actually have left at month end? If C says Rs 4,000 and reality says Rs 300, the gap is not a mystery and it is not a personal failing. It is Chapter 2."
+            },
+            {
+              "type": "p",
+              "text": "Write your worst recent month for irregular income, not your best. A budget built on your best month is a plan to be short most of the year"
+            }
+          ]
+        },
+        {
+          "id": "manage-expenses-1-3",
+          "number": "1.3",
+          "title": "The thirty-day trace",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Before you change anything, watch what already happens. This is the step people skip, and skipping it is why budgets built in a single evening of enthusiasm fail by the third week — they are budgets for an imaginary person."
+            },
+            {
+              "type": "p",
+              "text": "1 Do not change your spending. Genuinely. The point is to get a true baseline, and a month of artificially careful behaviour tells you nothing."
+            },
+            {
+              "type": "p",
+              "text": "2 Record every outflow the same day. Not weekly — you will not remember. Use whatever you will actually open: a notes app, a spreadsheet, an expense app, the back of a diary."
+            },
+            {
+              "type": "p",
+              "text": "3 Note three things per entry: amount, rough category, and — this is the useful one — whether you would make the same choice again. One word: yes, no, unsure."
+            },
+            {
+              "type": "p",
+              "text": "4 At the end, total the ‘no’ column. That number is your realistic starting target. Not your chai. Not your subscriptions. The things you already flagged."
+            },
+            {
+              "type": "p",
+              "text": "Progress over perfection, stated as a rule If you trace 30 days and find ₹3,100 of spending you would not repeat, do not try to eliminate ₹3,100 next month. Aim at a third of it. A budget you keep for six months at 30% effectiveness beats a perfect budget you abandon in nineteen days, and it is not close. Every restart costs you momentum you will not get back."
+            },
+            {
+              "type": "p",
+              "text": "WORKSHEET — Run your baseline week Thirty minutes now, then two minutes a day. 1 Fill in the three numbers in §1.2. Use your worst recent month for anything irregular. 2 Open your banking or UPI app and read the last 30 days of transactions out loud. Actually out loud — it makes you notice"
+            },
+            {
+              "type": "p",
+              "text": "things scrolling does not. 3 Set up wherever you will log spending. Test it once today with a real transaction. 4 Write one sentence: ‘The number that surprised me was ___.’ Keep it. You will compare against it in ninety days. 5 Do not build a budget yet. You do not have the data. Chapter 2 is next month’s job."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "2",
+      "title": "The Real Expense Map",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Most budgets fail not because the person overspent, but because the budget never contained a line for the thing that actually happened — the exam fee, the trip home, the cousin’s wedding, the phone that died."
+        }
+      ],
+      "topics": [
+        {
+          "id": "manage-expenses-2-1",
+          "number": "2.1",
+          "title": "The nine categories of Indian student life",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Category What sits inside it Where it goes wrong"
+            },
+            {
+              "type": "pre",
+              "text": "Housing       Hostel or PG rent, deposit, electricity, water,  Annual hostel fees paid in one lump feel like a separate event, not a\n              maintenance                                      monthly cost. Divide by 12 and treat it as monthly\nFood          Mess fees, canteen, outside food, groceries,     The mess bill is visible; the ₹80–₹150 top-ups around it are not. This is\n              delivery apps                                    usually the largest untracked category"
+            },
+            {
+              "type": "p",
+              "text": "Transport Bus or metro pass, auto, fuel, cab, train home Trips home are lumpy and seasonal, and almost never budgeted"
+            },
+            {
+              "type": "p",
+              "text": "Connectivity Mobile recharge, data, broadband share Usually stable. One of the few lines you can genuinely set and forget"
+            },
+            {
+              "type": "pre",
+              "text": "Learning      Books, printing, exam and certification fees,    Treated as ‘investment’ without testing whether it is. See Chapter 6\n              courses, tools, laptop\nHealth        Medicines, doctor visits, spectacles, dental,    Almost universally set to zero in student budgets, and almost never zero\n              insurance premium                                in reality\nPersonal      Clothes, haircut, toiletries, laundry,           The one people over-police. It is rarely the actual problem\n              entertainment, subscriptions\nFamily        Money sent home, contributions to siblings’      Both real and unpredictable. Needs its own line and its own conversation\n              fees, parents’ medicines                         (§2.3)\nSocial &      Festivals, gifts, birthdays, farewells, weddings, Highly seasonal and socially compulsory. The single biggest cause of a\noccasions\n              travel for them                                  blown month"
+            }
+          ]
+        },
+        {
+          "id": "manage-expenses-2-2",
+          "number": "2.2",
+          "title": "The lumpy costs — budget them monthly, spend them yearly",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Anything that happens once or twice a year is the enemy of a monthly budget, because it is invisible for eleven months and then arrives all at once. The fix is arithmetic: estimate the annual total, divide by twelve, and set that amount aside every month so the money is already there when the cost lands."
+            },
+            {
+              "type": "p",
+              "text": "THE SINKING FUND - your own estimates, not mine. Ranges vary enormously by city, campus and family, so fill these from YOUR last twelve months."
+            },
+            {
+              "type": "p",
+              "text": "travel home (___ trips) Rs ________ Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "festivals + gifts Rs ________ Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "exam / certification fees Rs ________ Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "medical (incl. one unplanned) Rs ________ Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "device repair or replacement Rs ________ Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "clothes (incl. interview clothes) Rs ________ Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "weddings / family functions Rs ________ Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "------------ ----------"
+            },
+            {
+              "type": "p",
+              "text": "TOTAL Rs ________ Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "^"
+            },
+            {
+              "type": "p",
+              "text": "this monthly number is the amount most"
+            },
+            {
+              "type": "p",
+              "text": "student budgets are silently missing"
+            },
+            {
+              "type": "p",
+              "text": "Keep this money somewhere separate from your spending account - a second savings account, or a labelled goal in your banking app. If it sits with your daily money, it will be spent as daily money. That is not weakness; it is what undifferentiated money does."
+            },
+            {
+              "type": "p",
+              "text": "If your budget balances only in months when nothing happens, it is not a budget. Something happens most months"
+            }
+          ]
+        },
+        {
+          "id": "manage-expenses-2-3",
+          "number": "2.3",
+          "title": "The family line, handled honestly",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "This is the section that generic personal finance skips, and it is often the largest and most emotionally loaded line in an Indian budget. Two situations, both common, both legitimate."
+            },
+            {
+              "type": "p",
+              "text": "If your family supports you: knowing the real number matters, even when it is uncomfortable. Not so you can feel guilty — guilt does not improve anyone’s finances — but because ‘my parents pay for it’ is not a category and cannot be planned around. Write the amount down. Then, if it helps, write what portion of it you could cover yourself within two years, and treat that as a goal rather than a debt."
+            },
+            {
+              "type": "p",
+              "text": "If you support your family: this is a fixed cost, not a discretionary one, and it belongs in your floor in §1.2. Three things worth knowing:"
+            },
+            {
+              "type": "p",
+              "text": "• An unstated amount grows. ‘Whatever is left’ tends to expand until nothing is left. A stated monthly figure — ‘I send ₹6,000 on the 3rd’ — is easier for everyone, including them, because it can be planned around."
+            },
+            {
+              "type": "p",
+              "text": "• Separate the regular from the emergency. The monthly contribution and the sudden hospital bill are different problems with different solutions. Chapter 8 is about the second."
+            },
+            {
+              "type": "p",
+              "text": "• Your own emergency fund is not selfishness. It is the thing that lets you keep sending money next year. If you have nothing behind you and something goes wrong, the contribution stops entirely and you may borrow badly to restart it. Funding your buffer is part of supporting them."
+            },
+            {
+              "type": "p",
+              "text": "If the amount you are asked for is more than you have This is a real situation for many people and it is not solved by budgeting harder. What sometimes helps: being specific rather than apologetic (‘I can send ₹4,000, not ₹8,000’ lands better than a vague promise), separating what is urgent from what is habitual, and — where it is safe to do so — saying the number out loud rather than quietly going short and hoping nobody notices. If the conversation is not safe to have, that is a different problem, and a person you trust is worth more than a spreadsheet."
+            },
+            {
+              "type": "p",
+              "text": "WORKSHEET — Build your expense map An hour with your bank statement. This becomes the base for everything after. 1 Take your 30-day trace and sort every entry into the nine categories in §2.1. Anything that does not fit goes in a tenth pile"
+            },
+            {
+              "type": "p",
+              "text": "called ‘other’. 2 If ‘other’ is more than about 10% of your spending, split it — you have found a category you did not know you had. 3 Fill in the sinking fund from §2.2 using your last twelve months, not your expectations. Look at old transactions to jog your"
+            },
+            {
+              "type": "p",
+              "text": "memory. 4 Add the monthly sinking-fund figure to your floor from §1.2. This is your true fixed cost, and it is almost always higher than"
+            },
+            {
+              "type": "p",
+              "text": "people expect. 5 Write down the family line explicitly, in whichever direction it flows. Naming it is the whole exercise."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "3",
+      "title": "50-30-20, Adapted for Real Income",
+      "intro": [
+        {
+          "type": "p",
+          "text": "The 50-30-20 rule — half to needs, three-tenths to wants, a fifth to savings — is a good idea imported from a very different cost structure. At ₹12,000 a month in an Indian city it is not merely difficult, it is arithmetically impossible. Here is what to use instead."
+        }
+      ],
+      "topics": [
+        {
+          "id": "manage-expenses-3-1",
+          "number": "3.1",
+          "title": "Why it breaks, and what to keep from it",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The rule assumes needs can fit in half your income. If your hostel, mess, transport and phone come to ₹10,500 and you receive ₹12,000, your needs are 87% and no amount of discipline changes that. Telling someone in that position to hit 50% is not advice; it is a way of making them feel like a failure for doing arithmetic correctly."
+            },
+            {
+              "type": "p",
+              "text": "What is worth keeping is the underlying idea: decide the proportions before the money arrives, and save first rather than last. The proportions themselves should match your income level, and they should change as it rises."
+            },
+            {
+              "type": "pre",
+              "text": "Monthly money you  Needs Wants Future The honest note\ncontrol\nUnder ₹15,000      80–85% 10–15% 5%                          ₹500 a month is a real achievement here. The goal is the habit and a first\n                                                             small buffer, not a portfolio\n₹15,000–₹30,000    70–75% 15–20% 10%                         The first point at which an emergency fund becomes genuinely buildable.\n                                                             Prioritise it over everything else\n₹30,000–₹60,000    55–65% 20%                                15–20% The danger zone for lifestyle inflation — see §6.4. This is where 50-30-20\n                                                                             starts to be realistic\nAbove ₹60,000      50%       20–30% 20–30% The textbook rule finally fits. Raise the future share, not the wants share,\n                                                             when income rises"
+            },
+            {
+              "type": "p",
+              "text": "‘Future’ means emergency fund first, then debt repayment above roughly 12% interest, then investing — in that order (§7.1). Percentages are a starting point to adjust, not a target to feel bad about missing."
+            }
+          ]
+        },
+        {
+          "id": "manage-expenses-3-2",
+          "number": "3.2",
+          "title": "Irregular income: pay yourself a salary",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "If your money arrives unpredictably — stipend on no fixed date, freelance payments in clumps, tuition income that stops in exam season — do not budget on what arrives. Budget on a number you choose, and use a buffer to smooth the difference."
+            },
+            {
+              "type": "p",
+              "text": "income arrives, whenever and however much"
+            },
+            {
+              "type": "p",
+              "text": "│"
+            },
+            {
+              "type": "p",
+              "text": "▼"
+            },
+            {
+              "type": "p",
+              "text": "┌──────────────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ BUFFER ACCOUNT │ everything lands here first."
+            },
+            {
+              "type": "p",
+              "text": "│ (separate savings) │ you do not spend from this account."
+            },
+            {
+              "type": "p",
+              "text": "└──────────┬───────────┘"
+            },
+            {
+              "type": "p",
+              "text": "│ on the 1st of every month, transfer a FIXED amount"
+            },
+            {
+              "type": "p",
+              "text": "▼"
+            },
+            {
+              "type": "p",
+              "text": "┌──────────────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ SPENDING ACCOUNT │ this is your \"salary\". Live on it."
+            },
+            {
+              "type": "p",
+              "text": "│ = your base month │ if it runs out on the 26th, that is"
+            },
+            {
+              "type": "p",
+              "text": "└──────────────────────┘ information, not an emergency."
+            },
+            {
+              "type": "p",
+              "text": "YOUR BASE MONTH = the lowest total you received in any month of the last six. Not the average. The lowest."
+            },
+            {
+              "type": "p",
+              "text": "Good months overfill the buffer. Bad months are absorbed by it. Once the buffer holds 3 base months, raise your salary - and only then."
+            },
+            {
+              "type": "p",
+              "text": "Figure 3.1 — This is the single highest-value change available to anyone with irregular income. It converts an unpredictable input into a predictable one."
+            }
+          ]
+        },
+        {
+          "id": "manage-expenses-3-3",
+          "number": "3.3",
+          "title": "Your monthly plan, on one page",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "TEMPLATE — The one-page monthly budget"
+            },
+            {
+              "type": "p",
+              "text": "MONTH: ____________ MY BASE SALARY TO MYSELF: Rs __________"
+            },
+            {
+              "type": "p",
+              "text": "1. NEEDS (pay these first, ideally by automation on day 1)"
+            },
+            {
+              "type": "p",
+              "text": "rent / hostel share Rs ________"
+            },
+            {
+              "type": "p",
+              "text": "food / mess Rs ________"
+            },
+            {
+              "type": "p",
+              "text": "transport Rs ________"
+            },
+            {
+              "type": "p",
+              "text": "phone + data Rs ________"
+            },
+            {
+              "type": "p",
+              "text": "loan EMI / fee instalment Rs ________"
+            },
+            {
+              "type": "p",
+              "text": "to family Rs ________"
+            },
+            {
+              "type": "p",
+              "text": "sinking fund transfer (from 2.2) Rs ________"
+            },
+            {
+              "type": "p",
+              "text": "-----------"
+            },
+            {
+              "type": "p",
+              "text": "NEEDS = Rs ________ ____% of income"
+            },
+            {
+              "type": "p",
+              "text": "2. FUTURE (transfer on day 1, before you can spend it)"
+            },
+            {
+              "type": "p",
+              "text": "emergency fund Rs ________"
+            },
+            {
+              "type": "p",
+              "text": "extra debt repayment Rs ________"
+            },
+            {
+              "type": "p",
+              "text": "investing Rs ________"
+            },
+            {
+              "type": "p",
+              "text": "-----------"
+            },
+            {
+              "type": "p",
+              "text": "FUTURE = Rs ________ ____% of income"
+            },
+            {
+              "type": "p",
+              "text": "3. WANTS (whatever is genuinely left - and it is allowed to exist)"
+            },
+            {
+              "type": "p",
+              "text": "income - needs - future = Rs ________ ____% of income"
+            },
+            {
+              "type": "p",
+              "text": "weekly allowance = that / 4 = Rs ________"
+            },
+            {
+              "type": "p",
+              "text": "THE ONE RULE: the \"wants\" number is a weekly figure, not a monthly one. Monthly wants budgets are spent in twelve days by almost everyone. Weekly ones self-correct: a heavy Saturday only costs you that week."
+            },
+            {
+              "type": "p",
+              "text": "Fill this in with a pen, once a month, in about ten minutes. Elaborate spreadsheets have a much lower survival rate than a page you can actually see."
+            },
+            {
+              "type": "p",
+              "text": "If the numbers do not balance"
+            },
+            {
+              "type": "p",
+              "text": "This happens, and it does not mean you have failed the exercise. It means one of four things, and it is worth knowing which: your income is genuinely too low for your fixed costs (a housing or income problem, not a budgeting one); a lumpy cost is hiding (§2.2); debt repayment is eating the middle (Chapter 5); or your ‘needs’ list contains something that is actually a want."
+            },
+            {
+              "type": "p",
+              "text": "Only the fourth is fixed by budgeting. The other three need a different move — changing the housing, adding income, restructuring the debt. Diagnosing correctly matters more than trying harder."
+            },
+            {
+              "type": "p",
+              "text": "WORKSHEET — Set your base month and your first automation Twenty minutes, mostly in your banking app. 1 Look at the last six months of income. Write down the lowest month. That is your base salary to yourself. 2 Open a second account or a savings goal within your existing bank. It costs nothing and takes ten minutes. This is your"
+            },
+            {
+              "type": "p",
+              "text": "buffer. 3 Fill in the one-page budget above using your base number, not your best month. 4 Set one standing instruction: a fixed transfer from buffer to spending on the 1st. One automation beats ten intentions. 5 Convert your wants number into a weekly figure and write it somewhere you will see it on a Friday evening."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "4",
+      "title": "Systems That Survive UPI",
+      "intro": [
+        {
+          "type": "p",
+          "text": "UPI is genuinely excellent and it broke everyone’s budgeting. Spending used to involve a wallet, a note, and change — three moments where you noticed. Now it is a thumbprint. The money is the same; the noticing is gone, and noticing was doing most of the work."
+        }
+      ],
+      "topics": [
+        {
+          "id": "manage-expenses-4-1",
+          "number": "4.1",
+          "title": "Put the friction back where it helps",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "You are not going to stop using UPI, and you should not. Instead, reintroduce small amounts of friction at the points where decisions are worst — late-night, one-tap, stored-card purchases — while leaving it frictionless where it is genuinely useful."
+            },
+            {
+              "type": "p",
+              "text": "• Keep your spending account nearly empty of surplus. The strongest limit is a balance, not a rule. If your buffer holds the bulk and your spending account holds the week, the app does the discipline for you."
+            },
+            {
+              "type": "p",
+              "text": "• Delete saved cards from shopping apps. Having to fetch the card converts an impulse into a decision. This is the single most effective change most people make."
+            },
+            {
+              "type": "p",
+              "text": "• Use UPI Lite or a low daily limit for everyday spending. A small on-device balance for chai and autos means the small stuff cannot quietly drain the main account."
+            },
+            {
+              "type": "p",
+              "text": "• Audit your autopay mandates once a quarter. Open the mandates section of your UPI app and read the list. Almost everyone finds at least one subscription they had forgotten and one they no longer use."
+            },
+            {
+              "type": "p",
+              "text": "• Turn on transaction alerts and actually read them. The notification is the moment of noticing that cash used to provide."
+            }
+          ]
+        },
+        {
+          "id": "manage-expenses-4-2",
+          "number": "4.2",
+          "title": "The three-account system",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "income (whenever it arrives)"
+            },
+            {
+              "type": "p",
+              "text": "│"
+            },
+            {
+              "type": "p",
+              "text": "▼"
+            },
+            {
+              "type": "p",
+              "text": "┌───────────────────────────────────────────────────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ no UPI linked · no card · no app on the home screen│"
+            },
+            {
+              "type": "p",
+              "text": "│ holds: emergency fund + sinking funds + this month │"
+            },
+            {
+              "type": "p",
+              "text": "└──────────┬───────────────────────────────┬────────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "│ standing instruction, day 1 │ manual, only when needed"
+            },
+            {
+              "type": "p",
+              "text": "▼ ▼"
+            },
+            {
+              "type": "p",
+              "text": "┌────────────────────────┐ ┌──────────────────────────┐"
+            },
+            {
+              "type": "p",
+              "text": "│ UPI + card here │ │ rent, EMI, fees, │"
+            },
+            {
+              "type": "p",
+              "text": "│ holds ONE month │ │ money to family │"
+            },
+            {
+              "type": "p",
+              "text": "│ (or one week, if │ │ autopay set up here │"
+            },
+            {
+              "type": "p",
+              "text": "│ that suits you) │ │ you never touch it │"
+            },
+            {
+              "type": "p",
+              "text": "└────────────────────────┘ └──────────────────────────┘"
+            },
+            {
+              "type": "p",
+              "text": "Only one account has UPI on your phone's home screen. That is the design."
+            },
+            {
+              "type": "p",
+              "text": "Figure 4.1 — If opening a third account is impractical, most banks let you create named savings ‘goals’ or sub-accounts inside one account. The separation matters more than the number of accounts."
+            }
+          ]
+        },
+        {
+          "id": "manage-expenses-4-3",
+          "number": "4.3",
+          "title": "The weekly ten minutes",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Daily tracking fails for almost everyone within a month. Weekly review survives, and it catches everything daily tracking would. Pick a fixed time — Sunday evening works for most people — and do exactly four things:"
+            },
+            {
+              "type": "p",
+              "text": "1. OPEN the bank app and read the week's transactions. Just read them. You are looking for two things: anything you do not recognise, and anything you would not repeat."
+            },
+            {
+              "type": "p",
+              "text": "2. WRITE three numbers in the same place every week:"
+            },
+            {
+              "type": "p",
+              "text": "spent this week Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "left in spending a/c Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "days until next credit ______"
+            },
+            {
+              "type": "p",
+              "text": "3. ONE adjustment for next week. One. Not a new system. \"No delivery apps Monday to Thursday.\" \"Carry Rs 200 cash for autos.\""
+            },
+            {
+              "type": "p",
+              "text": "4. CELEBRATE something that went right. This sounds soft and it is load-bearing: systems maintained purely by self-criticism get abandoned, reliably, in about six weeks."
+            },
+            {
+              "type": "p",
+              "text": "IF YOU MISS A WEEK: skip it and do the next one. Do not \"catch up\" on three weeks of tracking - that is the task that ends the habit. The streak is not the point; the noticing is."
+            },
+            {
+              "type": "p",
+              "text": "The three numbers matter more than the categories. Category-perfect tracking that you quit in March is worth less than rough numbers you keep all year"
+            }
+          ]
+        },
+        {
+          "id": "manage-expenses-4-4",
+          "number": "4.4",
+          "title": "Apps — by job, not by name",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "App recommendations age badly and rankings are heavily gamed, so choose by what you need it to do. Before installing any finance app, check what permissions it asks for and whether it is operated by a regulated entity."
+            },
+            {
+              "type": "pre",
+              "text": "The job       What to look for                               Warning signs\n                                                             Anything demanding full bank login credentials. Read-only account\nExpense       Manual entry that takes under 5 seconds, or    aggregation is the safer model\ntracking      SMS-based auto-capture; export to CSV          Rigid categories built for a different country’s spending\nBudget by     Weekly view, not just monthly; easy category   Apps that hold your money themselves rather than moving it between\ncategory      editing                                        your accounts\nAutomated     Standing instruction from your own bank is\nsaving        free and sufficient for most people\nThe job         What to look for                                 Warning signs\nInvesting                                                        ‘Guaranteed returns’, tips groups, anything on Telegram, urgency\nCredit score    SEBI-registered intermediary; direct plans;\nBill splitting  clear disclosure of what it earns                Apps that offer a score and then push loans at you — the score is the\n                                                                 hook\n                Free reports are available directly from credit  Ones that require everyone to hold a balance in the app\n                bureaus; you are entitled to check"
+            },
+            {
+              "type": "p",
+              "text": "Simple group balances that settle over UPI"
+            },
+            {
+              "type": "p",
+              "text": "Spreadsheets are not a lesser option"
+            },
+            {
+              "type": "p",
+              "text": "A Google Sheet with five columns — date, amount, category, note, would-repeat — syncs to your phone, costs nothing, gives no one your data, cannot be discontinued, and can be exactly the shape of your life. For a large share of people it is the right answer, and it is the format every template in this guide is designed for."
+            },
+            {
+              "type": "p",
+              "text": "WORKSHEET — Set up the system once Forty-five minutes, and then it mostly runs itself. 1 Open a second account or two named goals in your existing bank. Move your emergency and sinking funds there. 2 Remove UPI and cards from that account. Move the app off your home screen. 3 Set one standing instruction on your income date: fixed transfer to spending, fixed transfer to savings. Savings first, before"
+            },
+            {
+              "type": "p",
+              "text": "you can see the money. 4 Audit your autopay mandates and delete saved cards from your two most-used shopping apps. 5 Put a recurring ten-minute reminder in your phone for Sunday evening. Do the first one this week, even with incomplete"
+            },
+            {
+              "type": "p",
+              "text": "data."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "5",
+      "title": "Debt Without Panic",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Debt is not a moral failure and it is not always a mistake — an education loan can be the best financial decision a person ever makes. What matters is knowing the price of each kind, and which ones are designed to be misjudged."
+        }
+      ],
+      "topics": [
+        {
+          "id": "manage-expenses-5-1",
+          "number": "5.1",
+          "title": "BNPL: how it is designed to feel",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "‘Buy Now, Pay Later’ splits a purchase into instalments at checkout, usually with no interest if you pay on time. It is not free money, and it is not free of consequences. Three mechanisms make it riskier than it feels:"
+            },
+            {
+              "type": "p",
+              "text": "• It changes the number you evaluate. A ₹12,000 pair of headphones is a decision. ‘₹999 × 12’ barely feels like one. You are comparing a small number against your monthly budget instead of a large number against your savings — and the small number wins almost every time."
+            },
+            {
+              "type": "p",
+              "text": "• The instalments stack invisibly. One BNPL plan is manageable. Four running at once, from four different apps, on four different dates, is ₹3,000 a month of committed income that appears nowhere in your budget because you never wrote it down as debt."
+            },
+            {
+              "type": "p",
+              "text": "• Late fees are the business model. The interest-free period is the offer; the penalty is where much of the revenue comes from. On a small purchase, a flat late fee can be an enormous effective rate."
+            },
+            {
+              "type": "p",
+              "text": "What changed in 2026 — and why it matters to you The RBI’s Digital Lending Directions, issued in May 2025 and effective from 1 January 2026, tightened this market considerably. The change that most affects students: digital loans must be reported to the credit information companies (CIBIL, Experian, Equifax, CRIF High Mark) — regardless of how small or short the loan is. In plain terms: a missed ₹600 BNPL instalment can now sit on your credit record. Three years later, when you apply for an education loan, a car loan or a home loan, that record is what the lender reads. BNPL is no longer a consequence-free convenience, and treating it as one is expensive in a way you will not feel until much later."
+            }
+          ]
+        },
+        {
+          "id": "manage-expenses-5-2",
+          "number": "5.2",
+          "title": "Rights you now have, and how to use them",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Your right What it means in practice"
+            },
+            {
+              "type": "pre",
+              "text": "Key Fact Statement  Before any digital loan is sanctioned, you must be given a standardised one-page statement showing the\n(KFS)               all-inclusive APR — interest plus every fee. If you have not seen an APR, you have not been told the price. Ask\n                    for it\nYour right             What it means in practice\nCooling-off period\n                       You can exit shortly after taking a digital loan by repaying the principal plus the proportionate APR, with no\nNo automatic limit     penalty. Typically around three days for short-tenure loans. Use it if you have second thoughts\nincreases\nDirect transfers only  A lender cannot raise your credit limit without your explicit request. If a limit rose on its own, that is not a\nLimited data access    compliment — raise it with them"
+            },
+            {
+              "type": "p",
+              "text": "A route to complain Money must move between your bank account and the regulated lender, never through an app’s pooled account"
+            },
+            {
+              "type": "p",
+              "text": "Lending apps may no longer harvest your contacts, call logs or photo gallery. If an app asks for these, do not install it — that is both a red flag and a compliance breach"
+            },
+            {
+              "type": "p",
+              "text": "Every regulated lender must have a named grievance officer. Unresolved complaints can be escalated to the RBI Ombudsman under the Integrated Ombudsman Scheme"
+            },
+            {
+              "type": "p",
+              "text": "CHECKLIST — Before installing any loan or BNPL app"
+            },
+            {
+              "type": "pre",
+              "text": "□ The lender is a bank or an RBI-registered NBFC, named      □ I know the repayment dates and they are in my calendar\n    clearly"
+            },
+            {
+              "type": "p",
+              "text": "□ I can find the app in RBI’s public directory of lending apps □ I have added the instalment to my monthly budget as a fixed cost"
+            },
+            {
+              "type": "p",
+              "text": "□ It does not ask for contacts, call logs or gallery access □ I could pay this in full today if I had to"
+            },
+            {
+              "type": "pre",
+              "text": "□ A Key Fact Statement with an APR was shown before I        □ There is a named grievance officer listed\n    agreed"
+            },
+            {
+              "type": "p",
+              "text": "□ I know the exact late fee, in rupees □ I am not taking this loan to repay another loan"
+            },
+            {
+              "type": "p",
+              "text": "The eighth item deserves a sentence of its own. If you could not afford the item outright today, an instalment plan has not made it affordable — it has moved the problem into your future budget, where it competes with things you cannot yet see."
+            }
+          ]
+        },
+        {
+          "id": "manage-expenses-5-3",
+          "number": "5.3",
+          "title": "Paying down what you already owe",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "If you are carrying several debts, the order matters more than the effort. Two valid approaches, and the honest position is that the second one wins more often in practice even though the first is mathematically superior."
+            },
+            {
+              "type": "p",
+              "text": "STEP 0 List every debt: lender, balance, interest rate (APR), minimum due, due date. On one page. Most people have never seen this page, and seeing it is often the hardest and most useful step."
+            },
+            {
+              "type": "p",
+              "text": "STEP 1 Pay every minimum, always. Missing a minimum costs a penalty plus a credit-report entry. Automate the minimums first."
+            },
+            {
+              "type": "p",
+              "text": "STEP 2 Put every spare rupee against ONE debt. Choose the method:"
+            },
+            {
+              "type": "p",
+              "text": "AVALANCHE Highest interest rate first. Costs you the least money overall. Mathematically correct. Weakness: if the highest-rate debt is also the largest, you can go months without visible progress and give up."
+            },
+            {
+              "type": "p",
+              "text": "SNOWBALL Smallest balance first. Costs slightly more in interest. Wins on psychology - a debt fully cleared is a real, visible event, and studies of actual repayment behaviour tend to favour the method people finish."
+            },
+            {
+              "type": "p",
+              "text": "IN PRACTICE Use avalanche if the rate gap is large (say 36% vs 11%). Use snowball if your debts are similar in rate, or if you have tried before and stopped."
+            },
+            {
+              "type": "p",
+              "text": "STEP 3 As each debt clears, add its payment to the next one. Do not absorb it back into spending. This is the whole engine."
+            },
+            {
+              "type": "p",
+              "text": "ROUGH PRIORITY BY COST (verify your own actual rates - these vary):"
+            },
+            {
+              "type": "p",
+              "text": "informal lender / unregulated app ... often the most expensive; clear first"
+            },
+            {
+              "type": "p",
+              "text": "credit card revolving balance ... very high; clear before investing"
+            },
+            {
+              "type": "p",
+              "text": "personal loan ... high"
+            },
+            {
+              "type": "p",
+              "text": "BNPL late fees ... small amounts, punishing rates"
+            },
+            {
+              "type": "p",
+              "text": "education loan ... usually the cheapest; do NOT rush"
+            },
+            {
+              "type": "p",
+              "text": "this at the cost of your buffer"
+            },
+            {
+              "type": "p",
+              "text": "One nuance on education loans: interest is often eligible for deduction under the old tax regime, and rates are typically low. Clearing a 10% education loan before building an emergency fund is usually the wrong order"
+            },
+            {
+              "type": "p",
+              "text": "If you are already behind"
+            },
+            {
+              "type": "p",
+              "text": "Being behind on payments is frightening and it narrows your thinking, which is exactly when people take the worst available option — a new high-cost loan to cover an old one. Three things that genuinely help: talk to the lender before you default (restructuring is far more available than people assume, and much easier to arrange before a missed payment than after); write the full list from step 0, because the unknown total is usually more frightening than the real one; and tell one person you trust. Debt handled in secret gets worse, reliably. This is a solvable problem and it does not say anything about you."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "6",
+      "title": "Investment or Expense?",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Early in a career, almost every large purchase gets justified as ‘an investment in myself’. Some genuinely are. The word has become a way of approving spending we have already decided on, so here is a test that does not bend."
+        }
+      ],
+      "topics": [
+        {
+          "id": "manage-expenses-6-1",
+          "number": "6.1",
+          "title": "The test",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "An expense buys you something now. An investment produces future income, future capability, or an asset you could sell. Neither is bad — you are allowed to spend money on your life. The failure is calling the first one the second, because that removes the scrutiny you would otherwise apply."
+            },
+            {
+              "type": "p",
+              "text": "THREE QUESTIONS. All three must be yes for it to be an investment."
+            },
+            {
+              "type": "p",
+              "text": "1. Does it plausibly raise my future income or capability? Not \"could it conceivably\" - would I bet on it?"
+            },
+            {
+              "type": "p",
+              "text": "2. Do I have a specific plan to use it, with a date? \"I will complete this course by 30 September and apply it to X.\" No date means no plan, and no plan means it is an expense."
+            },
+            {
+              "type": "p",
+              "text": "3. Have I finished the last thing I bought for this reason? The unwatched course, the unread book, the unused gym membership. If not, this purchase is very likely a substitute for doing the work."
+            },
+            {
+              "type": "p",
+              "text": "TRUE INVESTMENT A skill you will actually use, with a date. A laptop you cannot do your work without. Health insurance. An emergency fund."
+            },
+            {
+              "type": "p",
+              "text": "HONEST EXPENSE A holiday. A good pair of shoes. A concert. Perfectly fine. Budget it as a want and enjoy it without guilt."
+            },
+            {
+              "type": "p",
+              "text": "DISGUISED CONSUMPTION The Rs 40,000 course bought at 1 a.m. after a rejection. The premium tool for a hobby you started last week. It FEELS like investment because it is about your future self."
+            },
+            {
+              "type": "p",
+              "text": "DEFERRED COST The cheap chair that ruins your back. Skipping health insurance. The Rs 3,000 phone repair you postpone until it becomes a Rs 15,000 replacement. Not spending is also a decision with a price."
+            },
+            {
+              "type": "p",
+              "text": "The third question is the uncomfortable one. Most people can name the last unfinished thing immediately, which is itself the answer"
+            }
+          ]
+        },
+        {
+          "id": "manage-expenses-6-2",
+          "number": "6.2",
+          "title": "A framework for any purchase above a week’s income",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Purchase above one week's income?"
+            },
+            {
+              "type": "p",
+              "text": "│"
+            },
+            {
+              "type": "p",
+              "text": "▼"
+            },
+            {
+              "type": "p",
+              "text": "Can I pay for it today without touching my emergency fund?"
+            },
+            {
+              "type": "p",
+              "text": "│ │"
+            },
+            {
+              "type": "p",
+              "text": "NO YES"
+            },
+            {
+              "type": "p",
+              "text": "│ │"
+            },
+            {
+              "type": "p",
+              "text": "▼ ▼"
+            },
+            {
+              "type": "p",
+              "text": "Wait. Save for it. Does it pass all three questions in 6.1?"
+            },
+            {
+              "type": "p",
+              "text": "If it is urgent AND │ │"
+            },
+            {
+              "type": "p",
+              "text": "essential, see Ch 8. NO YES"
+            },
+            {
+              "type": "p",
+              "text": "Do not solve it with │ │"
+            },
+            {
+              "type": "p",
+              "text": "BNPL. ▼ ▼"
+            },
+            {
+              "type": "p",
+              "text": "Is it an honest Is there a version"
+            },
+            {
+              "type": "p",
+              "text": "want I have at 60% of the price"
+            },
+            {
+              "type": "p",
+              "text": "budgeted for? that does 90% of"
+            },
+            {
+              "type": "p",
+              "text": "│ │ the job?"
+            },
+            {
+              "type": "p",
+              "text": "NO YES │ │"
+            },
+            {
+              "type": "p",
+              "text": "│ │ YES NO"
+            },
+            {
+              "type": "p",
+              "text": "▼ ▼ │ │"
+            },
+            {
+              "type": "p",
+              "text": "Skip it. Buy it, ▼ ▼"
+            },
+            {
+              "type": "p",
+              "text": "enjoy it, Buy that Buy it."
+            },
+            {
+              "type": "p",
+              "text": "no guilt. one. It is a"
+            },
+            {
+              "type": "p",
+              "text": "real one."
+            },
+            {
+              "type": "p",
+              "text": "AND ALWAYS: sleep on it for 72 hours. Nothing that is genuinely worth buying stops being worth buying in three days. Offers designed to expire sooner than that are designed to prevent this step."
+            },
+            {
+              "type": "p",
+              "text": "Figure 6.1 — The 72-hour rule removes most regret purchases on its own, and costs nothing to apply."
+            }
+          ]
+        },
+        {
+          "id": "manage-expenses-6-3",
+          "number": "6.3",
+          "title": "What actually pays off early in a career",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Ranked by return, in roughly this order — and note that the top three are cheap or free, which is not what the phrase ‘investing in yourself’ usually implies:"
+            },
+            {
+              "type": "p",
+              "text": "• An emergency fund. The highest-return financial asset a young person can own, because it prevents the expensive borrowing that a single bad month otherwise forces. It pays no interest and returns more than anything else you will buy."
+            },
+            {
+              "type": "p",
+              "text": "• Health insurance. One hospitalisation can erase several years of saving. At your age the premium is low, and it will never be cheaper than it is now."
+            },
+            {
+              "type": "p",
+              "text": "• Skills you will use within six months. The proximity matters more than the prestige. A certification you apply next quarter beats a more impressive one you apply never."
+            },
+            {
+              "type": "p",
+              "text": "• Your health, unglamorously. Sleep, food, dentistry, spectacles, treating the thing you have been ignoring. This is the deferred-cost quadrant, and it is where money is most often lost by not being spent."
+            },
+            {
+              "type": "p",
+              "text": "• Relationships and reputation. Free, compounding, and the source of most early opportunities. Also the first thing sacrificed when money is tight, which is understandable and usually a mistake."
+            }
+          ]
+        },
+        {
+          "id": "manage-expenses-6-4",
+          "number": "6.4",
+          "title": "Lifestyle inflation, and the rule that beats it",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The first salary is dangerous in a specific way: expenses expand to meet income within about two months, and then that becomes the new baseline. A raise you have already absorbed into your standard of living cannot be redirected later without feeling like a cut."
+            },
+            {
+              "type": "p",
+              "text": "The 50% rule for every raise"
+            },
+            {
+              "type": "p",
+              "text": "When your income rises — a first job, a promotion, a new client — send half of the increase straight to your future (emergency fund, then debt, then investing) before you adjust anything about your life. Enjoy the other half openly and without guilt; austerity as a permanent condition is not sustainable and this guide is not asking for it."
+            },
+            {
+              "type": "p",
+              "text": "Done consistently through your twenties, this one habit does more for your finances than any investment selection you will make. It works because it acts on the money before it becomes a habit, which is the only reliable moment."
+            },
+            {
+              "type": "p",
+              "text": "WORKSHEET — Audit your last three big purchases Twenty minutes, and mildly uncomfortable. 1 List the three largest non-essential purchases of the last year, with amounts. 2 Run each through the three questions in §6.1. Be honest about question 3. 3 Place each in one of the four quadrants. Note which quadrant your money went to. 4 Find one item currently in your deferred cost quadrant — something you are not spending on that is quietly costing you."
+            },
+            {
+              "type": "p",
+              "text": "Price it. Plan it. 5 Write your 50% rule down now, before the raise, and put a figure on it: ‘when my income rises by ₹X, ₹X/2 goes to ___"
+            },
+            {
+              "type": "p",
+              "text": "automatically.’ Deciding in advance is the entire trick."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "7",
+      "title": "Your First Money Moves",
+      "intro": [
+        {
+          "type": "p",
+          "text": "There is a correct order to these, and most people do them backwards — buying a tax-saving product before they have a buffer, or picking mutual funds while carrying a credit card balance. The order matters far more than the choices within it."
+        }
+      ],
+      "topics": [
+        {
+          "id": "manage-expenses-7-1",
+          "number": "7.1",
+          "title": "The order of operations",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "DO THESE IN ORDER. Do not skip ahead because a later step is more interesting. It is more interesting. It is also less valuable right now."
+            },
+            {
+              "type": "p",
+              "text": "1 A STARTER BUFFER - one month of your fixed floor (1.2). In a plain savings account. Boring and instantly available. This alone prevents most emergency borrowing."
+            },
+            {
+              "type": "p",
+              "text": "2 HEALTH INSURANCE - if you are not covered by a parent's or an employer's policy. At 22 the premium is small; at 42 it is not, and conditions you develop in between may not be covered later. Check what your employer policy actually covers before assuming."
+            },
+            {
+              "type": "p",
+              "text": "3 CLEAR EXPENSIVE DEBT - anything above roughly 12-15% APR. Credit card balances, app loans, personal loans. Paying off a 36% debt is a guaranteed 36% return. No investment offers that."
+            },
+            {
+              "type": "p",
+              "text": "4 FULL EMERGENCY FUND - three to six months of your fixed floor. Three if you live with family and have stable income. Six if you support others, freelance, or have an uncertain job."
+            },
+            {
+              "type": "p",
+              "text": "5 THEN INVEST - and only then. Start with whatever is simple and low-cost. Boring and consistent beats clever and sporadic."
+            },
+            {
+              "type": "p",
+              "text": "WHY THIS ORDER: steps 1-4 remove your dependence on expensive credit. Someone with a Rs 40,000 buffer and no investments is in a stronger position than someone with Rs 40,000 invested and a credit card balance, because the first person cannot be forced into a bad decision by one bad week. If you are at step 1 and it will take fourteen months, that is fine. Fourteen months of progress is progress"
+            }
+          ]
+        },
+        {
+          "id": "manage-expenses-7-2",
+          "number": "7.2",
+          "title": "What tax actually applies to you",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Two things changed recently that are worth knowing. First, the Income Tax Act, 2025 replaced the Income Tax Act, 1961 with effect from 1 April 2026 — a simplification exercise rather than a rate change, but it introduces the term ‘Tax Year’ in place of the old ‘previous year / assessment year’ pair. Income you earn between 1 April 2026 and 31 March 2027 belongs to Tax Year 2026-27. If you have been confused by which year to select while filing, that confusion was reasonable and is now largely gone."
+            },
+            {
+              "type": "p",
+              "text": "Second, the new tax regime is the default, and it has made most early-career incomes tax-free. The slabs below applied to FY 2025-26 and continue for FY 2026-27:"
+            },
+            {
+              "type": "p",
+              "text": "Taxable income (new regime) Rate Running tax"
+            },
+            {
+              "type": "p",
+              "text": "Up to ₹4,00,000 Nil ₹0"
+            },
+            {
+              "type": "p",
+              "text": "₹4,00,001 – ₹8,00,000 5% ₹20,000"
+            },
+            {
+              "type": "p",
+              "text": "₹8,00,001 – ₹12,00,000 10% ₹60,000"
+            },
+            {
+              "type": "p",
+              "text": "₹12,00,001 – ₹16,00,000 15% ₹1,20,000"
+            },
+            {
+              "type": "p",
+              "text": "₹16,00,001 – ₹20,00,000 20% ₹2,00,000"
+            },
+            {
+              "type": "p",
+              "text": "₹20,00,001 – ₹24,00,000 25% ₹3,00,000"
+            },
+            {
+              "type": "p",
+              "text": "Above ₹24,00,000 30% —"
+            },
+            {
+              "type": "p",
+              "text": "Plus 4% health and education cess on the tax payable. Verify against the Income Tax Department’s own site before filing — these change with each Budget."
+            },
+            {
+              "type": "p",
+              "text": "Why most students and freshers owe nothing Under the new regime, a resident individual with taxable income up to ₹12 lakh gets a rebate under section 87A of up to ₹60,000, which cancels the tax entirely. For a salaried person, the ₹75,000 standard deduction pushes the effective zero-tax point to about ₹12.75 lakh of salary. So if you earn ₹6 lakh in your first job, your income tax is zero — without buying a single tax-saving product. This matters because a great deal of financial product selling to young people is built on tax saving they do not need."
+            }
+          ]
+        },
+        {
+          "id": "manage-expenses-7-3",
+          "number": "7.3",
+          "title": "The tax-saving trap",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Deductions such as section 80C (up to ₹1.5 lakh), 80D for health insurance premiums, and the additional NPS deduction are available under the old regime, not the default new one. Choosing the old regime only makes sense if your deductions exceed what the new regime’s lower rates and larger rebate already give you — which, at early-career income, they usually do not."
+            },
+            {
+              "type": "p",
+              "text": "• Never buy a financial product primarily to save tax you do not owe. If your tax is zero, an 80C deduction is worth exactly nothing to you."
+            },
+            {
+              "type": "p",
+              "text": "• Be especially careful with insurance-linked investment products. They are commonly sold in January to February to people panicking about ‘tax saving’, they typically bundle poor insurance with poor returns, they lock money up for years, and they pay the seller well. If you need life insurance, term insurance is the cheap, unbundled version; if you need investment, buy investment."
+            },
+            {
+              "type": "p",
+              "text": "• Run both regimes before choosing. The Income Tax Department’s own calculator is free. Do it once a year; the answer can change when your rent, loan or salary changes."
+            },
+            {
+              "type": "p",
+              "text": "• Health insurance is worth buying on its own merits, whether or not any deduction applies. Buy it because a hospital bill would wreck you, not because of section numbers."
+            },
+            {
+              "type": "p",
+              "text": "File a return even when you owe nothing If you freelance, intern, or take gig work, the payer has often already deducted TDS — commonly around 10% on professional fees — before paying you. If your total income is below the taxable threshold, that money is a refund waiting to be claimed, and the only way to claim it is by filing a return. Students routinely leave thousands of rupees with the government this way. Check your Form 26AS and Annual Information Statement on the income tax portal to see what has been deducted and reported against your PAN. Filing is free on the official portal and takes under an hour for a simple case."
+            }
+          ]
+        },
+        {
+          "id": "manage-expenses-7-4",
+          "number": "7.4",
+          "title": "A note on investing, kept deliberately short",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "This guide will not tell you what to buy. What is worth knowing at the start: costs compound against you just as returns compound for you, so low-cost and simple beats complex; regular small amounts beat waiting to accumulate a large one; anything promising guaranteed high returns is either misdescribed or a fraud; and no legitimate adviser will rush you. If someone is creating urgency, that urgency is the product. When you are ready for real advice, look for a SEBI-registered investment adviser who charges you a fee rather than earning a commission on what they sell you — the difference in incentive is the whole thing."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "8",
+      "title": "The Financial Emergency Protocol",
+      "intro": [
+        {
+          "type": "p",
+          "text": "Emergencies are not the time to work out what to do. Stress narrows thinking, and narrowed thinking is what makes people take a 40% loan at 11 p.m. Decide the sequence now, while nothing is wrong, and follow it later when everything is."
+        }
+      ],
+      "topics": [
+        {
+          "id": "manage-expenses-8-1",
+          "number": "8.1",
+          "title": "The first 72 hours, whatever the emergency",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "HOUR 0-2 STOP. Do not borrow anything yet. Almost no financial emergency requires a decision within two hours. The ones that feel like they do are usually the ones designed to feel that way."
+            },
+            {
+              "type": "p",
+              "text": "HOUR 2-6 COUNT. On one page:"
+            },
+            {
+              "type": "p",
+              "text": "cash available now Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "emergency fund Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "money I could get in 7 days Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "the actual amount needed Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "the amount needed THIS WEEK Rs ______"
+            },
+            {
+              "type": "p",
+              "text": "The last line is usually far smaller than the first estimate."
+            },
+            {
+              "type": "p",
+              "text": "Emergencies arrive as one big number; they are almost always"
+            },
+            {
+              "type": "p",
+              "text": "payable in parts."
+            },
+            {
+              "type": "p",
+              "text": "HOUR 6-24 TELL ONE PERSON. A parent, a friend, a mentor. Not for money - for a second brain. Every bad financial decision made under pressure has one thing in common: it was made alone, at night."
+            },
+            {
+              "type": "p",
+              "text": "DAY 2 TRIAGE the outflows (8.3) and make the calls. Hospitals, landlords, lenders and colleges all have processes for this. Asking early is treated completely differently from asking after you have already defaulted."
+            },
+            {
+              "type": "pre",
+              "text": "DAY 3     DECIDE the funding source using the ladder in 8.4, from the top\n          down. Never start at the bottom because it is the fastest."
+            },
+            {
+              "type": "p",
+              "text": "Write this on a card and keep it with your documents. Its only job is to slow you down for three days"
+            }
+          ]
+        },
+        {
+          "id": "manage-expenses-8-2",
+          "number": "8.2",
+          "title": "Three scenarios, planned in advance",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "SCENARIO — A medical emergency"
+            },
+            {
+              "type": "p",
+              "text": "You or someone you support needs hospital care"
+            },
+            {
+              "type": "p",
+              "text": "FIRST HOUR Get the care. Do not let a payment question delay treatment. Hospitals admit first and settle later far more often than people assume."
+            },
+            {
+              "type": "pre",
+              "text": "CHECK     Your own policy, a parent’s family floater, your employer’s group policy, your college’s student policy, and any\nCOVER     state or central scheme you may be eligible for. People are frequently covered by something they have\n          forgotten — check all five.\nCASHLESS  Ask the hospital’s insurance desk about cashless authorisation before paying out of pocket. Reimbursement\nFIRST     afterwards is slower and needs complete paperwork."
+            },
+            {
+              "type": "p",
+              "text": "KEEP Every bill, prescription, discharge summary and diagnostic report, itemised. Claims are rejected on missing"
+            },
+            {
+              "type": "p",
+              "text": "EVERYTHING paperwork far more often than on merit."
+            },
+            {
+              "type": "p",
+              "text": "ASK ABOUT Request an itemised bill and ask about the hospital’s concession or instalment options. Many have them and"
+            },
+            {
+              "type": "p",
+              "text": "THE BILL almost nobody asks."
+            },
+            {
+              "type": "p",
+              "text": "What to take from this: Do the first two rows today, not during the emergency. Write down every policy that covers you, its number, and the insurer’s claim helpline, and put it where your family can find it."
+            },
+            {
+              "type": "p",
+              "text": "SCENARIO — Loss of income"
+            },
+            {
+              "type": "p",
+              "text": "Job loss, a stipend that stops, a client that vanishes"
+            },
+            {
+              "type": "p",
+              "text": "CALCULATE Cash + emergency fund, divided by your fixed floor from §1.2. That is your runway in months. Knowing the"
+            },
+            {
+              "type": "p",
+              "text": "RUNWAY number reduces panic more than anything else, because uncertainty is most of the fear."
+            },
+            {
+              "type": "pre",
+              "text": "TRIAGE    Cut in this order: subscriptions and discretionary first, then variable costs like eating out and travel, then\nCOSTS     negotiate the fixed costs (rent, EMI). Keep insurance premiums paid — stopping cover during a crisis is how one\n          emergency becomes two.\nTALK TO   Ask about a moratorium or restructuring before you miss a payment. A missed payment is a credit-report event;\nLENDERS   an agreed deferral usually is not.\nEARLY"
+            },
+            {
+              "type": "p",
+              "text": "CHECK WHAT Final settlement, unpaid invoices, reimbursements, notice pay, any provident fund balance. Money you are"
+            },
+            {
+              "type": "pre",
+              "text": "YOU ARE   already owed is the cheapest money available.\nOWED"
+            },
+            {
+              "type": "p",
+              "text": "PROTECT THE Keep the phone, the data connection, the interview clothes and enough food. Cutting the things that help you"
+            },
+            {
+              "type": "p",
+              "text": "SEARCH earn again is a false economy that extends the crisis."
+            },
+            {
+              "type": "p",
+              "text": "What to take from this: Runway is the number that matters, and it is the one thing you can raise in advance. Every month of buffer is a month you cannot be forced into a bad decision."
+            },
+            {
+              "type": "p",
+              "text": "SCENARIO — A family financial emergency"
+            },
+            {
+              "type": "p",
+              "text": "A parent’s medical bill, a sudden obligation"
+            },
+            {
+              "type": "p",
+              "text": "SEPARATE What must be paid this week is rarely the whole amount. Ask directly what the immediate requirement is and"
+            },
+            {
+              "type": "p",
+              "text": "URGENT by when."
+            },
+            {
+              "type": "pre",
+              "text": "ESTABLISH   State a specific figure rather than an open-ended commitment. ‘I can send ₹15,000 now and ₹5,000 monthly’ is\nWHAT YOU    more useful to everyone than ‘I’ll manage it’, which quietly becomes everything you have.\nCAN DO\nLOOK FOR    Other relatives, hospital instalment plans, employer advances, scheme eligibility. The default assumption that it\nSHARED      must come entirely from you is often untested."
+            },
+            {
+              "type": "p",
+              "text": "GUARD YOUR Emptying your emergency fund entirely means the next event — and there is usually a next event — has to be OWN FLOOR borrowed at a bad rate. Keeping one month back is not selfishness; it is what keeps you able to help again."
+            },
+            {
+              "type": "p",
+              "text": "What to take from this: This one is as much a conversation problem as a money problem. Specific numbers, said early, protect the relationship better than vague reassurance followed by silence."
+            }
+          ]
+        },
+        {
+          "id": "manage-expenses-8-3",
+          "number": "8.3",
+          "title": "Where to get money, best to worst",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Ran  Source                      Real cost                   Note\nk\n1    Your own emergency fund     Nothing                     This is the entire reason it exists. Use it without guilt — an unused fund during an\n2                                                            emergency is a fund that failed\n3    Money you are already       Nothing                     Salary due, invoices, deposits, reimbursements, tax refunds\n4    owed\n5    Family or a close friend    Relationship                Cheap in rupees. Write the terms down anyway — undocumented loans between\n6                                risk                        people who care about each other are how the relationship gets damaged\n7    Employer salary advance     Usually free or             Widely available and rarely asked for. Ask HR\n8                                low\n9    Loan against your own       Moderate                    Against a deposit, or a gold loan from a bank rather than an unregulated lender.\n     assets                                                  Understand what happens if you cannot repay before pledging anything\n     Bank or NBFC personal       High                        Slow to arrange, which is a feature. Insist on the Key Fact Statement and the APR\n     loan\n     Credit card EMI conversion  High                        Better than revolving a balance, worse than almost everything above\n     Credit card cash            Very high                   Interest usually starts immediately, plus a fee. Near-last resort\n     withdrawal\n     Unregulated app or          Ruinous                     Do not. This is where recovery harassment and spiralling debt come from. If it is not\n     informal lender                                         a bank or an RBI-registered NBFC, walk away"
+            },
+            {
+              "type": "p",
+              "text": "The one-page document to write this month"
+            },
+            {
+              "type": "p",
+              "text": "Make it now, while nothing is wrong. One page, shared with one person you trust, kept somewhere both of you can reach: every insurance policy (insurer, number, claim helpline, what it covers); every account (bank, and roughly what is in it); every debt (lender, balance, EMI date); your PAN and Aadhaar locations; one emergency contact; and the ladder above."
+            },
+            {
+              "type": "p",
+              "text": "This page is worth more in a crisis than any amount of financial knowledge, because it removes the twelve hours of searching that would otherwise happen at the worst possible moment."
+            },
+            {
+              "type": "p",
+              "text": "If money worry is affecting your sleep or health"
+            },
+            {
+              "type": "p",
+              "text": "Financial stress is one of the most common causes of serious anxiety in students and young professionals, and it is not a sign of weakness or poor character. It also makes decisions worse in a measurable way, which is a practical reason to treat it rather than endure it."
+            },
+            {
+              "type": "p",
+              "text": "Talking to someone helps more than people expect — a counsellor (most colleges have one, free), a doctor, a mentor, or a family member. If the worry has become constant, or you are avoiding opening messages and statements, please treat that as a signal worth acting on rather than something to push through alone. The money problem is usually more solvable than it feels at 2 a.m., and it is much more solvable with another person looking at it with you."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "A",
+      "title": "Reference",
+      "intro": [],
+      "topics": [
+        {
+          "id": "manage-expenses-A-1",
+          "number": "A.1",
+          "title": "A ninety-day plan",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Days Do this You will have"
+            },
+            {
+              "type": "p",
+              "text": "1–7 §1.2 three numbers · start the 30-day trace · set A real baseline instead of an estimate"
+            },
+            {
+              "type": "p",
+              "text": "up where you log spending"
+            },
+            {
+              "type": "p",
+              "text": "8–30 Keep tracing. Change nothing else Thirty days of honest data and your ‘would not repeat’ total"
+            },
+            {
+              "type": "pre",
+              "text": "31–35  §2.1 categories · §2.2 sinking fund · name the        Your true fixed floor, including the lumpy costs\n       family line"
+            },
+            {
+              "type": "p",
+              "text": "36–40 §3.1 pick your split · §3.3 fill the one-page budget A budget built for your income, not a textbook’s"
+            },
+            {
+              "type": "pre",
+              "text": "41–45  §4.2 open the second account · set the standing       A system that runs without daily willpower\n       instructions"
+            },
+            {
+              "type": "p",
+              "text": "46–60 §5.3 list every debt · §5.2 audit your lending apps One page showing everything you owe, and no unsafe apps"
+            },
+            {
+              "type": "p",
+              "text": "61–75 §7.1 steps 1 and 2 · check your insurance cover A starter buffer and health cover, or a dated plan to get both"
+            },
+            {
+              "type": "pre",
+              "text": "76–85  §8 write the protocol and the one-page                A plan you will be very glad exists\n       emergency document"
+            },
+            {
+              "type": "p",
+              "text": "86–90 Redo §1.2. Compare against day 1 A number showing what changed — do not skip this"
+            }
+          ]
+        },
+        {
+          "id": "manage-expenses-A-2",
+          "number": "A.2",
+          "title": "Every template in this guide",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "Template                             Where                   Use it\nThe three numbers (in, floor, left)  §1.2                    Once, then again every 90 days\n                                                             Once a month for the first three months\nNine-category expense map            §2.1                    Once a year, revised after any big change\n                                                             Whenever your income changes\nSinking fund calculator              §2.2                    Set up once if your income is irregular\n                                                             Ten minutes at the start of each month\nIncome-band budget splits            §3.1                    Weekly\n                                                             Before installing anything that lends\nBuffer / base-month system           §3.2                    Once, then follow it\n                                                             Before any large purchase\nOne-page monthly budget              §3.3                    Always\n                                                             Your roadmap for the next two years\nThe Sunday ten minutes               §4.3                    Write now, use later\n                                                             Only ever from the top down\nLoan app safety checklist            §5.2                    Write this month"
+            },
+            {
+              "type": "p",
+              "text": "Debt payoff order §5.3"
+            },
+            {
+              "type": "p",
+              "text": "The three-question investment test §6.1"
+            },
+            {
+              "type": "p",
+              "text": "The 72-hour purchase rule §6.2"
+            },
+            {
+              "type": "p",
+              "text": "Order of operations §7.1"
+            },
+            {
+              "type": "p",
+              "text": "The 72-hour emergency protocol §8.1"
+            },
+            {
+              "type": "p",
+              "text": "Borrowing ladder §8.3"
+            },
+            {
+              "type": "p",
+              "text": "One-page emergency document §8.3"
+            }
+          ]
+        },
+        {
+          "id": "manage-expenses-A-3",
+          "number": "A.3",
+          "title": "Glossary",
+          "blocks": [
+            {
+              "type": "pre",
+              "text": "                           What you must pay every month no matter what happens\n Term                      Money set aside monthly for a cost that arrives yearly\n Fixed floor               How many months you could survive with no new income\n Sinking fund              The all-in annual cost of a loan — interest plus every fee\n Runway                    Key Fact Statement: the one-page loan summary a lender must give you\n APR                       A short window to exit a new digital loan penalty-free\n KFS                       CIBIL, Experian, Equifax, CRIF High Mark — they hold your borrowing record\n Cooling-off period\n Credit information\n company\nTerm                What it means\nNew tax regime      India’s default tax system: lower rates, almost no deductions\nTax Year            Under the Income Tax Act 2025, the 1 April–31 March year in which you earn\nSection 87A rebate  The rebate that makes income up to ₹12 lakh tax-free under the new regime\nStandard deduction  A flat amount subtracted from salary before tax is computed\nTDS                 Tax deducted by the payer before you are paid — often refundable\nTerm insurance      Pure life cover with no investment attached; the cheap kind\nFamily floater      One health policy covering several family members\nSEBI-registered     An adviser regulated to give investment advice for a fee\nadviser"
+            },
+            {
+              "type": "p",
+              "text": "Where the figures came from, and when to re-check them. Income tax slabs, the ₹60,000 rebate under section 87A and the ₹75,000 standard deduction reflect the position for FY 2026-27 as continued from Budget 2025. The Income Tax Act, 2025 took effect on 1 April 2026, replacing the 1961 Act and introducing the ‘Tax Year’. The lending protections in §5.2 come from the RBI’s Digital Lending Directions, issued May 2025 and effective 1 January 2026. All of this was accurate in mid-2026 and all of it can change — check the Income Tax Department and RBI websites directly before you act on any of it."
+            },
+            {
+              "type": "p",
+              "text": "And one last thing. Nothing in this guide requires you to be austere, or to feel bad about wanting things, or to optimise every rupee. Most of the benefit comes from a small number of unexciting habits: knowing your fixed floor, saving before spending rather than after, keeping a buffer, avoiding expensive credit, and having written down what you will do when something goes wrong. If you do only those five things imperfectly for the next two years, you will be in a substantially stronger position than most people your age — and considerably less afraid of the 23rd of the month."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
