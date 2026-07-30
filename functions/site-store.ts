@@ -7,7 +7,10 @@ import { DurableObject } from "cloudflare:workers";
  *   - subscribers: newsletter emails (deduped)
  *   - enrollments: program/course interest sign-ups
  */
-export class SiteStore extends DurableObject {
+// Env is unused here — this object only touches its own SQL storage — so the
+// base class is parameterised with `unknown` rather than the generated
+// Cloudflare.Env, which keeps the super() call type-safe.
+export class SiteStore extends DurableObject<unknown> {
   constructor(ctx: DurableObjectState, env: unknown) {
     super(ctx, env);
     this.ctx.storage.sql.exec(`
