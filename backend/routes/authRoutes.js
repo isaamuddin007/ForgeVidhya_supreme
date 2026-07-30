@@ -1,31 +1,32 @@
 /**
  * backend/routes/authRoutes.js
- * Wires auth endpoints to validation, rate limiting, lockout, and cookie auth.
+ * Authentication endpoints (mounted at /auth in server.js).
  *
- * Security note: Applies input validation + login rate limiting at the edge and
- * gates session-bound routes behind access-token verification.
+ *   GET  /auth/google           -> start Google OAuth
+ *   GET  /auth/google/callback  -> Google returns here; mints JWT, redirects to SPA
+ *   POST /auth/login            -> email/password (stub)
+ *   POST /auth/logout           -> clear cookie + session
+ *   GET  /auth/me               -> current user (JWT-protected) [convenience]
  *
- * Mounted in server.js (below the security middleware, above notFound) via a
- * conditionalCsrf wrapper that exempts /register and /login (no session cookie
- * yet) and enforces CSRF on /refresh, /logout, and /me.
- *
- * Env variables: none directly.
+ * Security note: /login is rate-limited to blunt credential stuffing once the
+ * email/password path is implemented.
  */
 
 const express = require('express');
 const router = express.Router();
 
-const { register, login, refresh, logout, me } = require('../controllers/authController');
+const { googleAuth, googleCallback, login, logout } = require('../controllers/authController');
 const { protect, loginLimiter } = require('../middleware/authMiddleware');
-const { registerRules, loginRules } = require('../middleware/validationMiddleware');
 
-// Public
-router.post('/register', registerRules, register);
-router.post('/login', loginLimiter, loginRules, login);
-router.post('/refresh', refresh);   // uses refresh cookie, no access token
-router.post('/logout', logout);     // idempotent; safe without a valid session
+// Google OAuth
+router.get('/google', googleAuth);
+router.get('/google/callback', googleCallback);
 
-// Protected
-router.get('/me', protect, me);
+// Email/password (stub) + session teardown
+router.post('/login', loginLimiter, login);
+router.post('/logout', logout);
+
+// Convenience: echo the authenticated user (SPA can verify its token).
+router.get('/me', protect, (req, res) => res.json({ success: true, user: req.user }));
 
 module.exports = router;

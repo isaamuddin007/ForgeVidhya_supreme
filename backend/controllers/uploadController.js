@@ -37,7 +37,7 @@ const uploadSketch = async (req, res, next) => {
 
     logger.info('Sketch uploaded', {
       userId: req.user.id,
-      sketchId: sketch._id.toString(),
+      sketchId: sketch.id,
       size: req.file.size,
     });
 
@@ -50,7 +50,7 @@ const uploadSketch = async (req, res, next) => {
     return res.status(201).json({
       success: true,
       sketch: {
-        id: sketch._id,
+        id: sketch.id,
         originalName: sketch.originalName,
         size: sketch.size,
         status: sketch.status,
@@ -72,9 +72,13 @@ const uploadSketch = async (req, res, next) => {
  */
 const getSketch = async (req, res, next) => {
   try {
+    // Guard: an invalid UUID would make Postgres throw — treat as not found.
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(req.params.id)) {
+      return res.status(404).json({ success: false, message: 'Not found' });
+    }
     const sketch = await Sketch.findById(req.params.id);
     // Ownership check (IDOR protection). Admins may read any.
-    if (!sketch || (sketch.owner.toString() !== req.user.id && req.user.role !== 'admin')) {
+    if (!sketch || (sketch.owner !== req.user.id && req.user.role !== 'admin')) {
       logger.security('SKETCH_ACCESS_DENIED', { ip: req.ip, userId: req.user.id, sketchId: req.params.id });
       return res.status(404).json({ success: false, message: 'Not found' });
     }

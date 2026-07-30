@@ -1,132 +1,99 @@
 /**
  * backend/models/User.js
- * User schema with bcrypt hashing, account-lockout state, and indexes.
+ * User data-access for CockroachDB (PostgreSQL). Backs Google-OAuth auth today;
+ * the nullable `password` column reserves email/password sign-in for later
+ * (hash with bcrypt before storing — never plaintext).
  *
- * Security note: Passwords are never stored in plaintext; the pre-save hook
- * hashes with bcrypt (12 rounds). Lockout fields throttle brute-force attempts.
+ * Table shape lives in backend/db/schema.sql:
+ *   id UUID pk | google_id (unique) | email (unique, required) | name | avatar |
+ *   password (nullable) | role | created_at | updated_at   (timestamps)
  *
- * Env variables:
- *   BCRYPT_SALT_ROUNDS - optional, default 12 (minimum enforced at 12)
+ * Security note: every query is parameterized ($1, $2 …) — no string
+ * interpolation — so user-supplied values can never alter the SQL.
+ *
+ * Export: module.exports = { … } (per project convention).
  */
 
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const { query } = require('../config/db');
 
-const SALT_ROUNDS = Math.max(12, parseInt(process.env.BCRYPT_SALT_ROUNDS, 10) || 12);
+// Only ever expose these columns to the app (never a password hash by default).
+const PUBLIC_COLUMNS = 'id, google_id, email, name, avatar, role, created_at, updated_at';
 
-// Brute-force policy: lock the account after N failed attempts for a cool-down.
-const MAX_LOGIN_ATTEMPTS = 10;
-const LOCK_TIME_MS = 2 * 60 * 60 * 1000; // 2 hours
+/** Map a snake_case DB row to a camelCase domain object. */
+function toUser(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    googleId: row.google_id,
+    email: row.email,
+    name: row.name,
+    avatar: row.avatar,
+    role: row.role,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
 
-const userSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: [true, 'Name is required'],
-      trim: true,
-      maxlength: 100,
-    },
-    email: {
-      type: String,
-      required: [true, 'Email is required'],
-      unique: true,
-      lowercase: true,
-      trim: true,
-      match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Invalid email format'],
-      index: true, // fast lookups on the primary login field
-    },
-    password: {
-      type: String,
-      required: [true, 'Password is required'],
-      minlength: 8,
-      select: false, // never return the hash by default
-    },
-    role: {
-      type: String,
-      enum: ['student', 'instructor', 'admin'],
-      default: 'student',
-    },
-    // --- Account lockout state ---
-    loginAttempts: { type: Number, default: 0, select: false },
-    lockUntil: { type: Number, select: false },
-    // --- Refresh-token rotation ---
-    // Store only a hash of the current refresh token so a DB leak can't reuse it.
-    refreshTokenHash: { type: String, select: false },
-    lastLoginAt: { type: Date },
-  },
-  { timestamps: true }
-);
+/** Find a user by their Google account id. Returns null if none. */
+async function findByGoogleId(googleId) {
+  const { rows } = await query(
+    `SELECT ${PUBLIC_COLUMNS} FROM users WHERE google_id = $1 LIMIT 1`,
+    [googleId]
+  );
+  return toUser(rows[0]);
+}
 
-// Compound / performance indexes on sensitive lookup fields.
-userSchema.index({ email: 1 }, { unique: true });
-userSchema.index({ _id: 1, role: 1 });
+/** Find a user by email (case-insensitive). Returns null if none. */
+async function findByEmail(email) {
+  const { rows } = await query(
+    `SELECT ${PUBLIC_COLUMNS} FROM users WHERE lower(email) = lower($1) LIMIT 1`,
+    [email]
+  );
+  return toUser(rows[0]);
+}
 
-// Virtual: is the account currently locked?
-userSchema.virtual('isLocked').get(function () {
-  return Boolean(this.lockUntil && this.lockUntil > Date.now());
-});
+/** Find a user by primary key. Returns null if none. */
+async function findById(id) {
+  const { rows } = await query(
+    `SELECT ${PUBLIC_COLUMNS} FROM users WHERE id = $1 LIMIT 1`,
+    [id]
+  );
+  return toUser(rows[0]);
+}
 
 /**
- * Pre-save hook: hash the password whenever it is set or changed.
+ * Create a new user. `email` is required for everyone; `googleId` is required
+ * for Google-auth users. Touches updated_at automatically via the default.
  */
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
-  try {
-    const salt = await bcrypt.genSalt(SALT_ROUNDS);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (err) {
-    next(err);
-  }
-});
+async function create({ googleId = null, email, name = null, avatar = null, role = 'user' }) {
+  if (!email) throw new Error('email is required');
+  const { rows } = await query(
+    `INSERT INTO users (google_id, email, name, avatar, role)
+     VALUES ($1, $2, $3, $4, $5)
+     RETURNING ${PUBLIC_COLUMNS}`,
+    [googleId, email, name, avatar, role]
+  );
+  return toUser(rows[0]);
+}
 
-/**
- * Constant-time password comparison.
- */
-userSchema.methods.comparePassword = async function (candidate) {
-  // `this.password` requires an explicit `.select('+password')` on the query.
-  return bcrypt.compare(candidate, this.password);
+/** Update mutable profile fields (name/avatar) and bump updated_at. */
+async function updateProfile(id, { name, avatar }) {
+  const { rows } = await query(
+    `UPDATE users
+        SET name = COALESCE($2, name),
+            avatar = COALESCE($3, avatar),
+            updated_at = now()
+      WHERE id = $1
+      RETURNING ${PUBLIC_COLUMNS}`,
+    [id, name ?? null, avatar ?? null]
+  );
+  return toUser(rows[0]);
+}
+
+module.exports = {
+  findByGoogleId,
+  findByEmail,
+  findById,
+  create,
+  updateProfile,
 };
-
-/**
- * Register a failed login. Increments the counter and locks after the cap.
- * Uses atomic $inc/$set to avoid race conditions under concurrent attempts.
- */
-userSchema.methods.registerFailedLogin = async function () {
-  // If a prior lock has expired, reset the counter first.
-  if (this.lockUntil && this.lockUntil < Date.now()) {
-    return this.updateOne({ $set: { loginAttempts: 1 }, $unset: { lockUntil: 1 } });
-  }
-  const update = { $inc: { loginAttempts: 1 } };
-  if (this.loginAttempts + 1 >= MAX_LOGIN_ATTEMPTS && !this.isLocked) {
-    update.$set = { lockUntil: Date.now() + LOCK_TIME_MS };
-  }
-  return this.updateOne(update);
-};
-
-/**
- * Clear lockout state after a successful login.
- */
-userSchema.methods.resetLoginAttempts = async function () {
-  return this.updateOne({
-    $set: { loginAttempts: 0, lastLoginAt: new Date() },
-    $unset: { lockUntil: 1 },
-  });
-};
-
-// Keep hashes and lock internals out of any accidental JSON serialization.
-userSchema.set('toJSON', {
-  transform: (_doc, ret) => {
-    delete ret.password;
-    delete ret.refreshTokenHash;
-    delete ret.loginAttempts;
-    delete ret.lockUntil;
-    delete ret.__v;
-    return ret;
-  },
-});
-
-userSchema.statics.MAX_LOGIN_ATTEMPTS = MAX_LOGIN_ATTEMPTS;
-userSchema.statics.LOCK_TIME_MS = LOCK_TIME_MS;
-
-module.exports = mongoose.model('User', userSchema);
