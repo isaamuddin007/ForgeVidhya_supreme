@@ -1,6 +1,6 @@
 # =============================================================================
 # render.yaml — forgeVidhya deployment (Render Blueprint)
-# Deploys the Express API as a web service and the React SPA as a static site.
+# Deploys the Express API (CockroachDB + Google OAuth) and the web/ SPA.
 #
 # HOW TO USE:
 #   1. Push this repo to GitHub.
@@ -9,13 +9,16 @@
 #   4. Fill the `sync: false` env vars (secrets) in the dashboard — Render never
 #      reads secrets from the repo.
 #
+# The database (CockroachDB Cloud) is external — it is NOT a Render service.
+# The API reaches it via DATABASE_URL. See DEPLOYMENT.md for the full runbook.
+#
 # Security note: All secrets use `sync: false` so they live ONLY in Render's
-# encrypted env store, never in git. See DEPLOYMENT.md for the full runbook.
+# encrypted env store, never in git.
 # =============================================================================
 
 services:
   # ---------------------------------------------------------------------------
-  # Backend API (Express + MongoDB)
+  # Backend API (Express + CockroachDB/PostgreSQL + Google OAuth)
   # ---------------------------------------------------------------------------
   - type: web
     name: forgevidhya-api
@@ -33,45 +36,52 @@ services:
         value: 5000
       - key: TRUST_PROXY
         value: "1" # Render terminates TLS at a proxy -> needed for Secure cookies + req.ip
-      # Secrets — set these in the Render dashboard (sync:false = not in git):
-      - key: MONGO_URI
-        sync: false # mongodb+srv://forgevidhya_app:<pwd>@cluster/forgevidhya (readWrite user only)
-      - key: JWT_ACCESS_SECRET
-        sync: false # openssl rand -base64 48
-      - key: JWT_REFRESH_SECRET
-        sync: false # openssl rand -base64 48 (DIFFERENT value)
-      - key: ACCESS_TOKEN_TTL
-        value: 15m
-      - key: REFRESH_TOKEN_TTL
+      - key: JWT_EXPIRES
         value: 7d
-      - key: BCRYPT_SALT_ROUNDS
-        value: "12"
-      # CLIENT_ORIGIN must equal the deployed frontend URL (set after first deploy):
+      # --- Secrets (set in the Render dashboard; sync:false = not in git) ---
+      - key: DATABASE_URL
+        sync: false # CockroachDB Cloud connection string (app user, not root), sslmode=verify-full
+      - key: JWT_SECRET
+        sync: false # openssl rand -base64 48
+      - key: SESSION_SECRET
+        sync: false # openssl rand -base64 48 (different value)
+      - key: GOOGLE_CLIENT_ID
+        sync: false # from Google Cloud Console -> Credentials
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_CALLBACK_URL
+        sync: false # https://forgevidhya-api.onrender.com/auth/google/callback (must match Google Console)
+      # CLIENT_ORIGIN + CLIENT_URL must equal the deployed web URL (set after first deploy):
       - key: CLIENT_ORIGIN
-        sync: false # e.g. https://forgevidhya-web.onrender.com  OR  https://forgevidhya.in
+        sync: false # e.g. https://forgevidhya-web.onrender.com  OR  https://forgevidhya.in  (CORS whitelist)
+      - key: CLIENT_URL
+        sync: false # same web URL — where the OAuth callback redirects the browser back to
       - key: COOKIE_DOMAIN
         sync: false # omit/blank unless frontend+API share a parent domain (e.g. forgevidhya.in)
 
   # ---------------------------------------------------------------------------
-  # Frontend SPA (React + Vite, served as static files)
+  # Frontend SPA (web/ — React + Vite + TypeScript, served as static files)
   # ---------------------------------------------------------------------------
   - type: web
     name: forgevidhya-web
     runtime: static
     plan: free
-    rootDir: frontend
-    buildCommand: npm ci && npm run build
+    rootDir: web
+    # web/ uses bun.lock as its canonical lockfile and commits no package-lock.json,
+    # so use `npm install` (not `npm ci`, which requires a committed lockfile).
+    buildCommand: npm install && npm run build
     staticPublishPath: dist
     autoDeploy: true
-    # SPA fallback: serve index.html for client-side routes (/programs, etc.).
+    # SPA fallback: serve index.html for client-side routes (/services, /auth/callback, …).
     routes:
       - type: rewrite
         source: /*
         destination: /index.html
     envVars:
-      # Baked in at build time. Point at the API service's public URL:
+      # Baked in at build time. The API ORIGIN (no /api suffix): the Google
+      # sign-in button redirects to `${VITE_API_URL}/auth/google`.
       - key: VITE_API_URL
-        sync: false # e.g. https://forgevidhya-api.onrender.com/api
+        sync: false # e.g. https://forgevidhya-api.onrender.com
     headers:
       # Defense-in-depth security headers on the static host.
       - path: /*
