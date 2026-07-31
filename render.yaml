@@ -1,0 +1,95 @@
+# =============================================================================
+# render.yaml — forgeVidhya deployment (Render Blueprint)
+# Deploys the Express API (CockroachDB + Google OAuth) and the web/ SPA.
+#
+# HOW TO USE:
+#   1. Push this repo to GitHub.
+#   2. Render Dashboard -> New -> Blueprint -> pick this repo.
+#   3. Render reads this file and creates both services.
+#   4. Fill the `sync: false` env vars (secrets) in the dashboard — Render never
+#      reads secrets from the repo.
+#
+# The database (CockroachDB Cloud) is external — it is NOT a Render service.
+# The API reaches it via DATABASE_URL. See DEPLOYMENT.md for the full runbook.
+#
+# Security note: All secrets use `sync: false` so they live ONLY in Render's
+# encrypted env store, never in git.
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # Backend API (Express + CockroachDB/PostgreSQL + Google OAuth)
+  # ---------------------------------------------------------------------------
+  - type: web
+    name: forgevidhya-api
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm ci --omit=dev
+    startCommand: node server.js
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: TRUST_PROXY
+        value: "1" # Render terminates TLS at a proxy -> needed for Secure cookies + req.ip
+      - key: JWT_EXPIRES
+        value: 7d
+      # --- Secrets (set in the Render dashboard; sync:false = not in git) ---
+      - key: DATABASE_URL
+        sync: false # CockroachDB Cloud connection string (app user, not root), sslmode=verify-full
+      - key: JWT_SECRET
+        sync: false # openssl rand -base64 48
+      - key: SESSION_SECRET
+        sync: false # openssl rand -base64 48 (different value)
+      - key: GOOGLE_CLIENT_ID
+        sync: false # from Google Cloud Console -> Credentials
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_CALLBACK_URL
+        sync: false # https://forgevidhya-api.onrender.com/auth/google/callback (must match Google Console)
+      # CLIENT_ORIGIN + CLIENT_URL must equal the deployed web URL (set after first deploy):
+      - key: CLIENT_ORIGIN
+        sync: false # e.g. https://forgevidhya-web.onrender.com  OR  https://forgevidhya.in  (CORS whitelist)
+      - key: CLIENT_URL
+        sync: false # same web URL — where the OAuth callback redirects the browser back to
+      - key: COOKIE_DOMAIN
+        sync: false # omit/blank unless frontend+API share a parent domain (e.g. forgevidhya.in)
+
+  # ---------------------------------------------------------------------------
+  # Frontend SPA (web/ — React + Vite + TypeScript, served as static files)
+  # ---------------------------------------------------------------------------
+  - type: web
+    name: forgevidhya-web
+    runtime: static
+    plan: free
+    rootDir: web
+    # web/ uses bun.lock as its canonical lockfile and commits no package-lock.json,
+    # so use `npm install` (not `npm ci`, which requires a committed lockfile).
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    autoDeploy: true
+    # SPA fallback: serve index.html for client-side routes (/services, /auth/callback, …).
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      # Baked in at build time. The API ORIGIN (no /api suffix): the Google
+      # sign-in button redirects to `${VITE_API_URL}/auth/google`.
+      - key: VITE_API_URL
+        sync: false # e.g. https://forgevidhya-api.onrender.com
+    headers:
+      # Defense-in-depth security headers on the static host.
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
