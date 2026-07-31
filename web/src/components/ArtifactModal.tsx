@@ -66,7 +66,7 @@ export function ArtifactModal({
           <iframe
             title={artifact.title}
             srcDoc={artifact.html}
-            sandbox="allow-scripts allow-modals"
+            sandbox={artifact.sandbox ?? "allow-scripts allow-modals"}
             className="min-h-0 w-full flex-1 border-0"
           />
         </motion.div>

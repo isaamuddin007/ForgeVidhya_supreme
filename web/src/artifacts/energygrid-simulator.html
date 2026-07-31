@@ -1,0 +1,3019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EnergyGrid Simulator — Renewable Energy Engineering Lab</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+  html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Segoe UI', system-ui, sans-serif; background: #0d1117; color: #e6edf3; font-size: 12px; }
+
+  /* ========== Layout ========== */
+  .app { display: grid; grid-template-rows: 44px 1fr 44px; grid-template-columns: 260px 1fr 320px; width: 100vw; height: 100vh; }
+  .topbar { grid-column: 1 / 4; grid-row: 1; background: linear-gradient(180deg, #161b22, #0d1117); border-bottom: 1px solid #30363d; display: flex; align-items: center; padding: 0 16px; gap: 12px; }
+  .palette { grid-column: 1; grid-row: 2; background: #0d1117; border-right: 1px solid #30363d; overflow-y: auto; overflow-x: hidden; }
+  .canvas-wrap { grid-column: 2; grid-row: 2; position: relative; background: #0d1117; overflow: hidden; }
+  .sidebar { grid-column: 3; grid-row: 2; background: #0d1117; border-left: 1px solid #30363d; overflow-y: auto; display: flex; flex-direction: column; }
+  .bottombar { grid-column: 1 / 4; grid-row: 3; background: linear-gradient(0deg, #161b22, #0d1117); border-top: 1px solid #30363d; display: flex; align-items: center; padding: 0 16px; gap: 16px; }
+
+  /* ========== Top Bar ========== */
+  .logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 14px; }
+  .logo-icon { width: 28px; height: 28px; border-radius: 6px; background: linear-gradient(135deg, #2ea043, #238636); display: grid; place-items: center; box-shadow: 0 0 12px rgba(46,160,67,0.4); }
+  .logo-icon svg { width: 16px; height: 16px; color: white; }
+  .logo-text span { background: linear-gradient(90deg, #58a6ff, #3fb950); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .project-name { padding: 4px 12px; background: #161b22; border: 1px solid #30363d; border-radius: 4px; color: #e6edf3; font-size: 12px; outline: none; min-width: 180px; }
+  .project-name:focus { border-color: #58a6ff; }
+  .top-actions { display: flex; gap: 6px; margin-left: auto; }
+  .btn { padding: 6px 12px; border-radius: 5px; border: 1px solid #30363d; background: #21262d; color: #e6edf3; font-size: 11px; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 5px; }
+  .btn:hover { background: #30363d; border-color: #484f58; }
+  .btn.primary { background: linear-gradient(180deg, #2ea043, #238636); border-color: #238636; }
+  .btn.primary:hover { background: linear-gradient(180deg, #3fb950, #2ea043); }
+  .btn.danger { color: #f85149; }
+  .btn.danger:hover { background: rgba(248,81,73,0.15); border-color: #f85149; }
+  .btn.blue { background: linear-gradient(180deg, #1f6feb, #0d5bc4); border-color: #0d5bc4; }
+  .btn.blue:hover { background: linear-gradient(180deg, #388bfd, #1f6feb); }
+
+  /* ========== Palette ========== */
+  .palette-section { border-bottom: 1px solid #21262d; }
+  .palette-header { padding: 8px 12px; background: #161b22; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #8b949e; }
+  .palette-header:hover { background: #1c2128; color: #e6edf3; }
+  .palette-header .arrow { transition: transform 0.2s; font-size: 9px; }
+  .palette-section.collapsed .arrow { transform: rotate(-90deg); }
+  .palette-section.collapsed .palette-items { display: none; }
+  .palette-items { padding: 6px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .palette-item { padding: 6px; background: #161b22; border: 1px solid #21262d; border-radius: 5px; cursor: grab; transition: all 0.15s; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .palette-item:hover { background: #1c2128; border-color: #388bfd; transform: translateY(-1px); }
+  .palette-item:active { cursor: grabbing; }
+  .palette-item.disabled { opacity: 0.4; cursor: not-allowed; }
+  .palette-icon { width: 44px; height: 44px; display: grid; place-items: center; }
+  .palette-icon svg { width: 40px; height: 40px; }
+  .palette-label { font-size: 10px; color: #c9d1d9; text-align: center; line-height: 1.2; }
+  .palette-sublabel { font-size: 9px; color: #6e7681; }
+
+  /* ========== Canvas ========== */
+  #mainCanvas { width: 100%; height: 100%; display: block; cursor: default; }
+  .canvas-tools { position: absolute; top: 10px; left: 10px; display: flex; gap: 4px; background: rgba(22,27,34,0.9); backdrop-filter: blur(8px); padding: 4px; border-radius: 6px; border: 1px solid #30363d; z-index: 10; }
+  .tool-btn { width: 32px; height: 32px; border-radius: 4px; background: transparent; border: none; color: #c9d1d9; cursor: pointer; display: grid; place-items: center; transition: all 0.15s; }
+  .tool-btn:hover { background: #30363d; }
+  .tool-btn.active { background: #1f6feb; color: white; }
+  .tool-btn svg { width: 16px; height: 16px; }
+  .canvas-info { position: absolute; bottom: 10px; left: 10px; background: rgba(22,27,34,0.9); backdrop-filter: blur(8px); padding: 6px 10px; border-radius: 5px; border: 1px solid #30363d; font-size: 10px; color: #8b949e; z-index: 10; }
+  .canvas-info b { color: #58a6ff; }
+  .time-display { position: absolute; top: 10px; right: 10px; background: rgba(22,27,34,0.9); backdrop-filter: blur(8px); padding: 8px 12px; border-radius: 6px; border: 1px solid #30363d; z-index: 10; display: flex; flex-direction: column; gap: 2px; }
+  .time-clock { font-size: 18px; font-weight: 700; color: #58a6ff; font-family: 'Consolas', monospace; }
+  .time-date { font-size: 10px; color: #8b949e; }
+  .time-weather { font-size: 10px; color: #c9d1d9; display: flex; align-items: center; gap: 4px; }
+
+  /* ========== Sidebar ========== */
+  .sidebar-section { border-bottom: 1px solid #21262d; padding: 10px 12px; }
+  .sidebar-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #8b949e; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+  .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .kpi-card { background: #161b22; border: 1px solid #21262d; border-radius: 5px; padding: 8px; }
+  .kpi-label { font-size: 9px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.5px; }
+  .kpi-value { font-size: 16px; font-weight: 700; margin-top: 2px; font-family: 'Consolas', monospace; }
+  .kpi-sub { font-size: 9px; color: #6e7681; margin-top: 2px; }
+  .kpi-green { color: #3fb950; }
+  .kpi-blue { color: #58a6ff; }
+  .kpi-yellow { color: #d29922; }
+  .kpi-red { color: #f85149; }
+  .kpi-purple { color: #bc8cff; }
+
+  /* Properties */
+  .props-empty { padding: 20px; text-align: center; color: #6e7681; font-size: 11px; }
+  .props-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .props-icon { width: 36px; height: 36px; border-radius: 6px; display: grid; place-items: center; background: #161b22; border: 1px solid #30363d; }
+  .props-icon svg { width: 28px; height: 28px; }
+  .props-name { font-size: 13px; font-weight: 600; }
+  .props-type { font-size: 10px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.5px; }
+  .props-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; font-size: 11px; border-bottom: 1px solid #21262d; }
+  .props-row:last-child { border-bottom: none; }
+  .props-row .label { color: #8b949e; }
+  .props-row .value { color: #e6edf3; font-family: 'Consolas', monospace; font-weight: 600; }
+  .props-actions { display: flex; gap: 4px; margin-top: 10px; }
+  .props-actions .btn { flex: 1; justify-content: center; font-size: 10px; padding: 5px; }
+
+  /* Chart */
+  .chart-wrap { background: #161b22; border: 1px solid #21262d; border-radius: 5px; padding: 8px; }
+  .chart-canvas { width: 100%; height: 120px; display: block; }
+  .chart-legend { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; font-size: 9px; }
+  .legend-item { display: flex; align-items: center; gap: 3px; color: #c9d1d9; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+
+  /* ========== Bottom Bar ========== */
+  .sim-controls { display: flex; align-items: center; gap: 6px; }
+  .sim-btn { width: 32px; height: 32px; border-radius: 5px; background: #21262d; border: 1px solid #30363d; color: #e6edf3; cursor: pointer; display: grid; place-items: center; transition: all 0.15s; }
+  .sim-btn:hover { background: #30363d; }
+  .sim-btn.active { background: #2ea043; border-color: #238636; color: white; }
+  .sim-btn svg { width: 14px; height: 14px; }
+  .speed-select { padding: 5px 8px; background: #21262d; border: 1px solid #30363d; border-radius: 5px; color: #e6edf3; font-size: 11px; outline: none; cursor: pointer; }
+  .sim-info { display: flex; gap: 16px; margin-left: 12px; padding-left: 12px; border-left: 1px solid #30363d; }
+  .sim-stat { display: flex; flex-direction: column; }
+  .sim-stat .label { font-size: 9px; color: #8b949e; text-transform: uppercase; }
+  .sim-stat .value { font-size: 12px; font-weight: 600; color: #58a6ff; font-family: 'Consolas', monospace; }
+  .sim-status { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 11px; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #3fb950; box-shadow: 0 0 6px #3fb950; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+  /* ========== Modal ========== */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+  .modal-overlay.show { display: flex; }
+  .modal { background: #161b22; border: 1px solid #30363d; border-radius: 8px; min-width: 400px; max-width: 700px; max-height: 80vh; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+  .modal-header { padding: 14px 18px; border-bottom: 1px solid #30363d; display: flex; justify-content: space-between; align-items: center; }
+  .modal-title { font-size: 14px; font-weight: 600; }
+  .modal-close { cursor: pointer; color: #8b949e; font-size: 18px; width: 24px; height: 24px; display: grid; place-items: center; border-radius: 4px; }
+  .modal-close:hover { background: #30363d; color: #e6edf3; }
+  .modal-body { padding: 18px; overflow-y: auto; max-height: 60vh; }
+  .modal-footer { padding: 12px 18px; border-top: 1px solid #30363d; display: flex; justify-content: flex-end; gap: 8px; }
+
+  .scenario-card { background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 14px; margin-bottom: 10px; cursor: pointer; transition: all 0.15s; }
+  .scenario-card:hover { border-color: #58a6ff; background: #161b22; }
+  .scenario-title { font-size: 13px; font-weight: 600; color: #58a6ff; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+  .scenario-desc { font-size: 11px; color: #c9d1d9; line-height: 1.5; margin-bottom: 8px; }
+  .scenario-goals { display: flex; flex-wrap: wrap; gap: 4px; }
+  .scenario-goal { font-size: 9px; padding: 2px 6px; background: #21262d; border-radius: 3px; color: #8b949e; }
+  .scenario-goal.success { background: rgba(63,185,80,0.15); color: #3fb950; }
+
+  /* Notification */
+  .notif { position: fixed; top: 60px; right: 20px; background: #161b22; border: 1px solid #30363d; border-left: 3px solid #58a6ff; padding: 10px 14px; border-radius: 5px; z-index: 2000; font-size: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.5); max-width: 300px; animation: slideIn 0.3s; }
+  .notif.success { border-left-color: #3fb950; }
+  .notif.error { border-left-color: #f85149; }
+  .notif.warning { border-left-color: #d29922; }
+  @keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+  /* Slider */
+  .slider { width: 100%; -webkit-appearance: none; height: 4px; background: #21262d; border-radius: 2px; outline: none; }
+  .slider::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; background: #58a6ff; border-radius: 50%; cursor: pointer; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: #0d1117; }
+  ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #484f58; }
+
+  /* Drag ghost */
+  .drag-ghost { position: fixed; pointer-events: none; z-index: 9999; opacity: 0.85; }
+
+  /* Context menu */
+  .ctx-menu { position: fixed; background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 4px; min-width: 180px; z-index: 1500; box-shadow: 0 8px 24px rgba(0,0,0,0.6); display: none; }
+  .ctx-menu.show { display: block; }
+  .ctx-item { padding: 6px 10px; cursor: pointer; border-radius: 4px; font-size: 11px; display: flex; align-items: center; gap: 8px; }
+  .ctx-item:hover { background: #1f6feb; color: white; }
+  .ctx-sep { height: 1px; background: #21262d; margin: 3px 0; }
+
+  /* Tooltip */
+  .tooltip { position: fixed; background: #0d1117; border: 1px solid #30363d; padding: 6px 10px; border-radius: 4px; font-size: 11px; color: #e6edf3; pointer-events: none; z-index: 3000; max-width: 220px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+  .tooltip-title { font-weight: 600; color: #58a6ff; margin-bottom: 3px; }
+  .tooltip-desc { color: #c9d1d9; line-height: 1.4; font-size: 10px; }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- ========== TOP BAR ========== -->
+  <div class="topbar">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+        </svg>
+      </div>
+      <div class="logo-text">Energy<span>Grid</span></div>
+    </div>
+    <input type="text" class="project-name" id="projectName" value="Untitled Grid Project" />
+    <div class="top-actions">
+      <button class="btn" id="btnScenarios">📚 Scenarios</button>
+      <button class="btn" id="btnSave">💾 Save</button>
+      <button class="btn" id="btnLoad">📂 Load</button>
+      <button class="btn" id="btnExport">📊 Export</button>
+      <button class="btn danger" id="btnClear">🗑 Clear</button>
+      <button class="btn primary" id="btnReport">📄 Report</button>
+    </div>
+  </div>
+
+  <!-- ========== PALETTE ========== -->
+  <div class="palette" id="palette"></div>
+
+  <!-- ========== CANVAS ========== -->
+  <div class="canvas-wrap" id="canvasWrap">
+    <canvas id="mainCanvas"></canvas>
+    <div class="canvas-tools">
+      <button class="tool-btn active" id="toolSelect" title="Select (V)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>
+      </button>
+      <button class="tool-btn" id="toolConnect" title="Connect (C)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      </button>
+      <button class="tool-btn" id="toolTerrain" title="Paint Terrain (T)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20l5-9 5 6 4-5 6 8z"/></svg>
+      </button>
+      <button class="tool-btn" id="toolPan" title="Pan (Space)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 11V6a2 2 0 0 0-4 0v5M14 10V4a2 2 0 0 0-4 0v6M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+      </button>
+      <div style="width:1px;background:#30363d;margin:4px 2px"></div>
+      <button class="tool-btn" id="toolZoomIn" title="Zoom In">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg>
+      </button>
+      <button class="tool-btn" id="toolZoomOut" title="Zoom Out">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M8 11h6"/></svg>
+      </button>
+      <button class="tool-btn" id="toolReset" title="Reset View">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      </button>
+    </div>
+    <div class="time-display">
+      <div class="time-clock" id="timeClock">12:00</div>
+      <div class="time-date" id="timeDate">June 21, 2026</div>
+      <div class="time-weather" id="timeWeather">☀ Clear · 22°C · 5.2 m/s</div>
+    </div>
+    <div class="canvas-info">
+      <b id="infoTerrain">Plains</b> · Zoom: <b id="infoZoom">100%</b> · <b id="infoCount">0</b> components
+    </div>
+  </div>
+
+  <!-- ========== SIDEBAR ========== -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">📊 Live Metrics</div>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Generation</div>
+          <div class="kpi-value kpi-green" id="kpiGen">0 MW</div>
+          <div class="kpi-sub" id="kpiGenSub">0 plants</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Demand</div>
+          <div class="kpi-value kpi-blue" id="kpiDem">0 MW</div>
+          <div class="kpi-sub" id="kpiDemSub">0 consumers</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Balance</div>
+          <div class="kpi-value kpi-yellow" id="kpiBal">0 MW</div>
+          <div class="kpi-sub" id="kpiBalSub">surplus</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">CO₂ Emissions</div>
+          <div class="kpi-value kpi-red" id="kpiCO2">0 t/h</div>
+          <div class="kpi-sub" id="kpiCO2Sub">0 g/kWh</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Renewable %</div>
+          <div class="kpi-value kpi-green" id="kpiRen">0%</div>
+          <div class="kpi-sub">of generation</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">LCOE</div>
+          <div class="kpi-value kpi-purple" id="kpiLcoe">$0</div>
+          <div class="kpi-sub">per MWh</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Storage</div>
+          <div class="kpi-value kpi-yellow" id="kpiStor">0%</div>
+          <div class="kpi-sub" id="kpiStorSub">0 / 0 MWh</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Grid Stability</div>
+          <div class="kpi-value kpi-green" id="kpiStab">100%</div>
+          <div class="kpi-sub">frequency OK</div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">📈 Generation Mix</div>
+      <div class="chart-wrap">
+        <canvas class="chart-canvas" id="chartGen"></canvas>
+        <div class="chart-legend" id="legendGen"></div>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">📉 Demand vs Supply (24h)</div>
+      <div class="chart-wrap">
+        <canvas class="chart-canvas" id="chartDemand"></canvas>
+      </div>
+    </div>
+    <div class="sidebar-section" style="flex:1">
+      <div class="sidebar-title">⚙ Properties</div>
+      <div id="propsPanel"><div class="props-empty">Select a component to view properties</div></div>
+    </div>
+  </div>
+
+  <!-- ========== BOTTOM BAR ========== -->
+  <div class="bottombar">
+    <div class="sim-controls">
+      <button class="sim-btn" id="simStep" title="Step">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4l10 8-10 8V4zm12 0v16h-2V4h2z"/></svg>
+      </button>
+      <button class="sim-btn active" id="simPlay" title="Play/Pause">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <button class="sim-btn" id="simStop" title="Stop">
+        <svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12"/></svg>
+      </button>
+      <select class="speed-select" id="simSpeed">
+        <option value="1">1x Real-time</option>
+        <option value="60" selected>60x (min/s)</option>
+        <option value="3600">3600x (hr/s)</option>
+        <option value="86400">86400x (day/s)</option>
+      </select>
+    </div>
+    <div class="sim-info">
+      <div class="sim-stat">
+        <div class="label">Sim Time</div>
+        <div class="value" id="simTime">Day 1 · 12:00</div>
+      </div>
+      <div class="sim-stat">
+        <div class="label">Frequency</div>
+        <div class="value" id="simFreq">50.00 Hz</div>
+      </div>
+      <div class="sim-stat">
+        <div class="label">Budget Used</div>
+        <div class="value" id="simBudget">$0</div>
+      </div>
+    </div>
+    <div class="sim-status">
+      <span class="status-dot"></span>
+      <span id="statusText">Simulation running</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== MODAL ========== -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">Modal</div>
+      <div class="modal-close" id="modalClose">✕</div>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer" id="modalFooter"></div>
+  </div>
+</div>
+
+<div class="ctx-menu" id="ctxMenu"></div>
+<div class="tooltip" id="tooltip" style="display:none"></div>
+
+<script>
+// ============================================================
+// DATA: Component Definitions
+// ============================================================
+const COMPONENTS = {
+  // === GENERATORS ===
+  wind_onshore: {
+    name: 'Onshore Wind', category: 'wind', type: 'generator',
+    capacity: 3, minOutput: 0, efficiency: 0.35, capacityFactor: 0.35,
+    capitalCost: 1400000, opCost: 30000, fuelCost: 0, lifetime: 25,
+    co2: 0, noise: 1, landUse: 0.5,
+    terrain: ['plains', 'coastal', 'mountain'],
+    desc: '3 MW onshore wind turbine. Cut-in: 3 m/s, Rated: 12 m/s, Cut-out: 25 m/s.',
+    color: '#58a6ff',
+    draw: (ctx, x, y, w, h, state) => {
+      // Tower
+      ctx.fillStyle = '#c9d1d9';
+      ctx.beginPath();
+      ctx.moveTo(x + w*0.45, y + h*0.95);
+      ctx.lineTo(x + w*0.55, y + h*0.95);
+      ctx.lineTo(x + w*0.52, y + h*0.3);
+      ctx.lineTo(x + w*0.48, y + h*0.3);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#6e7681';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      // Nacelle
+      ctx.fillStyle = '#e6edf3';
+      ctx.fillRect(x + w*0.42, y + h*0.25, w*0.16, h*0.08);
+      ctx.strokeRect(x + w*0.42, y + h*0.25, w*0.16, h*0.08);
+      // Blades (rotating)
+      const rot = (state.time * (state.windSpeed / 12) * 2) % (Math.PI * 2);
+      const cx = x + w*0.5, cy = y + h*0.29;
+      const bl = h*0.28;
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.strokeStyle = '#e6edf3';
+      ctx.lineWidth = 3;
+      ctx.lineCap = 'round';
+      for (let i = 0; i < 3; i++) {
+        const a = rot + i * (Math.PI * 2 / 3);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(Math.cos(a) * bl, Math.sin(a) * bl);
+        ctx.stroke();
+      }
+      ctx.restore();
+      // Hub
+      ctx.fillStyle = '#6e7681';
+      ctx.beginPath();
+      ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+      ctx.fill();
+      // Base
+      ctx.fillStyle = '#484f58';
+      ctx.fillRect(x + w*0.35, y + h*0.95, w*0.3, h*0.05);
+    }
+  },
+  wind_offshore: {
+    name: 'Offshore Wind', category: 'wind', type: 'generator',
+    capacity: 12, minOutput: 0, efficiency: 0.45, capacityFactor: 0.45,
+    capitalCost: 5000000, opCost: 80000, fuelCost: 0, lifetime: 25,
+    co2: 0, noise: 0, landUse: 0,
+    terrain: ['coastal'],
+    desc: '12 MW offshore wind turbine. Higher capacity factor, higher cost.',
+    color: '#58a6ff',
+    draw: (ctx, x, y, w, h, state) => {
+      // Water
+      ctx.fillStyle = 'rgba(56,139,253,0.3)';
+      ctx.fillRect(x, y + h*0.75, w, h*0.25);
+      // Foundation
+      ctx.fillStyle = '#6e7681';
+      ctx.fillRect(x + w*0.47, y + h*0.75, w*0.06, h*0.2);
+      // Tower
+      ctx.fillStyle = '#e6edf3';
+      ctx.beginPath();
+      ctx.moveTo(x + w*0.45, y + h*0.75);
+      ctx.lineTo(x + w*0.55, y + h*0.75);
+      ctx.lineTo(x + w*0.52, y + h*0.25);
+      ctx.lineTo(x + w*0.48, y + h*0.25);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#6e7681';
+      ctx.stroke();
+      // Nacelle
+      ctx.fillStyle = '#c9d1d9';
+      ctx.fillRect(x + w*0.42, y + h*0.2, w*0.16, h*0.07);
+      // Blades
+      const rot = (state.time * (state.windSpeed / 10) * 2) % (Math.PI * 2);
+      const cx = x + w*0.5, cy = y + h*0.23;
+      const bl = h*0.22;
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.strokeStyle = '#e6edf3';
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = 'round';
+      for (let i = 0; i < 3; i++) {
+        const a = rot + i * (Math.PI * 2 / 3);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(Math.cos(a) * bl, Math.sin(a) * bl);
+        ctx.stroke();
+      }
+      ctx.restore();
+      ctx.fillStyle = '#484f58';
+      ctx.beginPath();
+      ctx.arc(cx, cy, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  },
+  solar_pv: {
+    name: 'Solar PV Farm', category: 'solar', type: 'generator',
+    capacity: 10, minOutput: 0, efficiency: 0.20, capacityFactor: 0.20,
+    capitalCost: 1000000, opCost: 15000, fuelCost: 0, lifetime: 30,
+    co2: 0, noise: 0, landUse: 2,
+    terrain: ['desert', 'plains'],
+    desc: '10 MW solar PV farm. Output follows sun position.',
+    color: '#f0b429',
+    draw: (ctx, x, y, w, h, state) => {
+      const sunAngle = state.sunAngle;
+      const brightness = Math.max(0, Math.sin(sunAngle));
+      // Ground
+      ctx.fillStyle = '#2a1f0f';
+      ctx.fillRect(x, y + h*0.75, w, h*0.25);
+      // Panel array (3x2)
+      const panelW = w*0.28, panelH = h*0.2;
+      const positions = [[0.1, 0.45], [0.36, 0.45], [0.62, 0.45], [0.1, 0.2], [0.36, 0.2], [0.62, 0.2]];
+      positions.forEach(([px, py]) => {
+        // Support
+        ctx.strokeStyle = '#484f58';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(x + w*(px + 0.14), y + h*(py + 0.2));
+        ctx.lineTo(x + w*(px + 0.14), y + h*0.75);
+        ctx.stroke();
+        // Panel
+        const grad = ctx.createLinearGradient(x + w*px, y + h*py, x + w*px, y + h*(py+0.2));
+        grad.addColorStop(0, `rgba(56,139,253,${0.6 + brightness*0.4})`);
+        grad.addColorStop(1, `rgba(31,111,235,${0.6 + brightness*0.4})`);
+        ctx.fillStyle = grad;
+        ctx.fillRect(x + w*px, y + h*py, panelW, panelH);
+        // Grid lines
+        ctx.strokeStyle = 'rgba(13,17,23,0.6)';
+        ctx.lineWidth = 0.5;
+        for (let i = 1; i < 4; i++) {
+          ctx.beginPath();
+          ctx.moveTo(x + w*px + (panelW/4)*i, y + h*py);
+          ctx.lineTo(x + w*px + (panelW/4)*i, y + h*(py+0.2));
+          ctx.stroke();
+        }
+        ctx.beginPath();
+        ctx.moveTo(x + w*px, y + h*py + panelH/2);
+        ctx.lineTo(x + w*px + panelW, y + h*py + panelH/2);
+        ctx.stroke();
+        // Frame
+        ctx.strokeStyle = '#6e7681';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x + w*px, y + h*py, panelW, panelH);
+        // Reflection
+        if (brightness > 0.3) {
+          ctx.fillStyle = `rgba(255,255,255,${brightness * 0.2})`;
+          ctx.fillRect(x + w*px + panelW*0.2, y + h*py + panelH*0.2, panelW*0.3, panelH*0.3);
+        }
+      });
+    }
+  },
+  solar_csp: {
+    name: 'CSP Tower', category: 'solar', type: 'generator',
+    capacity: 100, minOutput: 10, efficiency: 0.25, capacityFactor: 0.35,
+    capitalCost: 6000000, opCost: 80000, fuelCost: 0, lifetime: 30,
+    co2: 0, noise: 0, landUse: 5,
+    terrain: ['desert'],
+    desc: '100 MW concentrated solar with thermal storage. Works after sunset.',
+    color: '#f0b429',
+    draw: (ctx, x, y, w, h, state) => {
+      const brightness = Math.max(0, Math.sin(state.sunAngle));
+      // Ground
+      ctx.fillStyle = '#3d2817';
+      ctx.fillRect(x, y + h*0.8, w, h*0.2);
+      // Heliostats (small mirrors)
+      for (let i = 0; i < 8; i++) {
+        const mx = x + w*(0.1 + (i%4)*0.22);
+        const my = y + h*(0.65 + Math.floor(i/4)*0.1);
+        ctx.fillStyle = '#c9d1d9';
+        ctx.fillRect(mx, my, w*0.08, h*0.06);
+        ctx.strokeStyle = '#6e7681';
+        ctx.lineWidth = 0.5;
+        ctx.strokeRect(mx, my, w*0.08, h*0.06);
+      }
+      // Tower
+      ctx.fillStyle = '#c9d1d9';
+      ctx.beginPath();
+      ctx.moveTo(x + w*0.45, y + h*0.8);
+      ctx.lineTo(x + w*0.55, y + h*0.8);
+      ctx.lineTo(x + w*0.52, y + h*0.15);
+      ctx.lineTo(x + w*0.48, y + h*0.15);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#6e7681';
+      ctx.stroke();
+      // Receiver (glowing)
+      if (brightness > 0.1) {
+        const glow = ctx.createRadialGradient(x + w*0.5, y + h*0.15, 0, x + w*0.5, y + h*0.15, w*0.15);
+        glow.addColorStop(0, 'rgba(255,180,50,0.9)');
+        glow.addColorStop(0.5, 'rgba(255,100,0,0.4)');
+        glow.addColorStop(1, 'rgba(255,100,0,0)');
+        ctx.fillStyle = glow;
+        ctx.fillRect(x + w*0.35, y, w*0.3, h*0.3);
+      }
+      ctx.fillStyle = '#ff6a00';
+      ctx.fillRect(x + w*0.47, y + h*0.12, w*0.06, h*0.06);
+    }
+  },
+  hydro_dam: {
+    name: 'Hydroelectric Dam', category: 'hydro', type: 'generator',
+    capacity: 500, minOutput: 50, efficiency: 0.90, capacityFactor: 0.50,
+    capitalCost: 3000000, opCost: 30000, fuelCost: 0, lifetime: 80,
+    co2: 0, noise: 1, landUse: 10,
+    terrain: ['mountain', 'river'],
+    desc: '500 MW hydroelectric dam. Highly dispatchable, seasonal variation.',
+    color: '#3fb950',
+    draw: (ctx, x, y, w, h, state) => {
+      // Reservoir (upper)
+      ctx.fillStyle = '#1f6feb';
+      ctx.fillRect(x, y + h*0.1, w*0.45, h*0.3);
+      // Water surface shimmer
+      ctx.strokeStyle = 'rgba(184,224,255,0.4)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.moveTo(x + 5, y + h*(0.15 + i*0.08));
+        ctx.lineTo(x + w*0.4, y + h*(0.15 + i*0.08));
+        ctx.stroke();
+      }
+      // Dam wall
+      ctx.fillStyle = '#8b949e';
+      ctx.beginPath();
+      ctx.moveTo(x + w*0.4, y + h*0.1);
+      ctx.lineTo(x + w*0.55, y + h*0.1);
+      ctx.lineTo(x + w*0.6, y + h*0.9);
+      ctx.lineTo(x + w*0.35, y + h*0.9);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#484f58';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      // Dam details
+      ctx.strokeStyle = '#6e7681';
+      for (let i = 0; i < 4; i++) {
+        ctx.beginPath();
+        ctx.moveTo(x + w*0.4, y + h*(0.2 + i*0.18));
+        ctx.lineTo(x + w*0.55, y + h*(0.2 + i*0.18));
+        ctx.stroke();
+      }
+      // Spillway water
+      ctx.fillStyle = 'rgba(56,139,253,0.7)';
+      ctx.beginPath();
+      ctx.moveTo(x + w*0.5, y + h*0.5);
+      ctx.quadraticCurveTo(x + w*0.55, y + h*0.7, x + w*0.7, y + h*0.9);
+      ctx.lineTo(x + w*0.75, y + h*0.9);
+      ctx.quadraticCurveTo(x + w*0.6, y + h*0.7, x + w*0.55, y + h*0.5);
+      ctx.closePath();
+      ctx.fill();
+      // Powerhouse
+      ctx.fillStyle = '#c9d1d9';
+      ctx.fillRect(x + w*0.6, y + h*0.7, w*0.3, h*0.2);
+      ctx.strokeStyle = '#6e7681';
+      ctx.strokeRect(x + w*0.6, y + h*0.7, w*0.3, h*0.2);
+      // Lower river
+      ctx.fillStyle = '#1f6feb';
+      ctx.fillRect(x + w*0.6, y + h*0.9, w*0.4, h*0.1);
+    }
+  },
+  hydro_runofriver: {
+    name: 'Run-of-River', category: 'hydro', type: 'generator',
+    capacity: 30, minOutput: 5, efficiency: 0.85, capacityFactor: 0.60,
+    capitalCost: 2500000, opCost: 40000, fuelCost: 0, lifetime: 60,
+    co2: 0, noise: 1, landUse: 1,
+    terrain: ['river', 'mountain'],
+    desc: '30 MW run-of-river hydro. Low environmental impact.',
+    color: '#3fb950',
+    draw: (ctx, x, y, w, h, state) => {
+      // River
+      ctx.fillStyle = '#1f6feb';
+      ctx.fillRect(x, y + h*0.6, w, h*0.3);
+      // Weir
+      ctx.fillStyle = '#8b949e';
+      ctx.fillRect(x + w*0.4, y + h*0.5, w*0.2, h*0.4);
+      ctx.strokeStyle = '#484f58';
+      ctx.strokeRect(x + w*0.4, y + h*0.5, w*0.2, h*0.4);
+      // Water flow
+      ctx.strokeStyle = 'rgba(184,224,255,0.6)';
+      ctx.lineWidth = 1.5;
+      const t = state.time * 2;
+      for (let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.moveTo(x + w*0.6, y + h*(0.65 + i*0.08));
+        ctx.quadraticCurveTo(x + w*0.75, y + h*(0.65 + i*0.08) + Math.sin(t + i)*2, x + w*0.95, y + h*(0.65 + i*0.08));
+        ctx.stroke();
+      }
+      // Powerhouse
+      ctx.fillStyle = '#c9d1d9';
+      ctx.fillRect(x + w*0.6, y + h*0.35, w*0.3, h*0.2);
+      ctx.strokeRect(x + w*0.6, y + h*0.35, w*0.3, h*0.2);
+      // Intake
+      ctx.fillStyle = '#484f58';
+      ctx.fillRect(x + w*0.35, y + h*0.55, w*0.08, h*0.15);
+    }
+  },
+  nuclear_pwr: {
+    name: 'Nuclear PWR', category: 'nuclear', type: 'generator',
+    capacity: 1200, minOutput: 400, efficiency: 0.33, capacityFactor: 0.92,
+    capitalCost: 8000000, opCost: 100000, fuelCost: 50000, lifetime: 60,
+    co2: 0, noise: 2, landUse: 3,
+    terrain: ['plains', 'coastal', 'river'],
+    desc: '1200 MW pressurized water reactor. Base load, near-zero emissions.',
+    color: '#bc8cff',
+    draw: (ctx, x, y, w, h, state) => {
+      // Ground
+      ctx.fillStyle = '#2a2f38';
+      ctx.fillRect(x, y + h*0.85, w, h*0.15);
+      // Containment dome
+      ctx.fillStyle = '#c9d1d9';
+      ctx.beginPath();
+      ctx.arc(x + w*0.35, y + h*0.6, w*0.18, Math.PI, 0);
+      ctx.lineTo(x + w*0.53, y + h*0.85);
+      ctx.lineTo(x + w*0.17, y + h*0.85);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#6e7681';
+      ctx.stroke();
+      // Dome detail
+      ctx.strokeStyle = '#8b949e';
+      ctx.lineWidth = 0.5;
+      for (let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.arc(x + w*0.35, y + h*0.6, w*(0.14 - i*0.03), Math.PI, 0);
+        ctx.stroke();
+      }
+      // Cooling towers
+      ctx.fillStyle = '#e6edf3';
+      ctx.beginPath();
+      ctx.moveTo(x + w*0.6, y + h*0.85);
+      ctx.lineTo(x + w*0.65, y + h*0.4);
+      ctx.lineTo(x + w*0.78, y + h*0.4);
+      ctx.lineTo(x + w*0.83, y + h*0.85);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#6e7681';
+      ctx.stroke();
+      // Steam
+      const t = state.time * 0.5;
+      ctx.fillStyle = 'rgba(200,200,220,0.5)';
+      for (let i = 0; i < 3; i++) {
+        const sy = y + h*0.35 - i*8 - (t % 20);
+        const sx = x + w*0.71 + Math.sin(t + i)*3;
+        ctx.beginPath();
+        ctx.arc(sx, sy, 4 + i*1.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      // Reactor building
+      ctx.fillStyle = '#8b949e';
+      ctx.fillRect(x + w*0.05, y + h*0.65, w*0.12, h*0.2);
+      ctx.strokeRect(x + w*0.05, y + h*0.65, w*0.12, h*0.2);
+    }
+  },
+  nuclear_smr: {
+    name: 'Small Modular Reactor', category: 'nuclear', type: 'generator',
+    capacity: 200, minOutput: 50, efficiency: 0.35, capacityFactor: 0.90,
+    capitalCost: 5000000, opCost: 60000, fuelCost: 20000, lifetime: 60,
+    co2: 0, noise: 1, landUse: 1,
+    terrain: ['plains', 'coastal'],
+    desc: '200 MW small modular reactor. Factory-built, scalable.',
+    color: '#bc8cff',
+    draw: (ctx, x, y, w, h, state) => {
+      ctx.fillStyle = '#2a2f38';
+      ctx.fillRect(x, y + h*0.85, w, h*0.15);
+      // Compact containment
+      ctx.fillStyle = '#c9d1d9';
+      ctx.beginPath();
+      ctx.arc(x + w*0.5, y + h*0.55, w*0.25, Math.PI, 0);
+      ctx.lineTo(x + w*0.75, y + h*0.85);
+      ctx.lineTo(x + w*0.25, y + h*0.85);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#6e7681';
+      ctx.stroke();
+      // Detail rings
+      ctx.strokeStyle = '#8b949e';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      ctx.arc(x + w*0.5, y + h*0.55, w*0.2, Math.PI, 0);
+      ctx.stroke();
+      // Building
+      ctx.fillStyle = '#8b949e';
+      ctx.fillRect(x + w*0.1, y + h*0.7, w*0.15, h*0.15);
+      ctx.strokeRect(x + w*0.1, y + h*0.7, w*0.15, h*0.15);
+      // Cooling
+      ctx.fillStyle = '#e6edf3';
+      ctx.fillRect(x + w*0.75, y + h*0.65, w*0.15, h*0.2);
+      ctx.strokeRect(x + w*0.75, y + h*0.65, w*0.15, h*0.2);
+    }
+  },
+  biomass: {
+    name: 'Biomass Plant', category: 'biomass', type: 'generator',
+    capacity: 50, minOutput: 10, efficiency: 0.30, capacityFactor: 0.80,
+    capitalCost: 2500000, opCost: 80000, fuelCost: 30000, lifetime: 30,
+    co2: 50, noise: 2, landUse: 2,
+    terrain: ['plains', 'forest'],
+    desc: '50 MW biomass plant. Carbon-neutral if sustainably sourced.',
+    color: '#a5d6a7',
+    draw: (ctx, x, y, w, h, state) => {
+      ctx.fillStyle = '#2a2f38';
+      ctx.fillRect(x, y + h*0.85, w, h*0.15);
+      // Main building
+      ctx.fillStyle = '#8b5a2b';
+      ctx.fillRect(x + w*0.1, y + h*0.5, w*0.4, h*0.35);
+      ctx.strokeStyle = '#484f58';
+      ctx.strokeRect(x + w*0.1, y + h*0.5, w*0.4, h*0.35);
+      // Roof
+      ctx.fillStyle = '#6e4a1f';
+      ctx.beginPath();
+      ctx.moveTo(x + w*0.08, y + h*0.5);
+      ctx.lineTo(x + w*0.3, y + h*0.35);
+      ctx.lineTo(x + w*0.52, y + h*0.5);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      // Chimney
+      ctx.fillStyle = '#6e7681';
+      ctx.fillRect(x + w*0.6, y + h*0.3, w*0.08, h*0.55);
+      ctx.strokeRect(x + w*0.6, y + h*0.3, w*0.08, h*0.55);
+      // Smoke
+      const t = state.time * 0.5;
+      ctx.fillStyle = 'rgba(150,150,150,0.5)';
+      for (let i = 0; i < 3; i++) {
+        const sy = y + h*0.25 - i*7 - (t % 20);
+        const sx = x + w*0.64 + Math.sin(t + i)*2;
+        ctx.beginPath();
+        ctx.arc(sx, sy, 3 + i, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      // Fuel storage
+      ctx.fillStyle = '#a5d6a7';
+      ctx.fillRect(x + w*0.7, y + h*0.65, w*0.25, h*0.2);
+      ctx.strokeRect(x + w*0.7, y + h*0.65, w*0.25, h*0.2);
+    }
+  },
+  geothermal: {
+    name: 'Geothermal Plant', category: 'geothermal', type: 'generator',
+    capacity: 100, minOutput: 80, efficiency: 0.15, capacityFactor: 0.90,
+    capitalCost: 4000000, opCost: 50000, fuelCost: 0, lifetime: 30,
+    co2: 20, noise: 1, landUse: 1,
+    terrain: ['geothermal', 'mountain'],
+    desc: '100 MW geothermal plant. Requires geothermal resource.',
+    color: '#ff7b72',
+    draw: (ctx, x, y, w, h, state) => {
+      ctx.fillStyle = '#3d2817';
+      ctx.fillRect(x, y + h*0.75, w, h*0.25);
+      // Powerhouse
+      ctx.fillStyle = '#c9d1d9';
+      ctx.fillRect(x + w*0.35, y + h*0.5, w*0.3, h*0.25);
+      ctx.strokeStyle = '#6e7681';
+      ctx.strokeRect(x + w*0.35, y + h*0.5, w*0.3, h*0.25);
+      // Steam pipes
+      ctx.strokeStyle = '#8b949e';
+      ctx.lineWidth = 2;
+      for (let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.moveTo(x + w*(0.15 + i*0.1), y + h*0.8);
+        ctx.lineTo(x + w*(0.15 + i*0.1), y + h*0.6);
+        ctx.lineTo(x + w*0.4, y + h*0.6);
+        ctx.stroke();
+      }
+      // Steam vents
+      const t = state.time * 0.7;
+      ctx.fillStyle = 'rgba(220,220,230,0.6)';
+      for (let i = 0; i < 3; i++) {
+        const sx = x + w*(0.15 + i*0.1);
+        for (let j = 0; j < 2; j++) {
+          const sy = y + h*0.75 - j*6 - (t % 15);
+          ctx.beginPath();
+          ctx.arc(sx + Math.sin(t + i + j)*2, sy, 2 + j, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      // Cooling towers
+      ctx.fillStyle = '#e6edf3';
+      ctx.beginPath();
+      ctx.moveTo(x + w*0.72, y + h*0.75);
+      ctx.lineTo(x + w*0.76, y + h*0.45);
+      ctx.lineTo(x + w*0.88, y + h*0.45);
+      ctx.lineTo(x + w*0.92, y + h*0.75);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    }
+  },
+  gas_ccgt: {
+    name: 'Gas Turbine (CCGT)', category: 'conventional', type: 'generator',
+    capacity: 400, minOutput: 100, efficiency: 0.58, capacityFactor: 0.85,
+    capitalCost: 1200000, opCost: 40000, fuelCost: 80000, lifetime: 30,
+    co2: 400, noise: 3, landUse: 1,
+    terrain: ['plains', 'coastal'],
+    desc: '400 MW gas combined cycle. Fast ramp-up, moderate emissions.',
+    color: '#f0883e',
+    draw: (ctx, x, y, w, h, state) => {
+      ctx.fillStyle = '#2a2f38';
+      ctx.fillRect(x, y + h*0.85, w, h*0.15);
+      // Main building
+      ctx.fillStyle = '#c9d1d9';
+      ctx.fillRect(x + w*0.1, y + h*0.5, w*0.5, h*0.35);
+      ctx.strokeStyle = '#6e7681';
+      ctx.strokeRect(x + w*0.1, y + h*0.5, w*0.5, h*0.35);
+      // Windows
+      ctx.fillStyle = '#58a6ff';
+      for (let i = 0; i < 4; i++) {
+        ctx.fillRect(x + w*(0.15 + i*0.11), y + h*0.6, w*0.06, h*0.08);
+      }
+      // Stacks
+      ctx.fillStyle = '#8b949e';
+      ctx.fillRect(x + w*0.65, y + h*0.3, w*0.06, h*0.55);
+      ctx.fillRect(x + w*0.78, y + h*0.35, w*0.06, h*0.5);
+      ctx.strokeRect(x + w*0.65, y + h*0.3, w*0.06, h*0.55);
+      ctx.strokeRect(x + w*0.78, y + h*0.35, w*0.06, h*0.5);
+      // Heat shimmer
+      const t = state.time * 0.8;
+      ctx.strokeStyle = 'rgba(240,136,62,0.3)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 2; i++) {
+        const sx = x + w*(0.68 + i*0.13);
+        ctx.beginPath();
+        ctx.moveTo(sx, y + h*0.3);
+        for (let j = 0; j < 5; j++) {
+          ctx.lineTo(sx + Math.sin(t + j*0.5 + i)*3, y + h*(0.25 - j*0.04));
+        }
+        ctx.stroke();
+      }
+    }
+  },
+  coal: {
+    name: 'Coal Plant', category: 'conventional', type: 'generator',
+    capacity: 1000, minOutput: 300, efficiency: 0.38, capacityFactor: 0.85,
+    capitalCost: 2500000, opCost: 60000, fuelCost: 60000, lifetime: 40,
+    co2: 900, noise: 3, landUse: 3,
+    terrain: ['plains', 'river'],
+    desc: '1000 MW coal plant. High emissions, base load.',
+    color: '#6e7681',
+    draw: (ctx, x, y, w, h, state) => {
+      ctx.fillStyle = '#2a2f38';
+      ctx.fillRect(x, y + h*0.85, w, h*0.15);
+      // Main building
+      ctx.fillStyle = '#6e7681';
+      ctx.fillRect(x + w*0.1, y + h*0.5, w*0.45, h*0.35);
+      ctx.strokeStyle = '#484f58';
+      ctx.strokeRect(x + w*0.1, y + h*0.5, w*0.45, h*0.35);
+      // Cooling towers
+      ctx.fillStyle = '#c9d1d9';
+      ctx.beginPath();
+      ctx.moveTo(x + w*0.6, y + h*0.85);
+      ctx.lineTo(x + w*0.65, y + h*0.35);
+      ctx.lineTo(x + w*0.8, y + h*0.35);
+      ctx.lineTo(x + w*0.85, y + h*0.85);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#6e7681';
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x + w*0.82, y + h*0.85);
+      ctx.lineTo(x + w*0.86, y + h*0.4);
+      ctx.lineTo(x + w*0.96, y + h*0.4);
+      ctx.lineTo(x + w*0.99, y + h*0.85);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      // Heavy smoke
+      const t = state.time * 0.4;
+      ctx.fillStyle = 'rgba(80,80,80,0.6)';
+      for (let k = 0; k < 2; k++) {
+        const baseX = x + w*(0.72 + k*0.14);
+        for (let i = 0; i < 4; i++) {
+          const sy = y + h*(0.3 - i*0.05) - (t % 25);
+          const sx = baseX + Math.sin(t + i + k)*4;
+          ctx.beginPath();
+          ctx.arc(sx, sy, 4 + i*1.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      // Coal pile
+      ctx.fillStyle = '#1a1a1a';
+      ctx.beginPath();
+      ctx.moveTo(x + w*0.02, y + h*0.85);
+      ctx.lineTo(x + w*0.15, y + h*0.7);
+      ctx.lineTo(x + w*0.25, y + h*0.85);
+      ctx.closePath();
+      ctx.fill();
+    }
+  },
+  // === CONSUMERS ===
+  home: {
+    name: 'Residential Home', category: 'consumer', type: 'consumer',
+    peakDemand: 0.01, avgDemand: 0.003, criticality: 2,
+    capitalCost: 0, opCost: 0,
+    desc: 'Single-family home. Peak: 10 kW, Evening peak load profile.',
+    color: '#f0883e',
+    draw: (ctx, x, y, w, h, state) => {
+      // Ground
+      ctx.fillStyle = '#2a3a1f';
+      ctx.fillRect(x, y + h*0.85, w, h*0.15);
+      // House body
+      ctx.fillStyle = '#d4a373';
+      ctx.fillRect(x + w*0.15, y + h*0.5, w*0.7, h*0.35);
+      ctx.strokeStyle = '#6e4a1f';
+      ctx.strokeRect(x + w*0.15, y + h*0.5, w*0.7, h*0.35);
+      // Roof
+      ctx.fillStyle = '#8b3a3a';
+      ctx.beginPath();
+      ctx.moveTo(x + w*0.1, y + h*0.5);
+      ctx.lineTo(x + w*0.5, y + h*0.25);
+      ctx.lineTo(x + w*0.9, y + h*0.5);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#4a1f1f';
+      ctx.stroke();
+      // Door
+      ctx.fillStyle = '#6e4a1f';
+      ctx.fillRect(x + w*0.45, y + h*0.65, w*0.1, h*0.2);
+      // Window (lit at night)
+      const nightFactor = Math.max(0, -Math.sin(state.sunAngle));
+      ctx.fillStyle = nightFactor > 0.3 ? `rgba(255,220,100,${0.5 + nightFactor*0.5})` : '#87ceeb';
+      ctx.fillRect(x + w*0.25, y + h*0.58, w*0.12, h*0.12);
+      ctx.fillRect(x + w*0.63, y + h*0.58, w*0.12, h*0.12);
+      ctx.strokeStyle = '#6e4a1f';
+      ctx.strokeRect(x + w*0.25, y + h*0.58, w*0.12, h*0.12);
+      ctx.strokeRect(x + w*0.63, y + h*0.58, w*0.12, h*0.12);
+      // Chimney
+      ctx.fillStyle = '#6e7681';
+      ctx.fillRect(x + w*0.7, y + h*0.3, w*0.06, h*0.15);
+    }
+  },
+  apartment: {
+    name: 'Apartment Complex', category: 'consumer', type: 'consumer',
+    peakDemand: 0.3, avgDemand: 0.15, criticality: 3,
+    capitalCost: 0, opCost: 0,
+    desc: 'Apartment complex. 100 units, 300 kW peak.',
+    color: '#f0883e',
+    draw: (ctx, x, y, w, h, state) => {
+      ctx.fillStyle = '#2a2f38';
+      ctx.fillRect(x, y + h*0.85, w, h*0.15);
+      // Building
+      ctx.fillStyle = '#8b949e';
+      ctx.fillRect(x + w*0.15, y + h*0.2, w*0.7, h*0.65);
+      ctx.strokeStyle = '#484f58';
+      ctx.strokeRect(x + w*0.15, y + h*0.2, w*0.7, h*0.65);
+      // Windows
+      const nightFactor = Math.max(0, -Math.sin(state.sunAngle));
+      for (let r = 0; r < 5; r++) {
+        for (let c = 0; c < 4; c++) {
+          const lit = ((r + c) % 3 === 0) && nightFactor > 0.3;
+          ctx.fillStyle = lit ? `rgba(255,220,100,${0.5 + nightFactor*0.5})` : '#58a6ff';
+          ctx.fillRect(x + w*(0.2 + c*0.15), y + h*(0.25 + r*0.12), w*0.08, h*0.08);
+        }
+      }
+      // Entrance
+      ctx.fillStyle = '#484f58';
+      ctx.fillRect(x + w*0.45, y + h*0.75, w*0.1, h*0.1);
+    }
+  },
+  office: {
+    name: 'Office Building', category: 'consumer', type: 'consumer',
+    peakDemand: 0.5, avgDemand: 0.3, criticality: 3,
+    capitalCost: 0, opCost: 0,
+    desc: 'Office building. Business hours load profile.',
+    color: '#58a6ff',
+    draw: (ctx, x, y, w, h, state) => {
+      ctx.fillStyle = '#2a2f38';
+      ctx.fillRect(x, y + h*0.85, w, h*0.15);
+      // Tower
+      ctx.fillStyle = '#6e7681';
+      ctx.fillRect(x + w*0.25, y + h*0.15, w*0.5, h*0.7);
+      ctx.strokeStyle = '#484f58';
+      ctx.strokeRect(x + w*0.25, y + h*0.15, w*0.5, h*0.7);
+      // Glass facade
+      const nightFactor = Math.max(0, -Math.sin(state.sunAngle));
+      for (let r = 0; r < 8; r++) {
+        for (let c = 0; c < 3; c++) {
+          const lit = nightFactor > 0.3 && Math.random() > 0.5;
+          ctx.fillStyle = lit ? `rgba(255,220,100,${0.4 + nightFactor*0.4})` : 'rgba(88,166,255,0.5)';
+          ctx.fillRect(x + w*(0.28 + c*0.15), y + h*(0.18 + r*0.08), w*0.12, h*0.06);
+        }
+      }
+      // Antenna
+      ctx.strokeStyle = '#8b949e';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(x + w*0.5, y + h*0.15);
+      ctx.lineTo(x + w*0.5, y + h*0.05);
+      ctx.stroke();
+    }
+  },
+  factory: {
+    name: 'Heavy Factory', category: 'consumer', type: 'consumer',
+    peakDemand: 10, avgDemand: 8, criticality: 4,
+    capitalCost: 0, opCost: 0,
+    desc: 'Heavy industry. 10 MW constant high demand.',
+    color: '#f85149',
+    draw: (ctx, x, y, w, h, state) => {
+      ctx.fillStyle = '#2a2f38';
+      ctx.fillRect(x, y + h*0.85, w, h*0.15);
+      // Main building
+      ctx.fillStyle = '#6e7681';
+      ctx.fillRect(x + w*0.05, y + h*0.45, w*0.6, h*0.4);
+      ctx.strokeStyle = '#484f58';
+      ctx.strokeRect(x + w*0.05, y + h*0.45, w*0.6, h*0.4);
+      // Sawtooth roof
+      ctx.fillStyle = '#484f58';
+      for (let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.moveTo(x + w*(0.05 + i*0.2), y + h*0.45);
+        ctx.lineTo(x + w*(0.15 + i*0.2), y + h*0.35);
+        ctx.lineTo(x + w*(0.25 + i*0.2), y + h*0.45);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+      }
+      // Chimney
+      ctx.fillStyle = '#8b5a2b';
+      ctx.fillRect(x + w*0.7, y + h*0.25, w*0.08, h*0.6);
+      ctx.strokeRect(x + w*0.7, y + h*0.25, w*0.08, h*0.6);
+      // Smoke
+      const t = state.time * 0.6;
+      ctx.fillStyle = 'rgba(100,100,100,0.5)';
+      for (let i = 0; i < 3; i++) {
+        const sy = y + h*0.2 - i*6 - (t % 18);
+        const sx = x + w*0.74 + Math.sin(t + i)*2;
+        ctx.beginPath();
+        ctx.arc(sx, sy, 3 + i, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      // Storage tanks
+      ctx.fillStyle = '#c9d1d9';
+      ctx.beginPath();
+      ctx.arc(x + w*0.85, y + h*0.7, w*0.08, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+    }
+  },
+  datacenter: {
+    name: 'Data Center', category: 'consumer', type: 'consumer',
+    peakDemand: 20, avgDemand: 20, criticality: 5,
+    capitalCost: 0, opCost: 0,
+    desc: 'Data center. 20 MW constant high load, critical.',
+    color: '#58a6ff',
+    draw: (ctx, x, y, w, h, state) => {
+      ctx.fillStyle = '#2a2f38';
+      ctx.fillRect(x, y + h*0.85, w, h*0.15);
+      // Main building
+      ctx.fillStyle = '#30363d';
+      ctx.fillRect(x + w*0.1, y + h*0.4, w*0.8, h*0.45);
+      ctx.strokeStyle = '#484f58';
+      ctx.strokeRect(x + w*0.1, y + h*0.4, w*0.8, h*0.45);
+      // Server racks (visible through windows)
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 6; c++) {
+          ctx.fillStyle = '#0d1117';
+          ctx.fillRect(x + w*(0.15 + c*0.12), y + h*(0.45 + r*0.12), w*0.08, h*0.08);
+          // LEDs
+          ctx.fillStyle = '#3fb950';
+          ctx.fillRect(x + w*(0.16 + c*0.12), y + h*(0.46 + r*0.12), w*0.01, h*0.02);
+          ctx.fillStyle = '#58a6ff';
+          ctx.fillRect(x + w*(0.19 + c*0.12), y + h*(0.46 + r*0.12), w*0.01, h*0.02);
+        }
+      }
+      // Cooling units on roof
+      ctx.fillStyle = '#6e7681';
+      for (let i = 0; i < 3; i++) {
+        ctx.fillRect(x + w*(0.2 + i*0.25), y + h*0.3, w*0.15, h*0.1);
+        ctx.strokeRect(x + w*(0.2 + i*0.25), y + h*0.3, w*0.15, h*0.1);
+      }
+    }
+  },
+  // === STORAGE ===
+  battery: {
+    name: 'Battery Storage', category: 'storage', type: 'storage',
+    capacity: 50, powerRating: 20, efficiency: 0.90, cycles: 5000,
+    capitalCost: 400000, opCost: 5000, lifetime: 15,
+    desc: '50 MWh Li-ion battery. 90% round-trip efficiency.',
+    color: '#d29922',
+    draw: (ctx, x, y, w, h, state) => {
+      ctx.fillStyle = '#2a2f38';
+      ctx.fillRect(x, y + h*0.85, w, h*0.15);
+      // Container
+      ctx.fillStyle = '#d29922';
+      ctx.fillRect(x + w*0.1, y + h*0.4, w*0.8, h*0.45);
+      ctx.strokeStyle = '#6e4a1f';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(x + w*0.1, y + h*0.4, w*0.8, h*0.45);
+      // Cells
+      ctx.fillStyle = '#1a1a1a';
+      for (let i = 0; i < 4; i++) {
+        ctx.fillRect(x + w*(0.15 + i*0.18), y + h*0.45, w*0.14, h*0.35);
+      }
+      // Charge indicator
+      const soc = state.soc || 0.5;
+      ctx.fillStyle = soc > 0.6 ? '#3fb950' : soc > 0.3 ? '#d29922' : '#f85149';
+      ctx.fillRect(x + w*0.15, y + h*(0.8 - soc*0.35), w*0.7, h*soc*0.35);
+      // Terminal
+      ctx.fillStyle = '#c9d1d9';
+      ctx.fillRect(x + w*0.45, y + h*0.35, w*0.1, h*0.05);
+      // Lightning bolt
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 14px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('⚡', x + w*0.5, y + h*0.7);
+    }
+  },
+  pumped_hydro: {
+    name: 'Pumped Hydro', category: 'storage', type: 'storage',
+    capacity: 1000, powerRating: 300, efficiency: 0.78, cycles: 10000,
+    capitalCost: 2000000, opCost: 20000, lifetime: 60,
+    desc: '1000 MWh pumped hydro storage. 78% round-trip efficiency.',
+    color: '#3fb950',
+    draw: (ctx, x, y, w, h, state) => {
+      // Upper reservoir
+      ctx.fillStyle = '#1f6feb';
+      ctx.fillRect(x, y + h*0.05, w*0.4, h*0.2);
+      ctx.strokeStyle = '#0d5bc4';
+      ctx.strokeRect(x, y + h*0.05, w*0.4, h*0.2);
+      // Mountain
+      ctx.fillStyle = '#484f58';
+      ctx.beginPath();
+      ctx.moveTo(x, y + h*0.25);
+      ctx.lineTo(x + w*0.5, y + h*0.5);
+      ctx.lineTo(x + w, y + h*0.85);
+      ctx.lineTo(x, y + h*0.85);
+      ctx.closePath();
+      ctx.fill();
+      // Penstock
+      ctx.strokeStyle = '#8b949e';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(x + w*0.3, y + h*0.25);
+      ctx.lineTo(x + w*0.7, y + h*0.75);
+      ctx.stroke();
+      // Lower reservoir
+      ctx.fillStyle = '#1f6feb';
+      ctx.fillRect(x + w*0.5, y + h*0.7, w*0.5, h*0.15);
+      ctx.strokeStyle = '#0d5bc4';
+      ctx.strokeRect(x + w*0.5, y + h*0.7, w*0.5, h*0.15);
+      // Powerhouse
+      ctx.fillStyle = '#c9d1d9';
+      ctx.fillRect(x + w*0.6, y + h*0.55, w*0.2, h*0.15);
+      ctx.strokeRect(x + w*0.6, y + h*0.55, w*0.2, h*0.15);
+    }
+  },
+  // === GRID ===
+  substation: {
+    name: 'Substation', category: 'grid', type: 'grid',
+    capitalCost: 500000, opCost: 10000, lifetime: 40,
+    desc: 'Distribution substation. Step-down transformer.',
+    color: '#8b949e',
+    draw: (ctx, x, y, w, h, state) => {
+      ctx.fillStyle = '#2a2f38';
+      ctx.fillRect(x, y + h*0.85, w, h*0.15);
+      // Fence
+      ctx.strokeStyle = '#6e7681';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x + w*0.05, y + h*0.4, w*0.9, h*0.45);
+      // Transformers
+      ctx.fillStyle = '#8b949e';
+      ctx.fillRect(x + w*0.15, y + h*0.55, w*0.2, h*0.2);
+      ctx.fillRect(x + w*0.65, y + h*0.55, w*0.2, h*0.2);
+      ctx.strokeRect(x + w*0.15, y + h*0.55, w*0.2, h*0.2);
+      ctx.strokeRect(x + w*0.65, y + h*0.55, w*0.2, h*0.2);
+      // Towers
+      ctx.strokeStyle = '#c9d1d9';
+      ctx.lineWidth = 2;
+      for (let i = 0; i < 2; i++) {
+        const tx = x + w*(0.25 + i*0.5);
+        ctx.beginPath();
+        ctx.moveTo(tx - 5, y + h*0.85);
+        ctx.lineTo(tx, y + h*0.3);
+        ctx.lineTo(tx + 5, y + h*0.85);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(tx - 8, y + h*0.4);
+        ctx.lineTo(tx + 8, y + h*0.4);
+        ctx.stroke();
+      }
+      // Wires
+      ctx.strokeStyle = '#484f58';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(x + w*0.25, y + h*0.4);
+      ctx.lineTo(x + w*0.75, y + h*0.4);
+      ctx.stroke();
+    }
+  },
+  grid_interconnect: {
+    name: 'Grid Interconnect', category: 'grid', type: 'grid',
+    capitalCost: 1000000, opCost: 20000, lifetime: 40,
+    desc: 'Connection to national grid. Can import/export unlimited power.',
+    color: '#58a6ff',
+    draw: (ctx, x, y, w, h, state) => {
+      ctx.fillStyle = '#2a2f38';
+      ctx.fillRect(x, y + h*0.85, w, h*0.15);
+      // Tower
+      ctx.strokeStyle = '#c9d1d9';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(x + w*0.3, y + h*0.85);
+      ctx.lineTo(x + w*0.5, y + h*0.2);
+      ctx.lineTo(x + w*0.7, y + h*0.85);
+      ctx.stroke();
+      // Cross arms
+      for (let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.moveTo(x + w*(0.35 - i*0.02), y + h*(0.3 + i*0.15));
+        ctx.lineTo(x + w*(0.65 + i*0.02), y + h*(0.3 + i*0.15));
+        ctx.stroke();
+      }
+      // Wires going out
+      ctx.strokeStyle = '#58a6ff';
+      ctx.lineWidth = 1.5;
+      for (let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.moveTo(x, y + h*(0.3 + i*0.15));
+        ctx.lineTo(x + w*0.35, y + h*(0.3 + i*0.15));
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x + w*0.65, y + h*(0.3 + i*0.15));
+        ctx.lineTo(x + w, y + h*(0.3 + i*0.15));
+        ctx.stroke();
+      }
+      // Indicator
+      ctx.fillStyle = '#3fb950';
+      ctx.beginPath();
+      ctx.arc(x + w*0.5, y + h*0.75, 3, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+};
+
+// ============================================================
+// STATE
+// ============================================================
+const state = {
+  components: new Map(), // id -> {id, type, x, y, w, h, props, ...}
+  connections: [], // {id, from, to, flow, ...}
+  selectedId: null,
+  tool: 'select', // select, connect, terrain, pan
+  terrain: 'plains', // current terrain brush
+  terrainGrid: {}, // key "x,y" -> terrain type
+  view: { x: 0, y: 0, scale: 1 },
+  sim: {
+    running: true,
+    speed: 60,
+    time: 12 * 3600, // seconds since start of day
+    day: 1,
+    month: 6, // June
+    year: 2026,
+    windSpeed: 5.2,
+    windTarget: 5.2,
+    cloudCover: 0.1,
+    temperature: 22,
+    sunAngle: Math.PI / 2,
+  },
+  metrics: {
+    generation: 0,
+    demand: 0,
+    balance: 0,
+    co2: 0,
+    co2Intensity: 0,
+    renewable: 0,
+    lcoe: 0,
+    storageSOC: 0,
+    storageCap: 0,
+    storageUsed: 0,
+    stability: 100,
+    frequency: 50,
+    budget: 0,
+    genByType: {},
+  },
+  history: [], // for charts
+  nextId: 1,
+  connectFrom: null,
+  mouse: { x: 0, y: 0, canvasX: 0, canvasY: 0, down: false },
+  drag: null,
+  pan: null,
+  terrainPainting: false,
+};
+
+// ============================================================
+// PALETTE SETUP
+// ============================================================
+const PALETTE_SECTIONS = [
+  { id: 'wind', name: '💨 Wind Energy', items: ['wind_onshore', 'wind_offshore'] },
+  { id: 'solar', name: '☀ Solar Energy', items: ['solar_pv', 'solar_csp'] },
+  { id: 'hydro', name: '💧 Hydro Power', items: ['hydro_dam', 'hydro_runofriver'] },
+  { id: 'nuclear', name: '☢ Nuclear', items: ['nuclear_pwr', 'nuclear_smr'] },
+  { id: 'bio', name: '🌱 Biomass & Geo', items: ['biomass', 'geothermal'] },
+  { id: 'conv', name: '🏭 Conventional', items: ['gas_ccgt', 'coal'] },
+  { id: 'cons', name: '🏘 Consumers', items: ['home', 'apartment', 'office', 'factory', 'datacenter'] },
+  { id: 'stor', name: '🔋 Storage', items: ['battery', 'pumped_hydro'] },
+  { id: 'grid', name: '⚡ Grid', items: ['substation', 'grid_interconnect'] },
+];
+
+function buildPalette() {
+  const palette = document.getElementById('palette');
+  palette.innerHTML = '';
+  PALETTE_SECTIONS.forEach(section => {
+    const sec = document.createElement('div');
+    sec.className = 'palette-section';
+    sec.innerHTML = `<div class="palette-header"><span>${section.name}</span><span class="arrow">▼</span></div>`;
+    const items = document.createElement('div');
+    items.className = 'palette-items';
+    section.items.forEach(typeId => {
+      const def = COMPONENTS[typeId];
+      const item = document.createElement('div');
+      item.className = 'palette-item';
+      item.dataset.type = typeId;
+      item.innerHTML = `
+        <div class="palette-icon"><svg viewBox="0 0 100 100" id="icon-${typeId}"></svg></div>
+        <div class="palette-label">${def.name}</div>
+        <div class="palette-sublabel">${def.capacity ? def.capacity + ' MW' : def.peakDemand ? (def.peakDemand*1000).toFixed(0) + ' kW' : ''}</div>
+      `;
+      // Draw preview
+      setTimeout(() => {
+        const svg = document.getElementById('icon-' + typeId);
+        if (svg) {
+          const canvas = document.createElement('canvas');
+          canvas.width = 100; canvas.height = 100;
+          const ctx = canvas.getContext('2d');
+          def.draw(ctx, 5, 5, 90, 90, { time: 0, windSpeed: 5, sunAngle: Math.PI/2, soc: 0.7 });
+          const img = new Image();
+          img.onload = () => { svg.innerHTML = ''; svg.appendChild(img); };
+          img.src = canvas.toDataURL();
+        }
+      }, 10);
+
+      item.addEventListener('mousedown', (e) => startPaletteDrag(e, typeId));
+      item.addEventListener('mouseenter', (e) => showTooltip(e, def.name, def.desc + (def.terrain ? '\nTerrain: ' + def.terrain.join(', ') : '')));
+      item.addEventListener('mouseleave', hideTooltip);
+      items.appendChild(item);
+    });
+    sec.appendChild(items);
+
+    sec.querySelector('.palette-header').addEventListener('click', () => {
+      sec.classList.toggle('collapsed');
+    });
+
+    palette.appendChild(sec);
+  });
+
+  // Terrain section
+  const terrainSec = document.createElement('div');
+  terrainSec.className = 'palette-section';
+  terrainSec.innerHTML = `<div class="palette-header"><span>🗺 Terrain Types</span><span class="arrow">▼</span></div>`;
+  const terrainItems = document.createElement('div');
+  terrainItems.className = 'palette-items';
+  const terrains = [
+    { id: 'plains', name: 'Plains', color: '#4a6b3a' },
+    { id: 'coastal', name: 'Coastal', color: '#1f6feb' },
+    { id: 'desert', name: 'Desert', color: '#d4a373' },
+    { id: 'mountain', name: 'Mountain', color: '#6e7681' },
+    { id: 'river', name: 'River', color: '#388bfd' },
+    { id: 'forest', name: 'Forest', color: '#238636' },
+    { id: 'geothermal', name: 'Geothermal', color: '#f85149' },
+    { id: 'urban', name: 'Urban', color: '#484f58' },
+  ];
+  terrains.forEach(t => {
+    const item = document.createElement('div');
+    item.className = 'palette-item';
+    item.innerHTML = `
+      <div class="palette-icon" style="background:${t.color};border-radius:4px"></div>
+      <div class="palette-label">${t.name}</div>
+    `;
+    item.addEventListener('click', () => {
+      state.terrain = t.id;
+      state.tool = 'terrain';
+      updateToolButtons();
+      notify(`Terrain brush: ${t.name}`, 'info');
+    });
+    terrainItems.appendChild(item);
+  });
+  terrainSec.appendChild(terrainItems);
+  terrainSec.querySelector('.palette-header').addEventListener('click', () => {
+    terrainSec.classList.toggle('collapsed');
+  });
+  palette.appendChild(terrainSec);
+}
+
+// ============================================================
+// DRAG & DROP
+// ============================================================
+let dragGhost = null;
+let dragType = null;
+
+function startPaletteDrag(e, typeId) {
+  e.preventDefault();
+  dragType = typeId;
+  const def = COMPONENTS[typeId];
+  dragGhost = document.createElement('div');
+  dragGhost.className = 'drag-ghost';
+  const canvas = document.createElement('canvas');
+  canvas.width = 120; canvas.height = 120;
+  const ctx = canvas.getContext('2d');
+  def.draw(ctx, 5, 5, 110, 110, { time: 0, windSpeed: 5, sunAngle: Math.PI/2, soc: 0.7 });
+  dragGhost.appendChild(canvas);
+  document.body.appendChild(dragGhost);
+  moveDragGhost(e);
+  document.addEventListener('mousemove', moveDragGhost);
+  document.addEventListener('mouseup', endPaletteDrag);
+}
+
+function moveDragGhost(e) {
+  if (!dragGhost) return;
+  dragGhost.style.left = (e.clientX - 60) + 'px';
+  dragGhost.style.top = (e.clientY - 60) + 'px';
+}
+
+function endPaletteDrag(e) {
+  document.removeEventListener('mousemove', moveDragGhost);
+  document.removeEventListener('mouseup', endPaletteDrag);
+  if (dragGhost) dragGhost.remove();
+  dragGhost = null;
+
+  const wrap = document.getElementById('canvasWrap');
+  const rect = wrap.getBoundingClientRect();
+  if (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom) {
+    const cx = (e.clientX - rect.left - state.view.x) / state.view.scale;
+    const cy = (e.clientY - rect.top - state.view.y) / state.view.scale;
+    addComponent(dragType, cx - 60, cy - 60);
+  }
+  dragType = null;
+}
+
+function addComponent(type, x, y) {
+  const def = COMPONENTS[type];
+  const id = 'c' + state.nextId++;
+  const comp = {
+    id, type, x, y, w: 120, h: 120,
+    name: def.name + ' ' + id.slice(1),
+    enabled: true,
+    output: 0,
+    demand: 0,
+    soc: def.type === 'storage' ? 0.5 : 0,
+    terrain: getTerrainAt(x + 60, y + 60),
+  };
+  state.components.set(id, comp);
+  state.selectedId = id;
+  updatePropertiesPanel();
+  updateCanvasInfo();
+  notify(`Added ${def.name}`, 'success');
+  return id;
+}
+
+function getTerrainAt(x, y) {
+  const gx = Math.floor(x / 40);
+  const gy = Math.floor(y / 40);
+  return state.terrainGrid[gx + ',' + gy] || 'plains';
+}
+
+function setTerrainAt(x, y, type) {
+  const gx = Math.floor(x / 40);
+  const gy = Math.floor(y / 40);
+  state.terrainGrid[gx + ',' + gy] = type;
+}
+
+// ============================================================
+// CANVAS RENDERING
+// ============================================================
+const canvas = document.getElementById('mainCanvas');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+  const wrap = document.getElementById('canvasWrap');
+  canvas.width = wrap.clientWidth;
+  canvas.height = wrap.clientHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+
+function render() {
+  ctx.fillStyle = '#0d1117';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.save();
+  ctx.translate(state.view.x, state.view.y);
+  ctx.scale(state.view.scale, state.view.scale);
+
+  // Terrain
+  renderTerrain();
+
+  // Grid
+  renderGrid();
+
+  // Connections
+  renderConnections();
+
+  // Components
+  state.components.forEach(comp => {
+    const def = COMPONENTS[comp.type];
+    if (!def) return;
+
+    // Selection highlight
+    if (comp.id === state.selectedId) {
+      ctx.strokeStyle = '#58a6ff';
+      ctx.lineWidth = 3;
+      ctx.setLineDash([5, 3]);
+      ctx.strokeRect(comp.x - 5, comp.y - 5, comp.w + 10, comp.h + 10);
+      ctx.setLineDash([]);
+    }
+
+    // Shadow
+    ctx.fillStyle = 'rgba(0,0,0,0.3)';
+    ctx.fillRect(comp.x + 3, comp.y + 3, comp.w, comp.h);
+
+    // Component
+    def.draw(ctx, comp.x, comp.y, comp.w, comp.h, {
+      time: state.sim.time,
+      windSpeed: state.sim.windSpeed,
+      sunAngle: state.sim.sunAngle,
+      soc: comp.soc,
+      output: comp.output,
+    });
+
+    // Output indicator
+    if (def.type === 'generator' && comp.output > 0) {
+      ctx.fillStyle = '#3fb950';
+      ctx.beginPath();
+      ctx.arc(comp.x + comp.w - 8, comp.y + 8, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 8px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('⚡', comp.x + comp.w - 8, comp.y + 11);
+    }
+
+    // Name label
+    ctx.fillStyle = 'rgba(13,17,23,0.85)';
+    ctx.fillRect(comp.x, comp.y + comp.h + 2, comp.w, 14);
+    ctx.fillStyle = '#e6edf3';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(comp.name, comp.x + comp.w/2, comp.y + comp.h + 12);
+
+    // Output/demand value
+    if (def.type === 'generator' && comp.output > 0) {
+      ctx.fillStyle = 'rgba(63,185,80,0.9)';
+      ctx.fillRect(comp.x, comp.y - 14, comp.w, 14);
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 10px Consolas, monospace';
+      ctx.fillText(comp.output.toFixed(1) + ' MW', comp.x + comp.w/2, comp.y - 4);
+    } else if (def.type === 'consumer' && comp.demand > 0) {
+      ctx.fillStyle = 'rgba(88,166,255,0.9)';
+      ctx.fillRect(comp.x, comp.y - 14, comp.w, 14);
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 10px Consolas, monospace';
+      ctx.fillText((comp.demand * 1000).toFixed(0) + ' kW', comp.x + comp.w/2, comp.y - 4);
+    }
+  });
+
+  // Connection being drawn
+  if (state.tool === 'connect' && state.connectFrom && state.mouse.down) {
+    const from = state.components.get(state.connectFrom);
+    if (from) {
+      ctx.strokeStyle = '#58a6ff';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([5, 5]);
+      ctx.beginPath();
+      ctx.moveTo(from.x + from.w/2, from.y + from.h/2);
+      ctx.lineTo(state.mouse.canvasX, state.mouse.canvasY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
+
+  ctx.restore();
+
+  // Day/night overlay
+  const nightFactor = Math.max(0, -Math.sin(state.sim.sunAngle));
+  if (nightFactor > 0) {
+    ctx.fillStyle = `rgba(0,0,30,${nightFactor * 0.3})`;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+}
+
+function renderTerrain() {
+  const cellSize = 40;
+  const viewLeft = -state.view.x / state.view.scale;
+  const viewTop = -state.view.y / state.view.scale;
+  const viewRight = viewLeft + canvas.width / state.view.scale;
+  const viewBottom = viewTop + canvas.height / state.view.scale;
+
+  const startX = Math.floor(viewLeft / cellSize) - 1;
+  const endX = Math.ceil(viewRight / cellSize) + 1;
+  const startY = Math.floor(viewTop / cellSize) - 1;
+  const endY = Math.ceil(viewBottom / cellSize) + 1;
+
+  const terrainColors = {
+    plains: '#3a5a2a',
+    coastal: '#1f5fb8',
+    desert: '#c49460',
+    mountain: '#4a5568',
+    river: '#2563eb',
+    forest: '#1e6b31',
+    geothermal: '#a53030',
+    urban: '#2d3748',
+  };
+
+  for (let gx = startX; gx <= endX; gx++) {
+    for (let gy = startY; gy <= endY; gy++) {
+      const key = gx + ',' + gy;
+      const terrain = state.terrainGrid[key] || 'plains';
+      ctx.fillStyle = terrainColors[terrain] || terrainColors.plains;
+      ctx.fillRect(gx * cellSize, gy * cellSize, cellSize, cellSize);
+
+      // Texture
+      if (terrain === 'plains') {
+        ctx.fillStyle = 'rgba(255,255,255,0.03)';
+        for (let i = 0; i < 3; i++) {
+          const px = gx * cellSize + ((gx * 7 + gy * 13 + i * 17) % cellSize);
+          const py = gy * cellSize + ((gx * 11 + gy * 3 + i * 23) % cellSize);
+          ctx.fillRect(px, py, 1, 1);
+        }
+      } else if (terrain === 'desert') {
+        ctx.fillStyle = 'rgba(0,0,0,0.1)';
+        for (let i = 0; i < 2; i++) {
+          const px = gx * cellSize + ((gx * 5 + gy * 9 + i * 11) % cellSize);
+          const py = gy * cellSize + ((gx * 7 + gy * 13 + i * 19) % cellSize);
+          ctx.fillRect(px, py, 2, 1);
+        }
+      } else if (terrain === 'forest') {
+        ctx.fillStyle = 'rgba(0,0,0,0.15)';
+        for (let i = 0; i < 2; i++) {
+          const px = gx * cellSize + ((gx * 9 + gy * 5 + i * 13) % cellSize);
+          const py = gy * cellSize + ((gx * 3 + gy * 7 + i * 17) % cellSize);
+          ctx.beginPath();
+          ctx.arc(px, py, 2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else if (terrain === 'coastal' || terrain === 'river') {
+        ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+        ctx.lineWidth = 0.5;
+        const t = state.sim.time * 0.5;
+        ctx.beginPath();
+        ctx.moveTo(gx * cellSize, gy * cellSize + 20 + Math.sin(t + gx) * 2);
+        ctx.lineTo(gx * cellSize + cellSize, gy * cellSize + 20 + Math.sin(t + gx + 1) * 2);
+        ctx.stroke();
+      } else if (terrain === 'mountain') {
+        ctx.fillStyle = 'rgba(255,255,255,0.1)';
+        ctx.beginPath();
+        ctx.moveTo(gx * cellSize + 10, gy * cellSize + 30);
+        ctx.lineTo(gx * cellSize + 20, gy * cellSize + 10);
+        ctx.lineTo(gx * cellSize + 30, gy * cellSize + 30);
+        ctx.closePath();
+        ctx.fill();
+      }
+    }
+  }
+}
+
+function renderGrid() {
+  ctx.strokeStyle = 'rgba(48,54,61,0.3)';
+  ctx.lineWidth = 1;
+  const cellSize = 40;
+  const viewLeft = -state.view.x / state.view.scale;
+  const viewTop = -state.view.y / state.view.scale;
+  const viewRight = viewLeft + canvas.width / state.view.scale;
+  const viewBottom = viewTop + canvas.height / state.view.scale;
+
+  const startX = Math.floor(viewLeft / cellSize) * cellSize;
+  const startY = Math.floor(viewTop / cellSize) * cellSize;
+
+  for (let x = startX; x <= viewRight; x += cellSize) {
+    ctx.beginPath();
+    ctx.moveTo(x, viewTop);
+    ctx.lineTo(x, viewBottom);
+    ctx.stroke();
+  }
+  for (let y = startY; y <= viewBottom; y += cellSize) {
+    ctx.beginPath();
+    ctx.moveTo(viewLeft, y);
+    ctx.lineTo(viewRight, y);
+    ctx.stroke();
+  }
+}
+
+function renderConnections() {
+  state.connections.forEach(conn => {
+    const from = state.components.get(conn.from);
+    const to = state.components.get(conn.to);
+    if (!from || !to) return;
+
+    const x1 = from.x + from.w/2;
+    const y1 = from.y + from.h/2;
+    const x2 = to.x + to.w/2;
+    const y2 = to.y + to.h/2;
+
+    // Color based on type
+    const fromDef = COMPONENTS[from.type];
+    let color = '#58a6ff';
+    if (fromDef.category === 'wind' || fromDef.category === 'solar' || fromDef.category === 'hydro') color = '#3fb950';
+    else if (fromDef.category === 'nuclear') color = '#bc8cff';
+    else if (fromDef.category === 'conventional') color = '#f85149';
+    else if (fromDef.category === 'biomass' || fromDef.category === 'geothermal') color = '#a5d6a7';
+
+    // Bezier curve
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const cx1 = x1 + dx * 0.5;
+    const cy1 = y1;
+    const cx2 = x2 - dx * 0.5;
+    const cy2 = y2;
+
+    // Glow
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 4;
+    ctx.globalAlpha = 0.2;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.bezierCurveTo(cx1, cy1, cx2, cy2, x2, y2);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+
+    // Main line
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.bezierCurveTo(cx1, cy1, cx2, cy2, x2, y2);
+    ctx.stroke();
+
+    // Animated flow particles
+    if (conn.flow > 0) {
+      const t = state.sim.time * 0.5;
+      const numParticles = Math.min(5, Math.ceil(conn.flow / 50));
+      for (let i = 0; i < numParticles; i++) {
+        const p = ((t * 0.1 + i / numParticles) % 1);
+        const px = bezierPoint(p, x1, cx1, cx2, x2);
+        const py = bezierPoint(p, y1, cy1, cy2, y2);
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(px, py, 3, 0, Math.PI * 2);
+        ctx.fill();
+        // Glow
+        ctx.fillStyle = color;
+        ctx.globalAlpha = 0.3;
+        ctx.beginPath();
+        ctx.arc(px, py, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+    }
+  });
+}
+
+function bezierPoint(t, p0, p1, p2, p3) {
+  const u = 1 - t;
+  return u*u*u*p0 + 3*u*u*t*p1 + 3*u*t*t*p2 + t*t*t*p3;
+}
+
+// ============================================================
+// INTERACTION
+// ============================================================
+canvas.addEventListener('mousedown', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  state.mouse.x = e.clientX - rect.left;
+  state.mouse.y = e.clientY - rect.top;
+  state.mouse.canvasX = (state.mouse.x - state.view.x) / state.view.scale;
+  state.mouse.canvasY = (state.mouse.y - state.view.y) / state.view.scale;
+  state.mouse.down = true;
+
+  if (state.tool === 'pan' || e.button === 1 || (e.button === 0 && e.altKey)) {
+    state.pan = { startX: e.clientX, startY: e.clientY, vx: state.view.x, vy: state.view.y };
+    canvas.style.cursor = 'grabbing';
+    return;
+  }
+
+  if (state.tool === 'terrain') {
+    state.terrainPainting = true;
+    setTerrainAt(state.mouse.canvasX, state.mouse.canvasY, state.terrain);
+    return;
+  }
+
+  if (state.tool === 'connect') {
+    const comp = getComponentAt(state.mouse.canvasX, state.mouse.canvasY);
+    if (comp) {
+      if (!state.connectFrom) {
+        state.connectFrom = comp.id;
+        notify('Click another component to connect', 'info');
+      } else if (state.connectFrom !== comp.id) {
+        // Create connection
+        const conn = {
+          id: 'conn' + state.nextId++,
+          from: state.connectFrom,
+          to: comp.id,
+          flow: 0,
+        };
+        state.connections.push(conn);
+        state.connectFrom = null;
+        notify('Connection established', 'success');
+      }
+    } else {
+      state.connectFrom = null;
+    }
+    return;
+  }
+
+  // Select tool
+  const comp = getComponentAt(state.mouse.canvasX, state.mouse.canvasY);
+  if (comp) {
+    state.selectedId = comp.id;
+    state.drag = {
+      comp,
+      startX: state.mouse.canvasX,
+      startY: state.mouse.canvasY,
+      origX: comp.x,
+      origY: comp.y,
+    };
+    updatePropertiesPanel();
+  } else {
+    state.selectedId = null;
+    updatePropertiesPanel();
+  }
+});
+
+canvas.addEventListener('mousemove', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  state.mouse.x = e.clientX - rect.left;
+  state.mouse.y = e.clientY - rect.top;
+  state.mouse.canvasX = (state.mouse.x - state.view.x) / state.view.scale;
+  state.mouse.canvasY = (state.mouse.y - state.view.y) / state.view.scale;
+
+  if (state.pan) {
+    state.view.x = state.pan.vx + (e.clientX - state.pan.startX);
+    state.view.y = state.pan.vy + (e.clientY - state.pan.startY);
+    return;
+  }
+
+  if (state.terrainPainting) {
+    setTerrainAt(state.mouse.canvasX, state.mouse.canvasY, state.terrain);
+    return;
+  }
+
+  if (state.drag) {
+    const dx = state.mouse.canvasX - state.drag.startX;
+    const dy = state.mouse.canvasY - state.drag.startY;
+    state.drag.comp.x = state.drag.origX + dx;
+    state.drag.comp.y = state.drag.origY + dy;
+    // Snap to grid
+    if (!e.shiftKey) {
+      state.drag.comp.x = Math.round(state.drag.comp.x / 20) * 20;
+      state.drag.comp.y = Math.round(state.drag.comp.y / 20) * 20;
+    }
+  }
+});
+
+canvas.addEventListener('mouseup', (e) => {
+  state.mouse.down = false;
+  state.pan = null;
+  state.drag = null;
+  state.terrainPainting = false;
+  canvas.style.cursor = state.tool === 'pan' ? 'grab' : 'default';
+});
+
+canvas.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  const delta = -e.deltaY * 0.001;
+  const newScale = Math.max(0.3, Math.min(3, state.view.scale * (1 + delta)));
+  state.view.x = mx - (mx - state.view.x) * (newScale / state.view.scale);
+  state.view.y = my - (my - state.view.y) * (newScale / state.view.scale);
+  state.view.scale = newScale;
+  document.getElementById('infoZoom').textContent = Math.round(state.view.scale * 100) + '%';
+}, { passive: false });
+
+canvas.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const cx = (e.clientX - rect.left - state.view.x) / state.view.scale;
+  const cy = (e.clientY - rect.top - state.view.y) / state.view.scale;
+  const comp = getComponentAt(cx, cy);
+  showContextMenu(e.clientX, e.clientY, comp);
+});
+
+canvas.addEventListener('dblclick', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const cx = (e.clientX - rect.left - state.view.x) / state.view.scale;
+  const cy = (e.clientY - rect.top - state.view.y) / state.view.scale;
+  const comp = getComponentAt(cx, cy);
+  if (comp) {
+    state.selectedId = comp.id;
+    updatePropertiesPanel();
+  }
+});
+
+function getComponentAt(x, y) {
+  let found = null;
+  state.components.forEach(comp => {
+    if (x >= comp.x && x <= comp.x + comp.w && y >= comp.y && y <= comp.y + comp.h) {
+      found = comp;
+    }
+  });
+  return found;
+}
+
+// ============================================================
+// CONTEXT MENU
+// ============================================================
+function showContextMenu(x, y, comp) {
+  const menu = document.getElementById('ctxMenu');
+  menu.innerHTML = '';
+  if (comp) {
+    const def = COMPONENTS[comp.type];
+    const items = [
+      { label: `📋 ${comp.name}`, action: null, disabled: true },
+      { type: 'sep' },
+      { label: '✏️ Rename', action: () => {
+        const name = prompt('New name:', comp.name);
+        if (name) { comp.name = name; updatePropertiesPanel(); }
+      }},
+      { label: '🔄 Rotate', action: () => notify('Rotation not yet implemented', 'info') },
+      { label: '⚙️ Properties', action: () => { state.selectedId = comp.id; updatePropertiesPanel(); } },
+      { type: 'sep' },
+      { label: '📋 Duplicate', action: () => addComponent(comp.type, comp.x + 140, comp.y) },
+      { label: '🗑️ Delete', action: () => deleteComponent(comp.id) },
+    ];
+    items.forEach(item => {
+      if (item.type === 'sep') {
+        const sep = document.createElement('div');
+        sep.className = 'ctx-sep';
+        menu.appendChild(sep);
+      } else {
+        const el = document.createElement('div');
+        el.className = 'ctx-item';
+        el.textContent = item.label;
+        if (item.disabled) el.style.opacity = '0.5';
+        else el.addEventListener('click', () => { item.action(); menu.classList.remove('show'); });
+        menu.appendChild(el);
+      }
+    });
+  } else {
+    const items = [
+      { label: '🔄 Reset View', action: () => { state.view = { x: 0, y: 0, scale: 1 }; document.getElementById('infoZoom').textContent = '100%'; } },
+      { label: '📍 Frame All', action: frameAll },
+      { type: 'sep' },
+      { label: '🗑️ Clear All', action: clearAll },
+    ];
+    items.forEach(item => {
+      if (item.type === 'sep') {
+        const sep = document.createElement('div');
+        sep.className = 'ctx-sep';
+        menu.appendChild(sep);
+      } else {
+        const el = document.createElement('div');
+        el.className = 'ctx-item';
+        el.textContent = item.label;
+        el.addEventListener('click', () => { item.action(); menu.classList.remove('show'); });
+        menu.appendChild(el);
+      }
+    });
+  }
+  menu.style.left = x + 'px';
+  menu.style.top = y + 'px';
+  menu.classList.add('show');
+}
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.ctx-menu')) {
+    document.getElementById('ctxMenu').classList.remove('show');
+  }
+});
+
+function deleteComponent(id) {
+  state.components.delete(id);
+  state.connections = state.connections.filter(c => c.from !== id && c.to !== id);
+  if (state.selectedId === id) {
+    state.selectedId = null;
+    updatePropertiesPanel();
+  }
+  updateCanvasInfo();
+  notify('Component deleted', 'info');
+}
+
+function clearAll() {
+  if (!confirm('Clear all components and connections?')) return;
+  state.components.clear();
+  state.connections = [];
+  state.selectedId = null;
+  updatePropertiesPanel();
+  updateCanvasInfo();
+  notify('Canvas cleared', 'info');
+}
+
+function frameAll() {
+  if (state.components.size === 0) return;
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  state.components.forEach(c => {
+    minX = Math.min(minX, c.x);
+    minY = Math.min(minY, c.y);
+    maxX = Math.max(maxX, c.x + c.w);
+    maxY = Math.max(maxY, c.y + c.h);
+  });
+  const w = maxX - minX + 200;
+  const h = maxY - minY + 200;
+  const scaleX = canvas.width / w;
+  const scaleY = canvas.height / h;
+  state.view.scale = Math.min(scaleX, scaleY, 2);
+  state.view.x = -minX * state.view.scale + 100;
+  state.view.y = -minY * state.view.scale + 100;
+  document.getElementById('infoZoom').textContent = Math.round(state.view.scale * 100) + '%';
+}
+
+// ============================================================
+// TOOLS
+// ============================================================
+function updateToolButtons() {
+  document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+  const id = 'tool' + state.tool.charAt(0).toUpperCase() + state.tool.slice(1);
+  const btn = document.getElementById(id);
+  if (btn) btn.classList.add('active');
+}
+
+document.getElementById('toolSelect').addEventListener('click', () => { state.tool = 'select'; updateToolButtons(); });
+document.getElementById('toolConnect').addEventListener('click', () => { state.tool = 'connect'; state.connectFrom = null; updateToolButtons(); });
+document.getElementById('toolTerrain').addEventListener('click', () => { state.tool = 'terrain'; updateToolButtons(); });
+document.getElementById('toolPan').addEventListener('click', () => { state.tool = 'pan'; updateToolButtons(); });
+document.getElementById('toolZoomIn').addEventListener('click', () => { state.view.scale = Math.min(3, state.view.scale * 1.2); document.getElementById('infoZoom').textContent = Math.round(state.view.scale * 100) + '%'; });
+document.getElementById('toolZoomOut').addEventListener('click', () => { state.view.scale = Math.max(0.3, state.view.scale / 1.2); document.getElementById('infoZoom').textContent = Math.round(state.view.scale * 100) + '%'; });
+document.getElementById('toolReset').addEventListener('click', () => { state.view = { x: 0, y: 0, scale: 1 }; document.getElementById('infoZoom').textContent = '100%'; });
+
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'v') { state.tool = 'select'; updateToolButtons(); }
+  if (e.key === 'c') { state.tool = 'connect'; state.connectFrom = null; updateToolButtons(); }
+  if (e.key === 't') { state.tool = 'terrain'; updateToolButtons(); }
+  if (e.key === ' ') { e.preventDefault(); state.tool = 'pan'; updateToolButtons(); }
+  if (e.key === 'Delete' || e.key === 'Backspace') {
+    if (state.selectedId) {
+      deleteComponent(state.selectedId);
+    }
+  }
+  if (e.key === 'Escape') {
+    state.selectedId = null;
+    state.connectFrom = null;
+    updatePropertiesPanel();
+  }
+});
+
+document.addEventListener('keyup', (e) => {
+  if (e.key === ' ' && state.tool === 'pan') {
+    state.tool = 'select';
+    updateToolButtons();
+  }
+});
+
+// ============================================================
+// PROPERTIES PANEL
+// ============================================================
+function updatePropertiesPanel() {
+  const panel = document.getElementById('propsPanel');
+  if (!state.selectedId) {
+    panel.innerHTML = '<div class="props-empty">Select a component to view properties</div>';
+    return;
+  }
+  const comp = state.components.get(state.selectedId);
+  if (!comp) {
+    panel.innerHTML = '<div class="props-empty">Select a component to view properties</div>';
+    return;
+  }
+  const def = COMPONENTS[comp.type];
+
+  let html = `
+    <div class="props-header">
+      <div class="props-icon" style="background:${def.color}20;border-color:${def.color}"></div>
+      <div>
+        <div class="props-name">${comp.name}</div>
+        <div class="props-type">${def.category} · ${comp.terrain}</div>
+      </div>
+    </div>
+    <div style="font-size:10px;color:#8b949e;line-height:1.5;margin-bottom:10px;padding:6px;background:#0d1117;border-radius:4px;border-left:2px solid ${def.color}">
+      ${def.desc}
+    </div>
+  `;
+
+  if (def.type === 'generator') {
+    html += `
+      <div class="props-row"><span class="label">Rated Capacity</span><span class="value">${def.capacity} MW</span></div>
+      <div class="props-row"><span class="label">Current Output</span><span class="value" style="color:#3fb950">${comp.output.toFixed(2)} MW</span></div>
+      <div class="props-row"><span class="label">Capacity Factor</span><span class="value">${(def.capacityFactor * 100).toFixed(0)}%</span></div>
+      <div class="props-row"><span class="label">Efficiency</span><span class="value">${(def.efficiency * 100).toFixed(0)}%</span></div>
+      <div class="props-row"><span class="label">CO₂ Intensity</span><span class="value">${def.co2} g/kWh</span></div>
+      <div class="props-row"><span class="label">Capital Cost</span><span class="value">$${(def.capitalCost/1000000).toFixed(2)}M</span></div>
+      <div class="props-row"><span class="label">Op. Cost</span><span class="value">$${(def.opCost/1000).toFixed(0)}k/yr</span></div>
+      <div class="props-row"><span class="label">Lifetime</span><span class="value">${def.lifetime} years</span></div>
+      <div class="props-row"><span class="label">Terrain</span><span class="value">${def.terrain.join(', ')}</span></div>
+    `;
+  } else if (def.type === 'consumer') {
+    html += `
+      <div class="props-row"><span class="label">Peak Demand</span><span class="value">${(def.peakDemand * 1000).toFixed(0)} kW</span></div>
+      <div class="props-row"><span class="label">Current Demand</span><span class="value" style="color:#58a6ff">${(comp.demand * 1000).toFixed(1)} kW</span></div>
+      <div class="props-row"><span class="label">Avg Demand</span><span class="value">${(def.avgDemand * 1000).toFixed(0)} kW</span></div>
+      <div class="props-row"><span class="label">Criticality</span><span class="value">${'★'.repeat(def.criticality)}${'☆'.repeat(5-def.criticality)}</span></div>
+      <div class="props-row"><span class="label">Annual Use</span><span class="value">${(def.avgDemand * 8760).toFixed(0)} MWh</span></div>
+    `;
+  } else if (def.type === 'storage') {
+    html += `
+      <div class="props-row"><span class="label">Capacity</span><span class="value">${def.capacity} MWh</span></div>
+      <div class="props-row"><span class="label">Power Rating</span><span class="value">${def.powerRating} MW</span></div>
+      <div class="props-row"><span class="label">State of Charge</span><span class="value" style="color:${comp.soc > 0.6 ? '#3fb950' : comp.soc > 0.3 ? '#d29922' : '#f85149'}">${(comp.soc * 100).toFixed(0)}%</span></div>
+      <div class="props-row"><span class="label">Stored Energy</span><span class="value">${(comp.soc * def.capacity).toFixed(1)} MWh</span></div>
+      <div class="props-row"><span class="label">Efficiency</span><span class="value">${(def.efficiency * 100).toFixed(0)}%</span></div>
+      <div class="props-row"><span class="label">Cycles</span><span class="value">${def.cycles}</span></div>
+      <div class="props-row"><span class="label">Capital Cost</span><span class="value">$${(def.capitalCost/1000000).toFixed(2)}M</span></div>
+    `;
+    html += `
+      <div style="margin-top:10px">
+        <div style="font-size:10px;color:#8b949e;margin-bottom:4px">Set SOC: ${(comp.soc * 100).toFixed(0)}%</div>
+        <input type="range" class="slider" min="0" max="100" value="${comp.soc * 100}" id="socSlider">
+      </div>
+    `;
+  } else if (def.type === 'grid') {
+    html += `
+      <div class="props-row"><span class="label">Type</span><span class="value">${def.name}</span></div>
+      <div class="props-row"><span class="label">Capital Cost</span><span class="value">$${(def.capitalCost/1000000).toFixed(2)}M</span></div>
+      <div class="props-row"><span class="label">Op. Cost</span><span class="value">$${(def.opCost/1000).toFixed(0)}k/yr</span></div>
+      <div class="props-row"><span class="label">Lifetime</span><span class="value">${def.lifetime} years</span></div>
+    `;
+  }
+
+  html += `
+    <div class="props-actions">
+      <button class="btn" onclick="duplicateSelected()">📋 Duplicate</button>
+      <button class="btn danger" onclick="deleteSelected()">🗑 Delete</button>
+    </div>
+  `;
+
+  panel.innerHTML = html;
+
+  const socSlider = document.getElementById('socSlider');
+  if (socSlider) {
+    socSlider.addEventListener('input', (e) => {
+      comp.soc = parseFloat(e.target.value) / 100;
+      updatePropertiesPanel();
+    });
+  }
+}
+
+window.duplicateSelected = function() {
+  if (!state.selectedId) return;
+  const comp = state.components.get(state.selectedId);
+  if (!comp) return;
+  const newId = addComponent(comp.type, comp.x + 140, comp.y);
+  state.selectedId = newId;
+  updatePropertiesPanel();
+};
+
+window.deleteSelected = function() {
+  if (!state.selectedId) return;
+  deleteComponent(state.selectedId);
+};
+
+// ============================================================
+// SIMULATION ENGINE
+// ============================================================
+function updateSimulation(dt) {
+  if (!state.sim.running) return;
+
+  const simDt = dt * state.sim.speed;
+  state.sim.time += simDt;
+
+  // Day rollover
+  while (state.sim.time >= 86400) {
+    state.sim.time -= 86400;
+    state.sim.day++;
+    if (state.sim.day > 30) {
+      state.sim.day = 1;
+      state.sim.month++;
+      if (state.sim.month > 12) {
+        state.sim.month = 1;
+        state.sim.year++;
+      }
+    }
+  }
+
+  // Sun angle (simplified)
+  const hourFrac = state.sim.time / 86400;
+  state.sim.sunAngle = hourFrac * Math.PI * 2 - Math.PI / 2;
+
+  // Weather updates (slowly)
+  if (Math.random() < 0.01) {
+    state.sim.windTarget = 3 + Math.random() * 10;
+  }
+  state.sim.windSpeed += (state.sim.windTarget - state.sim.windSpeed) * 0.01;
+
+  if (Math.random() < 0.005) {
+    state.sim.cloudCover = Math.max(0, Math.min(1, state.sim.cloudCover + (Math.random() - 0.5) * 0.3));
+  }
+
+  // Update each component
+  let totalGen = 0;
+  let totalDem = 0;
+  let totalCO2 = 0;
+  let totalCO2Gen = 0;
+  let renewableGen = 0;
+  const genByType = {};
+
+  state.components.forEach(comp => {
+    const def = COMPONENTS[comp.type];
+    if (!def) return;
+
+    if (def.type === 'generator') {
+      let output = 0;
+
+      if (def.category === 'wind') {
+        // Wind power curve
+        const ws = state.sim.windSpeed;
+        if (ws < 3) output = 0;
+        else if (ws < 12) output = def.capacity * Math.pow((ws - 3) / 9, 2);
+        else if (ws < 25) output = def.capacity;
+        else output = 0; // cut-out
+        // Offshore bonus
+        if (comp.type === 'wind_offshore' && comp.terrain === 'coastal') {
+          output *= 1.2;
+        }
+      } else if (def.category === 'solar') {
+        // Solar follows sun
+        const sunFactor = Math.max(0, Math.sin(state.sim.sunAngle));
+        const cloudFactor = 1 - state.sim.cloudCover * 0.7;
+        output = def.capacity * sunFactor * cloudFactor;
+        if (comp.terrain === 'desert') output *= 1.3;
+        // CSP has storage
+        if (comp.type === 'solar_csp') {
+          // Can produce for 4 hours after sunset
+          const afterSunset = Math.max(0, -Math.sin(state.sim.sunAngle));
+          if (afterSunset > 0 && afterSunset < 0.3) {
+            output = Math.max(output, def.capacity * 0.3 * (1 - afterSunset/0.3));
+          }
+        }
+      } else if (def.category === 'hydro') {
+        // Hydro relatively constant with seasonal variation
+        const seasonal = 0.8 + 0.2 * Math.sin((state.sim.month - 4) / 12 * Math.PI * 2);
+        output = def.capacity * 0.7 * seasonal;
+      } else if (def.category === 'nuclear') {
+        output = def.capacity * def.capacityFactor;
+      } else if (def.category === 'biomass' || def.category === 'geothermal') {
+        output = def.capacity * def.capacityFactor;
+      } else if (def.category === 'conventional') {
+        output = def.capacity * def.capacityFactor;
+      }
+
+      comp.output = output;
+      totalGen += output;
+      totalCO2Gen += output * def.co2 / 1000; // t/h
+      if (['wind', 'solar', 'hydro', 'geothermal'].includes(def.category)) {
+        renewableGen += output;
+      }
+      genByType[def.category] = (genByType[def.category] || 0) + output;
+    } else if (def.type === 'consumer') {
+      // Demand profile based on time of day
+      const hour = state.sim.time / 3600;
+      let profile = 1;
+      if (comp.type === 'home') {
+        // Morning and evening peaks
+        if (hour >= 6 && hour < 9) profile = 0.8;
+        else if (hour >= 17 && hour < 22) profile = 1.0;
+        else if (hour >= 22 || hour < 6) profile = 0.3;
+        else profile = 0.5;
+      } else if (comp.type === 'apartment') {
+        if (hour >= 7 && hour < 9) profile = 0.9;
+        else if (hour >= 18 && hour < 22) profile = 1.0;
+        else if (hour >= 23 || hour < 6) profile = 0.3;
+        else profile = 0.5;
+      } else if (comp.type === 'office') {
+        if (hour >= 9 && hour < 17) profile = 1.0;
+        else if (hour >= 7 && hour < 9) profile = 0.5;
+        else if (hour >= 17 && hour < 19) profile = 0.4;
+        else profile = 0.1;
+      } else if (comp.type === 'factory') {
+        profile = 0.9 + Math.sin(hour / 24 * Math.PI * 2) * 0.1;
+      } else if (comp.type === 'datacenter') {
+        profile = 1.0; // constant
+      }
+      // Temperature effect
+      if (state.sim.temperature > 30 || state.sim.temperature < 5) {
+        profile *= 1.2; // HVAC load
+      }
+      comp.demand = def.peakDemand * profile;
+      totalDem += comp.demand;
+    } else if (def.type === 'storage') {
+      // Will be charged/discharged based on balance
+    }
+  });
+
+  // Grid balancing
+  let balance = totalGen - totalDem;
+
+  // Charge/discharge storage
+  state.components.forEach(comp => {
+    const def = COMPONENTS[comp.type];
+    if (def && def.type === 'storage') {
+      if (balance > 0) {
+        // Charge
+        const chargePower = Math.min(balance, def.powerRating, (1 - comp.soc) * def.capacity);
+        comp.soc += (chargePower * simDt / 3600 * def.efficiency) / def.capacity;
+        balance -= chargePower;
+      } else if (balance < 0) {
+        // Discharge
+        const dischargePower = Math.min(-balance, def.powerRating, comp.soc * def.capacity);
+        comp.soc -= (dischargePower * simDt / 3600) / def.capacity;
+        balance += dischargePower;
+      }
+      comp.soc = Math.max(0, Math.min(1, comp.soc));
+    }
+  });
+
+  // Update connections flow
+  state.connections.forEach(conn => {
+    const from = state.components.get(conn.from);
+    const to = state.components.get(conn.to);
+    if (from && to) {
+      const fromDef = COMPONENTS[from.type];
+      if (fromDef.type === 'generator') {
+        conn.flow = from.output;
+      } else if (fromDef.type === 'consumer') {
+        conn.flow = to.demand;
+      } else {
+        conn.flow = 10;
+      }
+    }
+  });
+
+  // Metrics
+  state.metrics.generation = totalGen;
+  state.metrics.demand = totalDem;
+  state.metrics.balance = balance;
+  state.metrics.co2 = totalCO2Gen;
+  state.metrics.co2Intensity = totalGen > 0 ? (totalCO2Gen * 1000000 / (totalGen * 1000)) : 0; // g/kWh
+  state.metrics.renewable = totalGen > 0 ? (renewableGen / totalGen * 100) : 0;
+  state.metrics.genByType = genByType;
+
+  // Storage metrics
+  let storUsed = 0, storCap = 0;
+  state.components.forEach(comp => {
+    const def = COMPONENTS[comp.type];
+    if (def && def.type === 'storage') {
+      storUsed += comp.soc * def.capacity;
+      storCap += def.capacity;
+    }
+  });
+  state.metrics.storageUsed = storUsed;
+  state.metrics.storageCap = storCap;
+  state.metrics.storageSOC = storCap > 0 ? (storUsed / storCap * 100) : 0;
+
+  // Stability
+  const balancePct = totalDem > 0 ? Math.abs(balance) / totalDem : 0;
+  state.metrics.stability = Math.max(0, Math.min(100, 100 - balancePct * 100));
+  state.metrics.frequency = 50 + balance * 0.001;
+
+  // LCOE calculation
+  let totalCapex = 0, totalOpex = 0, totalLifetimeGen = 0;
+  state.components.forEach(comp => {
+    const def = COMPONENTS[comp.type];
+    if (!def) return;
+    totalCapex += def.capitalCost || 0;
+    totalOpex += (def.opCost || 0) + (def.fuelCost || 0);
+    if (def.capacity) totalLifetimeGen += def.capacity * 8760 * (def.capacityFactor || 0.5) * (def.lifetime || 25);
+    else if (def.peakDemand) totalLifetimeGen += def.peakDemand * 8760 * 0.6 * 30;
+  });
+  state.metrics.lcoe = totalLifetimeGen > 0 ? (totalCapex / totalLifetimeGen + totalOpex / (totalLifetimeGen / 25)) * 1000 : 0; // $/MWh
+  state.metrics.budget = totalCapex;
+
+  // Record history (every 10 sim seconds)
+  if (!state.lastHistoryRecord || state.sim.time - state.lastHistoryRecord > 10) {
+    state.history.push({
+      time: state.sim.time,
+      day: state.sim.day,
+      gen: totalGen,
+      dem: totalDem,
+      co2: totalCO2Gen,
+      renewable: state.metrics.renewable,
+      byType: { ...genByType },
+    });
+    if (state.history.length > 200) state.history.shift();
+    state.lastHistoryRecord = state.sim.time;
+  }
+}
+
+// ============================================================
+// UI UPDATES
+// ============================================================
+function updateUI() {
+  // KPIs
+  document.getElementById('kpiGen').textContent = state.metrics.generation.toFixed(1) + ' MW';
+  let genCount = 0;
+  state.components.forEach(c => { if (COMPONENTS[c.type]?.type === 'generator') genCount++; });
+  document.getElementById('kpiGenSub').textContent = genCount + ' plants';
+
+  document.getElementById('kpiDem').textContent = (state.metrics.demand * 1000).toFixed(0) + ' kW';
+  let demCount = 0;
+  state.components.forEach(c => { if (COMPONENTS[c.type]?.type === 'consumer') demCount++; });
+  document.getElementById('kpiDemSub').textContent = demCount + ' consumers';
+
+  const balEl = document.getElementById('kpiBal');
+  balEl.textContent = (state.metrics.balance >= 0 ? '+' : '') + state.metrics.balance.toFixed(1) + ' MW';
+  balEl.className = 'kpi-value ' + (state.metrics.balance >= 0 ? 'kpi-green' : 'kpi-red');
+  document.getElementById('kpiBalSub').textContent = state.metrics.balance >= 0 ? 'surplus' : 'deficit';
+
+  document.getElementById('kpiCO2').textContent = state.metrics.co2.toFixed(2) + ' t/h';
+  document.getElementById('kpiCO2Sub').textContent = state.metrics.co2Intensity.toFixed(0) + ' g/kWh';
+
+  document.getElementById('kpiRen').textContent = state.metrics.renewable.toFixed(0) + '%';
+  document.getElementById('kpiLcoe').textContent = '$' + state.metrics.lcoe.toFixed(0);
+  document.getElementById('kpiStor').textContent = state.metrics.storageSOC.toFixed(0) + '%';
+  document.getElementById('kpiStorSub').textContent = state.metrics.storageUsed.toFixed(0) + ' / ' + state.metrics.storageCap.toFixed(0) + ' MWh';
+
+  const stabEl = document.getElementById('kpiStab');
+  stabEl.textContent = state.metrics.stability.toFixed(0) + '%';
+  stabEl.className = 'kpi-value ' + (state.metrics.stability > 80 ? 'kpi-green' : state.metrics.stability > 50 ? 'kpi-yellow' : 'kpi-red');
+
+  // Time display
+  const hour = Math.floor(state.sim.time / 3600);
+  const min = Math.floor((state.sim.time % 3600) / 60);
+  document.getElementById('timeClock').textContent = String(hour).padStart(2, '0') + ':' + String(min).padStart(2, '0');
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  document.getElementById('timeDate').textContent = `${months[state.sim.month-1]} ${state.sim.day}, ${state.sim.year}`;
+  const weatherIcon = state.sim.cloudCover > 0.5 ? '☁' : state.sim.cloudCover > 0.2 ? '⛅' : '☀';
+  document.getElementById('timeWeather').textContent = `${weatherIcon} ${state.sim.cloudCover > 0.5 ? 'Cloudy' : 'Clear'} · ${state.sim.temperature.toFixed(0)}°C · ${state.sim.windSpeed.toFixed(1)} m/s`;
+
+  // Bottom bar
+  document.getElementById('simTime').textContent = `Day ${state.sim.day} · ${String(hour).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
+  document.getElementById('simFreq').textContent = state.metrics.frequency.toFixed(2) + ' Hz';
+  document.getElementById('simBudget').textContent = '$' + (state.metrics.budget / 1000000).toFixed(2) + 'M';
+
+  // Update properties if selected
+  if (state.selectedId) {
+    const comp = state.components.get(state.selectedId);
+    if (comp) {
+      // Update live values in properties
+      const def = COMPONENTS[comp.type];
+      if (def.type === 'generator') {
+        const outEl = document.querySelector('.props-row .value[style*="3fb950"]');
+        if (outEl) outEl.textContent = comp.output.toFixed(2) + ' MW';
+      } else if (def.type === 'consumer') {
+        const demEl = document.querySelector('.props-row .value[style*="58a6ff"]');
+        if (demEl) demEl.textContent = (comp.demand * 1000).toFixed(1) + ' kW';
+      }
+    }
+  }
+}
+
+function updateCanvasInfo() {
+  document.getElementById('infoCount').textContent = state.components.size;
+}
+
+// ============================================================
+// CHARTS
+// ============================================================
+function renderCharts() {
+  renderGenChart();
+  renderDemandChart();
+}
+
+function renderGenChart() {
+  const canvas = document.getElementById('chartGen');
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width = canvas.clientWidth;
+  const h = canvas.height = canvas.clientHeight;
+  ctx.clearRect(0, 0, w, h);
+
+  const history = state.history.slice(-60);
+  if (history.length < 2) {
+    ctx.fillStyle = '#6e7681';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Waiting for data...', w/2, h/2);
+    return;
+  }
+
+  const maxGen = Math.max(1, ...history.map(h => h.gen));
+  const colors = {
+    wind: '#58a6ff',
+    solar: '#f0b429',
+    hydro: '#3fb950',
+    nuclear: '#bc8cff',
+    biomass: '#a5d6a7',
+    geothermal: '#ff7b72',
+    conventional: '#f85149',
+  };
+
+  // Stacked area
+  const types = Object.keys(colors);
+  let prevPoints = new Array(history.length).fill(0);
+
+  types.forEach(type => {
+    const points = history.map((h, i) => {
+      const val = (h.byType[type] || 0);
+      return prevPoints[i] + val;
+    });
+
+    ctx.fillStyle = colors[type] + '80';
+    ctx.beginPath();
+    ctx.moveTo(0, h);
+    history.forEach((_, i) => {
+      const x = (i / (history.length - 1)) * w;
+      const y = h - (points[i] / maxGen) * h;
+      ctx.lineTo(x, y);
+    });
+    ctx.lineTo(w, h);
+    ctx.closePath();
+    ctx.fill();
+
+    prevPoints = points;
+  });
+
+  // Legend
+  const legend = document.getElementById('legendGen');
+  legend.innerHTML = '';
+  types.forEach(type => {
+    const has = history.some(h => (h.byType[type] || 0) > 0);
+    if (!has) return;
+    const item = document.createElement('div');
+    item.className = 'legend-item';
+    item.innerHTML = `<div class="legend-dot" style="background:${colors[type]}"></div>${type}`;
+    legend.appendChild(item);
+  });
+}
+
+function renderDemandChart() {
+  const canvas = document.getElementById('chartDemand');
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width = canvas.clientWidth;
+  const h = canvas.height = canvas.clientHeight;
+  ctx.clearRect(0, 0, w, h);
+
+  const history = state.history.slice(-100);
+  if (history.length < 2) {
+    ctx.fillStyle = '#6e7681';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Waiting for data...', w/2, h/2);
+    return;
+  }
+
+  const maxVal = Math.max(1, ...history.map(h => Math.max(h.gen, h.dem)));
+
+  // Grid
+  ctx.strokeStyle = '#21262d';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = (i / 4) * h;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(w, y);
+    ctx.stroke();
+  }
+
+  // Generation line
+  ctx.strokeStyle = '#3fb950';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  history.forEach((h, i) => {
+    const x = (i / (history.length - 1)) * w;
+    const y = h - (h.gen / maxVal) * h;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  // Demand line
+  ctx.strokeStyle = '#58a6ff';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  history.forEach((h, i) => {
+    const x = (i / (history.length - 1)) * w;
+    const y = h - (h.dem / maxVal) * h;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  // Legend
+  ctx.fillStyle = '#3fb950';
+  ctx.fillRect(10, 10, 10, 2);
+  ctx.fillStyle = '#c9d1d9';
+  ctx.font = '9px sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('Generation', 24, 13);
+
+  ctx.fillStyle = '#58a6ff';
+  ctx.fillRect(10, 22, 10, 2);
+  ctx.fillStyle = '#c9d1d9';
+  ctx.fillText('Demand', 24, 25);
+}
+
+// ============================================================
+// SIMULATION CONTROLS
+// ============================================================
+document.getElementById('simPlay').addEventListener('click', (e) => {
+  state.sim.running = !state.sim.running;
+  e.target.classList.toggle('active', state.sim.running);
+  e.target.innerHTML = state.sim.running
+    ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+  document.getElementById('statusText').textContent = state.sim.running ? 'Simulation running' : 'Simulation paused';
+});
+
+document.getElementById('simStop').addEventListener('click', () => {
+  state.sim.running = false;
+  state.sim.time = 12 * 3600;
+  state.sim.day = 1;
+  document.getElementById('simPlay').classList.remove('active');
+  document.getElementById('simPlay').innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+  document.getElementById('statusText').textContent = 'Simulation stopped';
+});
+
+document.getElementById('simStep').addEventListener('click', () => {
+  state.sim.running = false;
+  updateSimulation(1);
+  document.getElementById('simPlay').classList.remove('active');
+  document.getElementById('simPlay').innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+});
+
+document.getElementById('simSpeed').addEventListener('change', (e) => {
+  state.sim.speed = parseInt(e.target.value);
+});
+
+// ============================================================
+// TOOLTIP
+// ============================================================
+function showTooltip(e, title, desc) {
+  const tt = document.getElementById('tooltip');
+  tt.innerHTML = `<div class="tooltip-title">${title}</div><div class="tooltip-desc">${desc.replace(/\n/g, '<br>')}</div>`;
+  tt.style.display = 'block';
+  tt.style.left = (e.clientX + 12) + 'px';
+  tt.style.top = (e.clientY + 12) + 'px';
+}
+
+function hideTooltip() {
+  document.getElementById('tooltip').style.display = 'none';
+}
+
+// ============================================================
+// NOTIFICATIONS
+// ============================================================
+function notify(msg, type = 'info') {
+  const n = document.createElement('div');
+  n.className = 'notif ' + type;
+  n.textContent = msg;
+  document.body.appendChild(n);
+  setTimeout(() => {
+    n.style.transition = 'opacity 0.3s, transform 0.3s';
+    n.style.opacity = '0';
+    n.style.transform = 'translateX(400px)';
+    setTimeout(() => n.remove(), 300);
+  }, 2500);
+}
+
+// ============================================================
+// MODAL
+// ============================================================
+function showModal(title, bodyHtml, footerHtml = '') {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = bodyHtml;
+  document.getElementById('modalFooter').innerHTML = footerHtml;
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function hideModal() {
+  document.getElementById('modalOverlay').classList.remove('show');
+}
+
+document.getElementById('modalClose').addEventListener('click', hideModal);
+document.getElementById('modalOverlay').addEventListener('click', (e) => {
+  if (e.target.id === 'modalOverlay') hideModal();
+});
+
+// ============================================================
+// SCENARIOS
+// ============================================================
+const SCENARIOS = [
+  {
+    id: 'renewable_island',
+    title: '🏝️ 100% Renewable Island',
+    desc: 'Design a self-sufficient renewable grid for a small island. You have limited space and must balance intermittent sources with storage to provide 24/7 power to 500 homes.',
+    goals: ['≥95% renewable', 'No blackouts', 'Budget < $50M'],
+    setup: () => {
+      clearAll(true);
+      // Paint coastal terrain
+      for (let x = -5; x <= 15; x++) {
+        for (let y = -5; y <= 15; y++) {
+          const dist = Math.sqrt((x-5)**2 + (y-5)**2);
+          if (dist < 5) setTerrainAt(x * 40 + 20, y * 40 + 20, 'plains');
+          else if (dist < 7) setTerrainAt(x * 40 + 20, y * 40 + 20, 'coastal');
+          else setTerrainAt(x * 40 + 20, y * 40 + 20, 'coastal');
+        }
+      }
+      // Add some homes
+      for (let i = 0; i < 5; i++) {
+        addComponent('home', 200 + (i%3) * 140, 200 + Math.floor(i/3) * 140);
+      }
+      notify('Scenario loaded: 100% Renewable Island', 'success');
+    }
+  },
+  {
+    id: 'duck_curve',
+    title: '📉 Grid Stability Crisis',
+    desc: 'A grid with too much solar is experiencing the "duck curve" — massive oversupply at noon and steep ramp-up needed at sunset. Add storage and dispatchable generation to stabilize.',
+    goals: ['Stability > 80%', 'LCOE < $80/MWh', 'No curtailment'],
+    setup: () => {
+      clearAll(true);
+      for (let x = 0; x < 15; x++) for (let y = 0; y < 10; y++) setTerrainAt(x*40+20, y*40+20, 'desert');
+      // Lots of solar
+      for (let i = 0; i < 6; i++) {
+        addComponent('solar_pv', 100 + (i%3) * 140, 100 + Math.floor(i/3) * 140);
+      }
+      // Some demand
+      for (let i = 0; i < 3; i++) {
+        addComponent('office', 100 + i * 140, 400);
+      }
+      addComponent('factory', 520, 400);
+      notify('Scenario loaded: Duck Curve Challenge', 'success');
+    }
+  },
+  {
+    id: 'decarbonization',
+    title: '🌍 Decarbonization 2050',
+    desc: 'Replace a coal-heavy grid with clean alternatives while maintaining reliability and keeping costs below $100/MWh.',
+    goals: ['CO₂ < 100 g/kWh', 'Reliable 24/7', 'LCOE < $100/MWh'],
+    setup: () => {
+      clearAll(true);
+      for (let x = 0; x < 20; x++) for (let y = 0; y < 15; y++) setTerrainAt(x*40+20, y*40+20, 'plains');
+      addComponent('coal', 100, 100);
+      addComponent('gas_ccgt', 260, 100);
+      for (let i = 0; i < 4; i++) addComponent('factory', 100 + i*140, 300);
+      for (let i = 0; i < 3; i++) addComponent('apartment', 100 + i*140, 460);
+      notify('Scenario loaded: Decarbonization 2050', 'success');
+    }
+  },
+  {
+    id: 'datacenter',
+    title: '💾 Green Data Center',
+    desc: 'Power a 24/7 data center (20 MW constant) with 100% clean energy. Design a reliable system with storage for nighttime.',
+    goals: ['100% clean', '24/7 reliability', 'Budget < $100M'],
+    setup: () => {
+      clearAll(true);
+      for (let x = 0; x < 15; x++) for (let y = 0; y < 10; y++) setTerrainAt(x*40+20, y*40+20, 'plains');
+      addComponent('datacenter', 300, 250);
+      notify('Scenario loaded: Green Data Center', 'success');
+    }
+  },
+];
+
+document.getElementById('btnScenarios').addEventListener('click', () => {
+  let html = '<div style="display:grid;gap:10px">';
+  SCENARIOS.forEach(s => {
+    html += `
+      <div class="scenario-card" data-id="${s.id}">
+        <div class="scenario-title">${s.title}</div>
+        <div class="scenario-desc">${s.desc}</div>
+        <div class="scenario-goals">
+          ${s.goals.map(g => `<span class="scenario-goal">${g}</span>`).join('')}
+        </div>
+      </div>
+    `;
+  });
+  html += '</div>';
+  showModal('📚 Scenario Challenges', html);
+  setTimeout(() => {
+    document.querySelectorAll('.scenario-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const scenario = SCENARIOS.find(s => s.id === card.dataset.id);
+        if (scenario) {
+          scenario.setup();
+          hideModal();
+        }
+      });
+    });
+  }, 100);
+});
+
+function clearAll(silent = false) {
+  if (!silent && !confirm('Clear all components?')) return;
+  state.components.clear();
+  state.connections = [];
+  state.selectedId = null;
+  state.terrainGrid = {};
+  state.history = [];
+  updatePropertiesPanel();
+  updateCanvasInfo();
+}
+
+// ============================================================
+// SAVE / LOAD / EXPORT
+// ============================================================
+document.getElementById('btnSave').addEventListener('click', () => {
+  try {
+    const data = {
+      projectName: document.getElementById('projectName').value,
+      components: Array.from(state.components.values()),
+      connections: state.connections,
+      terrainGrid: state.terrainGrid,
+      sim: state.sim,
+      nextId: state.nextId,
+    };
+    localStorage.setItem('energygrid_save', JSON.stringify(data));
+    notify('Project saved to browser', 'success');
+  } catch (e) {
+    notify('Save unavailable here — use Export to download instead', 'warning');
+  }
+});
+
+document.getElementById('btnLoad').addEventListener('click', () => {
+  let raw = null;
+  try { raw = localStorage.getItem('energygrid_save'); } catch (e) {}
+  if (!raw) { notify('No saved project found', 'error'); return; }
+  try {
+    const data = JSON.parse(raw);
+    state.components.clear();
+    state.connections = data.connections || [];
+    state.terrainGrid = data.terrainGrid || {};
+    state.sim = data.sim || state.sim;
+    state.nextId = data.nextId || 1;
+    data.components.forEach(c => state.components.set(c.id, c));
+    document.getElementById('projectName').value = data.projectName || 'Untitled';
+    updatePropertiesPanel();
+    updateCanvasInfo();
+    notify('Project loaded', 'success');
+  } catch (e) {
+    notify('Failed to load: ' + e.message, 'error');
+  }
+});
+
+document.getElementById('btnExport').addEventListener('click', () => {
+  const data = {
+    projectName: document.getElementById('projectName').value,
+    components: Array.from(state.components.values()),
+    connections: state.connections,
+    metrics: state.metrics,
+    history: state.history.slice(-50),
+    exportedAt: new Date().toISOString(),
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = (data.projectName || 'energy-grid') + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  notify('Data exported as JSON', 'success');
+});
+
+document.getElementById('btnClear').addEventListener('click', () => clearAll());
+
+document.getElementById('btnReport').addEventListener('click', () => {
+  const m = state.metrics;
+  const html = `
+    <div style="font-size:12px;line-height:1.8">
+      <h3 style="color:#58a6ff;margin-bottom:8px">📊 Grid Analysis Report</h3>
+      <p style="color:#8b949e;margin-bottom:12px">Project: <b style="color:#e6edf3">${document.getElementById('projectName').value}</b></p>
+
+      <div style="background:#0d1117;padding:12px;border-radius:6px;margin-bottom:12px;border-left:3px solid #3fb950">
+        <div style="font-weight:600;color:#3fb950;margin-bottom:6px">⚡ Generation Summary</div>
+        <div>Total Generation: <b>${m.generation.toFixed(2)} MW</b></div>
+        <div>Total Demand: <b>${(m.demand*1000).toFixed(0)} kW</b></div>
+        <div>Balance: <b style="color:${m.balance >= 0 ? '#3fb950' : '#f85149'}">${m.balance.toFixed(2)} MW</b></div>
+        <div>Renewable Share: <b style="color:#3fb950">${m.renewable.toFixed(1)}%</b></div>
+      </div>
+
+      <div style="background:#0d1117;padding:12px;border-radius:6px;margin-bottom:12px;border-left:3px solid #f85149">
+        <div style="font-weight:600;color:#f85149;margin-bottom:6px">🌍 Environmental Impact</div>
+        <div>CO₂ Emissions: <b>${m.co2.toFixed(3)} t/h</b></div>
+        <div>CO₂ Intensity: <b>${m.co2Intensity.toFixed(0)} g/kWh</b></div>
+        <div>Annual CO₂: <b>${(m.co2 * 8760).toFixed(1)} t/yr</b></div>
+      </div>
+
+      <div style="background:#0d1117;padding:12px;border-radius:6px;margin-bottom:12px;border-left:3px solid #bc8cff">
+        <div style="font-weight:600;color:#bc8cff;margin-bottom:6px">💰 Economics</div>
+        <div>LCOE: <b>$${m.lcoe.toFixed(2)} / MWh</b></div>
+        <div>Total Capital: <b>$${(m.budget/1000000).toFixed(2)}M</b></div>
+        <div>Grid Stability: <b>${m.stability.toFixed(0)}%</b></div>
+      </div>
+
+      <div style="background:#0d1117;padding:12px;border-radius:6px;border-left:3px solid #58a6ff">
+        <div style="font-weight:600;color:#58a6ff;margin-bottom:6px">🔋 Storage</div>
+        <div>State of Charge: <b>${m.storageSOC.toFixed(0)}%</b></div>
+        <div>Stored Energy: <b>${m.storageUsed.toFixed(1)} / ${m.storageCap.toFixed(1)} MWh</b></div>
+      </div>
+
+      <div style="margin-top:16px;padding-top:12px;border-top:1px solid #30363d;color:#8b949e;font-size:10px">
+        Generated: ${new Date().toLocaleString()} · ${state.components.size} components · ${state.connections.length} connections
+      </div>
+    </div>
+  `;
+  showModal('📄 Grid Report', html, '<button class="btn" onclick="window.print()">🖨 Print</button><button class="btn primary" onclick="hideModal()">Close</button>');
+});
+
+// ============================================================
+// MAIN LOOP
+// ============================================================
+let lastTime = performance.now();
+let frameCount = 0;
+
+function loop(now) {
+  const dt = Math.min(0.1, (now - lastTime) / 1000);
+  lastTime = now;
+
+  updateSimulation(dt);
+  render();
+
+  frameCount++;
+  if (frameCount % 10 === 0) {
+    updateUI();
+  }
+  if (frameCount % 60 === 0) {
+    renderCharts();
+  }
+
+  requestAnimationFrame(loop);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  resizeCanvas();
+  buildPalette();
+
+  // Default terrain
+  for (let x = -5; x < 30; x++) {
+    for (let y = -5; y < 20; y++) {
+      setTerrainAt(x * 40 + 20, y * 40 + 20, 'plains');
+    }
+  }
+
+  // Add demo components
+  addComponent('wind_onshore', 100, 100);
+  addComponent('solar_pv', 280, 100);
+  addComponent('home', 460, 100);
+  addComponent('home', 460, 240);
+  addComponent('substation', 280, 280);
+
+  // Connect them
+  const comps = Array.from(state.components.values());
+  state.connections.push({ id: 'conn1', from: comps[0].id, to: comps[4].id, flow: 0 });
+  state.connections.push({ id: 'conn2', from: comps[1].id, to: comps[4].id, flow: 0 });
+  state.connections.push({ id: 'conn3', from: comps[4].id, to: comps[2].id, flow: 0 });
+  state.connections.push({ id: 'conn4', from: comps[4].id, to: comps[3].id, flow: 0 });
+
+  state.selectedId = null;
+  updatePropertiesPanel();
+  updateCanvasInfo();
+
+  requestAnimationFrame(loop);
+
+  setTimeout(() => {
+    notify('Welcome to EnergyGrid Simulator! Drag components from the palette to design your grid.', 'success');
+  }, 500);
+}
+
+init();
+</script>
+</body>
+</html>
