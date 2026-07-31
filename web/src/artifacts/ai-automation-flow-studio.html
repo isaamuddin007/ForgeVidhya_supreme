@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Flow Studio — Automation Whiteboard</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+  html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Segoe UI', system-ui, sans-serif; }
+  body {
+    background: radial-gradient(ellipse at top, #1a1b3a 0%, #0a0b1e 60%, #050510 100%);
+    color: #e8eaf6;
+  }
+
+  /* ===== Top bar ===== */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px; z-index: 100;
+    background: rgba(15, 17, 40, 0.75);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .logo { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 18px; letter-spacing: 0.5px; }
+  .logo-icon {
+    width: 32px; height: 32px; border-radius: 9px;
+    background: linear-gradient(135deg, #7c5cff, #ff4fa3);
+    display: grid; place-items: center;
+    box-shadow: 0 4px 20px rgba(124,92,255,0.5);
+  }
+  .logo-icon svg { width: 18px; height: 18px; color: white; }
+  .logo-text span { background: linear-gradient(90deg, #b794ff, #ff8ac4); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .top-actions { display: flex; gap: 10px; align-items: center; }
+  .btn {
+    padding: 8px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.05); color: #e8eaf6; font-size: 13px;
+    cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+  }
+  .btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+  .btn.primary { background: linear-gradient(135deg, #7c5cff, #5b3df0); border-color: transparent; }
+  .btn.primary:hover { box-shadow: 0 4px 18px rgba(124,92,255,0.5); transform: translateY(-1px); }
+  .btn.danger { color: #ff7a9a; }
+  .btn.danger:hover { background: rgba(255,100,130,0.15); border-color: rgba(255,100,130,0.4); }
+
+  /* ===== Sidebar ===== */
+  .sidebar {
+    position: fixed; top: 56px; left: 0; bottom: 0; width: 260px;
+    background: rgba(15, 17, 40, 0.6);
+    backdrop-filter: blur(16px);
+    border-right: 1px solid rgba(255,255,255,0.08);
+    padding: 20px 16px; overflow-y: auto; z-index: 50;
+  }
+  .sidebar h3 {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
+    color: #8a8fb3; margin-bottom: 12px; padding-left: 4px;
+  }
+  .node-palette { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+  .palette-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px; border-radius: 10px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    cursor: grab; transition: all 0.2s;
+  }
+  .palette-item:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.15);
+    transform: translateX(3px);
+  }
+  .palette-item:active { cursor: grabbing; }
+  .palette-icon {
+    width: 34px; height: 34px; border-radius: 8px;
+    display: grid; place-items: center; flex-shrink: 0;
+    font-size: 18px;
+  }
+  .palette-info { display: flex; flex-direction: column; }
+  .palette-name { font-size: 13px; font-weight: 600; }
+  .palette-desc { font-size: 11px; color: #8a8fb3; margin-top: 2px; }
+
+  /* Node type colors */
+  .c-trigger { background: linear-gradient(135deg, #ffb347, #ff7e3f); box-shadow: 0 4px 12px rgba(255,126,63,0.4); }
+  .c-condition { background: linear-gradient(135deg, #b794ff, #7c5cff); box-shadow: 0 4px 12px rgba(124,92,255,0.4); }
+  .c-llm { background: linear-gradient(135deg, #5ee7df, #3b82f6); box-shadow: 0 4px 12px rgba(59,130,246,0.4); }
+  .c-action { background: linear-gradient(135deg, #6ee7b7, #10b981); box-shadow: 0 4px 12px rgba(16,185,129,0.4); }
+  .c-alert { background: linear-gradient(135deg, #ff8ac4, #ff4f7b); box-shadow: 0 4px 12px rgba(255,79,123,0.4); }
+  .c-agent { background: linear-gradient(135deg, #67e8f9, #06b6d4); box-shadow: 0 4px 12px rgba(6,182,212,0.4); }
+  .c-result { background: linear-gradient(135deg, #a7f3d0, #34d399); box-shadow: 0 4px 12px rgba(52,211,153,0.4); }
+  .c-delay { background: linear-gradient(135deg, #fcd34d, #f59e0b); box-shadow: 0 4px 12px rgba(245,158,11,0.4); }
+  .c-webhook { background: linear-gradient(135deg, #f0abfc, #d946ef); box-shadow: 0 4px 12px rgba(217,70,239,0.4); }
+  .c-data { background: linear-gradient(135deg, #fca5a5, #ef4444); box-shadow: 0 4px 12px rgba(239,68,68,0.4); }
+
+  /* ===== Canvas ===== */
+  .canvas-wrap {
+    position: fixed; top: 56px; left: 260px; right: 0; bottom: 0;
+    overflow: hidden; cursor: grab;
+  }
+  .canvas-wrap.panning { cursor: grabbing; }
+  .canvas {
+    position: absolute; top: 0; left: 0;
+    width: 6000px; height: 6000px;
+    transform-origin: 0 0;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0);
+    background-size: 30px 30px;
+  }
+  .canvas svg.connections {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+  }
+  .conn-path {
+    fill: none; stroke-width: 2.5;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 6px currentColor);
+    pointer-events: stroke;
+    cursor: pointer;
+    transition: stroke-width 0.15s;
+  }
+  .conn-path:hover { stroke-width: 4; }
+  .conn-flow {
+    fill: none; stroke-width: 2.5; stroke-linecap: round;
+    stroke-dasharray: 6 10;
+    animation: flow 1.2s linear infinite;
+    pointer-events: none;
+    opacity: 0.9;
+  }
+  @keyframes flow { to { stroke-dashoffset: -32; } }
+
+  /* ===== Nodes ===== */
+  .node {
+    position: absolute;
+    min-width: 180px;
+    background: rgba(22, 25, 55, 0.92);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 12px 14px;
+    cursor: move;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+  .node:hover { border-color: rgba(255,255,255,0.25); }
+  .node.selected {
+    border-color: #fff;
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.3), 0 8px 30px rgba(124,92,255,0.4);
+  }
+  .node-head { display: flex; align-items: center; gap: 10px; }
+  .node-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    display: grid; place-items: center;
+    font-size: 16px; color: white;
+    flex-shrink: 0;
+  }
+  .node-title { font-size: 13px; font-weight: 600; }
+  .node-type { font-size: 10px; color: #8a8fb3; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+  .node-body {
+    margin-top: 10px; padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    font-size: 12px; color: #b8bddb;
+    line-height: 1.5;
+  }
+  .node-body input {
+    width: 100%; background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px; padding: 6px 8px;
+    color: #e8eaf6; font-size: 12px; outline: none;
+    margin-top: 4px;
+  }
+  .node-body input:focus { border-color: #7c5cff; }
+
+  /* Ports */
+  .port {
+    position: absolute;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: #1a1b3a;
+    border: 2px solid #7c5cff;
+    top: 50%; transform: translateY(-50%);
+    cursor: crosshair;
+    transition: all 0.2s;
+    z-index: 5;
+  }
+  .port:hover, .port.active {
+    background: #7c5cff;
+    box-shadow: 0 0 12px #7c5cff;
+    transform: translateY(-50%) scale(1.3);
+  }
+  .port.in { left: -8px; border-color: #5ee7df; }
+  .port.in:hover, .port.in.active { background: #5ee7df; box-shadow: 0 0 12px #5ee7df; }
+  .port.out { right: -8px; border-color: #ff8ac4; }
+  .port.out:hover, .port.out.active { background: #ff8ac4; box-shadow: 0 0 12px #ff8ac4; }
+
+  /* ===== Status bar ===== */
+  .statusbar {
+    position: fixed; bottom: 16px; right: 16px;
+    display: flex; gap: 8px; z-index: 60;
+  }
+  .status-pill {
+    padding: 8px 14px; border-radius: 20px;
+    background: rgba(15,17,40,0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    font-size: 12px; color: #b8bddb;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .status-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: #34d399; box-shadow: 0 0 8px #34d399; }
+
+  .zoom-ctrl {
+    position: fixed; bottom: 16px; left: 276px;
+    display: flex; gap: 4px; z-index: 60;
+    background: rgba(15,17,40,0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 4px;
+  }
+  .zoom-ctrl button {
+    width: 32px; height: 32px; border-radius: 7px;
+    background: transparent; border: none; color: #e8eaf6;
+    cursor: pointer; font-size: 16px;
+  }
+  .zoom-ctrl button:hover { background: rgba(255,255,255,0.1); }
+  .zoom-ctrl span { display: grid; place-items: center; padding: 0 8px; font-size: 12px; min-width: 48px; }
+
+  /* Temp connection line */
+  .temp-conn {
+    fill: none; stroke: #7c5cff; stroke-width: 2.5;
+    stroke-dasharray: 4 4;
+    pointer-events: none;
+    filter: drop-shadow(0 0 6px #7c5cff);
+  }
+
+  /* Hint */
+  .hint {
+    position: fixed; top: 72px; right: 16px;
+    padding: 10px 14px; border-radius: 10px;
+    background: rgba(15,17,40,0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    font-size: 11px; color: #8a8fb3;
+    max-width: 220px; line-height: 1.6;
+    z-index: 60;
+  }
+  .hint b { color: #b794ff; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/>
+        <path d="M6 8.5v2a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-2M12 12.5V15.5"/>
+      </svg>
+    </div>
+    <div class="logo-text">Flow<span>Studio</span></div>
+  </div>
+  <div class="top-actions">
+    <button class="btn" id="btnClear">🗑 Clear</button>
+    <button class="btn" id="btnDemo">✨ Demo Flow</button>
+    <button class="btn primary" id="btnRun">▶ Run Flow</button>
+  </div>
+</div>
+
+<div class="sidebar">
+  <h3>Workflow Nodes</h3>
+  <div class="node-palette" id="palette"></div>
+  <h3>Shortcuts</h3>
+  <div style="font-size:11px; color:#8a8fb3; line-height:1.8; padding-left:4px;">
+    <div><b style="color:#b794ff">Drag</b> from palette → canvas</div>
+    <div><b style="color:#b794ff">Drag</b> node to move</div>
+    <div><b style="color:#b794ff">Port → Port</b> to connect</div>
+    <div><b style="color:#b794ff">Click</b> line to delete</div>
+    <div><b style="color:#b794ff">Del</b> removes selected</div>
+    <div><b style="color:#b794ff">Scroll</b> to zoom</div>
+    <div><b style="color:#b794ff">Drag</b> canvas to pan</div>
+  </div>
+</div>
+
+<div class="canvas-wrap" id="canvasWrap">
+  <div class="canvas" id="canvas">
+    <svg class="connections" id="svgConn">
+      <defs>
+        <linearGradient id="gradConn" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#5ee7df"/>
+          <stop offset="100%" stop-color="#ff8ac4"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+</div>
+
+<div class="zoom-ctrl">
+  <button id="zoomOut">−</button>
+  <span id="zoomLabel">100%</span>
+  <button id="zoomIn">+</button>
+  <button id="zoomReset" title="Reset view">⌂</button>
+</div>
+
+<div class="hint">
+  💡 Drag nodes from the left palette onto the canvas. Connect <b>output ports (right)</b> to <b>input ports (left)</b> to build your automation flow.
+</div>
+
+<div class="statusbar">
+  <div class="status-pill"><span class="dot"></span><span id="nodeCount">0</span> nodes</div>
+  <div class="status-pill">🔗 <span id="connCount">0</span> connections</div>
+</div>
+
+<script>
+// ============ Node definitions ============
+const NODE_TYPES = {
+  trigger:   { label: 'Trigger',   icon: '⚡', cls: 'c-trigger',   desc: 'Start the workflow',       body: 'Event: HTTP Request' },
+  webhook:   { label: 'Webhook',   icon: '🔗', cls: 'c-webhook',   desc: 'Receive external call',    body: 'URL: /api/hook' },
+  condition: { label: 'Condition', icon: '❓', cls: 'c-condition', desc: 'Branch logic',             body: 'If: value > 10' },
+  llm:       { label: 'LLM',       icon: '🧠', cls: 'c-llm',       desc: 'AI language model',        body: 'Model: GPT-4o' },
+  agent:     { label: 'Agent',     icon: '🤖', cls: 'c-agent',     desc: 'Autonomous AI agent',      body: 'Role: Researcher' },
+  action:    { label: 'Action',    icon: '⚙️', cls: 'c-action',    desc: 'Execute a task',           body: 'Send email' },
+  alert:     { label: 'Alert',     icon: '🔔', cls: 'c-alert',     desc: 'Notify users',             body: 'Slack message' },
+  delay:     { label: 'Delay',     icon: '⏱️', cls: 'c-delay',     desc: 'Wait before next step',    body: '5 seconds' },
+  data:      { label: 'Database',  icon: '🗄️', cls: 'c-data',      desc: 'Read / write data',        body: 'Query: SELECT ...' },
+  result:    { label: 'Result',    icon: '✅', cls: 'c-result',    desc: 'Final output',             body: 'Return response' },
+};
+
+// ============ State ============
+let nodes = {};       // id -> {id, type, x, y, el}
+let conns = [];       // {id, from, to, pathEl, flowEl}
+let selected = null;  // node id or conn id
+let nextId = 1;
+let view = { x: 0, y: 0, scale: 1 };
+
+const canvas = document.getElementById('canvas');
+const canvasWrap = document.getElementById('canvasWrap');
+const svgConn = document.getElementById('svgConn');
+
+// ============ Build palette ============
+const palette = document.getElementById('palette');
+Object.entries(NODE_TYPES).forEach(([type, def]) => {
+  const item = document.createElement('div');
+  item.className = 'palette-item';
+  item.dataset.type = type;
+  item.innerHTML = `
+    <div class="palette-icon ${def.cls}">${def.icon}</div>
+    <div class="palette-info">
+      <div class="palette-name">${def.label}</div>
+      <div class="palette-desc">${def.desc}</div>
+    </div>`;
+  palette.appendChild(item);
+
+  item.addEventListener('mousedown', (e) => startPaletteDrag(e, type));
+});
+
+// ============ Palette drag -> create node ============
+let paletteDrag = null;
+function startPaletteDrag(e, type) {
+  e.preventDefault();
+  const ghost = document.createElement('div');
+  ghost.style.cssText = `position:fixed;pointer-events:none;z-index:9999;opacity:0.85;`;
+  ghost.innerHTML = `<div class="node" style="position:relative;transform:scale(0.9);"><div class="node-head"><div class="node-icon ${NODE_TYPES[type].cls}">${NODE_TYPES[type].icon}</div><div><div class="node-title">${NODE_TYPES[type].label}</div></div></div></div>`;
+  document.body.appendChild(ghost);
+  paletteDrag = { type, ghost };
+  moveGhost(e);
+  document.addEventListener('mousemove', moveGhost);
+  document.addEventListener('mouseup', endPaletteDrag, { once: true });
+}
+function moveGhost(e) {
+  if (!paletteDrag) return;
+  paletteDrag.ghost.style.left = (e.clientX - 80) + 'px';
+  paletteDrag.ghost.style.top = (e.clientY - 30) + 'px';
+}
+function endPaletteDrag(e) {
+  document.removeEventListener('mousemove', moveGhost);
+  if (!paletteDrag) return;
+  paletteDrag.ghost.remove();
+  const rect = canvasWrap.getBoundingClientRect();
+  if (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom) {
+    const cx = (e.clientX - rect.left - view.x) / view.scale;
+    const cy = (e.clientY - rect.top - view.y) / view.scale;
+    createNode(paletteDrag.type, cx - 90, cy - 40);
+  }
+  paletteDrag = null;
+}
+
+// ============ Create node ============
+function createNode(type, x, y) {
+  const def = NODE_TYPES[type];
+  const id = 'n' + (nextId++);
+  const el = document.createElement('div');
+  el.className = 'node';
+  el.dataset.id = id;
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+  el.innerHTML = `
+    <div class="port in" data-port="in" data-node="${id}"></div>
+    <div class="port out" data-port="out" data-node="${id}"></div>
+    <div class="node-head">
+      <div class="node-icon ${def.cls}">${def.icon}</div>
+      <div>
+        <div class="node-title">${def.label}</div>
+        <div class="node-type">${type}</div>
+      </div>
+    </div>
+    <div class="node-body">
+      <input type="text" value="${def.body}" />
+    </div>`;
+  canvas.appendChild(el);
+  nodes[id] = { id, type, x, y, el };
+
+  // Node dragging
+  el.addEventListener('mousedown', (e) => {
+    if (e.target.classList.contains('port')) return;
+    if (e.target.tagName === 'INPUT') return;
+    e.stopPropagation();
+    selectNode(id);
+    const startX = e.clientX, startY = e.clientY;
+    const origX = nodes[id].x, origY = nodes[id].y;
+    const move = (ev) => {
+      const dx = (ev.clientX - startX) / view.scale;
+      const dy = (ev.clientY - startY) / view.scale;
+      nodes[id].x = origX + dx;
+      nodes[id].y = origY + dy;
+      el.style.left = nodes[id].x + 'px';
+      el.style.top = nodes[id].y + 'px';
+      updateAllConns();
+    };
+    const up = () => {
+      document.removeEventListener('mousemove', move);
+      document.removeEventListener('mouseup', up);
+    };
+    document.addEventListener('mousemove', move);
+    document.addEventListener('mouseup', up);
+  });
+
+  // Port dragging
+  el.querySelectorAll('.port').forEach(port => {
+    port.addEventListener('mousedown', (e) => {
+      e.stopPropagation();
+      startPortDrag(e, id, port.dataset.port);
+    });
+  });
+
+  // Input focus handling
+  el.querySelector('input').addEventListener('mousedown', e => e.stopPropagation());
+  el.querySelector('input').addEventListener('input', e => {
+    // optional: update body text
+  });
+
+  updateCounts();
+  return id;
+}
+
+function selectNode(id) {
+  document.querySelectorAll('.node.selected').forEach(n => n.classList.remove('selected'));
+  if (id && nodes[id]) {
+    nodes[id].el.classList.add('selected');
+    selected = id;
+  } else {
+    selected = null;
+  }
+}
+
+// ============ Port drag -> create connection ============
+let portDrag = null;
+let tempPath = null;
+function startPortDrag(e, nodeId, portType) {
+  e.preventDefault();
+  portDrag = { fromNode: nodeId, fromPort: portType };
+  tempPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  tempPath.setAttribute('class', 'temp-conn');
+  svgConn.appendChild(tempPath);
+  document.addEventListener('mousemove', movePortDrag);
+  document.addEventListener('mouseup', endPortDrag);
+}
+function movePortDrag(e) {
+  if (!portDrag) return;
+  const rect = canvasWrap.getBoundingClientRect();
+  const mx = (e.clientX - rect.left - view.x) / view.scale;
+  const my = (e.clientY - rect.top - view.y) / view.scale;
+  const fromPos = getPortPos(portDrag.fromNode, portDrag.fromPort);
+  const p1 = portDrag.fromPort === 'out' ? fromPos : { x: mx, y: my };
+  const p2 = portDrag.fromPort === 'out' ? { x: mx, y: my } : fromPos;
+  tempPath.setAttribute('d', bezier(p1, p2));
+}
+function endPortDrag(e) {
+  document.removeEventListener('mousemove', movePortDrag);
+  document.removeEventListener('mouseup', endPortDrag);
+  if (tempPath) { tempPath.remove(); tempPath = null; }
+  if (!portDrag) return;
+
+  // Find target port under cursor
+  const target = document.elementFromPoint(e.clientX, e.clientY);
+  if (target && target.classList.contains('port')) {
+    const toNode = target.dataset.node;
+    const toPort = target.dataset.port;
+    if (toNode !== portDrag.fromNode &&
+        ((portDrag.fromPort === 'out' && toPort === 'in') ||
+         (portDrag.fromPort === 'in' && toPort === 'out'))) {
+      const from = portDrag.fromPort === 'out' ? portDrag.fromNode : toNode;
+      const to = portDrag.fromPort === 'out' ? toNode : portDrag.fromNode;
+      // avoid duplicates
+      if (!conns.some(c => c.from === from && c.to === to)) {
+        createConn(from, to);
+      }
+    }
+  }
+  portDrag = null;
+}
+
+// ============ Connections ============
+function createConn(fromId, toId) {
+  const id = 'c' + (nextId++);
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('class', 'conn-path');
+  path.setAttribute('stroke', 'url(#gradConn)');
+  path.style.color = '#7c5cff';
+  path.dataset.id = id;
+  svgConn.appendChild(path);
+
+  const flow = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  flow.setAttribute('class', 'conn-flow');
+  flow.setAttribute('stroke', 'url(#gradConn)');
+  svgConn.appendChild(flow);
+
+  path.addEventListener('click', (e) => {
+    e.stopPropagation();
+    deleteConn(id);
+  });
+
+  const conn = { id, from: fromId, to: toId, pathEl: path, flowEl: flow };
+  conns.push(conn);
+  updateConn(conn);
+  updateCounts();
+  return conn;
+}
+
+function deleteConn(id) {
+  const idx = conns.findIndex(c => c.id === id);
+  if (idx >= 0) {
+    conns[idx].pathEl.remove();
+    conns[idx].flowEl.remove();
+    conns.splice(idx, 1);
+    updateCounts();
+  }
+}
+
+function getPortPos(nodeId, port) {
+  const n = nodes[nodeId];
+  if (!n) return { x: 0, y: 0 };
+  const el = n.el;
+  const w = el.offsetWidth;
+  const h = el.offsetHeight;
+  if (port === 'out') return { x: n.x + w, y: n.y + h / 2 };
+  return { x: n.x, y: n.y + h / 2 };
+}
+
+function bezier(p1, p2) {
+  const dx = Math.max(40, Math.abs(p2.x - p1.x) * 0.5);
+  return `M ${p1.x} ${p1.y} C ${p1.x + dx} ${p1.y}, ${p2.x - dx} ${p2.y}, ${p2.x} ${p2.y}`;
+}
+
+function updateConn(c) {
+  const p1 = getPortPos(c.from, 'out');
+  const p2 = getPortPos(c.to, 'in');
+  const d = bezier(p1, p2);
+  c.pathEl.setAttribute('d', d);
+  c.flowEl.setAttribute('d', d);
+}
+function updateAllConns() { conns.forEach(updateConn); }
+
+// ============ Canvas pan & zoom ============
+let panning = null;
+canvasWrap.addEventListener('mousedown', (e) => {
+  if (e.target === canvasWrap || e.target === canvas || e.target === svgConn) {
+    selectNode(null);
+    panning = { x: e.clientX, y: e.clientY, vx: view.x, vy: view.y };
+    canvasWrap.classList.add('panning');
+  }
+});
+document.addEventListener('mousemove', (e) => {
+  if (!panning) return;
+  view.x = panning.vx + (e.clientX - panning.x);
+  view.y = panning.vy + (e.clientY - panning.y);
+  applyView();
+});
+document.addEventListener('mouseup', () => {
+  panning = null;
+  canvasWrap.classList.remove('panning');
+});
+
+canvasWrap.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const rect = canvasWrap.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  const delta = -e.deltaY * 0.001;
+  const newScale = Math.max(0.3, Math.min(2, view.scale * (1 + delta)));
+  // zoom toward cursor
+  view.x = mx - (mx - view.x) * (newScale / view.scale);
+  view.y = my - (my - view.y) * (newScale / view.scale);
+  view.scale = newScale;
+  applyView();
+}, { passive: false });
+
+function applyView() {
+  canvas.style.transform = `translate(${view.x}px, ${view.y}px) scale(${view.scale})`;
+  document.getElementById('zoomLabel').textContent = Math.round(view.scale * 100) + '%';
+}
+
+document.getElementById('zoomIn').onclick = () => { view.scale = Math.min(2, view.scale * 1.15); applyView(); };
+document.getElementById('zoomOut').onclick = () => { view.scale = Math.max(0.3, view.scale / 1.15); applyView(); };
+document.getElementById('zoomReset').onclick = () => { view = { x: 0, y: 0, scale: 1 }; applyView(); };
+
+// ============ Keyboard ============
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT') return;
+  if ((e.key === 'Delete' || e.key === 'Backspace') && selected) {
+    if (nodes[selected]) {
+      // remove connections to/from this node
+      conns = conns.filter(c => {
+        if (c.from === selected || c.to === selected) {
+          c.pathEl.remove(); c.flowEl.remove(); return false;
+        }
+        return true;
+      });
+      nodes[selected].el.remove();
+      delete nodes[selected];
+      selected = null;
+      updateCounts();
+    }
+  }
+});
+
+// ============ Counts ============
+function updateCounts() {
+  document.getElementById('nodeCount').textContent = Object.keys(nodes).length;
+  document.getElementById('connCount').textContent = conns.length;
+}
+
+// ============ Clear / Demo ============
+document.getElementById('btnClear').onclick = () => {
+  if (!confirm('Clear the entire board?')) return;
+  Object.values(nodes).forEach(n => n.el.remove());
+  conns.forEach(c => { c.pathEl.remove(); c.flowEl.remove(); });
+  nodes = {}; conns = []; selected = null;
+  updateCounts();
+};
+
+document.getElementById('btnDemo').onclick = () => {
+  // clear first
+  Object.values(nodes).forEach(n => n.el.remove());
+  conns.forEach(c => { c.pathEl.remove(); c.flowEl.remove(); });
+  nodes = {}; conns = [];
+  view = { x: 80, y: 60, scale: 1 }; applyView();
+
+  const n1 = createNode('trigger', 80, 120);
+  const n2 = createNode('llm', 340, 60);
+  const n3 = createNode('condition', 600, 120);
+  const n4 = createNode('action', 860, 40);
+  const n5 = createNode('alert', 860, 220);
+  const n6 = createNode('result', 1120, 120);
+
+  createConn(n1, n2);
+  createConn(n2, n3);
+  createConn(n3, n4);
+  createConn(n3, n5);
+  createConn(n4, n6);
+  createConn(n5, n6);
+};
+
+document.getElementById('btnRun').onclick = () => {
+  // Visual pulse animation on nodes in order
+  const starts = Object.values(nodes).filter(n => n.type === 'trigger' || n.type === 'webhook');
+  if (starts.length === 0) { alert('Add a Trigger node to start the flow!'); return; }
+  let visited = new Set();
+  let queue = starts.map(s => s.id);
+  let delay = 0;
+  while (queue.length) {
+    const next = [];
+    queue.forEach(id => {
+      if (visited.has(id)) return;
+      visited.add(id);
+      setTimeout(() => {
+        const el = nodes[id].el;
+        el.style.transition = 'box-shadow 0.3s, transform 0.3s';
+        el.style.transform = 'scale(1.08)';
+        el.style.boxShadow = '0 0 30px rgba(124,92,255,0.8), 0 8px 24px rgba(0,0,0,0.4)';
+        setTimeout(() => {
+          el.style.transform = '';
+          el.style.boxShadow = '';
+        }, 500);
+      }, delay);
+      delay += 400;
+      conns.filter(c => c.from === id).forEach(c => next.push(c.to));
+    });
+    queue = next;
+  }
+};
+
+// ============ Init with demo ============
+document.getElementById('btnDemo').click();
+</script>
+</body>
+</html>

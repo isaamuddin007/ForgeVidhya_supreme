@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, ChevronRight, Sparkles, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronRight, Sparkles, Wrench, X } from "lucide-react";
 import { FadeIn } from "@/components/ui/primitives";
 import { useSound } from "@/components/sound-provider";
+import { ArtifactModal } from "@/components/ArtifactModal";
+import { getArtifact } from "@/lib/artifacts";
 import type { Block, Course, CourseTopic } from "@/lib/courses";
 import { cn } from "@/lib/utils";
 
@@ -26,6 +28,8 @@ export function CourseView({
 }) {
   const { playBlub } = useSound();
   const [openId, setOpenId] = useState<string | null>(null);
+  const [artifactOpen, setArtifactOpen] = useState(false);
+  const artifact = getArtifact(course.slug);
 
   // Flattened topic order for prev/next navigation inside the screen.
   const flat = useMemo(
@@ -67,6 +71,22 @@ export function CourseView({
             <p className="mt-4 text-xs font-medium uppercase tracking-wider text-muted-foreground/70">
               {course.modules.length} chapters · {flat.length} topics — tap any topic to open it
             </p>
+
+            {/* hands-on artifact — a small black launch button (only when the
+                course ships one). Opens a full-frame tool over the site. */}
+            {artifact && (
+              <button
+                type="button"
+                onClick={() => {
+                  playBlub();
+                  setArtifactOpen(true);
+                }}
+                className="mx-auto mt-6 inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-4 py-2.5 text-sm font-semibold text-white shadow-lg ring-1 ring-white/10 transition-transform hover:scale-[1.03] active:scale-95 dark:bg-black"
+              >
+                <Wrench className="h-4 w-4" />
+                {artifact.buttonLabel}
+              </button>
+            )}
           </FadeIn>
         </div>
       </section>
@@ -137,6 +157,13 @@ export function CourseView({
           open(flat[openIndex + 1].id)
         }
         onClose={() => setOpenId(null)}
+      />
+
+      {/* Full-frame hands-on artifact */}
+      <ArtifactModal
+        artifact={artifact ?? null}
+        open={artifactOpen}
+        onClose={() => setArtifactOpen(false)}
       />
     </>
   );
