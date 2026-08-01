@@ -11,6 +11,7 @@
 import flowStudioHtml from "@/artifacts/ai-automation-flow-studio.html?raw";
 import energyGridHtml from "@/artifacts/energygrid-simulator.html?raw";
 import admitEdgeHtml from "@/artifacts/admitedge-shortlisting.html?raw";
+import blenderCadHtml from "@/artifacts/blendercad-studio.html?raw";
 
 export type CourseArtifact = {
   /** Title shown in the modal header. */
@@ -46,6 +47,15 @@ const artifacts: Record<string, CourseArtifact> = {
     buttonLabel: "Open the AdmitEdge shortlisting tool",
     html: admitEdgeHtml,
     // Download Full Report exports a .txt; modals power confirm/print.
+    sandbox: "allow-scripts allow-modals allow-downloads",
+  },
+  "cad-digital-manufacturing": {
+    title: "BlenderCAD — Browser 3D Studio",
+    buttonLabel: "Open the BlenderCAD studio",
+    html: blenderCadHtml,
+    // Loads three.js from a CDN, exports GLB/OBJ downloads, and uses
+    // prompt()/dialogs — so it needs modals + downloads. Still no
+    // allow-same-origin, so it can't reach the app's origin or token.
     sandbox: "allow-scripts allow-modals allow-downloads",
   },
 };

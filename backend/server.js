@@ -111,7 +111,14 @@ app.use(
 // ---------------------------------------------------------------------------
 // 3) Body parsing (size-capped), cookies, compression.
 // ---------------------------------------------------------------------------
-app.use(express.json({ limit: '10kb' }));
+// The JSON API stays tightly size-capped (10kb) to blunt abuse. The DeepSeek
+// assistant is the one exception: it carries the rendered page's text as
+// context, so its path gets a larger cap.
+const jsonSmall = express.json({ limit: '10kb' });
+const jsonLarge = express.json({ limit: '256kb' });
+app.use((req, res, next) =>
+  req.path.startsWith('/api/deepseek') ? jsonLarge(req, res, next) : jsonSmall(req, res, next)
+);
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
 app.use(compression());
@@ -185,6 +192,9 @@ app.get('/api/csrf-token', csrfProtection, (req, res) => {
 // ---------------------------------------------------------------------------
 app.use('/auth', require('./routes/authRoutes'));
 app.use('/api/uploads', csrfProtection, require('./routes/uploadRoutes'));
+// AI assistant proxy: no CSRF (stateless, no cookie auth) — the SPA calls it
+// without credentials; it's protected by the CORS whitelist + its own limiter.
+app.use('/api/deepseek', require('./routes/deepseekRoutes'));
 
 app.get('/api', (_req, res) => res.json({ service: 'forgeVidhya API', status: 'up' }));
 

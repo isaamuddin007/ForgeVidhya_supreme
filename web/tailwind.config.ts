@@ -48,20 +48,21 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Brand palette — logo colors only: white, #ff9500, #00bfff, #000000
+        // Brand palette — solid EdTech colors:
+        //   blue #2e6dff = interface · orange #fe7e06 = accents · black #28272f = buttons
         forge: {
-          sky: "#00bfff",
-          blue: "#00bfff",
-          red: "#ff9500",
-          dew: "#ffffff",
-          mint: "#00bfff",
-          orange: "#ff9500",
-          ink: "#000000",
+          sky: "#2e6dff",
+          blue: "#2e6dff",
+          red: "#fe7e06",
+          dew: "#2e6dff",
+          mint: "#2e6dff",
+          orange: "#fe7e06",
+          ink: "#28272f",
         },
-        // Brand palette — main surfaces (white -> sky)
+        // Brand palette — main surfaces
         surface: {
           cloud: "#ffffff",
-          mist: "#00bfff",
+          mist: "#2e6dff",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
@@ -80,10 +81,13 @@ export default {
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       backgroundImage: {
-        'forge-gradient': 'linear-gradient(135deg, #00bfff 0%, #00bfff 45%, #ff9500 100%)',
-        'forge-gradient-soft': 'linear-gradient(135deg, #ffffff 0%, #00bfff 100%)',
-        'forge-radial': 'radial-gradient(circle at 30% 20%, rgba(0,191,255,0.18), transparent 60%), radial-gradient(circle at 80% 70%, rgba(255,149,0,0.12), transparent 55%)',
-        'grid-pattern': 'linear-gradient(rgba(0,191,255,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(0,191,255,0.07) 1px, transparent 1px)',
+        // Solid brand fills (no color gradients) — kept as class names so
+        // existing `bg-forge-gradient` usages become flat brand blue.
+        'forge-gradient': 'linear-gradient(#2e6dff, #2e6dff)',
+        'forge-gradient-soft': 'linear-gradient(#2e6dff, #2e6dff)',
+        // Faint single-hue atmosphere glow (subtle depth, not a color gradient)
+        'forge-radial': 'radial-gradient(circle at 30% 20%, rgba(46,109,255,0.10), transparent 60%), radial-gradient(circle at 80% 70%, rgba(254,126,6,0.06), transparent 55%)',
+        'grid-pattern': 'linear-gradient(rgba(46,109,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(46,109,255,0.06) 1px, transparent 1px)',
       },
       backgroundSize: {
         'grid-32': '32px 32px',

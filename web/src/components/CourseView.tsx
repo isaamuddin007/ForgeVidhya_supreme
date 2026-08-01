@@ -81,7 +81,7 @@ export function CourseView({
                   playBlub();
                   setArtifactOpen(true);
                 }}
-                className="mx-auto mt-6 inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-4 py-2.5 text-sm font-semibold text-white shadow-lg ring-1 ring-white/10 transition-transform hover:scale-[1.03] active:scale-95 dark:bg-black"
+                className="mx-auto mt-6 inline-flex items-center gap-2 rounded-lg bg-[#28272f] px-4 py-2.5 text-sm font-semibold text-white shadow-lg ring-1 ring-white/10 transition-transform hover:scale-[1.03] hover:bg-[#35343d] active:scale-95"
               >
                 <Wrench className="h-4 w-4" />
                 {artifact.buttonLabel}

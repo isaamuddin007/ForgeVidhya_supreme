@@ -18,41 +18,26 @@ import { useTheme } from "@/components/theme-provider";
 import { useSound } from "@/components/sound-provider";
 import { SiteSearch } from "@/components/SiteSearch";
 import { ProgramChooser } from "@/components/ProgramChooser";
+import { DroneBubble } from "@/components/DroneBubble";
 import { cn } from "@/lib/utils";
 
 type Bubble = {
   label: string;
   href: string;
   icon: typeof HomeIcon;
-  /** Gradient tint per-bubble for a lively, candy-like cluster. */
-  from: string;
-  to: string;
+  /** Solid brand fill per-bubble: blue = interface, orange = important. */
+  color: string;
 };
 
+const BRAND_BLUE = "#2e6dff";
+const BRAND_ORANGE = "#fe7e06";
+
 const bubbles: Bubble[] = [
-  { label: "Home", href: "/", icon: HomeIcon, from: "#00bfff", to: "#0080bf" },
-  { label: "About", href: "/about", icon: User, from: "#66d9ff", to: "#00bfff" },
-  {
-    label: "Program",
-    href: "/services",
-    icon: GraduationCap,
-    from: "#ff9500",
-    to: "#cc7700",
-  },
-  {
-    label: "Blogs",
-    href: "/blog",
-    icon: Newspaper,
-    from: "#00bfff",
-    to: "#ff9500",
-  },
-  {
-    label: "Contact",
-    href: "/contact",
-    icon: Mail,
-    from: "#ff9500",
-    to: "#00bfff",
-  },
+  { label: "Home", href: "/", icon: HomeIcon, color: BRAND_BLUE },
+  { label: "About", href: "/about", icon: User, color: BRAND_BLUE },
+  { label: "Program", href: "/services", icon: GraduationCap, color: BRAND_ORANGE },
+  { label: "Blogs", href: "/blog", icon: Newspaper, color: BRAND_BLUE },
+  { label: "Contact", href: "/contact", icon: Mail, color: BRAND_ORANGE },
 ];
 
 /** A single glossy floating orb. */
@@ -96,21 +81,19 @@ function Orb({
     >
       {/* glow */}
       <span
-        className="absolute inset-0 rounded-full opacity-60 blur-lg transition-opacity group-hover:opacity-100"
-        style={{
-          background: `radial-gradient(circle at 50% 40%, ${bubble.from}, ${bubble.to})`,
-        }}
+        className="absolute inset-0 rounded-full opacity-50 blur-lg transition-opacity group-hover:opacity-90"
+        style={{ background: bubble.color }}
       />
-      {/* glass body */}
+      {/* solid body */}
       <span
         className={cn(
           "relative grid h-16 w-16 place-items-center rounded-full border border-white/40 backdrop-blur-md",
           active && "ring-2 ring-white/80"
         )}
         style={{
-          background: `linear-gradient(150deg, ${bubble.from}cc, ${bubble.to}cc)`,
+          background: bubble.color,
           boxShadow:
-            "inset 0 2px 6px rgba(255,255,255,0.55), 0 8px 24px rgba(0,0,0,0.18)",
+            "inset 0 2px 6px rgba(255,255,255,0.35), 0 8px 24px rgba(0,0,0,0.18)",
         }}
       >
         {/* highlight shine */}
@@ -224,7 +207,7 @@ export function BubbleNav() {
       </div>
 
       {/* desktop: floating cluster centered under the top row */}
-      <div className="pointer-events-auto mx-auto mt-2 hidden max-w-7xl justify-center gap-4 px-4 sm:flex">
+      <div className="pointer-events-auto mx-auto mt-2 hidden max-w-7xl items-center justify-center gap-4 px-4 sm:flex">
         {bubbles.map((b, i) => (
           <Orb
             key={b.href}
@@ -234,6 +217,8 @@ export function BubbleNav() {
             onNavigate={handleBubble}
           />
         ))}
+        {/* small interactive drone — sits just beside the Contact orb */}
+        <DroneBubble />
       </div>
 
       {/* mobile: expanding vertical cluster */}
@@ -254,6 +239,8 @@ export function BubbleNav() {
                 onNavigate={handleBubble}
               />
             ))}
+            {/* small interactive drone — beside the Contact orb */}
+            <DroneBubble />
           </motion.div>
         )}
       </AnimatePresence>
