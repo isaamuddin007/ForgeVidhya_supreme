@@ -203,8 +203,8 @@ export function DeepSeekAssistant() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed bottom-24 right-4 z-40 flex w-[calc(100vw-2rem)] max-w-sm flex-col overflow-hidden rounded-2xl border border-border bg-card text-card-foreground shadow-2xl sm:right-6"
-            style={{ height: isMinimized ? "auto" : "min(600px, calc(100vh - 8rem))" }}
+            className="glass-card fixed bottom-24 right-4 z-40 flex w-[min(90vw,21rem)] flex-col overflow-hidden rounded-3xl text-foreground shadow-2xl ring-1 ring-white/10 sm:right-6"
+            style={{ height: isMinimized ? "auto" : "min(62vh, 520px)" }}
             initial={{ opacity: 0, y: 24, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.96 }}
@@ -212,12 +212,12 @@ export function DeepSeekAssistant() {
             role="dialog"
             aria-label="forgeVidhya AI assistant"
           >
-            {/* Header (solid brand blue) */}
-            <div className="flex shrink-0 items-center justify-between gap-2 bg-[#2e6dff] px-4 py-3 text-white">
+            {/* Header (translucent glass, blue-tinted) */}
+            <div className="flex shrink-0 items-center justify-between gap-2 border-b border-border/50 bg-[#2e6dff]/10 px-4 py-3 text-foreground backdrop-blur-sm">
               <div className="flex min-w-0 items-center gap-2">
-                <Bot className="h-5 w-5 shrink-0" />
+                <Bot className="h-5 w-5 shrink-0 text-[#2e6dff]" />
                 <span className="truncate font-semibold">forgeVidhya AI</span>
-                <span className="hidden items-center gap-1 rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-medium sm:inline-flex">
+                <span className="hidden items-center gap-1 rounded-full bg-[#2e6dff]/15 px-2 py-0.5 text-[10px] font-medium text-[#2e6dff] sm:inline-flex">
                   <Eye className="h-3 w-3" /> sees this page
                 </span>
               </div>
@@ -226,7 +226,7 @@ export function DeepSeekAssistant() {
                   type="button"
                   onClick={() => setIsMinimized((m) => !m)}
                   aria-label={isMinimized ? "Expand" : "Minimize"}
-                  className="grid h-7 w-7 place-items-center rounded-md transition-colors hover:bg-white/20"
+                  className="grid h-7 w-7 place-items-center rounded-md transition-colors hover:bg-foreground/10"
                 >
                   {isMinimized ? <Maximize2 className="h-3.5 w-3.5" /> : <Minus className="h-4 w-4" />}
                 </button>
@@ -234,7 +234,7 @@ export function DeepSeekAssistant() {
                   type="button"
                   onClick={() => setIsOpen(false)}
                   aria-label="Close"
-                  className="grid h-7 w-7 place-items-center rounded-md transition-colors hover:bg-white/20"
+                  className="grid h-7 w-7 place-items-center rounded-md transition-colors hover:bg-foreground/10"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -251,8 +251,8 @@ export function DeepSeekAssistant() {
                         className={cn(
                           "max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed",
                           m.role === "user"
-                            ? "rounded-br-sm bg-[#2e6dff] text-white"
-                            : "rounded-bl-sm border border-border bg-secondary/60 text-foreground"
+                            ? "rounded-br-sm bg-[#2e6dff] text-white shadow-sm"
+                            : "rounded-bl-sm border border-border/50 bg-foreground/5 text-foreground backdrop-blur-sm"
                         )}
                       >
                         {m.role === "assistant" ? (
@@ -266,7 +266,7 @@ export function DeepSeekAssistant() {
 
                   {isLoading && (
                     <div className="flex justify-start">
-                      <div className="flex items-center gap-1 rounded-2xl rounded-bl-sm border border-border bg-secondary/60 px-4 py-3">
+                      <div className="flex items-center gap-1 rounded-2xl rounded-bl-sm border border-border/50 bg-foreground/5 px-4 py-3 backdrop-blur-sm">
                         {[0, 1, 2].map((i) => (
                           <motion.span
                             key={i}
@@ -281,7 +281,7 @@ export function DeepSeekAssistant() {
                 </div>
 
                 {/* Input */}
-                <div className="shrink-0 border-t border-border p-3">
+                <div className="shrink-0 border-t border-border/50 p-3">
                   <div className="flex items-center gap-2">
                     <input
                       ref={inputRef}
@@ -291,7 +291,7 @@ export function DeepSeekAssistant() {
                       onKeyDown={onKeyDown}
                       placeholder="Ask about this page…"
                       disabled={isLoading}
-                      className="flex-1 rounded-xl border border-border bg-background px-3.5 py-2 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/30 disabled:opacity-60"
+                      className="flex-1 rounded-xl border border-border/50 bg-background/50 px-3.5 py-2 text-sm text-foreground outline-none backdrop-blur-sm transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/30 disabled:opacity-60"
                     />
                     <button
                       type="button"
