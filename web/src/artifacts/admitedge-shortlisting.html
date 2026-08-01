@@ -1,0 +1,2535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AdmitEdge — Rejection-Proof University Shortlisting</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --navy-900: #0a1628;
+    --navy-800: #122240;
+    --navy-700: #1e3a5f;
+    --navy-600: #2c4f7c;
+    --navy-500: #3d6494;
+    --blue-500: #4a7fc4;
+    --blue-400: #6b9bdb;
+    --blue-300: #9bb8e8;
+    --gold-500: #d4a574;
+    --gold-400: #e8bc85;
+    --gold-300: #f4d4a8;
+    --gold-200: #fae8c9;
+    --cream: #faf7f2;
+    --white: #ffffff;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1;
+    --gray-400: #94a3b8;
+    --gray-500: #64748b;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --success: #10b981;
+    --success-light: #d1fae5;
+    --warning: #f59e0b;
+    --warning-light: #fef3c7;
+    --info: #3b82f6;
+    --info-light: #dbeafe;
+    --shadow-sm: 0 1px 2px rgba(10, 22, 40, 0.04);
+    --shadow: 0 4px 12px rgba(10, 22, 40, 0.08);
+    --shadow-lg: 0 12px 32px rgba(10, 22, 40, 0.12);
+    --shadow-gold: 0 8px 24px rgba(212, 165, 116, 0.25);
+  }
+  html, body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--cream);
+    color: var(--navy-900);
+    min-height: 100vh;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    background:
+      radial-gradient(ellipse at top left, rgba(212, 165, 116, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(74, 127, 196, 0.06) 0%, transparent 50%),
+      var(--cream);
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-700) 100%);
+    padding: 20px 32px;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-lg);
+  }
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo-mark {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--gold-500) 0%, var(--gold-300) 100%);
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    box-shadow: var(--shadow-gold);
+  }
+  .logo-text h1 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, #fff, var(--gold-300));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .logo-text p {
+    font-size: 11px;
+    color: var(--blue-300);
+    letter-spacing: 0.5px;
+  }
+  .header-tagline {
+    font-size: 12px;
+    color: var(--blue-300);
+    font-style: italic;
+    padding: 6px 14px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Container */
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 28px 32px 60px;
+  }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 32px 20px 40px;
+    margin-bottom: 24px;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: var(--gold-200);
+    color: var(--navy-700);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    border: 1px solid var(--gold-400);
+  }
+  .hero h2 {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: var(--navy-900);
+    margin-bottom: 12px;
+    line-height: 1.15;
+  }
+  .hero h2 .accent {
+    background: linear-gradient(90deg, var(--gold-500), var(--blue-500));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero p {
+    font-size: 16px;
+    color: var(--gray-600);
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  /* Progress Bar */
+  .progress-wrap {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--gray-200);
+  }
+  .progress-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .progress-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy-700);
+  }
+  .progress-pct {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gold-500);
+  }
+  .progress-bar {
+    height: 8px;
+    background: var(--gray-100);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blue-500), var(--gold-500));
+    border-radius: 4px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .progress-steps {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    gap: 8px;
+  }
+  .progress-step {
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+    color: var(--gray-400);
+    font-weight: 500;
+    padding: 4px 0;
+    border-top: 2px solid var(--gray-200);
+    transition: all 0.3s;
+  }
+  .progress-step.active {
+    color: var(--navy-700);
+    border-top-color: var(--gold-500);
+    font-weight: 600;
+  }
+  .progress-step.done {
+    color: var(--success);
+    border-top-color: var(--success);
+  }
+
+  /* Form Layout */
+  .form-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 900px) {
+    .form-layout { grid-template-columns: 1fr; }
+    .form-nav { display: none; }
+  }
+
+  /* Sidebar Nav */
+  .form-nav {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--gray-200);
+    height: fit-content;
+    position: sticky;
+    top: 100px;
+  }
+  .nav-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    padding: 0 8px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 4px;
+    transition: all 0.2s;
+    font-size: 13px;
+    color: var(--gray-600);
+    font-weight: 500;
+  }
+  .nav-item:hover {
+    background: var(--gray-50);
+    color: var(--navy-700);
+  }
+  .nav-item.active {
+    background: linear-gradient(135deg, var(--navy-800), var(--navy-700));
+    color: white;
+    box-shadow: var(--shadow);
+  }
+  .nav-item.done {
+    color: var(--success);
+  }
+  .nav-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--gray-100);
+    display: grid;
+    place-items: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .nav-item.active .nav-icon {
+    background: var(--gold-500);
+    color: white;
+  }
+  .nav-item.done .nav-icon {
+    background: var(--success-light);
+  }
+
+  /* Form Sections */
+  .form-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .form-section {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--gray-200);
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+  .form-section.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .section-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--blue-500), var(--navy-600));
+    display: grid;
+    place-items: center;
+    font-size: 20px;
+    color: white;
+    box-shadow: var(--shadow);
+  }
+  .section-title h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy-900);
+    letter-spacing: -0.3px;
+  }
+  .section-title p {
+    font-size: 12px;
+    color: var(--gray-500);
+    margin-top: 2px;
+  }
+
+  /* Form Fields */
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 640px) {
+    .field-grid { grid-template-columns: 1fr; }
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .field.full { grid-column: 1 / -1; }
+  .field-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--navy-700);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .field-label .req {
+    color: var(--gold-500);
+  }
+  .field-hint {
+    font-size: 11px;
+    color: var(--gray-500);
+    font-style: italic;
+    margin-top: -2px;
+  }
+  .input, .select, .textarea {
+    padding: 10px 14px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 10px;
+    font-size: 13px;
+    font-family: inherit;
+    background: var(--white);
+    color: var(--navy-900);
+    transition: all 0.2s;
+    outline: none;
+  }
+  .input:hover, .select:hover, .textarea:hover {
+    border-color: var(--blue-400);
+  }
+  .input:focus, .select:focus, .textarea:focus {
+    border-color: var(--blue-500);
+    box-shadow: 0 0 0 3px rgba(74, 127, 196, 0.1);
+  }
+  .textarea {
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+  }
+  .select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+  }
+  .input-group {
+    display: flex;
+    gap: 8px;
+  }
+  .input-group .input { flex: 1; }
+  .input-suffix {
+    padding: 10px 14px;
+    background: var(--gray-50);
+    border: 1.5px solid var(--gray-200);
+    border-radius: 10px;
+    font-size: 12px;
+    color: var(--gray-600);
+    font-weight: 500;
+  }
+
+  /* Tier Selector */
+  .tier-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .tier-option {
+    padding: 14px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    background: var(--white);
+  }
+  .tier-option:hover {
+    border-color: var(--blue-400);
+    background: var(--gray-50);
+  }
+  .tier-option.active {
+    border-color: var(--gold-500);
+    background: linear-gradient(135deg, var(--gold-200), var(--cream));
+    box-shadow: var(--shadow-gold);
+  }
+  .tier-option .tier-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy-900);
+    margin-bottom: 2px;
+  }
+  .tier-option .tier-desc {
+    font-size: 10px;
+    color: var(--gray-500);
+  }
+  .tier-option.active .tier-name {
+    color: var(--navy-800);
+  }
+
+  /* Checkbox & Radio */
+  .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .checkbox-item, .radio-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 13px;
+  }
+  .checkbox-item:hover, .radio-item:hover {
+    border-color: var(--blue-400);
+    background: var(--gray-50);
+  }
+  .checkbox-item.checked, .radio-item.checked {
+    border-color: var(--blue-500);
+    background: var(--info-light);
+  }
+  .checkbox-item input, .radio-item input {
+    accent-color: var(--blue-500);
+    cursor: pointer;
+  }
+
+  /* Multi-select chips */
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip {
+    padding: 8px 14px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--white);
+    color: var(--gray-600);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .chip:hover {
+    border-color: var(--blue-400);
+    color: var(--navy-700);
+  }
+  .chip.active {
+    background: linear-gradient(135deg, var(--navy-800), var(--navy-700));
+    color: white;
+    border-color: var(--navy-700);
+    box-shadow: var(--shadow);
+  }
+
+  /* Info box */
+  .info-box {
+    background: linear-gradient(135deg, var(--info-light), #eff6ff);
+    border: 1px solid #bfdbfe;
+    border-left: 4px solid var(--info);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--navy-700);
+    line-height: 1.6;
+  }
+  .info-box strong {
+    color: var(--navy-900);
+  }
+  .info-box .info-icon {
+    display: inline-block;
+    margin-right: 6px;
+  }
+
+  .gold-box {
+    background: linear-gradient(135deg, var(--gold-200), var(--cream));
+    border: 1px solid var(--gold-400);
+    border-left: 4px solid var(--gold-500);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--navy-800);
+    line-height: 1.6;
+  }
+
+  /* Navigation buttons */
+  .form-nav-btns {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--gray-100);
+    gap: 12px;
+  }
+  .btn {
+    padding: 11px 22px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1.5px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: inherit;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--navy-800), var(--navy-700));
+    color: white;
+    box-shadow: var(--shadow);
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-lg);
+  }
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold-500), var(--gold-400));
+    color: var(--navy-900);
+    box-shadow: var(--shadow-gold);
+    font-weight: 700;
+  }
+  .btn-gold:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 32px rgba(212, 165, 116, 0.4);
+  }
+  .btn-ghost {
+    background: var(--white);
+    color: var(--navy-700);
+    border-color: var(--gray-200);
+  }
+  .btn-ghost:hover {
+    background: var(--gray-50);
+    border-color: var(--gray-300);
+  }
+
+  /* Dashboard */
+  .dashboard {
+    display: none;
+    animation: fadeIn 0.5s ease;
+  }
+  .dashboard.active { display: block; }
+
+  /* Score Hero */
+  .score-hero {
+    background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-700) 100%);
+    border-radius: 20px;
+    padding: 32px;
+    color: white;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  .score-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(212, 165, 116, 0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .score-hero-inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 28px;
+    align-items: center;
+  }
+  @media (max-width: 800px) {
+    .score-hero-inner { grid-template-columns: 1fr; text-align: center; }
+    .score-ring-wrap { margin: 0 auto; }
+  }
+  .score-ring-wrap {
+    position: relative;
+    width: 180px;
+    height: 180px;
+  }
+  .score-ring {
+    transform: rotate(-90deg);
+  }
+  .score-ring-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 10;
+  }
+  .score-ring-fill {
+    fill: none;
+    stroke: url(#scoreGrad);
+    stroke-width: 10;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .score-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .score-value {
+    font-size: 44px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1;
+    background: linear-gradient(135deg, #fff, var(--gold-300));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .score-max {
+    font-size: 13px;
+    color: var(--blue-300);
+    margin-top: 4px;
+  }
+  .score-tier {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 8px;
+    padding: 4px 12px;
+    border-radius: 12px;
+    background: rgba(212, 165, 116, 0.2);
+    color: var(--gold-300);
+    border: 1px solid rgba(212, 165, 116, 0.3);
+  }
+  .score-info h2 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .score-info .subtitle {
+    font-size: 14px;
+    color: var(--blue-300);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+  .score-breakdown {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .breakdown-item {
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+  }
+  .breakdown-label {
+    font-size: 10px;
+    color: var(--blue-300);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+  }
+  .breakdown-value {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .breakdown-bar {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+  .breakdown-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold-500), var(--gold-300));
+    border-radius: 2px;
+    transition: width 1s ease;
+  }
+  .tier3-bonus {
+    padding: 12px 16px;
+    background: linear-gradient(135deg, rgba(212, 165, 116, 0.15), rgba(212, 165, 116, 0.05));
+    border: 1px solid rgba(212, 165, 116, 0.3);
+    border-radius: 12px;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .tier3-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--gold-500);
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .tier3-text {
+    font-size: 12px;
+    color: var(--gold-200);
+    line-height: 1.5;
+  }
+  .tier3-text strong {
+    color: var(--gold-300);
+    display: block;
+    font-size: 13px;
+    margin-bottom: 2px;
+  }
+
+  /* Three Column Dashboard */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 1100px) {
+    .dashboard-grid { grid-template-columns: 1fr; }
+  }
+  .dash-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--gray-200);
+  }
+  .dash-card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .dash-card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    font-size: 16px;
+  }
+  .dash-card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy-900);
+  }
+  .dash-card-subtitle {
+    font-size: 11px;
+    color: var(--gray-500);
+  }
+
+  /* Strengths */
+  .strength-icon { background: var(--success-light); color: var(--success); }
+  .strength-item {
+    display: flex;
+    gap: 10px;
+    padding: 12px;
+    background: var(--gray-50);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    border-left: 3px solid var(--success);
+  }
+  .strength-item .bullet {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--success);
+    color: white;
+    display: grid;
+    place-items: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .strength-item .text {
+    font-size: 12px;
+    color: var(--navy-800);
+    line-height: 1.5;
+  }
+  .strength-item .text strong {
+    display: block;
+    color: var(--navy-900);
+    font-size: 13px;
+    margin-bottom: 2px;
+  }
+
+  /* Gaps */
+  .gap-icon { background: var(--warning-light); color: var(--warning); }
+  .gap-item {
+    padding: 14px;
+    background: linear-gradient(135deg, var(--warning-light), #fffbeb);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border-left: 3px solid var(--warning);
+  }
+  .gap-item .gap-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .gap-item .gap-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy-900);
+  }
+  .gap-item .gap-impact {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    background: var(--white);
+    border-radius: 10px;
+    color: var(--warning);
+    border: 1px solid var(--warning);
+  }
+  .gap-item .gap-desc {
+    font-size: 12px;
+    color: var(--navy-700);
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .gap-item .gap-action {
+    padding: 8px 10px;
+    background: var(--white);
+    border-radius: 8px;
+    font-size: 11px;
+    color: var(--navy-800);
+    border: 1px solid var(--gold-400);
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .gap-item .gap-action::before {
+    content: '💡';
+    flex-shrink: 0;
+  }
+
+  /* Universities */
+  .uni-icon { background: var(--info-light); color: var(--info); }
+  .uni-bracket {
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 12px;
+    display: inline-block;
+  }
+  .bracket-dream {
+    background: linear-gradient(135deg, var(--gold-200), var(--gold-300));
+    color: var(--navy-800);
+    border: 1px solid var(--gold-400);
+  }
+  .bracket-target {
+    background: var(--info-light);
+    color: var(--info);
+    border: 1px solid #93c5fd;
+  }
+  .bracket-safe {
+    background: var(--success-light);
+    color: var(--success);
+    border: 1px solid #6ee7b7;
+  }
+  .uni-item {
+    padding: 14px;
+    background: var(--gray-50);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--gray-200);
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .uni-item:hover {
+    border-color: var(--gold-400);
+    background: var(--white);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+  }
+  .uni-item-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .uni-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy-900);
+    line-height: 1.3;
+  }
+  .uni-loc {
+    font-size: 11px;
+    color: var(--gray-500);
+    margin-top: 2px;
+  }
+  .uni-match {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--white);
+    border: 1px solid var(--gold-400);
+    color: var(--navy-800);
+    flex-shrink: 0;
+  }
+  .uni-stats {
+    display: flex;
+    gap: 12px;
+    font-size: 10px;
+    color: var(--gray-600);
+    flex-wrap: wrap;
+  }
+  .uni-stats span {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  /* Emergency Roadmap */
+  .roadmap-card {
+    background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-700) 100%);
+    border-radius: 16px;
+    padding: 28px;
+    color: white;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+  }
+  .roadmap-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(212, 165, 116, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .roadmap-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+    position: relative;
+  }
+  .roadmap-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--gold-500), var(--gold-400));
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    box-shadow: var(--shadow-gold);
+  }
+  .roadmap-title {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  .roadmap-subtitle {
+    font-size: 12px;
+    color: var(--blue-300);
+    margin-top: 2px;
+  }
+  .roadmap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    position: relative;
+  }
+  .roadmap-step {
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+  }
+  .roadmap-step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--gold-500);
+    color: var(--navy-900);
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .roadmap-step-title {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--gold-300);
+  }
+  .roadmap-step-desc {
+    font-size: 11px;
+    color: var(--blue-300);
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .roadmap-step-timeline {
+    font-size: 10px;
+    color: var(--gold-400);
+    font-weight: 600;
+    padding: 3px 8px;
+    background: rgba(212, 165, 116, 0.15);
+    border-radius: 8px;
+    display: inline-block;
+  }
+
+  /* Action Bar */
+  .action-bar {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 20px;
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--gray-200);
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 14px 20px;
+    background: var(--navy-900);
+    color: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s;
+  }
+  .toast.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .toast.success { background: var(--success); }
+  .toast.info { background: var(--info); }
+
+  /* Reset button */
+  .reset-wrap {
+    text-align: center;
+    margin-top: 20px;
+  }
+  .reset-btn {
+    background: none;
+    border: none;
+    color: var(--gray-500);
+    font-size: 12px;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+  .reset-btn:hover {
+    background: var(--gray-100);
+    color: var(--navy-700);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gray-400); }
+
+  /* Animations */
+  @keyframes countUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-in { animation: countUp 0.6s ease forwards; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-mark">🎓</div>
+      <div class="logo-text">
+        <h1>AdmitEdge</h1>
+        <p>REJECTION-PROF UNIVERSITY SHORTLISTING</p>
+      </div>
+    </div>
+    <div class="header-tagline">✨ Turn your profile into an admit letter</div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero" id="heroSection">
+    <div class="hero-badge">💎 For the Diamond in the Rough</div>
+    <h2>Your Tier-3 College is Not Your <span class="accent">Destination.</span><br>It's Your Launchpad.</h2>
+    <p>Most shortlisting tools tell you your chances. Ours tells you <strong>how to force them to accept you</strong>. Build a rejection-proof profile in 6 months.</p>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-head">
+      <div class="progress-label">Profile Completion</div>
+      <div class="progress-pct" id="progressPct">0%</div>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-steps">
+      <div class="progress-step active" data-step="0">Academics</div>
+      <div class="progress-step" data-step="1">Exams</div>
+      <div class="progress-step" data-step="2">Experience</div>
+      <div class="progress-step" data-step="3">Extras</div>
+    </div>
+  </div>
+
+  <!-- Form Layout -->
+  <div class="form-layout" id="formLayout">
+
+    <!-- Sidebar Nav -->
+    <nav class="form-nav">
+      <div class="nav-title">Profile Sections</div>
+      <div class="nav-item active" data-section="0">
+        <div class="nav-icon">📚</div>
+        <span>Academic Metrics</span>
+      </div>
+      <div class="nav-item" data-section="1">
+        <div class="nav-icon">📝</div>
+        <span>Entrance Exams</span>
+      </div>
+      <div class="nav-item" data-section="2">
+        <div class="nav-icon">💼</div>
+        <span>Experience</span>
+      </div>
+      <div class="nav-item" data-section="3">
+        <div class="nav-icon">🌟</div>
+        <span>Extra-Curricular</span>
+      </div>
+      <div style="margin-top:20px;padding:14px;background:linear-gradient(135deg,var(--gold-200),var(--cream));border-radius:12px;border:1px solid var(--gold-400);">
+        <div style="font-size:11px;font-weight:700;color:var(--navy-800);margin-bottom:4px;">💡 Pro Tip</div>
+        <div style="font-size:11px;color:var(--navy-700);line-height:1.5;">Your data is saved automatically. Come back anytime.</div>
+      </div>
+    </nav>
+
+    <!-- Form Sections -->
+    <div class="form-sections">
+
+      <!-- Section 1: Academic -->
+      <div class="form-section active" data-section="0">
+        <div class="section-head">
+          <div class="section-icon">📚</div>
+          <div class="section-title">
+            <h3>Academic Metrics</h3>
+            <p>Your foundation — let's quantify it honestly</p>
+          </div>
+        </div>
+
+        <div class="field-grid">
+          <div class="field">
+            <label class="field-label">CGPA (out of 10) <span class="req">*</span></label>
+            <input type="number" class="input" id="gpa" min="0" max="10" step="0.01" placeholder="e.g., 7.8">
+            <div class="field-hint">Top universities expect 8.5+, but we'll compensate with other strengths</div>
+          </div>
+          <div class="field">
+            <label class="field-label">Backlogs / ATKTs</label>
+            <select class="select" id="backlogs">
+              <option value="0">None (0)</option>
+              <option value="1">1-2 (Cleared)</option>
+              <option value="2">3-5</option>
+              <option value="3">6+</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label class="field-label">University Tier</label>
+            <div class="tier-selector">
+              <div class="tier-option" data-tier="1">
+                <div class="tier-name">Tier 1</div>
+                <div class="tier-desc">IIT / NIT / IIIT</div>
+              </div>
+              <div class="tier-option" data-tier="2">
+                <div class="tier-name">Tier 2</div>
+                <div class="tier-desc">Private Elite (BITS, VIT)</div>
+              </div>
+              <div class="tier-option active" data-tier="3">
+                <div class="tier-name">Tier 3</div>
+                <div class="tier-desc">State / Other Colleges</div>
+              </div>
+            </div>
+            <div class="gold-box">
+              <strong>💎 Tier 3 Leverage Active:</strong> We recognize that a 7.5 CGPA from a Tier 3 college with limited resources is equivalent to an 8.5 from a Tier 1. We'll add a Resilience Bonus to your score.
+            </div>
+          </div>
+        </div>
+
+        <div class="form-nav-btns">
+          <div></div>
+          <button class="btn btn-primary" onclick="nextSection()">Continue →</button>
+        </div>
+      </div>
+
+      <!-- Section 2: Exams -->
+      <div class="form-section" data-section="1">
+        <div class="section-head">
+          <div class="section-icon">📝</div>
+          <div class="section-title">
+            <h3>Entrance Exams</h3>
+            <p>Standardized scores — your great equalizer</p>
+          </div>
+        </div>
+
+        <div class="field-grid">
+          <div class="field">
+            <label class="field-label">GRE Quant (out of 170)</label>
+            <input type="number" class="input" id="greQuant" min="130" max="170" placeholder="e.g., 165">
+          </div>
+          <div class="field">
+            <label class="field-label">GRE Verbal (out of 170)</label>
+            <input type="number" class="input" id="greVerbal" min="130" max="170" placeholder="e.g., 155">
+          </div>
+          <div class="field">
+            <label class="field-label">GRE AWA (out of 6)</label>
+            <input type="number" class="input" id="greAwa" min="0" max="6" step="0.5" placeholder="e.g., 4.0">
+          </div>
+          <div class="field">
+            <label class="field-label">English Test Type</label>
+            <select class="select" id="engType">
+              <option value="toefl">TOEFL</option>
+              <option value="ielts">IELTS</option>
+              <option value="duolingo">Duolingo</option>
+              <option value="none">Not taken yet</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label">English Score</label>
+            <input type="number" class="input" id="engScore" min="0" max="120" placeholder="e.g., 105 (TOEFL) or 7.5 (IELTS)">
+          </div>
+          <div class="field">
+            <label class="field-label">GATE Percentile (optional)</label>
+            <input type="number" class="input" id="gate" min="0" max="100" placeholder="e.g., 95">
+          </div>
+        </div>
+
+        <div class="info-box">
+          <span class="info-icon">💡</span>
+          <strong>High GRE = GPA Compensation:</strong> A 325+ GRE can offset a 6.5-7.5 CGPA. Top universities value quantitative ability highly — this is your chance to shine.
+        </div>
+
+        <div class="form-nav-btns">
+          <button class="btn btn-ghost" onclick="prevSection()">← Back</button>
+          <button class="btn btn-primary" onclick="nextSection()">Continue →</button>
+        </div>
+      </div>
+
+      <!-- Section 3: Experience -->
+      <div class="form-section" data-section="2">
+        <div class="section-head">
+          <div class="section-icon">💼</div>
+          <div class="section-title">
+            <h3>Experience & Leadership</h3>
+            <p>Where you prove you can do the work</p>
+          </div>
+        </div>
+
+        <div class="field-grid">
+          <div class="field">
+            <label class="field-label">Number of Internships</label>
+            <input type="number" class="input" id="internships" min="0" max="20" placeholder="e.g., 2">
+          </div>
+          <div class="field">
+            <label class="field-label">Internship Type</label>
+            <select class="select" id="internType">
+              <option value="none">None yet</option>
+              <option value="industry">Industry-based</option>
+              <option value="research">Research-based</option>
+              <option value="mixed">Mixed (Research + Industry)</option>
+            </select>
+            <div class="field-hint">Research internships carry 2x weight for MS/PhD apps</div>
+          </div>
+          <div class="field">
+            <label class="field-label">Academic Projects</label>
+            <input type="number" class="input" id="projects" min="0" max="30" placeholder="e.g., 5">
+          </div>
+          <div class="field">
+            <label class="field-label">Do any projects solve real-world problems?</label>
+            <select class="select" id="projectImpact">
+              <option value="0">No, all academic</option>
+              <option value="1">1 project with impact</option>
+              <option value="2">2-3 projects with impact</option>
+              <option value="3">4+ projects with impact</option>
+            </select>
+            <div class="field-hint">Social impact projects are heavily weighted by admissions committees</div>
+          </div>
+          <div class="field full">
+            <label class="field-label">Leadership Roles (describe briefly)</label>
+            <textarea class="textarea" id="leadership" placeholder="e.g., Head of College Tech Fest (managed 50+ volunteers), Team Lead in Smart India Hackathon (led 4-member team to national finals), Class Representative for 2 years..."></textarea>
+            <div class="field-hint">Use action words: managed, founded, coordinated, led, organized</div>
+          </div>
+        </div>
+
+        <div class="form-nav-btns">
+          <button class="btn btn-ghost" onclick="prevSection()">← Back</button>
+          <button class="btn btn-primary" onclick="nextSection()">Continue →</button>
+        </div>
+      </div>
+
+      <!-- Section 4: Extras -->
+      <div class="form-section" data-section="3">
+        <div class="section-head">
+          <div class="section-icon">🌟</div>
+          <div class="section-title">
+            <h3>Extra-Curricular Activities</h3>
+            <p>What makes you a complete candidate</p>
+          </div>
+        </div>
+
+        <div class="field full">
+          <label class="field-label">Select your activities (multiple allowed)</label>
+          <div class="chips" id="activityChips">
+            <div class="chip" data-activity="sports">🏆 Sports / Athletics</div>
+            <div class="chip" data-activity="cultural">🎭 Cultural Arts</div>
+            <div class="chip" data-activity="volunteering">🤝 Volunteering / NGO</div>
+            <div class="chip" data-activity="opensource">💻 Open Source Contributions</div>
+            <div class="chip" data-activity="hackathons">🏅 Hackathons / Competitions</div>
+            <div class="chip" data-activity="publications">📄 Research Publications</div>
+            <div class="chip" data-activity="entrepreneurship">🚀 Entrepreneurship / Startup</div>
+            <div class="chip" data-activity="mentoring">👨‍🏫 Mentoring / Teaching</div>
+            <div class="chip" data-activity="writing">✍️ Blogging / Technical Writing</div>
+            <div class="chip" data-activity="clubs">🎯 College Club Leadership</div>
+          </div>
+        </div>
+
+        <div class="field full" style="margin-top:20px;">
+          <label class="field-label">Anything else you'd like us to know? (optional)</label>
+          <textarea class="textarea" id="additional" placeholder="e.g., First-generation college student, overcame financial hardship, self-taught programmer, published a paper in IEEE conference..."></textarea>
+        </div>
+
+        <div class="form-nav-btns">
+          <button class="btn btn-ghost" onclick="prevSection()">← Back</button>
+          <button class="btn btn-gold" onclick="calculateResults()">✨ Generate My Rejection-Proof Shortlist</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="dashboard" id="dashboard">
+
+    <!-- Score Hero -->
+    <div class="score-hero">
+      <div class="score-hero-inner">
+        <div class="score-ring-wrap">
+          <svg class="score-ring" width="180" height="180" viewBox="0 0 180 180">
+            <defs>
+              <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#d4a574"/>
+                <stop offset="100%" stop-color="#f4d4a8"/>
+              </linearGradient>
+            </defs>
+            <circle class="score-ring-bg" cx="90" cy="90" r="78"/>
+            <circle class="score-ring-fill" id="scoreRing" cx="90" cy="90" r="78"
+              stroke-dasharray="490" stroke-dashoffset="490"/>
+          </svg>
+          <div class="score-center">
+            <div class="score-value" id="scoreValue">0</div>
+            <div class="score-max">out of 100</div>
+            <div class="score-tier" id="scoreTier">Calculating...</div>
+          </div>
+        </div>
+        <div class="score-info">
+          <h2 id="scoreTitle">Your Profile Score</h2>
+          <div class="subtitle" id="scoreSubtitle">Here's where you stand — and how to move up.</div>
+          <div class="score-breakdown">
+            <div class="breakdown-item">
+              <div class="breakdown-label">Academics</div>
+              <div class="breakdown-value" id="bdAcademics">0/30</div>
+              <div class="breakdown-bar"><div class="breakdown-fill" id="bfAcademics" style="width:0%"></div></div>
+            </div>
+            <div class="breakdown-item">
+              <div class="breakdown-label">Exams</div>
+              <div class="breakdown-value" id="bdExams">0/25</div>
+              <div class="breakdown-bar"><div class="breakdown-fill" id="bfExams" style="width:0%"></div></div>
+            </div>
+            <div class="breakdown-item">
+              <div class="breakdown-label">Experience</div>
+              <div class="breakdown-value" id="bdExperience">0/25</div>
+              <div class="breakdown-bar"><div class="breakdown-fill" id="bfExperience" style="width:0%"></div></div>
+            </div>
+            <div class="breakdown-item">
+              <div class="breakdown-label">Leadership</div>
+              <div class="breakdown-value" id="bdLeadership">0/20</div>
+              <div class="breakdown-bar"><div class="breakdown-fill" id="bfLeadership" style="width:0%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tier3-bonus" id="tier3Bonus" style="display:none;">
+        <div class="tier3-icon">💎</div>
+        <div class="tier3-text">
+          <strong>Resilience Bonus Applied: +<span id="tier3Value">0</span> points</strong>
+          We recognize the extra effort it takes to excel from a Tier 3 institution. This bonus reflects your grit, resourcefulness, and determination — qualities top universities value deeply.
+        </div>
+      </div>
+    </div>
+
+    <!-- Emergency Roadmap (conditional) -->
+    <div class="roadmap-card" id="roadmapCard" style="display:none;">
+      <div class="roadmap-head">
+        <div class="roadmap-icon">🗺️</div>
+        <div>
+          <div class="roadmap-title">Your 6-Month Emergency Roadmap</div>
+          <div class="roadmap-subtitle">Follow this plan and you'll be in the Target bracket by application season</div>
+        </div>
+      </div>
+      <div class="roadmap-grid" id="roadmapGrid"></div>
+    </div>
+
+    <!-- Three Column Dashboard -->
+    <div class="dashboard-grid">
+
+      <!-- Strengths -->
+      <div class="dash-card">
+        <div class="dash-card-head">
+          <div class="dash-card-icon strength-icon">💪</div>
+          <div>
+            <div class="dash-card-title">Your Strengths</div>
+            <div class="dash-card-subtitle">What's working in your favor</div>
+          </div>
+        </div>
+        <div id="strengthsList"></div>
+      </div>
+
+      <!-- Gaps -->
+      <div class="dash-card">
+        <div class="dash-card-head">
+          <div class="dash-card-icon gap-icon">🎯</div>
+          <div>
+            <div class="dash-card-title">Gap Analysis</div>
+            <div class="dash-card-subtitle">Honest feedback + action plan</div>
+          </div>
+        </div>
+        <div id="gapsList"></div>
+      </div>
+
+      <!-- Universities -->
+      <div class="dash-card">
+        <div class="dash-card-head">
+          <div class="dash-card-icon uni-icon">🎓</div>
+          <div>
+            <div class="dash-card-title">Your Shortlist</div>
+            <div class="dash-card-subtitle">Universities matched to your profile</div>
+          </div>
+        </div>
+        <div id="uniList"></div>
+      </div>
+
+    </div>
+
+    <!-- Action Bar -->
+    <div class="action-bar">
+      <button class="btn btn-primary" onclick="downloadReport()">📄 Download Full Report</button>
+      <button class="btn btn-ghost" onclick="window.print()">🖨️ Print</button>
+      <button class="btn btn-ghost" onclick="shareResults()">🔗 Share with Mentor</button>
+      <button class="btn btn-ghost" onclick="editProfile()">✏️ Edit Profile</button>
+    </div>
+
+    <div class="reset-wrap">
+      <button class="reset-btn" onclick="resetAll()">🔄 Start Over with New Profile</button>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// STATE
+// ============================================================
+const STORAGE_KEY = 'admitedge_profile_v1';
+let currentSection = 0;
+let profile = {
+  gpa: '',
+  backlogs: '0',
+  tier: '3',
+  greQuant: '',
+  greVerbal: '',
+  greAwa: '',
+  engType: 'toefl',
+  engScore: '',
+  gate: '',
+  internships: '',
+  internType: 'none',
+  projects: '',
+  projectImpact: '0',
+  leadership: '',
+  activities: [],
+  additional: ''
+};
+
+// ============================================================
+// UNIVERSITY DATABASE
+// ============================================================
+const UNIVERSITIES = [
+  // Dream (requires 85+)
+  { name: 'Massachusetts Institute of Technology', country: 'USA', rank: 1, minScore: 88, avgGRE: 330, avgGPA: 9.2, tag: 'dream' },
+  { name: 'Stanford University', country: 'USA', rank: 3, minScore: 88, avgGRE: 328, avgGPA: 9.0, tag: 'dream' },
+  { name: 'University of Cambridge', country: 'UK', rank: 2, minScore: 87, avgGRE: 328, avgGPA: 9.0, tag: 'dream' },
+  { name: 'University of Oxford', country: 'UK', rank: 4, minScore: 87, avgGRE: 327, avgGPA: 8.9, tag: 'dream' },
+  { name: 'ETH Zurich', country: 'Switzerland', rank: 7, minScore: 86, avgGRE: 325, avgGPA: 8.8, tag: 'dream' },
+  { name: 'National University of Singapore', country: 'Singapore', rank: 8, minScore: 85, avgGRE: 324, avgGPA: 8.7, tag: 'dream' },
+  { name: 'California Institute of Technology', country: 'USA', rank: 5, minScore: 89, avgGRE: 331, avgGPA: 9.3, tag: 'dream' },
+  { name: 'Imperial College London', country: 'UK', rank: 6, minScore: 86, avgGRE: 325, avgGPA: 8.8, tag: 'dream' },
+
+  // Target (70-84)
+  { name: 'University of Texas at Austin', country: 'USA', rank: 30, minScore: 78, avgGRE: 320, avgGPA: 8.3, tag: 'target' },
+  { name: 'UCLA', country: 'USA', rank: 28, minScore: 79, avgGRE: 321, avgGPA: 8.4, tag: 'target' },
+  { name: 'University of Michigan', country: 'USA', rank: 23, minScore: 77, avgGRE: 319, avgGPA: 8.2, tag: 'target' },
+  { name: 'TU Delft', country: 'Netherlands', rank: 48, minScore: 74, avgGRE: 315, avgGPA: 8.0, tag: 'target' },
+  { name: 'University of Toronto', country: 'Canada', rank: 21, minScore: 76, avgGRE: 318, avgGPA: 8.2, tag: 'target' },
+  { name: 'University of Edinburgh', country: 'UK', rank: 34, minScore: 73, avgGRE: 315, avgGPA: 7.9, tag: 'target' },
+  { name: 'University of Melbourne', country: 'Australia', rank: 37, minScore: 72, avgGRE: 314, avgGPA: 7.8, tag: 'target' },
+  { name: 'Georgia Tech', country: 'USA', rank: 32, minScore: 77, avgGRE: 319, avgGPA: 8.2, tag: 'target' },
+  { name: 'Carnegie Mellon University', country: 'USA', rank: 26, minScore: 80, avgGRE: 322, avgGPA: 8.5, tag: 'target' },
+  { name: 'TU Munich', country: 'Germany', rank: 50, minScore: 73, avgGRE: 314, avgGPA: 7.9, tag: 'target' },
+  { name: 'University of Waterloo', country: 'Canada', rank: 45, minScore: 74, avgGRE: 315, avgGPA: 8.0, tag: 'target' },
+  { name: 'Nanyang Technological University', country: 'Singapore', rank: 22, minScore: 76, avgGRE: 318, avgGPA: 8.2, tag: 'target' },
+  { name: 'University of British Columbia', country: 'Canada', rank: 35, minScore: 74, avgGRE: 316, avgGPA: 8.0, tag: 'target' },
+  { name: 'RWTH Aachen', country: 'Germany', rank: 70, minScore: 70, avgGRE: 310, avgGPA: 7.6, tag: 'target' },
+  { name: 'KAIST', country: 'South Korea', rank: 41, minScore: 73, avgGRE: 314, avgGPA: 7.9, tag: 'target' },
+
+  // Safe (<70)
+  { name: 'Arizona State University', country: 'USA', rank: 130, minScore: 60, avgGRE: 305, avgGPA: 7.2, tag: 'safe' },
+  { name: 'University at Buffalo (SUNY)', country: 'USA', rank: 140, minScore: 58, avgGRE: 303, avgGPA: 7.0, tag: 'safe' },
+  { name: 'University of Texas Dallas', country: 'USA', rank: 130, minScore: 60, avgGRE: 305, avgGPA: 7.2, tag: 'safe' },
+  { name: 'Northeastern University', country: 'USA', rank: 80, minScore: 65, avgGRE: 310, avgGPA: 7.5, tag: 'safe' },
+  { name: 'University of Cincinnati', country: 'USA', rank: 150, minScore: 55, avgGRE: 300, avgGPA: 6.8, tag: 'safe' },
+  { name: 'Wichita State University', country: 'USA', rank: 250, minScore: 50, avgGRE: 295, avgGPA: 6.5, tag: 'safe' },
+  { name: 'University of Essex', country: 'UK', rank: 200, minScore: 55, avgGRE: 300, avgGPA: 6.8, tag: 'safe' },
+  { name: 'Concordia University', country: 'Canada', rank: 180, minScore: 55, avgGRE: 300, avgGPA: 6.8, tag: 'safe' },
+  { name: 'University of Windsor', country: 'Canada', rank: 200, minScore: 52, avgGRE: 298, avgGPA: 6.6, tag: 'safe' },
+  { name: 'University of South Florida', country: 'USA', rank: 160, minScore: 58, avgGRE: 303, avgGPA: 7.0, tag: 'safe' },
+  { name: 'Clemson University', country: 'USA', rank: 90, minScore: 65, avgGRE: 310, avgGPA: 7.5, tag: 'safe' },
+];
+
+// ============================================================
+// LOAD / SAVE
+// ============================================================
+function loadProfile() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      profile = { ...profile, ...JSON.parse(saved) };
+      hydrateForm();
+      showToast('✓ Welcome back! Your profile has been restored.', 'success');
+    }
+  } catch (e) { console.error(e); }
+}
+
+function saveProfile() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
+  } catch (e) { console.error(e); }
+}
+
+function hydrateForm() {
+  document.getElementById('gpa').value = profile.gpa || '';
+  document.getElementById('backlogs').value = profile.backlogs || '0';
+  document.getElementById('greQuant').value = profile.greQuant || '';
+  document.getElementById('greVerbal').value = profile.greVerbal || '';
+  document.getElementById('greAwa').value = profile.greAwa || '';
+  document.getElementById('engType').value = profile.engType || 'toefl';
+  document.getElementById('engScore').value = profile.engScore || '';
+  document.getElementById('gate').value = profile.gate || '';
+  document.getElementById('internships').value = profile.internships || '';
+  document.getElementById('internType').value = profile.internType || 'none';
+  document.getElementById('projects').value = profile.projects || '';
+  document.getElementById('projectImpact').value = profile.projectImpact || '0';
+  document.getElementById('leadership').value = profile.leadership || '';
+  document.getElementById('additional').value = profile.additional || '';
+
+  // Tier
+  document.querySelectorAll('.tier-option').forEach(t => {
+    t.classList.toggle('active', t.dataset.tier === profile.tier);
+  });
+
+  // Activities
+  document.querySelectorAll('.chip').forEach(c => {
+    c.classList.toggle('active', profile.activities.includes(c.dataset.activity));
+  });
+
+  updateProgress();
+}
+
+function collectForm() {
+  profile.gpa = document.getElementById('gpa').value;
+  profile.backlogs = document.getElementById('backlogs').value;
+  profile.greQuant = document.getElementById('greQuant').value;
+  profile.greVerbal = document.getElementById('greVerbal').value;
+  profile.greAwa = document.getElementById('greAwa').value;
+  profile.engType = document.getElementById('engType').value;
+  profile.engScore = document.getElementById('engScore').value;
+  profile.gate = document.getElementById('gate').value;
+  profile.internships = document.getElementById('internships').value;
+  profile.internType = document.getElementById('internType').value;
+  profile.projects = document.getElementById('projects').value;
+  profile.projectImpact = document.getElementById('projectImpact').value;
+  profile.leadership = document.getElementById('leadership').value;
+  profile.additional = document.getElementById('additional').value;
+  saveProfile();
+  updateProgress();
+}
+
+// ============================================================
+// PROGRESS
+// ============================================================
+function updateProgress() {
+  const fields = [
+    // Section 0: Academics
+    () => profile.gpa ? 1 : 0,
+    () => 1, // backlogs always has default
+    () => profile.tier ? 1 : 0,
+    // Section 1: Exams
+    () => (profile.greQuant || profile.greVerbal) ? 1 : 0,
+    () => profile.engScore ? 1 : 0,
+    // Section 2: Experience
+    () => profile.internships ? 1 : 0,
+    () => profile.projects ? 1 : 0,
+    () => profile.leadership && profile.leadership.trim().length > 10 ? 1 : 0,
+    // Section 3: Extras
+    () => profile.activities.length > 0 ? 1 : 0,
+  ];
+
+  const filled = fields.reduce((s, f) => s + f(), 0);
+  const total = fields.length;
+  const pct = Math.round((filled / total) * 100);
+
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressFill').style.width = pct + '%';
+
+  // Update step indicators
+  const sectionFilled = [
+    profile.gpa && profile.tier,
+    profile.greQuant || profile.greVerbal || profile.engScore,
+    profile.internships || profile.projects || profile.leadership,
+    profile.activities.length > 0
+  ];
+
+  document.querySelectorAll('.progress-step').forEach((step, i) => {
+    step.classList.remove('active', 'done');
+    if (i === currentSection) step.classList.add('active');
+    else if (sectionFilled[i]) step.classList.add('done');
+  });
+
+  document.querySelectorAll('.nav-item').forEach((item, i) => {
+    item.classList.remove('active', 'done');
+    if (i === currentSection) item.classList.add('active');
+    else if (sectionFilled[i]) item.classList.add('done');
+  });
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showSection(idx) {
+  currentSection = idx;
+  document.querySelectorAll('.form-section').forEach(s => {
+    s.classList.toggle('active', parseInt(s.dataset.section) === idx);
+  });
+  updateProgress();
+  window.scrollTo({ top: 200, behavior: 'smooth' });
+}
+
+function nextSection() {
+  collectForm();
+  if (currentSection < 3) showSection(currentSection + 1);
+}
+
+function prevSection() {
+  collectForm();
+  if (currentSection > 0) showSection(currentSection - 1);
+}
+
+// ============================================================
+// SCORING ENGINE
+// ============================================================
+function calculateResults() {
+  collectForm();
+
+  const gpa = parseFloat(profile.gpa) || 0;
+  const greQ = parseFloat(profile.greQuant) || 0;
+  const greV = parseFloat(profile.greVerbal) || 0;
+  const greA = parseFloat(profile.greAwa) || 0;
+  const eng = parseFloat(profile.engScore) || 0;
+  const internships = parseInt(profile.internships) || 0;
+  const projects = parseInt(profile.projects) || 0;
+  const impact = parseInt(profile.projectImpact) || 0;
+  const backlogs = parseInt(profile.backlogs) || 0;
+  const leadership = (profile.leadership || '').toLowerCase();
+  const tier = profile.tier;
+
+  // ---- ACADEMICS (30 points) ----
+  let academics = 0;
+  if (gpa >= 9) academics = 30;
+  else if (gpa >= 8.5) academics = 27;
+  else if (gpa >= 8) academics = 23;
+  else if (gpa >= 7.5) academics = 19;
+  else if (gpa >= 7) academics = 15;
+  else if (gpa >= 6.5) academics = 11;
+  else if (gpa >= 6) academics = 7;
+  else academics = Math.max(2, gpa * 1.2);
+
+  // Backlog penalty
+  if (backlogs === 2) academics -= 3;
+  else if (backlogs === 3) academics -= 6;
+  academics = Math.max(0, academics);
+
+  // ---- EXAMS (25 points) ----
+  let exams = 0;
+  const greTotal = greQ + greV;
+  if (greTotal >= 330) exams += 12;
+  else if (greTotal >= 325) exams += 10;
+  else if (greTotal >= 320) exams += 8;
+  else if (greTotal >= 315) exams += 6;
+  else if (greTotal >= 310) exams += 4;
+  else if (greTotal >= 300) exams += 2;
+
+  // Quant weight (extra important for engineering)
+  if (greQ >= 168) exams += 4;
+  else if (greQ >= 165) exams += 3;
+  else if (greQ >= 160) exams += 2;
+  else if (greQ >= 155) exams += 1;
+
+  // English
+  let engNorm = eng;
+  if (profile.engType === 'ielts') engNorm = eng * 14; // rough TOEFL equivalent
+  else if (profile.engType === 'duolingo') engNorm = eng * 0.85;
+
+  if (engNorm >= 110) exams += 6;
+  else if (engNorm >= 100) exams += 5;
+  else if (engNorm >= 90) exams += 3;
+  else if (engNorm >= 80) exams += 2;
+
+  // AWA
+  if (greA >= 4.5) exams += 2;
+  else if (greA >= 4) exams += 1.5;
+  else if (greA >= 3.5) exams += 1;
+
+  // GATE bonus
+  const gate = parseFloat(profile.gate) || 0;
+  if (gate >= 95) exams += 1;
+  else if (gate >= 90) exams += 0.5;
+
+  exams = Math.min(25, exams);
+
+  // ---- EXPERIENCE (25 points) ----
+  let experience = 0;
+
+  // Internships
+  if (internships >= 3) experience += 6;
+  else if (internships >= 2) experience += 4;
+  else if (internships >= 1) experience += 2;
+
+  // Internship type bonus
+  if (profile.internType === 'research') experience += 4;
+  else if (profile.internType === 'mixed') experience += 3;
+  else if (profile.internType === 'industry') experience += 2;
+
+  // Projects
+  if (projects >= 6) experience += 5;
+  else if (projects >= 4) experience += 4;
+  else if (projects >= 2) experience += 2;
+  else if (projects >= 1) experience += 1;
+
+  // Real-world impact (huge weight)
+  if (impact >= 3) experience += 6;
+  else if (impact >= 2) experience += 4;
+  else if (impact >= 1) experience += 2;
+
+  experience = Math.min(25, experience);
+
+  // ---- LEADERSHIP (20 points) ----
+  let leadershipScore = 0;
+  const leadershipText = leadership;
+  const keywords = ['managed', 'founded', 'coordinated', 'led', 'organized', 'head', 'president', 'captain', 'lead', 'team', 'volunteer', 'initiated', 'established', 'directed', 'supervised'];
+  let keywordHits = 0;
+  keywords.forEach(kw => {
+    if (leadershipText.includes(kw)) keywordHits++;
+  });
+
+  if (keywordHits >= 5) leadershipScore += 12;
+  else if (keywordHits >= 3) leadershipScore += 8;
+  else if (keywordHits >= 1) leadershipScore += 4;
+
+  // Length bonus (detailed descriptions)
+  if (leadershipText.length > 300) leadershipScore += 5;
+  else if (leadershipText.length > 150) leadershipScore += 3;
+  else if (leadershipText.length > 50) leadershipScore += 1;
+
+  // Activities
+  const activityCount = profile.activities.length;
+  if (activityCount >= 4) leadershipScore += 3;
+  else if (activityCount >= 2) leadershipScore += 2;
+  else if (activityCount >= 1) leadershipScore += 1;
+
+  // High-value activities bonus
+  const highValue = ['opensource', 'publications', 'entrepreneurship', 'hackathons'];
+  const hvCount = profile.activities.filter(a => highValue.includes(a)).length;
+  if (hvCount >= 2) leadershipScore += 2;
+  else if (hvCount >= 1) leadershipScore += 1;
+
+  leadershipScore = Math.min(20, leadershipScore);
+
+  // ---- BASE SCORE ----
+  let baseScore = academics + exams + experience + leadershipScore;
+
+  // ---- TIER 3 LEVERAGE ----
+  let tier3Bonus = 0;
+  if (tier === '3') {
+    // The more the student has overcome, the bigger the bonus
+    // Low GPA + high other scores = bigger bonus
+    let bonus = 5; // base resilience bonus
+    if (gpa < 7.5 && (greTotal > 315 || experience > 15)) bonus += 3;
+    if (gpa < 7 && (greTotal > 310 || leadershipScore > 10)) bonus += 2;
+    if (profile.additional && profile.additional.length > 30) bonus += 2; // overcoming hardship
+    tier3Bonus = Math.min(10, bonus);
+  } else if (tier === '2') {
+    tier3Bonus = 2;
+  }
+
+  const finalScore = Math.min(100, Math.round(baseScore + tier3Bonus));
+
+  // ---- CATEGORIZE ----
+  let bracket, tierName, title, subtitle;
+  if (finalScore >= 85) {
+    bracket = 'dream';
+    tierName = 'DREAM UNIVERSITY';
+    title = '🏆 You\'re in Elite Territory';
+    subtitle = 'Your profile is competitive for the world\'s top universities. Now it\'s about perfecting your SOP and LORs.';
+  } else if (finalScore >= 70) {
+    bracket = 'target';
+    tierName = 'TARGET UNIVERSITY';
+    subtitle = 'Strong profile with room to shine. A few strategic improvements can push you into the Dream bracket.';
+    title = '🎯 You\'re a Strong Contender';
+  } else {
+    bracket = 'safe';
+    tierName = 'STRATEGIC GROWTH';
+    title = '🚀 Your Journey Starts Here';
+    subtitle = 'Every admit story has a Chapter 1. Follow the roadmap below and you\'ll be in the Target bracket within 6 months.';
+  }
+
+  // ---- RENDER DASHBOARD ----
+  renderDashboard({
+    finalScore,
+    bracket,
+    tierName,
+    title,
+    subtitle,
+    academics: Math.round(academics),
+    exams: Math.round(exams),
+    experience: Math.round(experience),
+    leadership: Math.round(leadershipScore),
+    tier3Bonus,
+    gpa,
+    greTotal,
+    internships,
+    projects,
+    impact,
+    keywordHits,
+    activityCount
+  });
+}
+
+// ============================================================
+// RENDER DASHBOARD
+// ============================================================
+function renderDashboard(result) {
+  document.getElementById('formLayout').style.display = 'none';
+  document.getElementById('heroSection').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('dashboard').classList.add('active');
+
+  // Animate score ring
+  const ring = document.getElementById('scoreRing');
+  const circumference = 490;
+  const offset = circumference - (result.finalScore / 100) * circumference;
+  setTimeout(() => {
+    ring.style.strokeDashoffset = offset;
+  }, 100);
+
+  // Animate score number
+  animateNumber('scoreValue', 0, result.finalScore, 1500);
+
+  document.getElementById('scoreTier').textContent = result.tierName;
+  document.getElementById('scoreTitle').textContent = result.title;
+  document.getElementById('scoreSubtitle').textContent = result.subtitle;
+
+  // Breakdown
+  document.getElementById('bdAcademics').textContent = result.academics + '/30';
+  document.getElementById('bdExams').textContent = result.exams + '/25';
+  document.getElementById('bdExperience').textContent = result.experience + '/25';
+  document.getElementById('bdLeadership').textContent = result.leadership + '/20';
+
+  setTimeout(() => {
+    document.getElementById('bfAcademics').style.width = (result.academics / 30 * 100) + '%';
+    document.getElementById('bfExams').style.width = (result.exams / 25 * 100) + '%';
+    document.getElementById('bfExperience').style.width = (result.experience / 25 * 100) + '%';
+    document.getElementById('bfLeadership').style.width = (result.leadership / 20 * 100) + '%';
+  }, 200);
+
+  // Tier 3 bonus
+  if (result.tier3Bonus > 0) {
+    document.getElementById('tier3Bonus').style.display = 'flex';
+    document.getElementById('tier3Value').textContent = result.tier3Bonus;
+  }
+
+  // Strengths
+  renderStrengths(result);
+
+  // Gaps
+  renderGaps(result);
+
+  // Universities
+  renderUniversities(result);
+
+  // Emergency roadmap (if score < 70)
+  if (result.finalScore < 70) {
+    renderRoadmap(result);
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function animateNumber(id, from, to, duration) {
+  const el = document.getElementById(id);
+  const start = performance.now();
+  function update(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(from + (to - from) * eased);
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+// ============================================================
+// STRENGTHS
+// ============================================================
+function renderStrengths(r) {
+  const strengths = [];
+
+  if (r.academics >= 23) {
+    strengths.push({ title: 'Strong Academic Foundation', desc: `Your ${profile.gpa} CGPA demonstrates consistent academic excellence. This puts you in the top tier of applicants.` });
+  } else if (r.academics >= 15) {
+    strengths.push({ title: 'Solid Academic Record', desc: `Your ${profile.gpa} CGPA shows you can handle rigorous coursework — a key signal for admissions committees.` });
+  }
+
+  if (r.greTotal >= 320) {
+    strengths.push({ title: 'Competitive GRE Score', desc: `Your GRE of ${r.greTotal} is above the 75th percentile. This significantly strengthens your application.` });
+  } else if (r.greTotal >= 310) {
+    strengths.push({ title: 'Good GRE Foundation', desc: `Your GRE of ${r.greTotal} meets minimum requirements for most universities. Push to 320+ to stand out.` });
+  }
+
+  if (r.experience >= 18) {
+    strengths.push({ title: 'Exceptional Practical Experience', desc: 'Your internships and projects demonstrate real-world capability — exactly what top programs seek.' });
+  } else if (r.experience >= 12) {
+    strengths.push({ title: 'Meaningful Hands-on Experience', desc: 'Your practical work shows you can apply theory to practice — a strong differentiator.' });
+  }
+
+  if (r.impact >= 2) {
+    strengths.push({ title: 'Real-World Impact Projects', desc: 'Projects that solve real problems are gold for admissions. This sets you apart from purely academic candidates.' });
+  }
+
+  if (r.leadership >= 14) {
+    strengths.push({ title: 'Demonstrated Leadership', desc: 'Your leadership roles show initiative and responsibility — qualities top universities value deeply.' });
+  } else if (r.leadership >= 8) {
+    strengths.push({ title: 'Active Leadership Involvement', desc: 'Your leadership experience shows you take initiative beyond academics.' });
+  }
+
+  if (r.activityCount >= 3) {
+    strengths.push({ title: 'Well-Rounded Profile', desc: 'Multiple extra-curricular activities show you\'re a complete candidate, not just a grade machine.' });
+  }
+
+  if (profile.internType === 'research') {
+    strengths.push({ title: 'Research Internship Experience', desc: 'Research internships carry 2x weight for MS/PhD applications. This is a major advantage.' });
+  }
+
+  if (profile.activities.includes('opensource')) {
+    strengths.push({ title: 'Open Source Contributions', desc: 'OSS contributions are highly valued — they show real coding ability and community engagement.' });
+  }
+
+  if (profile.activities.includes('publications')) {
+    strengths.push({ title: 'Research Publications', desc: 'Publications are rare for undergrads and signal research potential — a huge differentiator.' });
+  }
+
+  if (profile.tier === '3' && r.tier3Bonus > 0) {
+    strengths.push({ title: 'Resilience & Grit', desc: 'Excelling from a Tier 3 institution shows extraordinary determination. Admissions committees notice this.' });
+  }
+
+  if (strengths.length === 0) {
+    strengths.push({ title: 'You\'re Here — That\'s Step 1', desc: 'The fact that you\'re planning for grad school shows ambition. Every great admit story starts with this decision.' });
+  }
+
+  const html = strengths.slice(0, 5).map((s, i) => `
+    <div class="strength-item">
+      <div class="bullet">${i + 1}</div>
+      <div class="text">
+        <strong>${s.title}</strong>
+        ${s.desc}
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('strengthsList').innerHTML = html;
+}
+
+// ============================================================
+// GAPS
+// ============================================================
+function renderGaps(r) {
+  const gaps = [];
+
+  if (r.academics < 19) {
+    gaps.push({
+      title: 'GPA Below Competitive Range',
+      impact: 'High',
+      desc: `Your ${profile.gpa} CGPA is below the 8.0+ threshold most top universities expect.`,
+      action: 'Target a 320+ GRE to compensate. Additionally, take 2-3 advanced online courses (MIT OCW, Coursera) in your field and earn certificates to demonstrate academic capability.'
+    });
+  }
+
+  if (r.greTotal < 315) {
+    gaps.push({
+      title: 'GRE Needs Improvement',
+      impact: 'High',
+      desc: `Your GRE of ${r.greTotal} is below the 315+ threshold for competitive applications.`,
+      action: 'Dedicate 2-3 months to focused GRE prep. Target 320+ with 165+ in Quant. Use Gregmat+ ($5/month) — it\'s the most cost-effective resource.'
+    });
+  }
+
+  if (r.exams < 15) {
+    gaps.push({
+      title: 'English Proficiency Gap',
+      impact: 'Medium',
+      desc: 'Your English test score needs improvement to meet minimum requirements.',
+      action: 'Target TOEFL 100+ or IELTS 7.5+. Practice daily with official ETS materials. Consider Duolingo as a faster alternative if time-constrained.'
+    });
+  }
+
+  if (r.experience < 10) {
+    gaps.push({
+      title: 'Limited Practical Experience',
+      impact: 'High',
+      desc: 'Your internship and project count is below what competitive applicants typically have.',
+      action: 'Apply to 2-3 research internships immediately (IITs, IISc, foreign universities via DAAD/MITACS). Also start a significant personal project on GitHub.'
+    });
+  }
+
+  if (r.impact < 2) {
+    gaps.push({
+      title: 'Missing Real-World Impact',
+      impact: 'Medium',
+      desc: 'Your projects don\'t yet demonstrate real-world problem-solving — a key differentiator.',
+      action: 'Identify a local problem (campus, community, industry) and build a solution. Document it on a personal website. Social impact projects get 2x weightage.'
+    });
+  }
+
+  if (r.leadership < 8) {
+    gaps.push({
+      title: 'Leadership Needs Development',
+      impact: 'Medium',
+      desc: 'Your leadership experience is limited or not well-articulated.',
+      action: 'Take on a leadership role NOW: start a college club, lead a hackathon team, organize a tech event. Use action verbs (managed, founded, led) when describing them.'
+    });
+  }
+
+  if (parseInt(profile.backlogs) >= 2) {
+    gaps.push({
+      title: 'Backlog Concern',
+      impact: 'High',
+      desc: 'Active backlogs raise red flags for admissions committees.',
+      action: 'Clear all backlogs before applying. In your SOP, briefly acknowledge them and explain what you learned. Frame it as growth, not failure.'
+    });
+  }
+
+  if (profile.activities.length < 2) {
+    gaps.push({
+      title: 'Limited Extra-Curriculars',
+      impact: 'Low',
+      desc: 'Top universities seek well-rounded candidates, not just academically strong ones.',
+      action: 'Join 2-3 activities: an open-source project (huge ROI), a hackathon team, and a volunteering initiative. Quality > quantity.'
+    });
+  }
+
+  if (r.keywordHits < 2 && profile.leadership.length > 0) {
+    gaps.push({
+      title: 'Leadership Description Needs Polish',
+      impact: 'Low',
+      desc: 'Your leadership description lacks action verbs and specific outcomes.',
+      action: 'Rewrite using the STAR method: Situation, Task, Action, Result. Use numbers: "managed 20-person team," "increased participation by 40%."'
+    });
+  }
+
+  // Always show at least one growth area
+  if (gaps.length === 0) {
+    gaps.push({
+      title: 'Polish Your Narrative',
+      impact: 'Low',
+      desc: 'Your profile is strong — now it\'s about storytelling.',
+      action: 'Start drafting your SOP 3 months before deadlines. Get 3+ reviews from professors, mentors, and peers. Your story is what makes you memorable.'
+    });
+  }
+
+  const html = gaps.slice(0, 5).map(g => `
+    <div class="gap-item">
+      <div class="gap-head">
+        <div class="gap-title">${g.title}</div>
+        <div class="gap-impact">${g.impact} Impact</div>
+      </div>
+      <div class="gap-desc">${g.desc}</div>
+      <div class="gap-action">${g.action}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('gapsList').innerHTML = html;
+}
+
+// ============================================================
+// UNIVERSITIES
+// ============================================================
+function renderUniversities(r) {
+  // Sort universities by match quality
+  const matched = UNIVERSITIES.map(u => {
+    const diff = r.finalScore - u.minScore;
+    let matchPct;
+    if (diff >= 10) matchPct = 95;
+    else if (diff >= 5) matchPct = 85 + (diff - 5) * 2;
+    else if (diff >= 0) matchPct = 70 + diff * 3;
+    else if (diff >= -5) matchPct = 55 + (diff + 5) * 3;
+    else matchPct = Math.max(20, 55 + diff * 3);
+    matchPct = Math.min(98, Math.max(20, Math.round(matchPct)));
+    return { ...u, matchPct };
+  });
+
+  // Pick top universities per bracket
+  const dream = matched.filter(u => u.tag === 'dream').sort((a, b) => b.matchPct - a.matchPct).slice(0, 2);
+  const target = matched.filter(u => u.tag === 'target').sort((a, b) => b.matchPct - a.matchPct).slice(0, 4);
+  const safe = matched.filter(u => u.tag === 'safe').sort((a, b) => b.matchPct - a.matchPct).slice(0, 3);
+
+  const renderUni = (u) => `
+    <div class="uni-item">
+      <div class="uni-item-head">
+        <div>
+          <div class="uni-name">${u.name}</div>
+          <div class="uni-loc">📍 ${u.country} · World Rank #${u.rank}</div>
+        </div>
+        <div class="uni-match">${u.matchPct}%</div>
+      </div>
+      <div class="uni-stats">
+        <span>🎯 Avg GRE: ${u.avgGRE}</span>
+        <span>📊 Avg GPA: ${u.avgGPA}</span>
+      </div>
+    </div>
+  `;
+
+  let html = '';
+
+  if (dream.length > 0) {
+    html += `<div class="uni-bracket bracket-dream">✨ Dream Universities</div>`;
+    html += dream.map(renderUni).join('');
+  }
+  if (target.length > 0) {
+    html += `<div class="uni-bracket bracket-target">🎯 Target Universities</div>`;
+    html += target.map(renderUni).join('');
+  }
+  if (safe.length > 0) {
+    html += `<div class="uni-bracket bracket-safe">🛡️ Safe Universities</div>`;
+    html += safe.map(renderUni).join('');
+  }
+
+  document.getElementById('uniList').innerHTML = html;
+}
+
+// ============================================================
+// EMERGENCY ROADMAP
+// ============================================================
+function renderRoadmap(r) {
+  const steps = [];
+
+  // Always start with GRE if low
+  if (r.greTotal < 315) {
+    steps.push({
+      title: 'Crush the GRE',
+      desc: 'Dedicate 2-3 hours daily. Use Gregmat+ ($5/month) for verbal, official ETS for quant. Target 320+ in 60 days.',
+      timeline: 'Month 1-2'
+    });
+  }
+
+  // Research internship
+  if (r.experience < 12) {
+    steps.push({
+      title: 'Land a Research Internship',
+      desc: 'Cold-email 30+ professors at IITs/IISc/foreign universities. Offer to work on their projects remotely. This is the single highest-ROI activity.',
+      timeline: 'Month 1-3'
+    });
+  }
+
+  // Real-world project
+  if (r.impact < 2) {
+    steps.push({
+      title: 'Build an Impact Project',
+      desc: 'Identify a local problem. Build a solution. Deploy it. Document everything on a personal website. Social impact = admissions gold.',
+      timeline: 'Month 2-4'
+    });
+  }
+
+  // Open source
+  if (!profile.activities.includes('opensource')) {
+    steps.push({
+      title: 'Contribute to Open Source',
+      desc: 'Find 2-3 GitHub repos in your field. Fix bugs, add features, write docs. 5-10 meaningful PRs will transform your profile.',
+      timeline: 'Month 2-5'
+    });
+  }
+
+  // Leadership
+  if (r.leadership < 10) {
+    steps.push({
+      title: 'Take a Leadership Role',
+      desc: 'Start a college tech club, lead a hackathon team, or organize a workshop. Document with numbers: people managed, impact created.',
+      timeline: 'Month 1-3'
+    });
+  }
+
+  // English
+  if (parseFloat(profile.engScore) < 90 || !profile.engScore) {
+    steps.push({
+      title: 'Ace the English Test',
+      desc: 'Target TOEFL 100+ or IELTS 7.5+. Practice 1 hour daily. Take the test by Month 4 to allow retakes if needed.',
+      timeline: 'Month 2-4'
+    });
+  }
+
+  // SOP
+  steps.push({
+    title: 'Craft Your Story (SOP)',
+    desc: 'Start drafting 3 months before deadlines. Your SOP is your chance to explain your journey, especially from a Tier 3 college. Get 3+ reviews.',
+    timeline: 'Month 4-6'
+  });
+
+  // LORs
+  steps.push({
+    title: 'Secure Strong LORs',
+    desc: 'Approach 3 recommenders: 2 academic (professors who know your work), 1 industry (internship mentor). Brief them early with your resume and SOP draft.',
+    timeline: 'Month 4-5'
+  });
+
+  const html = steps.map((s, i) => `
+    <div class="roadmap-step">
+      <div class="roadmap-step-num">${i + 1}</div>
+      <div class="roadmap-step-title">${s.title}</div>
+      <div class="roadmap-step-desc">${s.desc}</div>
+      <div class="roadmap-step-timeline">⏱ ${s.timeline}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('roadmapGrid').innerHTML = html;
+  document.getElementById('roadmapCard').style.display = 'block';
+}
+
+// ============================================================
+// ACTIONS
+// ============================================================
+function editProfile() {
+  document.getElementById('dashboard').classList.remove('active');
+  document.getElementById('formLayout').style.display = 'grid';
+  document.getElementById('heroSection').style.display = 'block';
+  document.getElementById('progressWrap').style.display = 'block';
+  showSection(0);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetAll() {
+  if (!confirm('Reset your profile? This will clear all saved data.')) return;
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  location.reload();
+}
+
+function downloadReport() {
+  const content = generateReport();
+  const blob = new Blob([content], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `AdmitEdge_Report_${new Date().toISOString().split('T')[0]}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('📄 Report downloaded!', 'success');
+}
+
+function generateReport() {
+  const score = document.getElementById('scoreValue').textContent;
+  const tier = document.getElementById('scoreTier').textContent;
+  return `
+═══════════════════════════════════════════════════════
+   ADMITEDGE — REJECTION-PROF PROFILE REPORT
+═══════════════════════════════════════════════════════
+
+Generated: ${new Date().toLocaleString()}
+
+───────────────────────────────────────────────────────
+PROFILE SUMMARY
+───────────────────────────────────────────────────────
+Overall Score:  ${score}/100
+Bracket:        ${tier}
+CGPA:           ${profile.gpa || 'N/A'}
+GRE:            ${profile.greQuant || '—'}/${profile.greVerbal || '—'} (Q/V)
+University Tier: Tier ${profile.tier}
+
+───────────────────────────────────────────────────────
+CATEGORY BREAKDOWN
+───────────────────────────────────────────────────────
+Academics:      ${document.getElementById('bdAcademics').textContent}
+Exams:          ${document.getElementById('bdExams').textContent}
+Experience:     ${document.getElementById('bdExperience').textContent}
+Leadership:     ${document.getElementById('bdLeadership').textContent}
+
+───────────────────────────────────────────────────────
+DETAILED PROFILE
+───────────────────────────────────────────────────────
+Internships:    ${profile.internships || 0} (${profile.internType})
+Projects:       ${profile.projects || 0} (${profile.projectImpact} with impact)
+Activities:     ${profile.activities.join(', ') || 'None'}
+Backlogs:       ${profile.backlogs}
+
+Leadership:
+${profile.leadership || 'Not specified'}
+
+Additional Notes:
+${profile.additional || 'None'}
+
+───────────────────────────────────────────────────────
+RECOMMENDED UNIVERSITIES
+───────────────────────────────────────────────────────
+${Array.from(document.querySelectorAll('.uni-item')).map(u => {
+  const name = u.querySelector('.uni-name').textContent;
+  const loc = u.querySelector('.uni-loc').textContent;
+  const match = u.querySelector('.uni-match').textContent;
+  return `• ${name} (${loc}) — ${match} match`;
+}).join('\n')}
+
+═══════════════════════════════════════════════════════
+Remember: Your Tier-3 college is not your destination.
+It's your launchpad. Now go force them to accept you.
+═══════════════════════════════════════════════════════
+  `.trim();
+}
+
+function shareResults() {
+  const score = document.getElementById('scoreValue').textContent;
+  const tier = document.getElementById('scoreTier').textContent;
+  const text = `🎓 I just got my Rejection-Proof Profile Score on AdmitEdge: ${score}/100 (${tier}). Building my path to grad school, one step at a time. #GradSchool #AdmitEdge`;
+
+  try {
+    if (navigator.share) {
+      navigator.share({ title: 'My AdmitEdge Score', text }).catch(() => {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('📋 Copied to clipboard! Share with your mentor.', 'success');
+      }).catch(() => showToast('🔗 ' + text, 'info'));
+    } else {
+      showToast('🔗 ' + text, 'info');
+    }
+  } catch (e) {
+    showToast('🔗 ' + text, 'info');
+  }
+}
+
+// ============================================================
+// UTILITIES
+// ============================================================
+function showToast(msg, type = '') {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = 'toast show ' + type;
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ============================================================
+// EVENT LISTENERS
+// ============================================================
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    collectForm();
+    showSection(parseInt(item.dataset.section));
+  });
+});
+
+document.querySelectorAll('.tier-option').forEach(opt => {
+  opt.addEventListener('click', () => {
+    document.querySelectorAll('.tier-option').forEach(o => o.classList.remove('active'));
+    opt.classList.add('active');
+    profile.tier = opt.dataset.tier;
+    saveProfile();
+    updateProgress();
+  });
+});
+
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    chip.classList.toggle('active');
+    const activity = chip.dataset.activity;
+    if (profile.activities.includes(activity)) {
+      profile.activities = profile.activities.filter(a => a !== activity);
+    } else {
+      profile.activities.push(activity);
+    }
+    saveProfile();
+    updateProgress();
+  });
+});
+
+// Auto-save on input
+document.querySelectorAll('input, select, textarea').forEach(el => {
+  el.addEventListener('input', () => {
+    collectForm();
+  });
+  el.addEventListener('change', () => {
+    collectForm();
+  });
+});
+
+// ============================================================
+// INIT
+// ============================================================
+loadProfile();
+updateProgress();
+</script>
+
+</body>
+</html>

@@ -10,6 +10,7 @@
 
 import flowStudioHtml from "@/artifacts/ai-automation-flow-studio.html?raw";
 import energyGridHtml from "@/artifacts/energygrid-simulator.html?raw";
+import admitEdgeHtml from "@/artifacts/admitedge-shortlisting.html?raw";
 
 export type CourseArtifact = {
   /** Title shown in the modal header. */
@@ -33,11 +34,18 @@ const artifacts: Record<string, CourseArtifact> = {
     buttonLabel: "Open the automation whiteboard",
     html: flowStudioHtml,
   },
-  "cad-digital-manufacturing": {
-    title: "EnergyGrid Simulator — Engineering Lab",
+  "renewable-energy-mobility": {
+    title: "EnergyGrid Simulator — Renewable Energy Lab",
     buttonLabel: "Open the EnergyGrid simulator",
     html: energyGridHtml,
     // Export downloads a JSON of the design; modals power Clear/Report.
+    sandbox: "allow-scripts allow-modals allow-downloads",
+  },
+  "pick-me": {
+    title: "AdmitEdge — Rejection-Proof University Shortlisting",
+    buttonLabel: "Open the AdmitEdge shortlisting tool",
+    html: admitEdgeHtml,
+    // Download Full Report exports a .txt; modals power confirm/print.
     sandbox: "allow-scripts allow-modals allow-downloads",
   },
 };
