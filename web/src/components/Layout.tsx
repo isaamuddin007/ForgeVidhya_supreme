@@ -2,6 +2,7 @@ import { type ReactNode } from "react";
 import { BubbleNav } from "@/components/BubbleNav";
 import { Footer } from "@/components/Footer";
 import { DeepSeekAssistant } from "@/components/DeepSeekAssistant";
+import { NotebookButton } from "@/components/NotebookButton";
 import { ScrollToTop } from "@/components/SEO";
 
 /**
@@ -14,6 +15,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <BubbleNav />
       <main className="flex-1 pt-40 sm:pt-44">{children}</main>
       <Footer />
+      <NotebookButton />
       <DeepSeekAssistant />
     </div>
   );

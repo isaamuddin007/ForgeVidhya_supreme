@@ -40,7 +40,7 @@ const bubbles: Bubble[] = [
   { label: "Contact", href: "/contact", icon: Mail, color: BRAND_ORANGE },
 ];
 
-/** A single glossy floating orb. */
+/** A single glass-textured navigation chip (rounded rectangle). */
 function Orb({
   bubble,
   active,
@@ -59,49 +59,24 @@ function Orb({
       onClick={() => onNavigate(bubble.href)}
       aria-label={`Go to ${bubble.label}`}
       aria-current={active ? "page" : undefined}
-      className="group relative grid place-items-center rounded-full outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
-      style={{ width: 64, height: 64 }}
-      initial={{ opacity: 0, scale: 0 }}
-      animate={{
-        opacity: 1,
-        scale: 1,
-        y: [0, index % 2 === 0 ? -7 : 7, 0],
+      className="group relative inline-flex items-center gap-2 rounded-xl border bg-card/50 px-3.5 py-2.5 outline-none backdrop-blur-xl transition-colors focus-visible:ring-4 focus-visible:ring-primary/30"
+      style={{
+        borderColor: active ? bubble.color : "hsl(var(--border) / 0.6)",
+        boxShadow: active
+          ? `inset 0 1px 0 rgba(255,255,255,0.5), 0 0 0 1px ${bubble.color}, 0 10px 24px -12px ${bubble.color}`
+          : "inset 0 1px 0 rgba(255,255,255,0.45), 0 8px 20px -14px rgba(15,23,42,0.35)",
       }}
-      transition={{
-        opacity: { delay: index * 0.05 },
-        scale: { type: "spring", stiffness: 320, damping: 18, delay: index * 0.05 },
-        y: {
-          duration: 3 + index * 0.4,
-          repeat: Infinity,
-          ease: "easeInOut",
-        },
-      }}
-      whileHover={{ scale: 1.28 }}
-      whileTap={{ scale: 0.82 }}
+      initial={{ opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ type: "spring", stiffness: 320, damping: 22, delay: index * 0.05 }}
+      whileHover={{ scale: 1.05, y: -1 }}
+      whileTap={{ scale: 0.96 }}
     >
-      {/* glow */}
+      <Icon className="h-4 w-4 shrink-0" strokeWidth={2.4} style={{ color: bubble.color }} />
       <span
-        className="absolute inset-0 rounded-full opacity-50 blur-lg transition-opacity group-hover:opacity-90"
-        style={{ background: bubble.color }}
-      />
-      {/* solid body */}
-      <span
-        className={cn(
-          "relative grid h-16 w-16 place-items-center rounded-full border border-white/40 backdrop-blur-md",
-          active && "ring-2 ring-white/80"
-        )}
-        style={{
-          background: bubble.color,
-          boxShadow:
-            "inset 0 2px 6px rgba(255,255,255,0.35), 0 8px 24px rgba(0,0,0,0.18)",
-        }}
+        className={cn("text-sm font-semibold leading-none", !active && "text-foreground/80")}
+        style={active ? { color: bubble.color } : undefined}
       >
-        {/* highlight shine */}
-        <span className="absolute left-3 top-2 h-4 w-6 rounded-full bg-white/70 blur-[2px]" />
-        <Icon className="relative h-6 w-6 text-white drop-shadow" strokeWidth={2.4} />
-      </span>
-      {/* label */}
-      <span className="pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-semibold text-foreground/80 opacity-0 transition-opacity group-hover:opacity-100">
         {bubble.label}
       </span>
     </motion.button>
@@ -145,7 +120,7 @@ export function BubbleNav() {
   return (
     <>
     <div className="pointer-events-none fixed inset-x-0 top-0 z-50">
-      <div className="mx-auto flex max-w-7xl items-start justify-between px-4 pt-5 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-7xl items-start justify-between px-4 pt-3 sm:px-6 lg:px-8">
         {/* left: brand logo */}
         <motion.button
           type="button"
@@ -206,8 +181,8 @@ export function BubbleNav() {
         </div>
       </div>
 
-      {/* desktop: floating cluster centered under the top row */}
-      <div className="pointer-events-auto mx-auto mt-2 hidden max-w-7xl items-center justify-center gap-4 px-4 sm:flex">
+      {/* desktop: glass nav chips centered just under the top row */}
+      <div className="pointer-events-auto mx-auto -mt-1 hidden max-w-7xl items-center justify-center gap-2.5 px-4 sm:flex">
         {bubbles.map((b, i) => (
           <Orb
             key={b.href}
@@ -228,7 +203,7 @@ export function BubbleNav() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="pointer-events-auto mx-auto mt-4 grid max-w-xs grid-cols-3 place-items-center gap-6 px-4 pb-6 sm:hidden"
+            className="pointer-events-auto mx-auto mt-2 flex max-w-sm flex-wrap items-center justify-center gap-2 px-4 pb-6 sm:hidden"
           >
             {bubbles.map((b, i) => (
               <Orb

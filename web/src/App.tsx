@@ -16,7 +16,7 @@ import BlogPost from "@/pages/BlogPost";
 import Contact from "@/pages/Contact";
 import Privacy from "@/pages/Privacy";
 import Terms from "@/pages/Terms";
-import AuthCallback from "@/pages/AuthCallback";
+import AdminDashboard from "@/pages/AdminDashboard";
 import NotFound from "@/pages/NotFound";
 import { SignInGate } from "@/components/SignInGate";
 import { ScrollToHash } from "@/components/SiteSearch";
@@ -45,7 +45,9 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
-              <Route path="/auth/callback" element={<AuthCallback />} />
+              {/* Admin-only; the page itself gates on role, and every admin API
+                  it calls is guarded server-side by authorize('admin'). */}
+              <Route path="/admin" element={<AdminDashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

@@ -5,13 +5,14 @@ This repo is **deploy-ready**. The steps below are the parts only you can do
 Render blueprint, security hardening — is already committed.
 
 Target stack: **Render** (API web service + static SPA) + **CockroachDB Cloud**
-(PostgreSQL) + **Google OAuth**.
+(PostgreSQL). Auth is email/password with stateless JWTs (mobile-number sign-in
+is planned next).
 
 ---
 
 ## What's already done
 
-- ✅ Backend (Express + CockroachDB) — Google OAuth, uploads, security middleware
+- ✅ Backend (Express + CockroachDB) — email/password JWT auth, uploads, security middleware
 - ✅ Frontend (`web/`, React + Vite + TS) — builds cleanly to `web/dist`
 - ✅ `render.yaml` blueprint for both services
 - ✅ `Dockerfile` (alternative to Render, for a VPS)
@@ -31,23 +32,18 @@ Target stack: **Render** (API web service + static SPA) + **CockroachDB Cloud**
 4. The tables (`users`, `sketches`) are created automatically on first boot from
    `backend/db/schema.sql` — no manual migration needed.
 
-## Step 2 — Create the Google OAuth app
-
-1. https://console.cloud.google.com → **APIs & Services → Credentials**.
-2. **Create Credentials → OAuth client ID → Web application**.
-3. **Authorized redirect URIs**: add your API callback, e.g.
-   `https://forgevidhya-api.onrender.com/auth/google/callback`
-   (and `http://localhost:5000/auth/google/callback` for local dev).
-4. Copy the **Client ID** and **Client secret**.
-
-## Step 3 — Generate app secrets
-
-Run twice; the two values must differ (one for JWT, one for the session):
+## Step 2 — Generate the app secret
 
 ```bash
 openssl rand -base64 48   # JWT_SECRET
-openssl rand -base64 48   # SESSION_SECRET
 ```
+
+## Step 3 — (Optional) DeepSeek AI key
+
+The floating AI assistant proxies through the backend. Get a key at
+https://platform.deepseek.com/ and set `DEEPSEEK_API_KEY` (Step 5). If unset, the
+assistant returns a friendly "not configured" message and the rest of the site
+works normally.
 
 ## Step 4 — Push to GitHub
 
@@ -65,13 +61,9 @@ git push -u origin main
    | Key | Value |
    |-----|-------|
    | `DATABASE_URL` | the CockroachDB string from Step 1 |
-   | `JWT_SECRET` | first value from Step 3 |
-   | `SESSION_SECRET` | second value from Step 3 |
-   | `GOOGLE_CLIENT_ID` | from Step 2 |
-   | `GOOGLE_CLIENT_SECRET` | from Step 2 |
-   | `GOOGLE_CALLBACK_URL` | `https://forgevidhya-api.onrender.com/auth/google/callback` |
+   | `JWT_SECRET` | the value from Step 2 |
+   | `DEEPSEEK_API_KEY` | your DeepSeek key from Step 3 (optional) |
    | `CLIENT_ORIGIN` | the web URL, e.g. `https://forgevidhya-web.onrender.com` |
-   | `CLIENT_URL` | same web URL (OAuth redirects the browser back here) |
    | `COOKIE_DOMAIN` | leave blank unless API + web share a parent domain |
 3. On **forgevidhya-web**, set:
    | Key | Value |
@@ -84,9 +76,7 @@ git push -u origin main
 - **Auth is a stateless 7-day JWT** sent as an `Authorization: Bearer` header
   (the SPA stores it in localStorage). This works cross-origin with no
   cross-site-cookie caveats — just make sure:
-  - `VITE_API_URL` = the API origin (the Google button hits `${VITE_API_URL}/auth/google`).
-  - `GOOGLE_CALLBACK_URL` exactly matches an Authorized redirect URI in Google Console.
-  - `CLIENT_URL` = the web origin (where the callback bounces the browser back with `?token=`).
+  - `VITE_API_URL` = the API origin (the SPA posts to `${VITE_API_URL}/auth/login`).
   - `CLIENT_ORIGIN` exactly matches the SPA origin, or CORS will block API calls.
 - **Sketch uploads** (`/api/uploads`) still use a CSRF cookie. If you exercise that
   feature across two different Render origins, either front both with one custom
@@ -97,9 +87,7 @@ git push -u origin main
 1. Render → each service → **Settings → Custom Domains** → add
    `forgevidhya.in` (web) and `api.forgevidhya.in` (API).
 2. Add the shown DNS records at your registrar. Render issues TLS automatically.
-3. Update `CLIENT_ORIGIN`, `CLIENT_URL`, `VITE_API_URL`, and `GOOGLE_CALLBACK_URL`
-   (plus the Authorized redirect URI in Google Console) to the custom domains,
-   then redeploy.
+3. Update `CLIENT_ORIGIN` and `VITE_API_URL` to the custom domains, then redeploy.
 
 ---
 
@@ -110,7 +98,7 @@ git push -u origin main
 3. HTTPS live; HTTP→HTTPS redirect + HSTS confirmed (`curl -I`).
 4. `NODE_ENV=production` on the API (hides stack traces, Secure cookies, HSTS).
 5. Global rate limiting verified (101× on `/api` → 429).
-6. Google sign-in works end-to-end: button → consent → back to the SPA signed in.
+6. Email/password sign-in works: register → auto signed-in → refresh stays signed in.
 7. Upload rejection verified (>5MB → 413; wrong type → 422; spoofed image deleted).
 8. CORS verified: an API call from the real SPA origin succeeds; a random origin is blocked.
 9. `npm audit --omit=dev` reviewed (see known items below); `.env` not in git.
@@ -120,9 +108,10 @@ git push -u origin main
 
 ## Known items to address soon
 
-- **Email/password login is a stub** (`POST /auth/login` → 501). Only Google
-  sign-in is live. Implement the credential path (bcrypt + the reserved
-  `password` column) when needed.
+- **Mobile-number (OTP) sign-in** is the next auth method to add — slot it into
+  `authController`/`authRoutes` alongside email/password, reusing `signToken`.
+- **Admin dashboard**: the JWT carries a `role` claim and `authMiddleware`
+  exposes `authorize('admin')`; gate admin routes with it.
 - **`csurf` is archived** (2 low-severity advisories via its `cookie` dep).
   Migrate to [`csrf-csrf`](https://www.npmjs.com/package/csrf-csrf). The frontend
   flow (`GET /api/csrf-token` → `X-CSRF-Token` header) stays identical.

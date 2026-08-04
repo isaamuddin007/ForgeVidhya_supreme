@@ -16,6 +16,7 @@ import { Layout } from "@/components/Layout";
 import { LinkButton } from "@/components/ui/button";
 import { FadeIn, Icon, SectionHeading } from "@/components/ui/primitives";
 import { HeroStage } from "@/components/HeroStage";
+import { SiteAnnouncement } from "@/components/SiteAnnouncement";
 import { MagicReveal } from "@/components/MagicReveal";
 import { MediaGallery } from "@/components/MediaGallery";
 import { MediaSlots } from "@/components/MediaSlots";
@@ -37,6 +38,9 @@ export default function Home() {
         title="AI skills for tier-3 engineering students"
         description={siteConfig.description}
       />
+
+      {/* Admin-published announcement (hidden when none is set) */}
+      <SiteAnnouncement />
 
       {/* ===================== HERO ===================== */}
       <HeroStage />

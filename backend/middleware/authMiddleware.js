@@ -1,11 +1,12 @@
 /**
  * backend/middleware/authMiddleware.js
- * JWT issuance + verification for the Google-OAuth flow.
+ * JWT issuance + verification (auth-method agnostic).
  *
  * Tokens are stateless 7-day JWTs (per product decision). `protect` accepts the
  * token from an Authorization: Bearer header (SPA reads it from localStorage) or
  * from an httpOnly cookie fallback, verifies it, and attaches the user to
- * req.user. Missing/invalid tokens get a 401.
+ * req.user. Missing/invalid tokens get a 401. `authorize('admin')` gates admin
+ * routes on the token's role claim.
  *
  * Security note: fails closed at boot if JWT_SECRET is unset, so the server can
  * never issue guessable/unsigned tokens.
@@ -36,7 +37,8 @@ const signToken = (user) =>
   jwt.sign(
     {
       sub: user.id,
-      email: user.email,
+      email: user.email || undefined,
+      phone: user.phone || undefined,
       name: user.name || undefined,
       picture: user.avatar || undefined,
       role: user.role || 'user',
@@ -65,6 +67,7 @@ const protect = (req, res, next) => {
     req.user = {
       id: decoded.sub,
       email: decoded.email,
+      phone: decoded.phone,
       name: decoded.name,
       role: decoded.role || 'user',
     };
@@ -107,4 +110,23 @@ const loginLimiter = rateLimit({
   },
 });
 
-module.exports = { protect, authorize, loginLimiter, signToken };
+/**
+ * otpLimiter: per-IP cap on the OTP endpoints. This is the outer guard against
+ * SMS-cost abuse and code brute-forcing; otpService adds a per-NUMBER cooldown
+ * and a per-code attempt cap, so neither one IP nor one target number can be
+ * hammered. Slightly looser than loginLimiter because several users can share
+ * an IP behind carrier NAT.
+ */
+const otpLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 15,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Too many verification requests. Try again later.' },
+  handler: (req, res, _next, options) => {
+    logger.security('OTP_RATE_LIMITED', { ip: req.ip, route: req.originalUrl });
+    res.status(options.statusCode).json(options.message);
+  },
+});
+
+module.exports = { protect, authorize, loginLimiter, otpLimiter, signToken };

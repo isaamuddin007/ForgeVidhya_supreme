@@ -1,62 +1,39 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { LogOut, Sparkles, X } from "lucide-react";
+import { LogOut, Shield, Smartphone, Sparkles, X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useSound } from "@/components/sound-provider";
 
 const GUEST_KEY = "ff-guest";
 
-function GoogleMark() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden>
-      <path
-        fill="#4285F4"
-        d="M23.49 12.27c0-.79-.07-1.54-.2-2.27H12v4.51h6.47a5.57 5.57 0 0 1-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82Z"
-      />
-      <path
-        fill="#34A853"
-        d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.29v3.09A11.99 11.99 0 0 0 12 24Z"
-      />
-      <path
-        fill="#FBBC05"
-        d="M5.27 14.29A7.2 7.2 0 0 1 4.89 12c0-.8.14-1.57.38-2.29V6.62H1.29a12 12 0 0 0 0 10.76l3.98-3.09Z"
-      />
-      <path
-        fill="#EA4335"
-        d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0A11.99 11.99 0 0 0 1.29 6.62l3.98 3.09C6.22 6.86 8.87 4.75 12 4.75Z"
-      />
-    </svg>
-  );
-}
-
-function AppleMark() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" aria-hidden>
-      <path d="M16.36 12.79c-.03-2.53 2.07-3.74 2.16-3.8-1.18-1.72-3.01-1.96-3.66-1.99-1.56-.16-3.04.92-3.83.92-.79 0-2.01-.9-3.3-.87-1.7.03-3.27.99-4.14 2.5-1.77 3.07-.45 7.6 1.27 10.09.84 1.22 1.84 2.59 3.16 2.54 1.27-.05 1.75-.82 3.28-.82 1.53 0 1.96.82 3.3.79 1.36-.02 2.22-1.24 3.05-2.46.96-1.41 1.36-2.78 1.38-2.85-.03-.01-2.64-1.01-2.67-4.05ZM13.84 5.35c.7-.85 1.17-2.02 1.04-3.2-1 .04-2.23.67-2.95 1.51-.65.75-1.22 1.96-1.06 3.11 1.12.09 2.27-.57 2.97-1.42Z" />
-    </svg>
-  );
-}
-
 /**
- * SignInGate — a branded welcome overlay shown at the start of the site for
- * visitors who aren't signed in. Offers Google and Apple sign-in, or browsing
- * as a guest. When signed in, shows a small account chip with sign-out.
+ * SignInGate — the welcome overlay for visitors who aren't signed in.
+ *
+ * Primary sign-in is the mobile number + SMS one-time code. Email/password is
+ * kept as a secondary option behind a toggle. Guests can browse without signing
+ * in (the whole site is read-only for everyone except the admin).
+ *
+ * Roles: the backend grants 'admin' only to the allow-listed number; every other
+ * number signs in as a read-only 'user'. When an admin is signed in, the account
+ * chip gains a shortcut to the dashboard.
  */
 export function SignInGate() {
   const {
     user,
     isLoading,
     isSigningIn,
+    isAdmin,
     error,
-    signIn,
+    sendOtp,
+    verifyOtp,
     loginWithPassword,
     register,
     signOut,
     clearError,
   } = useAuth();
   const { playBlub } = useSound();
-  const location = useLocation();
+
   const [guest, setGuest] = useState<boolean>(() => {
     try {
       return localStorage.getItem(GUEST_KEY) === "1";
@@ -64,22 +41,45 @@ export function SignInGate() {
       return false;
     }
   });
+
+  const [method, setMethod] = useState<"phone" | "email">("phone");
+  const [step, setStep] = useState<"number" | "code">("number");
+  const [phone, setPhone] = useState("");
+  const [code, setCode] = useState("");
+  const [sent, setSent] = useState(false);
+
   const [mode, setMode] = useState<"signin" | "register">("signin");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const digits = phone.replace(/\D/g, "");
+
+  const submitPhone = async (e: React.FormEvent) => {
+    e.preventDefault();
+    playBlub();
+    if (digits.length < 10) return;
+    const ok = await sendOtp(digits);
+    if (ok) {
+      setStep("code");
+      setSent(true);
+    }
+  };
+
+  const submitCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    playBlub();
+    if (code.trim().length !== 6) return;
+    await verifyOtp(digits, code.trim());
+    // On success the user is set and the gate closes; on failure `error` shows.
+  };
 
   const submitCredentials = async (e: React.FormEvent) => {
     e.preventDefault();
     playBlub();
     if (mode === "register") await register(name, email, password);
     else await loginWithPassword(email, password);
-    // On success the user becomes set and the gate closes; on failure the
-    // context `error` renders above the form.
   };
-
-  // Never block the OAuth landing route.
-  if (location.pathname === "/auth/callback") return null;
 
   const continueAsGuest = () => {
     playBlub();
@@ -91,12 +91,9 @@ export function SignInGate() {
     }
   };
 
-  const handleSignIn = (provider: "google" | "apple") => {
-    playBlub();
-    void signIn(provider);
-  };
-
   const showGate = !isLoading && !user && !guest;
+  const inputCls =
+    "h-11 w-full rounded-xl border border-border bg-background px-3.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40";
 
   return (
     <>
@@ -116,7 +113,6 @@ export function SignInGate() {
               exit={{ y: 24, scale: 0.96, opacity: 0 }}
               transition={{ type: "spring", stiffness: 240, damping: 22 }}
             >
-              {/* brand glow */}
               <div className="pointer-events-none absolute -top-20 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-forge-gradient opacity-25 blur-3xl" />
 
               <span className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-forge-gradient text-white shadow-forge">
@@ -124,12 +120,12 @@ export function SignInGate() {
               </span>
 
               <h2 className="font-display text-2xl font-bold tracking-tight">
-                Welcome to{" "}
-                <span className="text-forge-gradient">forgeVidhya</span>
+                Welcome to <span className="text-forge-gradient">forgeVidhya</span>
               </h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                Sign in to save your progress and unlock more as we add
-                integrations.
+                {method === "phone"
+                  ? "Sign in with your mobile number."
+                  : "Sign in to save your progress."}
               </p>
 
               {error && (
@@ -147,98 +143,176 @@ export function SignInGate() {
               )}
 
               <div className="mt-6 flex flex-col gap-3">
-                <button
-                  type="button"
-                  onClick={() => handleSignIn("google")}
-                  disabled={isSigningIn}
-                  className="flex h-12 items-center justify-center gap-3 rounded-2xl border border-border bg-background font-semibold shadow-sm transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60"
-                >
-                  <GoogleMark />
-                  {isSigningIn ? "Opening Google…" : "Sign in with Google"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleSignIn("apple")}
-                  disabled={isSigningIn}
-                  className="flex h-12 items-center justify-center gap-3 rounded-2xl bg-foreground font-semibold text-background shadow-sm transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60"
-                >
-                  <AppleMark />
-                  Sign in with Apple
-                </button>
-
-                {/* divider */}
-                <div className="my-1 flex items-center gap-3 text-[11px] font-medium uppercase tracking-wider text-muted-foreground/70">
-                  <span className="h-px flex-1 bg-border" />
-                  or
-                  <span className="h-px flex-1 bg-border" />
-                </div>
-
-                {/* email / password */}
-                <form onSubmit={submitCredentials} className="flex flex-col gap-2.5 text-left">
-                  {mode === "register" && (
+                {method === "phone" ? (
+                  step === "number" ? (
+                    <form onSubmit={submitPhone} className="flex flex-col gap-2.5 text-left">
+                      <label htmlFor="phone" className="text-xs font-medium text-muted-foreground">
+                        Mobile number
+                      </label>
+                      <div className="flex overflow-hidden rounded-xl border border-border bg-background focus-within:ring-2 focus-within:ring-primary/40">
+                        <span className="grid place-items-center border-r border-border bg-secondary/60 px-3 text-sm font-medium text-muted-foreground">
+                          +91
+                        </span>
+                        <input
+                          id="phone"
+                          type="tel"
+                          inputMode="numeric"
+                          autoComplete="tel-national"
+                          required
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                          placeholder="10-digit number"
+                          className="h-11 flex-1 bg-transparent px-3.5 text-sm outline-none"
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        disabled={isSigningIn || digits.length < 10}
+                        className="h-11 rounded-xl bg-forge-gradient font-semibold text-white shadow-forge transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60"
+                      >
+                        {isSigningIn ? "Sending code…" : "Send code"}
+                      </button>
+                    </form>
+                  ) : (
+                    <form onSubmit={submitCode} className="flex flex-col gap-2.5 text-left">
+                      <label htmlFor="code" className="text-xs font-medium text-muted-foreground">
+                        Enter the 6-digit code sent to +91 {digits}
+                      </label>
+                      <input
+                        id="code"
+                        type="text"
+                        inputMode="numeric"
+                        autoComplete="one-time-code"
+                        required
+                        value={code}
+                        onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                        placeholder="••••••"
+                        className={`${inputCls} text-center font-mono text-lg tracking-[0.4em]`}
+                      />
+                      <button
+                        type="submit"
+                        disabled={isSigningIn || code.length !== 6}
+                        className="h-11 rounded-xl bg-forge-gradient font-semibold text-white shadow-forge transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60"
+                      >
+                        {isSigningIn ? "Verifying…" : "Verify & sign in"}
+                      </button>
+                      <div className="flex items-center justify-between text-xs">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            clearError();
+                            setStep("number");
+                            setCode("");
+                          }}
+                          className="font-medium text-primary underline-offset-4 hover:underline"
+                        >
+                          ← Change number
+                        </button>
+                        <button
+                          type="button"
+                          disabled={isSigningIn}
+                          onClick={() => {
+                            clearError();
+                            void sendOtp(digits);
+                          }}
+                          className="font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline disabled:opacity-50"
+                        >
+                          Resend code
+                        </button>
+                      </div>
+                      {sent && (
+                        <p className="text-[11px] leading-snug text-muted-foreground">
+                          The code expires in 10 minutes.
+                        </p>
+                      )}
+                    </form>
+                  )
+                ) : (
+                  <form onSubmit={submitCredentials} className="flex flex-col gap-2.5 text-left">
+                    {mode === "register" && (
+                      <input
+                        type="text"
+                        required
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Full name"
+                        autoComplete="name"
+                        className={inputCls}
+                      />
+                    )}
                     <input
-                      type="text"
+                      type="email"
                       required
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="Full name"
-                      autoComplete="name"
-                      className="h-11 rounded-xl border border-border bg-background px-3.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Email"
+                      autoComplete="email"
+                      className={inputCls}
                     />
-                  )}
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Email"
-                    autoComplete="email"
-                    className="h-11 rounded-xl border border-border bg-background px-3.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
-                  />
-                  <input
-                    type="password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Password"
-                    autoComplete={mode === "register" ? "new-password" : "current-password"}
-                    className="h-11 rounded-xl border border-border bg-background px-3.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
-                  />
-                  {mode === "register" && (
-                    <p className="text-[11px] leading-snug text-muted-foreground">
-                      8+ characters with upper, lower, a number, and a symbol.
-                    </p>
-                  )}
-                  <button
-                    type="submit"
-                    disabled={isSigningIn}
-                    className="h-11 rounded-xl bg-forge-gradient font-semibold text-white shadow-forge transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60"
-                  >
-                    {isSigningIn
-                      ? "Please wait…"
-                      : mode === "register"
-                        ? "Create account"
-                        : "Sign in"}
-                  </button>
-                </form>
+                    <input
+                      type="password"
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Password"
+                      autoComplete={mode === "register" ? "new-password" : "current-password"}
+                      className={inputCls}
+                    />
+                    {mode === "register" && (
+                      <p className="text-[11px] leading-snug text-muted-foreground">
+                        8+ characters with upper, lower, a number, and a symbol.
+                      </p>
+                    )}
+                    <button
+                      type="submit"
+                      disabled={isSigningIn}
+                      className="h-11 rounded-xl bg-forge-gradient font-semibold text-white shadow-forge transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60"
+                    >
+                      {isSigningIn
+                        ? "Please wait…"
+                        : mode === "register"
+                          ? "Create account"
+                          : "Sign in"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        clearError();
+                        setMode((m) => (m === "signin" ? "register" : "signin"));
+                      }}
+                      className="text-xs font-medium text-primary underline-offset-4 transition-colors hover:underline"
+                    >
+                      {mode === "signin"
+                        ? "New here? Create an account"
+                        : "Have an account? Sign in"}
+                    </button>
+                  </form>
+                )}
 
+                {/* switch method */}
                 <button
                   type="button"
                   onClick={() => {
                     clearError();
-                    setMode((m) => (m === "signin" ? "register" : "signin"));
+                    setMethod((m) => (m === "phone" ? "email" : "phone"));
+                    setStep("number");
+                    setCode("");
                   }}
-                  className="text-xs font-medium text-primary underline-offset-4 transition-colors hover:underline"
+                  className="inline-flex items-center justify-center gap-1.5 text-xs font-medium text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
                 >
-                  {mode === "signin"
-                    ? "New here? Create an account"
-                    : "Have an account? Sign in"}
+                  {method === "phone" ? (
+                    "Use email instead"
+                  ) : (
+                    <>
+                      <Smartphone className="h-3.5 w-3.5" /> Use mobile number instead
+                    </>
+                  )}
                 </button>
 
                 <button
                   type="button"
                   onClick={continueAsGuest}
-                  className="mt-1 text-xs font-medium text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                  className="text-xs font-medium text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
                 >
                   Continue as guest
                 </button>
@@ -256,21 +330,24 @@ export function SignInGate() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ type: "spring", stiffness: 260, damping: 22 }}
         >
-          {user.picture ? (
-            <img
-              src={user.picture}
-              alt={user.name ?? user.email}
-              className="h-7 w-7 rounded-full object-cover"
-              referrerPolicy="no-referrer"
-            />
-          ) : (
-            <span className="grid h-7 w-7 place-items-center rounded-full bg-forge-gradient text-[11px] font-bold text-white">
-              {(user.name ?? user.email).charAt(0).toUpperCase()}
-            </span>
-          )}
-          <span className="max-w-[120px] truncate text-xs font-semibold">
-            {user.name ?? user.email}
+          <span className="grid h-7 w-7 place-items-center rounded-full bg-forge-gradient text-[11px] font-bold text-white">
+            {(user.name ?? user.phone ?? user.email ?? "?").replace(/^\+/, "").charAt(0).toUpperCase()}
           </span>
+          <span className="max-w-[130px] truncate text-xs font-semibold">
+            {user.name ?? user.phone ?? user.email}
+          </span>
+
+          {isAdmin && (
+            <Link
+              to="/admin"
+              aria-label="Admin dashboard"
+              title="Admin dashboard"
+              className="grid h-6 w-6 place-items-center rounded-full text-primary transition-colors hover:bg-primary/10"
+            >
+              <Shield className="h-3.5 w-3.5" />
+            </Link>
+          )}
+
           <button
             type="button"
             onClick={() => {

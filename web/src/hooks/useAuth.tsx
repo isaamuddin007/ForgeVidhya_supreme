@@ -9,12 +9,12 @@ import {
 
 /**
  * Auth context — global authentication state, backed by the forgeVidhya API's
- * Google OAuth flow.
+ * email/password endpoints.
  *
- * Flow: signIn("google") does a top-level redirect to `${API_URL}/auth/google`.
- * The backend runs the OAuth handshake, mints a 7-day JWT, and redirects to
- * `/auth/callback?token=…` on this SPA. AuthCallback calls login(token), which
- * stores the JWT in localStorage and decodes the user from it.
+ * Flow: register/loginWithPassword POST to `${API_URL}/auth/(register|login)`.
+ * On success the backend returns a 7-day JWT, which we store in localStorage and
+ * decode to hydrate the user. Mobile-number (OTP) sign-in is planned next and
+ * will slot in alongside these methods, reusing login(token).
  *
  * Env: VITE_API_URL — backend origin (default http://localhost:5000).
  */
@@ -27,8 +27,10 @@ const TOKEN_KEY = "forge:token";
 export interface AuthUser {
   id: string;
   email: string;
+  phone?: string;
   name?: string;
   picture?: string;
+  role?: string;
 }
 
 /** Decode the JWT payload to extract the user and check expiration. */
@@ -42,8 +44,10 @@ function userFromToken(token: string): AuthUser | null {
     return {
       id: payload.sub,
       email: payload.email ?? "",
+      phone: payload.phone,
       name: payload.name,
       picture: payload.picture,
+      role: payload.role,
     };
   } catch {
     return null;
@@ -55,16 +59,22 @@ interface AuthContextType {
   isLoading: boolean;
   isSigningIn: boolean;
   isAuthenticated: boolean;
+  /** True only for the allow-listed admin number (role claim in the JWT). */
+  isAdmin: boolean;
   error: string | null;
-  /** Start sign-in. "google" redirects to the backend OAuth entrypoint. */
-  signIn: (provider: "google" | "apple") => void;
+  /** Send a one-time code by SMS to a mobile number. Resolves true on success. */
+  sendOtp: (phone: string) => Promise<boolean>;
+  /** Verify the code and sign in. Resolves true on success. */
+  verifyOtp: (phone: string, code: string) => Promise<boolean>;
+  /** The JWT for API calls (admin dashboard). Null when signed out. */
+  getToken: () => string | null;
   /** Email/password sign-in. Resolves true on success. */
   loginWithPassword: (email: string, password: string) => Promise<boolean>;
   /** Create an email/password account. Resolves true on success. */
   register: (name: string, email: string, password: string) => Promise<boolean>;
-  /** Store a JWT (from the OAuth callback) and set the user. */
+  /** Store a JWT and set the user (used by the credential flow). */
   login: (token: string) => void;
-  /** Clear the token + user (and best-effort backend session teardown). */
+  /** Clear the token + user (and best-effort backend cookie teardown). */
   logout: () => void;
   /** Alias of logout, kept for existing callers. */
   signOut: () => void;
@@ -109,22 +119,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = useCallback(() => {
     localStorage.removeItem(TOKEN_KEY);
     setUser(null);
-    // Best-effort backend session teardown; ignore failures.
+    // Best-effort backend cookie teardown; ignore failures.
     void fetch(`${API_URL}/auth/logout`, {
       method: "POST",
       credentials: "include",
     }).catch(() => {});
-  }, []);
-
-  const signIn = useCallback((provider: "google" | "apple") => {
-    if (provider !== "google") {
-      setError("Apple sign-in is coming soon — use Google for now.");
-      return;
-    }
-    setIsSigningIn(true);
-    setError(null);
-    // Top-level redirect into the backend OAuth entrypoint.
-    window.location.href = `${API_URL}/auth/google`;
   }, []);
 
   // Shared POST for /auth/register and /auth/login. On success the backend
@@ -176,6 +175,68 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [submitCredentials]
   );
 
+  // --- Mobile number (OTP) -------------------------------------------------
+  // The backend never returns the code; it is delivered by SMS (or, in dev
+  // without Twilio, printed to the API server's console).
+  const sendOtp = useCallback(async (phone: string): Promise<boolean> => {
+    setIsSigningIn(true);
+    setError(null);
+    try {
+      const res = await fetch(`${API_URL}/auth/otp/send`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data?.success) {
+        setError(data?.message || `Could not send the code (${res.status})`);
+        return false;
+      }
+      return true;
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Network error — is the API running?");
+      return false;
+    } finally {
+      setIsSigningIn(false);
+    }
+  }, []);
+
+  const verifyOtp = useCallback(
+    async (phone: string, code: string): Promise<boolean> => {
+      setIsSigningIn(true);
+      setError(null);
+      try {
+        const res = await fetch(`${API_URL}/auth/otp/verify`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ phone, code }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data?.success || !data.token) {
+          setError(data?.message || `Verification failed (${res.status})`);
+          return false;
+        }
+        login(data.token);
+        return true;
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Network error — is the API running?");
+        return false;
+      } finally {
+        setIsSigningIn(false);
+      }
+    },
+    [login]
+  );
+
+  const getToken = useCallback(() => {
+    try {
+      return localStorage.getItem(TOKEN_KEY);
+    } catch {
+      return null;
+    }
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
@@ -183,8 +244,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isLoading,
         isSigningIn,
         isAuthenticated: user !== null,
+        isAdmin: user?.role === "admin",
         error,
-        signIn,
+        sendOtp,
+        verifyOtp,
+        getToken,
         loginWithPassword,
         register,
         login,

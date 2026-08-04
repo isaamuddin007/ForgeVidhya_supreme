@@ -1,7 +1,7 @@
 /**
  * backend/server.js
  * Main entrypoint: security headers, CORS whitelist, rate limiting, HTTPS
- * enforcement, Passport/Google OAuth, CSRF, and wiring for all middleware.
+ * enforcement, JWT auth, CSRF, and wiring for all middleware.
  *
  * Security note: This is the network security perimeter — it hardens headers,
  * restricts origins, throttles abuse, and forces HTTPS behind a proxy/CDN. The
@@ -12,11 +12,12 @@
  *   NODE_ENV        - 'production' enables HSTS, HTTPS redirect, secure cookies
  *   PORT            - server port (default 5000)
  *   CLIENT_ORIGIN   - allowed browser origin, default 'https://forgevidhya.in'
- *   CLIENT_URL      - SPA origin for OAuth redirects (default http://localhost:8080)
  *   COOKIE_DOMAIN   - cookie scope, e.g. 'forgevidhya.in'
- *   SESSION_SECRET  - secret for express-session (Passport)
  *   TRUST_PROXY     - '1' when behind Nginx/Cloudflare (correct req.ip + Secure cookies)
- *   (plus DATABASE_URL, JWT_SECRET, GOOGLE_* from the other modules)
+ *   (plus DATABASE_URL, JWT_SECRET from the auth modules; DEEPSEEK_API_KEY)
+ *
+ * Auth: stateless JWT (email/password today; mobile-number OTP planned). No
+ * server-side sessions — the API authenticates via Bearer tokens.
  */
 
 require('dotenv').config();
@@ -24,14 +25,12 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const session = require('express-session');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
 const compression = require('compression');
 const csrf = require('csurf');
 
 const { connectDB } = require('./config/db');
-const passport = require('./config/passport');
 const logger = require('./utils/logger');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 const { sanitizeBody } = require('./middleware/validationMiddleware');
@@ -76,12 +75,12 @@ app.use(
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
-        imgSrc: ["'self'", 'data:', 'blob:', 'https://lh3.googleusercontent.com'], // Google avatars
+        imgSrc: ["'self'", 'data:', 'blob:'],
         connectSrc: ["'self'", ...ALLOWED_ORIGINS],
         objectSrc: ["'none'"],
         frameAncestors: ["'none'"],
         baseUri: ["'self'"],
-        formAction: ["'self'", 'https://accounts.google.com'],
+        formAction: ["'self'"],
         upgradeInsecureRequests: isProd ? [] : null,
       },
     },
@@ -124,35 +123,14 @@ app.use(cookieParser());
 app.use(compression());
 
 // ---------------------------------------------------------------------------
-// 4) Session + Passport (Google OAuth). JWT is the real auth; the session only
-//    satisfies Passport's plumbing, so it's kept minimal.
-// ---------------------------------------------------------------------------
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || 'dev-session-secret-change-me',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      secure: isProd,
-      sameSite: isProd ? 'strict' : 'lax',
-      domain: process.env.COOKIE_DOMAIN || undefined,
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    },
-  })
-);
-app.use(passport.initialize());
-app.use(passport.session());
-
-// ---------------------------------------------------------------------------
-// 5) Injection/pollution hardening (parameterized SQL handles the DB layer).
+// 4) Injection/pollution hardening (parameterized SQL handles the DB layer).
 // ---------------------------------------------------------------------------
 app.use(hpp());
 app.use(sanitizeBody); // deep XSS strip on request bodies
 
 // ---------------------------------------------------------------------------
-// 6) Global rate limit: 100 requests / 15 min / IP on the JSON API.
-//    (OAuth redirect routes under /auth are browser navigations, not counted.)
+// 5) Global rate limit: 100 requests / 15 min / IP on the JSON API (/api).
+//    /auth has its own tighter loginLimiter on register/login.
 // ---------------------------------------------------------------------------
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -186,12 +164,17 @@ app.get('/api/csrf-token', csrfProtection, (req, res) => {
 
 // ---------------------------------------------------------------------------
 // 8) Routes.
-//    /auth  -> OAuth (top-level GET redirects; JWT issued). No CSRF here: the
-//              Google callback is a cross-site top-level navigation.
+//    /auth  -> email/password auth; issues stateless JWTs. Login/register are
+//              rate-limited; the JWT is read from a Bearer header (no CSRF).
 //    /api   -> JSON API; cookie-authed mutations are CSRF-protected.
 // ---------------------------------------------------------------------------
 app.use('/auth', require('./routes/authRoutes'));
 app.use('/api/uploads', csrfProtection, require('./routes/uploadRoutes'));
+// Public read of admin-published site content.
+app.use('/api/content', require('./routes/contentRoutes'));
+// Admin-only API. The router itself requires a Bearer JWT + role 'admin', so
+// cookie-based CSRF isn't applicable to it (see routes/adminRoutes.js).
+app.use('/api/admin', require('./routes/adminRoutes'));
 // AI assistant proxy: no CSRF (stateless, no cookie auth) — the SPA calls it
 // without credentials; it's protected by the CORS whitelist + its own limiter.
 app.use('/api/deepseek', require('./routes/deepseekRoutes'));

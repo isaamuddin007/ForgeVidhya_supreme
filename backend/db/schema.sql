@@ -11,12 +11,12 @@
 -- =============================================================================
 
 -- ----------------------------------------------------------------------------
--- users — authentication (Google OAuth today; email/password reserved for later)
+-- users — authentication (mobile-number OTP and/or email+password)
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS users (
   id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  google_id   STRING UNIQUE,                 -- required for Google-auth users (enforced in app)
-  email       STRING NOT NULL UNIQUE,        -- required for all users
+  google_id   STRING UNIQUE,                 -- legacy, unused (Google auth removed)
+  email       STRING UNIQUE,                  -- nullable: phone-only users have no email
   name        STRING,
   avatar      STRING,
   password    STRING,                         -- nullable; only set for email/password users (bcrypt)
@@ -26,6 +26,23 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE INDEX IF NOT EXISTS users_email_idx ON users (email);
+
+-- Migration for clusters created before mobile-number auth (all idempotent):
+--   * phone: E.164 (e.g. +918008757916); unique but nullable (email-only users)
+--   * email: relaxed to nullable so phone-only users can exist
+ALTER TABLE users ADD COLUMN IF NOT EXISTS phone STRING;
+ALTER TABLE users ALTER COLUMN email DROP NOT NULL;
+CREATE UNIQUE INDEX IF NOT EXISTS users_phone_key ON users (phone);
+
+-- ----------------------------------------------------------------------------
+-- site_settings — small key/value store for admin-editable site content
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS site_settings (
+  key        STRING PRIMARY KEY,
+  value      STRING NOT NULL DEFAULT '',
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_by UUID REFERENCES users (id) ON DELETE SET NULL
+);
 
 -- ----------------------------------------------------------------------------
 -- sketches — metadata for the sketch-to-DWG upload pipeline

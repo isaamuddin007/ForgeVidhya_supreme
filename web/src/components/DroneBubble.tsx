@@ -32,7 +32,7 @@ export function DroneBubble() {
         type="button"
         onClick={toggle}
         aria-label={projecting ? "Hide the sustainable city" : "Reveal the sustainable city"}
-        className="relative grid h-16 w-16 place-items-center rounded-full outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
+        className="relative grid h-11 w-11 place-items-center rounded-full outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1, y: [0, -6, 0] }}
         transition={{
@@ -46,7 +46,7 @@ export function DroneBubble() {
         <motion.img
           src={DRONE_SRC}
           alt="Interactive hovering drone"
-          className="pointer-events-none h-12 w-12 select-none object-contain drop-shadow-[0_6px_14px_rgba(46,109,255,0.35)]"
+          className="pointer-events-none h-10 w-10 select-none object-contain drop-shadow-[0_6px_14px_rgba(46,109,255,0.35)]"
           draggable={false}
           animate={{ rotateY: spin }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
