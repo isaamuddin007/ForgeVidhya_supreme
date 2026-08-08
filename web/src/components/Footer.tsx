@@ -19,7 +19,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative mt-24 border-t border-border/60 bg-card/40">
+    <footer className="glass-bar relative mt-24 border-t">
       <div className="absolute inset-x-0 top-0 h-px bg-forge-gradient" />
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-4">
@@ -52,7 +52,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="grid h-9 w-9 place-items-center rounded-lg border border-border/60 bg-card/50 text-muted-foreground transition-all hover:scale-110 hover:text-foreground hover:shadow-forge"
+                  className="grid h-9 w-9 place-items-center rounded-lg border border-border/60 glass-soft text-muted-foreground transition-all hover:scale-110 hover:text-foreground hover:shadow-forge"
                 >
                   <Icon className="h-4 w-4" />
                 </a>
@@ -157,7 +157,7 @@ export function Footer() {
                   type="email"
                   required
                   placeholder="you@college.edu"
-                  className="min-w-0 flex-1 rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  className="min-w-0 flex-1 rounded-lg glass-input px-3 py-2 text-sm placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
                 />
                 <button
                   type="submit"

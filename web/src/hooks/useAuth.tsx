@@ -64,6 +64,11 @@ interface AuthContextType {
   error: string | null;
   /** Send a one-time code by SMS to a mobile number. Resolves true on success. */
   sendOtp: (phone: string) => Promise<boolean>;
+  /**
+   * Set when a code was generated but NOT delivered by SMS (e.g. Twilio isn't
+   * configured, so it went to the API server console). Null on a real send.
+   */
+  otpNotice: string | null;
   /** Verify the code and sign in. Resolves true on success. */
   verifyOtp: (phone: string, code: string) => Promise<boolean>;
   /** The JWT for API calls (admin dashboard). Null when signed out. */
@@ -88,6 +93,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSigningIn, setIsSigningIn] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [otpNotice, setOtpNotice] = useState<string | null>(null);
 
   const clearError = useCallback(() => setError(null), []);
 
@@ -181,6 +187,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const sendOtp = useCallback(async (phone: string): Promise<boolean> => {
     setIsSigningIn(true);
     setError(null);
+    setOtpNotice(null);
     try {
       const res = await fetch(`${API_URL}/auth/otp/send`, {
         method: "POST",
@@ -191,6 +198,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!res.ok || !data?.success) {
         setError(data?.message || `Could not send the code (${res.status})`);
         return false;
+      }
+      // The API tells us whether an SMS actually went out. If it didn't, say so
+      // plainly instead of leaving the user waiting for a text.
+      if (data.delivery && data.delivery !== "sms") {
+        setOtpNotice(
+          data.reason
+            ? `No SMS sent — ${data.reason} The code is printed in the API server console.`
+            : "No SMS sent — the code is printed in the API server console."
+        );
       }
       return true;
     } catch (e) {
@@ -246,6 +262,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated: user !== null,
         isAdmin: user?.role === "admin",
         error,
+        otpNotice,
         sendOtp,
         verifyOtp,
         getToken,

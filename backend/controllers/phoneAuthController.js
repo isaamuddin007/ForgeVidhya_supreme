@@ -79,10 +79,13 @@ const sendOtp = async (req, res, next) => {
 
     return res.json({
       success: true,
-      message: 'Verification code sent.',
-      // Dev-only hint so a developer without Twilio knows to read the console.
+      message:
+        result.delivered === 'sms'
+          ? 'Verification code sent.'
+          : 'Code generated — but no SMS was sent (see the API server console).',
+      // Dev-only diagnostics so nobody waits for an SMS that was never sent.
       // Never includes the code itself.
-      ...(isProd ? {} : { delivery: result.delivered }),
+      ...(isProd ? {} : { delivery: result.delivered, reason: result.reason || undefined }),
     });
   } catch (err) {
     next(err);

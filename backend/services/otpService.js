@@ -62,6 +62,35 @@ try {
   logger.error('Twilio client init failed', { message: err.message });
 }
 
+/**
+ * Twilio error codes -> actionable cause. Without this the operator only sees
+ * "SMS failed" and can't tell a bad key from a region restriction.
+ * Reference: https://www.twilio.com/docs/api/errors
+ */
+const TWILIO_HINTS = {
+  20003: 'Authentication failed — TWILIO_ACCOUNT_SID / TWILIO_AUTH_TOKEN are wrong.',
+  21211: "Invalid 'To' number — it must be full E.164, e.g. +918008757916.",
+  21212: "Invalid 'From' number — TWILIO_PHONE_NUMBER is not a valid Twilio number.",
+  21266: "'To' and 'From' cannot be the same number.",
+  21408:
+    'Permission to send to this region is not enabled. In the Twilio Console open ' +
+    'Messaging → Settings → Geo permissions and enable India (or the target country).',
+  21606: "The 'From' number is not SMS-capable or is not owned by this account.",
+  21608:
+    'Trial account: you can only text numbers you have VERIFIED. Add the recipient under ' +
+    'Phone Numbers → Verified Caller IDs, or upgrade the account.',
+  21610: 'That number has replied STOP and is unsubscribed.',
+  21614: "'To' is not a mobile number.",
+  63038: 'Daily message limit for the trial account has been reached.',
+};
+
+/** Turn a Twilio SDK error into a single actionable line. */
+function explainTwilioError(err) {
+  const hint = TWILIO_HINTS[err?.code];
+  const base = `${err?.code ? `[${err.code}] ` : ''}${err?.message || 'Unknown SMS error'}`;
+  return hint ? `${base} — ${hint}` : base;
+}
+
 /** Keyed hash of a code — never store or log the plaintext. */
 function hashCode(phone, code) {
   const key = process.env.JWT_SECRET || 'otp-fallback-key';
@@ -125,35 +154,47 @@ async function issueOtp(rawPhone) {
     TTL_MS / 60000
   )} minutes. Do not share it with anyone.`;
 
+  let smsError = null;
+
   if (twilioReady) {
     try {
-      await twilioClient.messages.create({
+      const msg = await twilioClient.messages.create({
         body,
         from: process.env.TWILIO_PHONE_NUMBER,
         to: phone,
       });
-      logger.info('OTP sent by SMS', { phone: maskPhone(phone) });
-      return { ok: true, delivered: 'sms' };
+      // `queued`/`accepted` means Twilio took it; final delivery is async and
+      // can still fail (carrier/DLT), which shows in the Twilio Console logs.
+      logger.info('OTP handed to Twilio', {
+        phone: maskPhone(phone),
+        sid: msg.sid,
+        status: msg.status,
+      });
+      return { ok: true, delivered: 'sms', sid: msg.sid, status: msg.status };
     } catch (err) {
-      logger.error('Twilio send failed', { phone: maskPhone(phone), message: err.message });
+      smsError = explainTwilioError(err);
+      logger.error('Twilio send FAILED', { phone: maskPhone(phone), reason: smsError });
       if (isProd) {
         codes.delete(phone); // don't leave a code the user can never receive
-        return { ok: false, error: 'sms_failed' };
+        return { ok: false, error: 'sms_failed', reason: smsError };
       }
-      // Development: fall through to console delivery so the flow stays usable.
+      // Development: fall through to console delivery so the flow stays usable,
+      // but report WHY the SMS failed instead of pretending it was sent.
     }
+  } else {
+    smsError = 'Twilio is not configured (TWILIO_ACCOUNT_SID / TWILIO_AUTH_TOKEN / TWILIO_PHONE_NUMBER are empty).';
   }
 
   if (!isProd) {
-    // Dev-only convenience. Never sent to the client, never logged in production.
+    // Dev-only convenience. The code is never sent to the client.
     // eslint-disable-next-line no-console
     console.log(
-      `\n========================================\n  OTP for ${phone}: ${code}\n  (SMS not configured — development console delivery)\n========================================\n`
+      `\n========================================\n  OTP for ${phone}: ${code}\n  NO SMS SENT — ${smsError}\n========================================\n`
     );
-    return { ok: true, delivered: 'console' };
+    return { ok: true, delivered: 'console', reason: smsError };
   }
 
-  return { ok: false, error: 'sms_unavailable' };
+  return { ok: false, error: 'sms_unavailable', reason: smsError };
 }
 
 /**

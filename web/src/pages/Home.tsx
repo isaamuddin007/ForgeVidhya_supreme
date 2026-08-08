@@ -107,7 +107,7 @@ export default function Home() {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.1 }}
-                      className="flex items-start gap-3 rounded-xl bg-card/80 p-3 backdrop-blur"
+                      className="flex items-start gap-3 rounded-xl glass-soft p-3 backdrop-blur"
                     >
                       <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-forge-blue" />
                       <p className="text-sm font-medium text-foreground">{p}</p>
@@ -173,7 +173,7 @@ export default function Home() {
       </section>
 
       {/* ===================== HOW IT WORKS ===================== */}
-      <section id="how-it-works" className="relative scroll-mt-28 overflow-hidden bg-card/40 py-20">
+      <section id="how-it-works" className="relative scroll-mt-28 overflow-hidden glass-bar py-20">
         <div className="absolute inset-0 -z-10 grid-backdrop opacity-40" />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <FadeIn>

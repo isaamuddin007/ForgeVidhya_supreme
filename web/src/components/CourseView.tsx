@@ -126,7 +126,7 @@ export function CourseView({
                       <button
                         type="button"
                         onClick={() => open(t.id)}
-                        className="group flex w-full items-center gap-3 rounded-xl border border-border/60 bg-card/40 px-4 py-3.5 text-left transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:bg-secondary/60 hover:shadow-forge"
+                        className="group flex w-full items-center gap-3 rounded-xl border border-border/60 glass-soft px-4 py-3.5 text-left transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:bg-secondary/60 hover:shadow-forge"
                       >
                         <span className="font-mono text-xs font-semibold text-primary">
                           {t.number}
@@ -232,14 +232,14 @@ function TopicScreen({
           {/* panel */}
           <motion.div
             key={topic.id}
-            className="relative flex h-full w-full max-w-3xl flex-col overflow-hidden border border-border/60 bg-card shadow-forge sm:h-auto sm:max-h-[86vh] sm:rounded-2xl"
+            className="relative flex h-full w-full max-w-3xl flex-col overflow-hidden glass-panel sm:h-auto sm:max-h-[86vh] sm:rounded-2xl"
             initial={{ opacity: 0, y: 24, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.98 }}
             transition={{ type: "spring", stiffness: 300, damping: 28 }}
           >
             {/* sticky header */}
-            <div className="flex items-start gap-3 border-b border-border/60 bg-card/95 px-5 py-4 backdrop-blur sm:px-7">
+            <div className="flex items-start gap-3 border-b border-border/60 glass-bar px-5 py-4 backdrop-blur sm:px-7">
               <span className="mt-0.5 font-mono text-xs font-semibold text-primary">
                 {topic.number}
               </span>
@@ -264,7 +264,7 @@ function TopicScreen({
             </div>
 
             {/* footer nav */}
-            <div className="flex items-center justify-between gap-3 border-t border-border/60 bg-card/95 px-5 py-3 backdrop-blur sm:px-7">
+            <div className="flex items-center justify-between gap-3 border-t border-border/60 glass-bar px-5 py-3 backdrop-blur sm:px-7">
               <button
                 type="button"
                 onClick={onPrev}

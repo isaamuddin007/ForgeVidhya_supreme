@@ -25,6 +25,7 @@ export function SignInGate() {
     isSigningIn,
     isAdmin,
     error,
+    otpNotice,
     sendOtp,
     verifyOtp,
     loginWithPassword,
@@ -93,7 +94,7 @@ export function SignInGate() {
 
   const showGate = !isLoading && !user && !guest;
   const inputCls =
-    "h-11 w-full rounded-xl border border-border bg-background px-3.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40";
+    "glass-input h-11 w-full rounded-xl px-3.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40";
 
   return (
     <>
@@ -107,7 +108,7 @@ export function SignInGate() {
             transition={{ duration: 0.4 }}
           >
             <motion.div
-              className="relative w-full max-w-sm overflow-hidden rounded-3xl border border-border/60 bg-card p-8 text-center shadow-forge"
+              className="glass-panel relative w-full max-w-sm overflow-hidden rounded-3xl p-8 text-center"
               initial={{ y: 32, scale: 0.94, opacity: 0 }}
               animate={{ y: 0, scale: 1, opacity: 1 }}
               exit={{ y: 24, scale: 0.96, opacity: 0 }}
@@ -149,7 +150,7 @@ export function SignInGate() {
                       <label htmlFor="phone" className="text-xs font-medium text-muted-foreground">
                         Mobile number
                       </label>
-                      <div className="flex overflow-hidden rounded-xl border border-border bg-background focus-within:ring-2 focus-within:ring-primary/40">
+                      <div className="glass-input flex overflow-hidden rounded-xl focus-within:ring-2 focus-within:ring-primary/40">
                         <span className="grid place-items-center border-r border-border bg-secondary/60 px-3 text-sm font-medium text-muted-foreground">
                           +91
                         </span>
@@ -220,10 +221,16 @@ export function SignInGate() {
                           Resend code
                         </button>
                       </div>
-                      {sent && (
-                        <p className="text-[11px] leading-snug text-muted-foreground">
-                          The code expires in 10 minutes.
+                      {otpNotice ? (
+                        <p className="rounded-lg bg-forge-orange/10 px-3 py-2 text-[11px] leading-snug text-forge-orange">
+                          {otpNotice}
                         </p>
+                      ) : (
+                        sent && (
+                          <p className="text-[11px] leading-snug text-muted-foreground">
+                            The code expires in 10 minutes.
+                          </p>
+                        )
                       )}
                     </form>
                   )

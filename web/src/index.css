@@ -119,6 +119,31 @@
     background-color: rgba(46, 109, 255, 0.28);
     color: inherit;
   }
+
+  /* ------------------------------------------------------------------
+     Ambient backdrop — soft brand-tinted light behind everything.
+     Frosted surfaces can only *look* frosted if there is something to
+     refract; on a flat white page a translucent panel is indistinguishable
+     from a solid one. This fixed layer gives every glass surface content to
+     blur, and it never scrolls or intercepts clicks.
+     ------------------------------------------------------------------ */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -10;
+    pointer-events: none;
+    background:
+      radial-gradient(55% 45% at 12% 8%, rgba(46, 109, 255, 0.18), transparent 62%),
+      radial-gradient(45% 40% at 88% 16%, rgba(254, 126, 6, 0.14), transparent 62%),
+      radial-gradient(60% 50% at 50% 104%, rgba(46, 109, 255, 0.12), transparent 62%);
+  }
+  .dark body::before {
+    background:
+      radial-gradient(55% 45% at 12% 8%, rgba(46, 109, 255, 0.22), transparent 62%),
+      radial-gradient(45% 40% at 88% 16%, rgba(254, 126, 6, 0.16), transparent 62%),
+      radial-gradient(60% 50% at 50% 104%, rgba(46, 109, 255, 0.16), transparent 62%);
+  }
 }
 
 @layer components {
@@ -137,9 +162,83 @@
     background: #2e6dff;
   }
 
-  /* Glassmorphic card */
+  /* ------------------------------------------------------------------
+     Glass surface system. Every panel on the site uses one of these so the
+     frosting is consistent. Each has a light and a dark form.
+
+       .glass-card   standard content surface (cards, sections)
+       .glass-panel  heavier, for modals/overlays that need more separation
+       .glass-soft   cheap, low-blur variant for repeated rows in long lists
+       .glass-bar    sticky headers/footers
+       .glass-input  form fields
+     ------------------------------------------------------------------ */
   .glass-card {
-    @apply bg-card/70 backdrop-blur-xl border border-border/60;
+    background: rgba(255, 255, 255, 0.55);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow:
+      0 8px 32px -14px rgba(15, 23, 42, 0.20),
+      inset 0 1px 0 rgba(255, 255, 255, 0.70);
+  }
+  .dark .glass-card {
+    background: rgba(20, 20, 24, 0.55);
+    border-color: rgba(255, 255, 255, 0.10);
+    box-shadow:
+      0 8px 32px -14px rgba(0, 0, 0, 0.65),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.72);
+    -webkit-backdrop-filter: blur(30px) saturate(160%);
+    backdrop-filter: blur(30px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow:
+      0 24px 60px -20px rgba(15, 23, 42, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  }
+  .dark .glass-panel {
+    background: rgba(16, 16, 20, 0.72);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow:
+      0 24px 60px -20px rgba(0, 0, 0, 0.75),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  }
+
+  /* Low-cost variant: used where many instances render at once (list rows), so
+     the page isn't asked to composite dozens of heavy blur layers. */
+  .glass-soft {
+    background: rgba(255, 255, 255, 0.40);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+  }
+  .dark .glass-soft {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.09);
+  }
+
+  .glass-bar {
+    background: rgba(255, 255, 255, 0.62);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    backdrop-filter: blur(24px) saturate(150%);
+    border-color: rgba(148, 163, 184, 0.28);
+  }
+  .dark .glass-bar {
+    background: rgba(16, 16, 20, 0.62);
+    border-color: rgba(255, 255, 255, 0.10);
+  }
+
+  .glass-input {
+    background: rgba(255, 255, 255, 0.55);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(148, 163, 184, 0.35);
+  }
+  .dark .glass-input {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
   }
 
   /* Soft brand-blue elevation shadow */

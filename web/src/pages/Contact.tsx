@@ -265,7 +265,7 @@ export default function Contact() {
                       value={form.message}
                       onChange={(e) => update("message")(e.target.value)}
                       placeholder="Tell us about an idea you'd love to ship — even if it sounds small."
-                      className="mt-2 w-full rounded-xl border border-input bg-background px-4 py-3 text-sm placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+                      className="mt-2 w-full rounded-xl glass-input px-4 py-3 text-sm placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
                     />
                   </div>
 
@@ -323,7 +323,7 @@ function Field({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="mt-2 w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+        className="mt-2 w-full rounded-xl glass-input px-4 py-2.5 text-sm placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
       />
     </div>
   );

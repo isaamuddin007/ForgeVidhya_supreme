@@ -161,7 +161,7 @@ export default function BlogPost() {
             )}&url=${encodeURIComponent(shareUrl)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="grid h-9 w-9 place-items-center rounded-lg border border-border/60 bg-card/50 text-muted-foreground transition-all hover:scale-110 hover:text-foreground hover:shadow-forge"
+            className="grid h-9 w-9 place-items-center rounded-lg border border-border/60 glass-soft text-muted-foreground transition-all hover:scale-110 hover:text-foreground hover:shadow-forge"
             aria-label="Share on Twitter"
           >
             <Twitter className="h-4 w-4" />
@@ -172,7 +172,7 @@ export default function BlogPost() {
             )}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="grid h-9 w-9 place-items-center rounded-lg border border-border/60 bg-card/50 text-muted-foreground transition-all hover:scale-110 hover:text-foreground hover:shadow-forge"
+            className="grid h-9 w-9 place-items-center rounded-lg border border-border/60 glass-soft text-muted-foreground transition-all hover:scale-110 hover:text-foreground hover:shadow-forge"
             aria-label="Share on LinkedIn"
           >
             <Linkedin className="h-4 w-4" />
@@ -184,7 +184,7 @@ export default function BlogPost() {
                 toast.success("Link copied to clipboard")
               );
             }}
-            className="grid h-9 w-9 place-items-center rounded-lg border border-border/60 bg-card/50 text-muted-foreground transition-all hover:scale-110 hover:text-foreground hover:shadow-forge"
+            className="grid h-9 w-9 place-items-center rounded-lg border border-border/60 glass-soft text-muted-foreground transition-all hover:scale-110 hover:text-foreground hover:shadow-forge"
             aria-label="Copy link"
           >
             <LinkIcon className="h-4 w-4" />

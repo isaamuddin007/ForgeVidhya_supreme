@@ -35,7 +35,7 @@ export default function NotFound() {
           </LinkButton>
           <Link
             to="/blog"
-            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card/50 px-6 py-3.5 text-base font-semibold transition-colors hover:border-primary hover:bg-secondary/50"
+            className="inline-flex items-center gap-2 rounded-xl glass-soft px-6 py-3.5 text-base font-semibold transition-colors hover:border-primary hover:bg-secondary/50"
           >
             <ArrowLeft className="h-4 w-4" /> Read the blog
           </Link>

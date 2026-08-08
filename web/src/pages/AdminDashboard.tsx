@@ -166,7 +166,7 @@ export default function AdminDashboard() {
               type="button"
               onClick={() => void load()}
               disabled={busy}
-              className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary disabled:opacity-60"
+              className="glass-soft inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary disabled:opacity-60"
             >
               <RefreshCw className={`h-4 w-4 ${busy ? "animate-spin" : ""}`} /> Refresh
             </button>
@@ -202,7 +202,7 @@ export default function AdminDashboard() {
 
         {/* content editor */}
         <FadeIn>
-          <div className="mt-8 rounded-2xl border border-border/60 bg-card p-6">
+          <div className="glass-card mt-8 rounded-2xl p-6">
             <h2 className="font-display text-xl font-bold">Site announcement</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               Shown to every visitor at the top of the home page. Leave empty to hide it.
@@ -213,7 +213,7 @@ export default function AdminDashboard() {
               maxLength={2000}
               rows={4}
               placeholder="e.g. Cohort #5 applications close on 30 August."
-              className="mt-4 w-full rounded-xl border border-border bg-background p-3.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+              className="glass-input mt-4 w-full rounded-xl p-3.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
             />
             <div className="mt-3 flex items-center justify-between gap-3">
               <span className="text-xs text-muted-foreground">{content.length}/2000</span>
@@ -232,7 +232,7 @@ export default function AdminDashboard() {
 
         {/* users */}
         <FadeIn>
-          <div className="mt-8 rounded-2xl border border-border/60 bg-card p-6">
+          <div className="glass-card mt-8 rounded-2xl p-6">
             <h2 className="font-display text-xl font-bold">Users</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               Everyone who has signed in. Admin accounts can't be removed.
@@ -281,7 +281,7 @@ export default function AdminDashboard() {
 
 function StatCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-border/60 bg-card p-5">
+    <div className="glass-card rounded-2xl p-5">
       <span className="grid h-10 w-10 place-items-center rounded-xl bg-secondary text-primary">
         {icon}
       </span>

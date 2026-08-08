@@ -76,7 +76,7 @@ function SlotCard({ slot }: { slot: MediaSlot }) {
     <motion.div
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
-      className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card/40 [transform-style:preserve-3d]"
+      className="group relative overflow-hidden rounded-2xl border border-border/60 glass-soft [transform-style:preserve-3d]"
       style={{ aspectRatio: slot.ratio, rotateX, rotateY, perspective: 800 }}
       whileHover={{ scale: 1.03 }}
       transition={{ type: "spring", stiffness: 260, damping: 20 }}

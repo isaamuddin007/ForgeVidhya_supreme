@@ -102,7 +102,7 @@ export default function Blog() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search articles…"
-              className="w-full rounded-xl border border-input bg-background py-2.5 pl-10 pr-4 text-sm placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              className="w-full rounded-xl glass-input py-2.5 pl-10 pr-4 text-sm placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
               aria-label="Search articles"
             />
           </div>
@@ -114,7 +114,7 @@ export default function Blog() {
                 className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                   active === cat
                     ? "bg-forge-gradient text-white shadow-forge"
-                    : "border border-border/60 bg-card/50 text-muted-foreground hover:text-foreground"
+                    : "border border-border/60 glass-soft text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {cat}
