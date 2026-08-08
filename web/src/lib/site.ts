@@ -11,8 +11,28 @@ export const siteConfig = {
   url: "https://forgevidhya.example.com",
   foundedYear: 2025,
   email: "160425733047@mjcollege.ac.in",
-  phone: "+91 90000 00000",
-  address: "Greater Hyderabad, Telangana, India",
+  phone: "+91 8008757916",
+  /** Single-line postal address. Shown in the footer and on the Contact page. */
+  address: "8-3-165/B/12/2, vikaspuri, Erragadda, Hyderabad, Telangana, 500018",
+  /** Office location — powers the map section (see components/LocationMap). */
+  location: {
+    /** Address split for multi-line display. */
+    lines: [
+      "8-3-165/B/12/2, vikaspuri",
+      "Erragadda, Hyderabad",
+      "Telangana, 500018",
+    ],
+    city: "Hyderabad",
+    state: "Telangana",
+    postalCode: "500018",
+    country: "India",
+    /** Mappls place page — opened when the map card is clicked. */
+    mapUrl:
+      "https://www.mappls.com/place-Talentstor+Incorporation-Street+Number+1-Venkateswara+Colony-Erragadda-Hyderabad-Telangana-500018-5ung8s?@,,,l,f,f,f,f,f,f,zdata=MTcuNDUzMDkyKzc4LjQzMjIwNCsxNys1dW5nOHMrKzI2MDE0KysrNDIyLTJLNS02NktUed",
+    /** Coordinates carried in the Mappls link (used for the directions hint). */
+    lat: 17.453092,
+    lng: 78.432204,
+  },
   social: {
     twitter: "https://x.com/isaam_mjcetian",
     linkedin: "https://www.linkedin.com/in/isaam-uddin-3a7781388",

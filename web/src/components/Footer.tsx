@@ -115,7 +115,14 @@ export function Footer() {
               </li>
               <li className="flex items-start gap-2">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-forge-red" />
-                {siteConfig.address}
+                <a
+                  href={siteConfig.location.mapUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-foreground"
+                >
+                  {siteConfig.address}
+                </a>
               </li>
             </ul>
 
