@@ -33,6 +33,21 @@
     />
     <meta name="twitter:image" content="/icon.png" />
 
+    <!-- Favicon: browsers that support `media` on icon links pick the variant
+         matching the OS colour scheme. /favicon.png stays last as the fallback
+         for browsers that ignore `media` (they take the final matching link). -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="/favicon-light.png"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/favicon-dark.png"
+      media="(prefers-color-scheme: dark)"
+    />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/icon.png" />
     <link rel="manifest" href="/site.webmanifest" />

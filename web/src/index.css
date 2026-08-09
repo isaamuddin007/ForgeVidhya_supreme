@@ -110,6 +110,13 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* ShaderBackground adds .shader-bg to <html> only once the WebGL context and
+     program are confirmed good. Until then the opaque background stays, so a
+     device without WebGL never gets a blank page. */
+  .shader-bg body {
+    background-color: transparent;
+  }
+
   html {
     scroll-behavior: smooth;
   }
@@ -127,7 +134,8 @@
      from a solid one. This fixed layer gives every glass surface content to
      blur, and it never scrolls or intercepts clicks.
      ------------------------------------------------------------------ */
-  body::before {
+  /* Fallback ambience only — the WebGL shader replaces this when it is live. */
+  html:not(.shader-bg) body::before {
     content: "";
     position: fixed;
     inset: 0;
@@ -138,7 +146,7 @@
       radial-gradient(45% 40% at 88% 16%, rgba(254, 126, 6, 0.14), transparent 62%),
       radial-gradient(60% 50% at 50% 104%, rgba(46, 109, 255, 0.12), transparent 62%);
   }
-  .dark body::before {
+  html.dark:not(.shader-bg) body::before {
     background:
       radial-gradient(55% 45% at 12% 8%, rgba(46, 109, 255, 0.22), transparent 62%),
       radial-gradient(45% 40% at 88% 16%, rgba(254, 126, 6, 0.16), transparent 62%),

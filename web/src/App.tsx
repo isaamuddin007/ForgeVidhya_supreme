@@ -19,6 +19,7 @@ import Terms from "@/pages/Terms";
 import AdminDashboard from "@/pages/AdminDashboard";
 import NotFound from "@/pages/NotFound";
 import { SignInGate } from "@/components/SignInGate";
+import { ShaderBackground } from "@/components/ShaderBackground";
 import { ScrollToHash } from "@/components/SiteSearch";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,9 @@ const App = () => (
         <SoundProvider>
         <GalleryProvider>
         <TooltipProvider>
+          {/* Mounted outside <Routes> so the WebGL context survives navigation
+              (each page renders its own Layout, which would remount it). */}
+          <ShaderBackground />
           <Toaster position="top-center" />
           <BrowserRouter
             future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
