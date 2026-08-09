@@ -16,7 +16,6 @@ import {
 import { SEO } from "@/components/SEO";
 import { Layout } from "@/components/Layout";
 import { FadeIn, SectionHeading } from "@/components/ui/primitives";
-import { LocationMap } from "@/components/LocationMap";
 import { siteConfig } from "@/lib/site";
 import { submitContact } from "@/lib/backend";
 
@@ -301,16 +300,6 @@ export default function Contact() {
             </div>
           </FadeIn>
         </div>
-      </section>
-
-      {/* ===================== FIND US ===================== */}
-      <section className="mx-auto max-w-5xl px-4 pb-24 sm:px-6 lg:px-8">
-        <FadeIn>
-          <h2 className="mb-5 font-display text-2xl font-bold tracking-tight">
-            Find us
-          </h2>
-          <LocationMap />
-        </FadeIn>
       </section>
     </Layout>
   );

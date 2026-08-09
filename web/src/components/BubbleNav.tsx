@@ -119,7 +119,9 @@ export function BubbleNav() {
 
   return (
     <>
-    <div className="pointer-events-none fixed inset-x-0 top-0 z-50">
+    {/* In normal document flow (not fixed), so the nav scrolls away with the
+        page instead of staying pinned to the top. */}
+    <div className="pointer-events-none relative z-50">
       <div className="mx-auto flex max-w-7xl items-start justify-between px-4 pt-3 sm:px-6 lg:px-8">
         {/* left: brand logo */}
         <motion.button

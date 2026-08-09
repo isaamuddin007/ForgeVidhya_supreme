@@ -9,6 +9,7 @@ import {
   MapPin,
   Zap,
 } from "lucide-react";
+import { LocationMap } from "@/components/LocationMap";
 import { navItems, siteConfig, services } from "@/lib/site";
 import { subscribeNewsletter } from "@/lib/backend";
 
@@ -22,7 +23,8 @@ export function Footer() {
     <footer className="glass-bar relative mt-24 border-t">
       <div className="absolute inset-x-0 top-0 h-px bg-forge-gradient" />
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid gap-12 lg:grid-cols-4">
+        <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-10">
+        <div className="grid flex-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="lg:col-span-1">
             <Link to="/" className="flex items-center gap-2.5">
@@ -174,6 +176,15 @@ export function Footer() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+
+          {/* Office location — square map tile, opens Mappls.
+              The width lives on this wrapper (not on the tile) because the tile
+              is w-full: sizing the flex item directly avoids a circular
+              content-size resolution that collapses it to a couple of pixels. */}
+          <div className="flex justify-center lg:w-56 lg:shrink-0">
+            <LocationMap />
           </div>
         </div>
 
