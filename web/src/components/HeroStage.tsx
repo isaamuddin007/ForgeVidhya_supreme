@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import { useReveal } from "@/lib/reveal";
 
 const WELCOME_TEXT = "building for the future of technology";
 const WELCOME_KEY = "ff-welcomed";
@@ -32,6 +33,12 @@ export function HeroStage() {
 
   const words = WELCOME_TEXT.split(" ");
 
+  // The headline keeps its first-visit materialize; the subhead and buttons
+  // still wait for it to finish before they drop in.
+  const headlineReveal = useReveal();
+  const subheadReveal = useReveal(firstVisit ? 2.4 : 0.1);
+  const buttonsReveal = useReveal(firstVisit ? 2.6 : 0.2);
+
   return (
     <section className="relative overflow-hidden">
       {/* atmosphere */}
@@ -42,8 +49,7 @@ export function HeroStage() {
         {/* welcome phrase */}
         <motion.h1
           className="font-display text-3xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl"
-          initial={firstVisit ? "hidden" : "shown"}
-          animate="shown"
+          {...headlineReveal}
         >
           {words.map((word, wi) => (
             <span key={word + wi} className="mr-[0.35ch] inline-block">
@@ -70,9 +76,7 @@ export function HeroStage() {
 
         <motion.p
           className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: firstVisit ? 2.4 : 0.3, duration: 0.8 }}
+          {...subheadReveal}
         >
           AI and engineering skills tier-3 colleges skip — built around shipping
           real things.
@@ -80,9 +84,7 @@ export function HeroStage() {
 
         <motion.div
           className="mt-8 flex flex-wrap items-center justify-center gap-3"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: firstVisit ? 2.6 : 0.5, duration: 0.6 }}
+          {...buttonsReveal}
         >
           <Link
             to="/services"

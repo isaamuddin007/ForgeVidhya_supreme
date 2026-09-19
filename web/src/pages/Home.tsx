@@ -21,6 +21,7 @@ import { MagicReveal } from "@/components/MagicReveal";
 import { MediaGallery } from "@/components/MediaGallery";
 import { MediaSlots } from "@/components/MediaSlots";
 import { services, testimonials, blogPosts, siteConfig } from "@/lib/site";
+import { useRevealStagger } from "@/lib/reveal";
 
 const iconMap: Record<string, typeof Workflow> = {
   Workflow,
@@ -31,6 +32,7 @@ const iconMap: Record<string, typeof Workflow> = {
 
 export default function Home() {
   const latestPosts = blogPosts.slice(0, 3);
+  const reveal = useRevealStagger();
 
   return (
     <Layout>
@@ -72,10 +74,7 @@ export default function Home() {
               ].map((p, i) => (
                 <motion.div
                   key={p}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
+                  {...reveal(i * 0.1)}
                   className="flex items-start gap-3"
                 >
                   <span className="mt-1 grid h-5 w-5 place-items-center rounded-full bg-forge-red/15 text-forge-red">
@@ -103,10 +102,7 @@ export default function Home() {
                   ].map((p, i) => (
                     <motion.div
                       key={p}
-                      initial={{ opacity: 0, x: 20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.1 }}
+                      {...reveal(i * 0.1)}
                       className="flex items-start gap-3 rounded-xl glass-soft p-3 backdrop-blur"
                     >
                       <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-forge-blue" />

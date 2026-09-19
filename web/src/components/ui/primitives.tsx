@@ -2,6 +2,7 @@ import { type ComponentType } from "react";
 import { motion } from "framer-motion";
 import * as Lucide from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useReveal } from "@/lib/reveal";
 
 /**
  * Icon — renders a lucide icon by name. Set `gradient` to wrap it in the
@@ -75,21 +76,13 @@ export function FadeIn({
   children,
   delay = 0,
   className,
-  y = 20,
 }: {
   children: React.ReactNode;
   delay?: number;
   className?: string;
-  y?: number;
 }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={className}
-    >
+    <motion.div {...useReveal(delay)} className={className}>
       {children}
     </motion.div>
   );
