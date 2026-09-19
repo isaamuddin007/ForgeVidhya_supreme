@@ -316,3 +316,29 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #fe7e06;
 }
+
+/* ============================================================
+   Magic cursor
+   The canvas in MagicCursor.tsx draws the pointer, so the system
+   one is hidden. The class is added by that component only once it
+   is actually running, so if it bails out (reduced-motion, no 2D
+   context) the normal cursor is never taken away.
+   ============================================================ */
+html.magic-cursor-active,
+html.magic-cursor-active *,
+html.magic-cursor-active *::before,
+html.magic-cursor-active *::after {
+  cursor: none !important;
+}
+
+/* Touch devices have no pointer to replace — and no hover to drive the
+   trail — so leave native behaviour completely alone there. */
+@media (hover: none), (pointer: coarse) {
+  html.magic-cursor-active,
+  html.magic-cursor-active * {
+    cursor: auto !important;
+  }
+  .magic-cursor-canvas {
+    display: none;
+  }
+}

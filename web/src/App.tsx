@@ -20,6 +20,7 @@ import AdminDashboard from "@/pages/AdminDashboard";
 import NotFound from "@/pages/NotFound";
 import { SignInGate } from "@/components/SignInGate";
 import LiquidGlassBackground from "@/components/LiquidGlassBackground";
+import MagicCursor from "@/components/MagicCursor";
 import { ScrollToHash } from "@/components/SiteSearch";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const App = () => (
           {/* Mounted outside <Routes> so it survives navigation (each page
               renders its own Layout, which would remount it). */}
           <LiquidGlassBackground />
+          <MagicCursor />
           <Toaster position="top-center" />
           <BrowserRouter
             future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
