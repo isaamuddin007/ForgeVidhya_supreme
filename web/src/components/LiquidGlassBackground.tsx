@@ -5,32 +5,8 @@ const LiquidGlassBackground = () => {
     <>
       {/* Fixed, full-screen container that sits behind everything */}
       <div className="liquid-bg-container fixed inset-0 -z-10 overflow-hidden">
-        {/* SVG filter definition – hidden but active */}
-        <svg className="absolute w-0 h-0">
-          <defs>
-            <filter id="liquid-glass" x="-20%" y="-20%" width="140%" height="140%">
-              <feTurbulence
-                type="fractalNoise"
-                baseFrequency="0.008 0.012"
-                numOctaves="3"
-                seed="7"
-                result="noise"
-              />
-              <feDisplacementMap
-                in="SourceGraphic"
-                in2="noise"
-                scale="42"
-                xChannelSelector="R"
-                yChannelSelector="G"
-                result="displaced"
-              />
-              <feGaussianBlur in="displaced" stdDeviation="6" result="blurred" />
-              <feComposite in="blurred" in2="SourceGraphic" operator="in" />
-            </filter>
-          </defs>
-        </svg>
 
-        {/* The gradient blobs that will be distorted by the filter */}
+        {/* The gradient blobs */}
         <div className="liquid-blob blob-1" />
         <div className="liquid-blob blob-2" />
         <div className="liquid-blob blob-3" />
@@ -53,7 +29,15 @@ const LiquidGlassBackground = () => {
           width: 140vmax;
           height: 140vmax;
           border-radius: 50%;
-          filter: url(#liquid-glass) blur(28px);
+          /* Was: filter: url(#liquid-glass) blur(28px).
+             The SVG pass (feTurbulence -> feDisplacementMap) had to be
+             recomputed over a ~2500px region for each of the three blobs on
+             every frame, because they animate underneath it. Measured at
+             ~900ms per frame, which is what made scrolling stutter. Chrome
+             rasterises feTurbulence on the CPU even with a GPU present, so
+             this is not a slow-machine problem. The blur is nudged up to
+             cover the softening the displacement used to provide. */
+          filter: blur(38px);
           opacity: 0.85;
           will-change: transform, border-radius;
           mix-blend-mode: screen; /* gives the glassy glow on dark slate */
@@ -191,7 +175,7 @@ const LiquidGlassBackground = () => {
         @media (prefers-reduced-motion: reduce) {
           .liquid-blob {
             animation: none !important;
-            filter: url(#liquid-glass) blur(28px) !important;
+            filter: blur(38px) !important;
           }
         }
       `}</style>

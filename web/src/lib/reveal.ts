@@ -15,11 +15,31 @@ import type { Variants, Transition } from "framer-motion";
  * framer-motion already writes onto the very same elements.
  */
 
-export const REVEAL_DURATION = 0.6;
-export const REVEAL_EASE: Transition["ease"] = [0.22, 1, 0.36, 1]; // ease-out
+/**
+ * Entry takes about a second on an ease-out cubic. The earlier quintic
+ * ([0.22, 1, 0.36, 1]) covered most of its distance in the first fifth of
+ * the run and then crawled, which is what read as a snap rather than a glide.
+ */
+export const REVEAL_DURATION = 0.9;
+export const REVEAL_EASE: Transition["ease"] = [0.33, 1, 0.68, 1]; // ease-out cubic
+
+/**
+ * Leaving is quicker and never staggered. Running the exit at entry speed
+ * left blocks visibly dissolving well after they had passed the edge of the
+ * screen, and a stagger delay on the way out lagged behind the scroll.
+ */
+export const EXIT_DURATION = 0.4;
+export const EXIT_EASE: Transition["ease"] = [0.4, 0, 1, 1]; // ease-in
 
 export const revealVariants: Variants = {
-  hidden: { opacity: 0, scale: 0.92, y: 28 },
+  hidden: {
+    opacity: 0,
+    scale: 0.92,
+    y: 28,
+    // A variant's own transition wins over the component's, so only the exit
+    // picks this up — the entry keeps the staggered one built below.
+    transition: { duration: EXIT_DURATION, ease: EXIT_EASE, delay: 0 },
+  },
   shown: { opacity: 1, scale: 1, y: 0 },
 };
 
