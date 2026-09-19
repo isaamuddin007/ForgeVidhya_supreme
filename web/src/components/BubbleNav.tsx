@@ -133,9 +133,9 @@ export function BubbleNav() {
           whileTap={{ scale: 0.9 }}
         >
           <img
-            src={theme === "dark" ? "/logo-dark.png" : "/logo-light.png"}
+            src={theme === "dark" ? "/logo-dark.svg" : "/logo-light.svg"}
             alt="forgeVidhya"
-            className="h-16 w-auto rounded-2xl drop-shadow-md sm:h-20"
+            className="h-16 w-auto drop-shadow-md sm:h-20"
             draggable={false}
           />
         </motion.button>
