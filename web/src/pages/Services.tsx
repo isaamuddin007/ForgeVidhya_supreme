@@ -115,7 +115,7 @@ export default function Services() {
                   {hasCourse ? (
                     <Link
                       to={`/services?category=${category.id}&course=${p.courseSlug}`}
-                      className="group flex h-full flex-col rounded-2xl border border-border/60 glass-card p-6 shadow-forge transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-forge-red"
+                      className="group flex h-full flex-col rounded-2xl border border-border/60 glass-card p-6 shadow-forge card-hover hover:border-primary/40"
                     >
                       {inner}
                     </Link>
@@ -134,7 +134,7 @@ export default function Services() {
               <FadeIn key={cat.id} delay={i * 0.08}>
                 <Link
                   to={`/services?category=${cat.id}`}
-                  className="group flex h-full flex-col rounded-3xl border border-border/60 glass-card p-7 shadow-forge transition-all hover:-translate-y-1 hover:shadow-forge-red"
+                  className="group flex h-full flex-col rounded-3xl border border-border/60 glass-card p-7 shadow-forge card-hover"
                 >
                   <span className="grid h-12 w-12 place-items-center rounded-2xl bg-forge-gradient text-white shadow-forge transition-transform group-hover:scale-110">
                     <Icon name={cat.icon} size={22} />

@@ -25,7 +25,7 @@ export function LocationMap({ className }: { className?: string }) {
       rel="noopener noreferrer"
       aria-label={`Open ${name}'s location in Mappls: ${address}`}
       className={cn(
-        "glass-card group relative block aspect-square w-full max-w-xs overflow-hidden rounded-3xl transition-all hover:-translate-y-1 hover:shadow-forge",
+        "glass-card group relative block aspect-square w-full max-w-xs overflow-hidden rounded-3xl card-hover",
         className
       )}
       initial={{ opacity: 0, y: 16 }}

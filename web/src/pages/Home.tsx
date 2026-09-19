@@ -6,8 +6,6 @@ import {
   Workflow,
   Cog,
   Rocket,
-  Quote,
-  Star,
   GraduationCap,
   CheckCircle2,
 } from "lucide-react";
@@ -20,7 +18,7 @@ import { SiteAnnouncement } from "@/components/SiteAnnouncement";
 import { MagicReveal } from "@/components/MagicReveal";
 import { MediaGallery } from "@/components/MediaGallery";
 import { MediaSlots } from "@/components/MediaSlots";
-import { services, testimonials, blogPosts, siteConfig } from "@/lib/site";
+import { services, blogPosts, siteConfig } from "@/lib/site";
 import { useRevealStagger } from "@/lib/reveal";
 
 const iconMap: Record<string, typeof Workflow> = {
@@ -134,7 +132,7 @@ export default function Home() {
               <FadeIn key={s.slug} delay={i * 0.08}>
                 <Link
                   to="/services"
-                  className="group block h-full rounded-2xl glass-card p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-forge"
+                  className="group block h-full rounded-2xl glass-card p-6 card-hover"
                 >
                   <div className="flex items-start justify-between">
                     <span className="grid h-12 w-12 place-items-center rounded-xl bg-forge-gradient text-white shadow-forge transition-transform group-hover:scale-110">
@@ -206,45 +204,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===================== TESTIMONIALS ===================== */}
-      <section id="testimonials" className="mx-auto max-w-7xl scroll-mt-28 px-4 py-20 sm:px-6 lg:px-8">
-        <FadeIn>
-          <SectionHeading
-            eyebrow="Students"
-            title="Tier-3 colleges. Real outcomes."
-            subtitle="We measure success in shipped projects and first paychecks — not certificates."
-          />
-        </FadeIn>
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
-          {testimonials.map((t, i) => (
-            <FadeIn key={t.name} delay={i * 0.08}>
-              <figure className="relative h-full rounded-2xl glass-card p-6">
-                <Quote className="absolute right-5 top-5 h-8 w-8 text-forge-gradient opacity-20" />
-                <div className="flex gap-1 text-forge-red">
-                  {Array.from({ length: 5 }).map((_, idx) => (
-                    <Star key={idx} className="h-4 w-4" fill="currentColor" />
-                  ))}
-                </div>
-                <blockquote className="mt-4 text-sm leading-relaxed text-foreground">
-                  "{t.quote}"
-                </blockquote>
-                <figcaption className="mt-5 flex items-center gap-3">
-                  <span className="grid h-11 w-11 place-items-center rounded-full bg-forge-gradient text-sm font-bold text-white shadow-forge">
-                    {t.initials}
-                  </span>
-                  <div>
-                    <p className="text-sm font-semibold">{t.name}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {t.role} · {t.college}
-                    </p>
-                  </div>
-                </figcaption>
-              </figure>
-            </FadeIn>
-          ))}
-        </div>
-      </section>
-
       {/* ===================== VANITY MEDIA SHOWCASE ===================== */}
       <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
         <MagicReveal
@@ -298,7 +257,7 @@ export default function Home() {
             <FadeIn key={post.slug} delay={i * 0.08}>
               <Link
                 to={`/blog/${post.slug}`}
-                className="group flex h-full flex-col overflow-hidden rounded-2xl glass-card transition-all hover:-translate-y-1 hover:shadow-forge"
+                className="group flex h-full flex-col overflow-hidden rounded-2xl glass-card card-hover"
               >
                 <div
                   className={`h-40 bg-gradient-to-br ${post.cover} relative`}

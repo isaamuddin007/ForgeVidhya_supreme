@@ -1,5 +1,3 @@
-import { useState, type FormEvent } from "react";
-import { motion } from "framer-motion";
 import {
   Mail,
   MapPin,
@@ -9,15 +7,12 @@ import {
   Instagram,
   Youtube,
   Github,
-  Send,
   GraduationCap,
-  CheckCircle2,
 } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import { Layout } from "@/components/Layout";
-import { FadeIn, SectionHeading } from "@/components/ui/primitives";
+import { FadeIn } from "@/components/ui/primitives";
 import { siteConfig } from "@/lib/site";
-import { submitContact } from "@/lib/backend";
 
 const socials = [
   { Icon: Twitter, href: siteConfig.social.twitter, label: "Twitter" },
@@ -28,38 +23,6 @@ const socials = [
 ];
 
 export default function Contact() {
-  const [submitted, setSubmitted] = useState(false);
-  const [sending, setSending] = useState(false);
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    college: "",
-    branch: "",
-    message: "",
-  });
-
-  const update = (k: keyof typeof form) => (v: string) =>
-    setForm((p) => ({ ...p, [k]: v }));
-
-  const onSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (sending) return;
-    setSending(true);
-    const { toast } = await import("sonner");
-    try {
-      await submitContact(form);
-      setSubmitted(true);
-      toast.success("Thanks! We'll reply within 24 hours.");
-    } catch (err) {
-      console.error("contact submit failed:", err);
-      toast.error(
-        err instanceof Error ? err.message : "Couldn't send your message. Please try again.",
-      );
-    } finally {
-      setSending(false);
-    }
-  };
-
   return (
     <Layout>
       <SEO
@@ -90,7 +53,7 @@ export default function Contact() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr]">
+        <div className="mx-auto max-w-2xl">
           {/* Contact info */}
           <FadeIn>
             <div className="space-y-6">
@@ -186,157 +149,8 @@ export default function Contact() {
             </div>
           </FadeIn>
 
-          {/* Form */}
-          <FadeIn delay={0.1}>
-            <div className="rounded-3xl glass-card p-7 sm:p-9">
-              {submitted ? (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="flex h-full flex-col items-center justify-center py-16 text-center"
-                >
-                  <span className="grid h-16 w-16 place-items-center rounded-full bg-forge-gradient text-white shadow-forge">
-                    <CheckCircle2 className="h-8 w-8" />
-                  </span>
-                  <h2 className="mt-6 font-display text-2xl font-bold">
-                    Message received.
-                  </h2>
-                  <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-                    Thanks, {form.name.split(" ")[0] || "friend"}. A real human
-                    from the forgeVidhya team will reply to{" "}
-                    <span className="font-medium text-foreground">
-                      {form.email}
-                    </span>{" "}
-                    within 24 hours.
-                  </p>
-                  <button
-                    onClick={() => {
-                      setSubmitted(false);
-                      setForm({
-                        name: "",
-                        email: "",
-                        college: "",
-                        branch: "",
-                        message: "",
-                      });
-                    }}
-                    className="mt-6 text-sm font-semibold text-primary hover:underline"
-                  >
-                    Send another message
-                  </button>
-                </motion.div>
-              ) : (
-                <form onSubmit={onSubmit} className="space-y-5">
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    <Field
-                      label="Name"
-                      id="name"
-                      required
-                      value={form.name}
-                      onChange={update("name")}
-                      placeholder="Your full name"
-                    />
-                    <Field
-                      label="Email"
-                      id="email"
-                      type="email"
-                      required
-                      value={form.email}
-                      onChange={update("email")}
-                      placeholder="you@college.edu"
-                    />
-                    <Field
-                      label="College"
-                      id="college"
-                      required
-                      value={form.college}
-                      onChange={update("college")}
-                      placeholder="Your college name"
-                    />
-                    <Field
-                      label="Branch / year"
-                      id="branch"
-                      value={form.branch}
-                      onChange={update("branch")}
-                      placeholder="e.g. ECE, 1st year"
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="message"
-                      className="block text-sm font-medium"
-                    >
-                      What would you build if no one was watching?
-                      <span className="text-forge-red"> *</span>
-                    </label>
-                    <textarea
-                      id="message"
-                      required
-                      rows={5}
-                      value={form.message}
-                      onChange={(e) => update("message")(e.target.value)}
-                      placeholder="Tell us about an idea you'd love to ship — even if it sounds small."
-                      className="mt-2 w-full rounded-xl glass-input px-4 py-3 text-sm placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={sending}
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-forge-gradient px-6 py-3.5 text-base font-semibold text-white shadow-forge transition-transform hover:scale-[1.02] active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    {sending ? "Sending…" : "Send application"} <Send className="h-4 w-4" />
-                  </button>
-                  <p className="text-center text-xs text-muted-foreground">
-                    By submitting, you agree to our{" "}
-                    <a href="/privacy" className="underline hover:text-foreground">
-                      Privacy Policy
-                    </a>
-                    . We never share your data.
-                  </p>
-                </form>
-              )}
-            </div>
-          </FadeIn>
         </div>
       </section>
     </Layout>
-  );
-}
-
-function Field({
-  label,
-  id,
-  value,
-  onChange,
-  placeholder,
-  type = "text",
-  required,
-}: {
-  label: string;
-  id: string;
-  value: string;
-  onChange: (v: string) => void;
-  placeholder?: string;
-  type?: string;
-  required?: boolean;
-}) {
-  return (
-    <div>
-      <label htmlFor={id} className="block text-sm font-medium">
-        {label}
-        {required && <span className="text-forge-red"> *</span>}
-      </label>
-      <input
-        id={id}
-        type={type}
-        required={required}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        className="mt-2 w-full rounded-xl glass-input px-4 py-2.5 text-sm placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
-      />
-    </div>
   );
 }

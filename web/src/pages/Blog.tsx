@@ -129,7 +129,7 @@ export default function Blog() {
             <FadeIn key={post.slug} delay={i * 0.06}>
               <Link
                 to={`/blog/${post.slug}`}
-                className="group flex h-full flex-col overflow-hidden rounded-2xl glass-card transition-all hover:-translate-y-1 hover:shadow-forge"
+                className="group flex h-full flex-col overflow-hidden rounded-2xl glass-card card-hover"
               >
                 <div
                   className={`relative h-40 bg-gradient-to-br ${post.cover}`}
