@@ -29,14 +29,17 @@ type Bubble = {
   color: string;
 };
 
-const BRAND_BLUE = "#2e6dff";
+// Two oranges rather than one, so the bubbles keep the alternating rhythm
+// they had when half of them were blue. Set inline on each label and icon,
+// so these constants are the only place they can be changed.
+const BRAND_AMBER = "#d2690a";
 const BRAND_ORANGE = "#fe7e06";
 
 const bubbles: Bubble[] = [
-  { label: "Home", href: "/", icon: HomeIcon, color: BRAND_BLUE },
-  { label: "About", href: "/about", icon: User, color: BRAND_BLUE },
+  { label: "Home", href: "/", icon: HomeIcon, color: BRAND_AMBER },
+  { label: "About", href: "/about", icon: User, color: BRAND_AMBER },
   { label: "Program", href: "/services", icon: GraduationCap, color: BRAND_ORANGE },
-  { label: "Blogs", href: "/blog", icon: Newspaper, color: BRAND_BLUE },
+  { label: "Blogs", href: "/blog", icon: Newspaper, color: BRAND_AMBER },
   { label: "Contact", href: "/contact", icon: Mail, color: BRAND_ORANGE },
 ];
 
