@@ -38,7 +38,13 @@ const ARROW: ReadonlyArray<readonly [number, number]> = [
   [7.4, 12.5],
   [12.7, 12.3],
 ];
-const ARROW_SCALE = 1.3;
+/**
+ * The outline above is 12.7 x 19.9 units. The rim stroke and halo add to
+ * that, so drawing it at 1 measured 15 x 21 CSS px of ink against the
+ * roughly 12 x 19 of a real pointer. 0.92 brings the finished mark — shape
+ * plus rim — back to system size.
+ */
+const ARROW_SCALE = 0.92;
 
 const MagicCursor = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -85,10 +91,10 @@ const MagicCursor = () => {
     // Scattered once over the blade's box and clipped to the outline when
     // drawn, so they read as glitter embedded in the gold rather than noise
     // reshuffling itself every frame.
-    const flecks: Fleck[] = Array.from({ length: 34 }, () => ({
+    const flecks: Fleck[] = Array.from({ length: 24 }, () => ({
       x: Math.random() * 12.7,
       y: Math.random() * 20,
-      r: 0.25 + Math.random() * 0.55,
+      r: 0.3 + Math.random() * 0.5,
       phase: Math.random() * Math.PI * 2,
       speed: 1.4 + Math.random() * 3.2,
       star: Math.random() < 0.22,
@@ -180,7 +186,7 @@ const MagicCursor = () => {
 
       // Soft halo so the gold separates from whatever is behind it.
       g.shadowColor = 'rgba(190, 140, 20, 0.55)';
-      g.shadowBlur = 9;
+      g.shadowBlur = 5;
 
       const body = g.createLinearGradient(0, 0, 11, 20);
       body.addColorStop(0, '#FFEFB0');
@@ -193,7 +199,7 @@ const MagicCursor = () => {
       // A darker rim keeps the shape legible on pale backgrounds, where a
       // plain gold fill would otherwise wash out.
       g.lineJoin = 'round';
-      g.lineWidth = 1;
+      g.lineWidth = 0.9;
       g.strokeStyle = 'rgba(122, 80, 10, 0.5)';
       g.stroke();
 
@@ -236,8 +242,8 @@ const MagicCursor = () => {
           // Shed from along the blade, not from the very tip.
           particles.push(
             createParticle(
-              m.x + 4 + (Math.random() - 0.5) * spread,
-              m.y + 9 + (Math.random() - 0.5) * spread,
+              m.x + 3 + (Math.random() - 0.5) * spread,
+              m.y + 7 + (Math.random() - 0.5) * spread,
               dx,
               dy,
             ),
