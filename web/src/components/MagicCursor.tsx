@@ -49,7 +49,15 @@ const ARROW_SCALE = 0.92;
 const MagicCursor = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const particlesRef = useRef<Particle[]>([]);
-  const mouseRef = useRef({ x: -1000, y: -1000, prevX: -1000, prevY: -1000, seen: false });
+  const mouseRef = useRef({
+    x: -1000,
+    y: -1000,
+    prevX: -1000,
+    prevY: -1000,
+    seen: false,
+    down: false,
+    mode: 'arrow' as 'arrow' | 'text',
+  });
   const rafRef = useRef<number | null>(null);
   const lastSpawnRef = useRef(0);
 
@@ -144,8 +152,53 @@ const MagicCursor = () => {
       mouseRef.current.seen = false;
     };
 
+    // ---------- What is under the pointer ----------
+    // With the system cursor hidden there is no I-beam to tell you that text
+    // is selectable, which is what made dragging over a paragraph feel vague.
+    // Work out what the native cursor would have been and draw that instead.
+    const EDITABLE =
+      'input:not([type="button"]):not([type="submit"]):not([type="checkbox"]):not([type="radio"]),' +
+      'textarea,[contenteditable="true"]';
+    const INTERACTIVE = 'a,button,[role="button"],select,summary,[role="tab"],label[for]';
+
+    const hitTest = (x: number, y: number): 'arrow' | 'text' => {
+      const el = document.elementFromPoint(x, y);
+      if (!el) return 'arrow';
+      if (el.closest(EDITABLE)) return 'text';
+      if (el.closest(INTERACTIVE)) return 'arrow';
+      // An element holding its own text is something you can select from.
+      for (let i = 0; i < el.childNodes.length; i++) {
+        const n = el.childNodes[i];
+        if (n.nodeType === Node.TEXT_NODE && n.nodeValue && n.nodeValue.trim()) return 'text';
+      }
+      return 'arrow';
+    };
+
+    // elementFromPoint flushes style and layout, so it is not something to run
+    // on every event of a fast drag. Once every 40ms keeps the shape feeling
+    // immediate without putting a layout pass in the middle of a selection.
+    let lastHit = 0;
+    const refreshMode = (time: number) => {
+      const m = mouseRef.current;
+      // Freeze the shape while a drag is in progress: the pointer crosses
+      // element boundaries constantly during a selection, and a cursor that
+      // flickers between shapes mid-drag is worse than one that holds still.
+      if (m.down || !m.seen || time - lastHit < 40) return;
+      lastHit = time;
+      m.mode = hitTest(m.x, m.y);
+    };
+
+    const onDown = () => {
+      mouseRef.current.down = true;
+    };
+    const onUp = () => {
+      mouseRef.current.down = false;
+    };
+
     window.addEventListener('mousemove', onMouseMove, { passive: true });
     window.addEventListener('touchmove', onTouchMove, { passive: true });
+    window.addEventListener('mousedown', onDown, { passive: true });
+    window.addEventListener('mouseup', onUp, { passive: true });
     document.addEventListener('mouseleave', onLeave);
 
     const starPath = (
@@ -170,6 +223,42 @@ const MagicCursor = () => {
       }
       g.closePath();
       g.fill();
+      g.restore();
+    };
+
+    // ---------- The I-beam ----------
+    const drawCaret = (g: CanvasRenderingContext2D, x: number, y: number, time: number) => {
+      const h = 8.5; // half height, so an 17px beam — a system I-beam's size
+      const serif = 3.2;
+      g.save();
+      g.translate(x, y);
+
+      const stroke = (width: number, style: string) => {
+        g.lineWidth = width;
+        g.lineCap = 'round';
+        g.strokeStyle = style;
+        g.beginPath();
+        g.moveTo(0, -h);
+        g.lineTo(0, h);
+        g.moveTo(-serif, -h);
+        g.lineTo(serif, -h);
+        g.moveTo(-serif, h);
+        g.lineTo(serif, h);
+        g.stroke();
+      };
+
+      // Dark underlay first so the beam holds its shape over pale text.
+      stroke(3.2, 'rgba(92, 60, 6, 0.45)');
+      stroke(1.7, '#F5CE5C');
+
+      // A couple of flecks so it still reads as the same gold cursor.
+      const tw = 0.4 + 0.6 * Math.abs(Math.sin(time * 0.003));
+      g.fillStyle = `rgba(255, 253, 235, ${(0.85 * tw).toFixed(3)})`;
+      g.beginPath();
+      g.arc(0, -h * 0.35, 0.8, 0, Math.PI * 2);
+      g.arc(0, h * 0.45, 0.6, 0, Math.PI * 2);
+      g.fill();
+
       g.restore();
     };
 
@@ -225,6 +314,8 @@ const MagicCursor = () => {
       const w = canvas.width / dpr;
       const h = canvas.height / dpr;
 
+      refreshMode(time);
+
       const dx = m.x - m.prevX;
       const dy = m.y - m.prevY;
       const speed = Math.hypot(dx, dy);
@@ -235,7 +326,7 @@ const MagicCursor = () => {
 
       // Glitter only comes off the pointer while it is actually moving.
       const spawnInterval = speed > 12 ? 0 : speed > 4 ? 14 : 28;
-      if (m.seen && speed > 0.5 && time - lastSpawnRef.current > spawnInterval) {
+      if (m.seen && !m.down && speed > 0.5 && time - lastSpawnRef.current > spawnInterval) {
         const count = speed > 25 ? 3 : speed > 10 ? 2 : 1;
         for (let i = 0; i < count; i++) {
           const spread = speed > 20 ? 9 : 4;
@@ -314,7 +405,10 @@ const MagicCursor = () => {
 
       // The arrow goes on last and opaquely, so the glitter never washes it out.
       ctx.globalCompositeOperation = 'source-over';
-      if (m.seen) drawArrow(ctx, m.x, m.y, time);
+      if (m.seen) {
+        if (m.mode === 'text') drawCaret(ctx, m.x, m.y, time);
+        else drawArrow(ctx, m.x, m.y, time);
+      }
 
       rafRef.current = requestAnimationFrame(animate);
     };
@@ -326,6 +420,8 @@ const MagicCursor = () => {
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('mousedown', onDown);
+      window.removeEventListener('mouseup', onUp);
       document.removeEventListener('mouseleave', onLeave);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       particlesRef.current = [];

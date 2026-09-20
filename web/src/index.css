@@ -121,10 +121,18 @@
     scroll-behavior: smooth;
   }
 
-  /* Selection in brand blue */
+  /* Selection.
+     Was brand blue at 0.28 alpha, which all but vanished against the
+     liquid-glass backdrop — dragging over text gave almost no feedback that
+     anything had been selected. Amber at full strength reads on both
+     themes and matches the pointer. */
   ::selection {
-    background-color: rgba(46, 109, 255, 0.28);
-    color: inherit;
+    background-color: rgba(243, 198, 74, 0.55);
+    color: #1a1204;
+  }
+  .dark ::selection {
+    background-color: rgba(243, 198, 74, 0.45);
+    color: #fffdf2;
   }
 
   /* ------------------------------------------------------------------

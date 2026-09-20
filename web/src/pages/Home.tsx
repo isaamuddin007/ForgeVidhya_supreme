@@ -16,8 +16,6 @@ import { FadeIn, Icon, SectionHeading } from "@/components/ui/primitives";
 import { HeroStage } from "@/components/HeroStage";
 import { SiteAnnouncement } from "@/components/SiteAnnouncement";
 import { MagicReveal } from "@/components/MagicReveal";
-import { MediaGallery } from "@/components/MediaGallery";
-import { MediaSlots } from "@/components/MediaSlots";
 import { services, blogPosts, siteConfig } from "@/lib/site";
 import { useRevealStagger } from "@/lib/reveal";
 
@@ -202,40 +200,6 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
-
-      {/* ===================== VANITY MEDIA SHOWCASE ===================== */}
-      <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
-        <MagicReveal
-          accent="blue"
-          defaultOpen
-          anchorId="showcase"
-          icon={<Icon name="Images" size={22} />}
-          title="Showcase reel"
-          subtitle="Upload your own images & videos — they play back with cinematic transitions"
-        >
-          <div className="space-y-6">
-            <div>
-              <h3 className="font-display text-lg font-bold">Fill the frames</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Drop media into these fixed-dimension spaces — each fades in
-                seamlessly.
-              </p>
-              <div className="mt-4">
-                <MediaSlots />
-              </div>
-            </div>
-            <div>
-              <h3 className="font-display text-lg font-bold">Showcase reel</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Everything you add here plays back as a cinematic slideshow.
-              </p>
-              <div className="mt-4">
-                <MediaGallery />
-              </div>
-            </div>
-          </div>
-        </MagicReveal>
       </section>
 
       {/* ===================== BLOG PREVIEW ===================== */}
