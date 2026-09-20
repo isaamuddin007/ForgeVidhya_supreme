@@ -19,7 +19,7 @@ import Terms from "@/pages/Terms";
 import AdminDashboard from "@/pages/AdminDashboard";
 import NotFound from "@/pages/NotFound";
 import { SignInGate } from "@/components/SignInGate";
-import LiquidGlassBackground from "@/components/LiquidGlassBackground";
+import RoyalWaterBackground from "@/components/RoyalWaterBackground";
 import MagicCursor from "@/components/MagicCursor";
 import MagicBoxFx from "@/components/MagicBoxFx";
 import { ScrollToHash } from "@/components/SiteSearch";
@@ -35,7 +35,7 @@ const App = () => (
         <TooltipProvider>
           {/* Mounted outside <Routes> so it survives navigation (each page
               renders its own Layout, which would remount it). */}
-          <LiquidGlassBackground />
+          <RoyalWaterBackground />
           <MagicCursor />
           <MagicBoxFx />
           <Toaster position="top-center" />
