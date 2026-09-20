@@ -17,6 +17,10 @@ import { useEffect } from 'react';
  */
 const MAX_TILT = 5; // degrees — past about six it stops reading as depth
 
+/** Must match the selector list the living-box styles use in index.css. */
+const BOXES =
+  'main .glass-card, main .bg-surface-gradient, main .rounded-3xl.bg-forge-gradient, .card-hover';
+
 export default function MagicBoxFx() {
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -50,7 +54,7 @@ export default function MagicBoxFx() {
 
     const onMove = (e: PointerEvent) => {
       const target = e.target as Element | null;
-      const box = target?.closest?.('.card-hover') as HTMLElement | null;
+      const box = target?.closest?.(BOXES) as HTMLElement | null;
 
       if (box !== active) {
         if (active) clear(active);
