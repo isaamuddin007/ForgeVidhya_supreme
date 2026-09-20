@@ -354,50 +354,187 @@ html.magic-cursor-active *::after {
 }
 
 /* ============================================================
-   Card hover
-   Replaces the per-card `transition-all hover:-translate-y-1`.
-   `transition-all` also animated background, backdrop-filter and
-   border-radius — on a glass card that is a blur re-composite every
-   frame of the hover, which is what made it feel heavy. Only
-   transform and shadow move here, both composited.
+   Magic boxes
+   The content cards. Three things were making them read as dead
+   rectangles: hard edges, no motion, flat lighting. Each is
+   answered here.
+
+   SHAPE  An asymmetric radius, so no corner matches its
+          neighbour and the card stops reading as a box. It is
+          static rather than morphing: animating border-radius
+          repaints the whole element every frame, and with a
+          backdrop-filter on ~15 cards that is a lot of work for
+          an effect most people never consciously notice.
+
+   LIGHT  A conic gradient rotating in the border, painted with
+          the two-layer background-clip trick rather than a
+          pseudo-element — a pseudo-element ring would be cut off
+          by the overflow:hidden the shine sweep needs.
+
+   MOTION A shine that crosses the card every few seconds, a glow
+          that follows the pointer, a slight tilt towards it, and
+          a lift on hover. Every one of them moves transform or
+          opacity only.
    ============================================================ */
-@layer components {
-  .card-hover {
-    transition:
-      transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1),
-      box-shadow 420ms cubic-bezier(0.22, 0.61, 0.36, 1),
-      border-color 260ms ease-out;
-  }
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
 
-  .card-hover:hover {
-    transform: translateY(-8px) scale(1.018);
-    box-shadow:
-      0 24px 50px -20px rgba(15, 23, 42, 0.38),
-      0 6px 18px -10px rgba(46, 109, 255, 0.28),
-      inset 0 1px 0 rgba(255, 255, 255, 0.75);
-  }
+/* Registered so it interpolates: an unregistered custom property jumps
+   between values instead of easing. */
+@property --glow-strength {
+  syntax: '<number>';
+  initial-value: 0;
+  inherits: false;
+}
 
-  .dark .card-hover:hover {
-    box-shadow:
-      0 24px 50px -20px rgba(0, 0, 0, 0.8),
-      0 6px 18px -10px rgba(46, 109, 255, 0.35),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  }
+/* The class is doubled on purpose. Tailwind strips @layer from its output,
+   so nothing here is decided by layer order — it is specificity and source
+   order alone, and a plain `.card-hover` (0,1,0) lost its border and
+   background to `.dark .glass-card` (0,2,0). Doubling the class matches that
+   weight, and sitting later in the file settles it. */
 
-  /* Settling back down is a touch quicker than lifting, so the card
-     does not feel like it is trailing the pointer on the way out. */
-  .card-hover:not(:hover) {
-    transition-duration: 320ms, 320ms, 200ms;
-  }
+.card-hover.card-hover {
+  --box-fill: rgba(255, 255, 255, 0.58);
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --lift: 0px;
+  --zoom: 1;
+  --glow-x: 50%;
+  --glow-y: 50%;
+  --glow-strength: 0;
 
-  @media (prefers-reduced-motion: reduce) {
-    .card-hover,
-    .card-hover:not(:hover) {
-      transition: none;
-    }
-    .card-hover:hover {
-      transform: none;
-    }
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
+  /* no two corners alike */
+  border: 2px solid transparent;
+  border-radius: 26px 34px 28px 36px;
+
+  /* inner fill clipped to the padding box, gradient to the border box,
+     so the conic ring only ever shows in the 2px border */
+  background-image:
+    radial-gradient(
+      380px circle at var(--glow-x) var(--glow-y),
+      rgba(255, 180, 77, calc(0.3 * var(--glow-strength))),
+      rgba(254, 126, 6, calc(0.12 * var(--glow-strength))) 42%,
+      transparent 72%
+    ),
+    linear-gradient(var(--box-fill), var(--box-fill)),
+    conic-gradient(
+      from var(--angle),
+      #fe7e06,
+      #ffb44d,
+      #ffe0b0,
+      #d2690a,
+      #ff8c3c,
+      #fe7e06
+    );
+  background-origin: border-box;
+  background-clip: padding-box, padding-box, border-box;
+  animation: box-ring 11s linear infinite;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 10px 34px -16px rgba(60, 28, 4, 0.3),
+    0 0 34px -12px rgba(254, 126, 6, 0.18);
+
+  /* One transform built from variables, so the tilt set by script and
+     the lift set by :hover cannot overwrite each other. */
+  transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y))
+    translateY(var(--lift)) scale(var(--zoom));
+  transition:
+    transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 420ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    --glow-strength 380ms ease,
+    border-color 260ms ease-out;
+}
+
+.dark .card-hover.card-hover {
+  --box-fill: rgba(20, 20, 24, 0.62);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 10px 34px -16px rgba(0, 0, 0, 0.7),
+    0 0 34px -12px rgba(254, 126, 6, 0.22);
+}
+
+/* the shine that crosses every few seconds */
+.card-hover.card-hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 60%;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(255, 246, 232, 0.16) 50%,
+    transparent 80%
+  );
+  transform: translate3d(-180%, 0, 0);
+  animation: box-shine 7s ease-in-out infinite;
+}
+
+.card-hover.card-hover:hover {
+  --lift: -8px;
+  --zoom: 1.018;
+  --glow-strength: 1;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 26px 52px -20px rgba(60, 28, 4, 0.42),
+    0 0 70px -18px rgba(254, 126, 6, 0.4);
+}
+
+.dark .card-hover.card-hover:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 26px 52px -20px rgba(0, 0, 0, 0.85),
+    0 0 70px -18px rgba(254, 126, 6, 0.45);
+}
+
+/* settling back is a touch quicker than lifting, so the card does not
+   feel like it is trailing the pointer on the way out */
+.card-hover.card-hover:not(:hover) {
+  transition-duration: 320ms, 320ms, 380ms, 200ms;
+}
+
+@keyframes box-ring {
+  to {
+    --angle: 360deg;
+  }
+}
+
+@keyframes box-shine {
+  0%,
+  62% {
+    transform: translate3d(-180%, 0, 0);
+  }
+  88%,
+  100% {
+    transform: translate3d(280%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-hover.card-hover,
+  .card-hover.card-hover:not(:hover) {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
+  .card-hover.card-hover::after {
+    animation: none;
+    opacity: 0;
+  }
+  .card-hover.card-hover:hover {
+    --lift: 0px;
+    --zoom: 1;
   }
 }
 

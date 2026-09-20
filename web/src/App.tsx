@@ -21,6 +21,7 @@ import NotFound from "@/pages/NotFound";
 import { SignInGate } from "@/components/SignInGate";
 import LiquidGlassBackground from "@/components/LiquidGlassBackground";
 import MagicCursor from "@/components/MagicCursor";
+import MagicBoxFx from "@/components/MagicBoxFx";
 import { ScrollToHash } from "@/components/SiteSearch";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
               renders its own Layout, which would remount it). */}
           <LiquidGlassBackground />
           <MagicCursor />
+          <MagicBoxFx />
           <Toaster position="top-center" />
           <BrowserRouter
             future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
