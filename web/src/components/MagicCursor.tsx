@@ -7,7 +7,6 @@ type Particle = {
   y: number;
   vx: number;
   vy: number;
-  size: number;
   baseSize: number;
   life: number;
   decay: number;
@@ -22,10 +21,29 @@ type Particle = {
   swirlSpeed: number;
 };
 
+/** A fleck of glitter sitting on the arrow itself. Fixed position, so it
+ *  does not crawl around the blade; only its brightness breathes. */
+type Fleck = { x: number; y: number; r: number; phase: number; speed: number; star: boolean };
+
+/**
+ * The classic pointer outline, tip at the origin so the shape can be drawn
+ * straight at the mouse position with no hotspot offset to correct for.
+ */
+const ARROW: ReadonlyArray<readonly [number, number]> = [
+  [0, 0],
+  [0, 17.6],
+  [4.2, 13.7],
+  [7.0, 19.9],
+  [10.2, 18.5],
+  [7.4, 12.5],
+  [12.7, 12.3],
+];
+const ARROW_SCALE = 1.3;
+
 const MagicCursor = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const particlesRef = useRef<Particle[]>([]);
-  const mouseRef = useRef({ x: -1000, y: -1000, prevX: -1000, prevY: -1000 });
+  const mouseRef = useRef({ x: -1000, y: -1000, prevX: -1000, prevY: -1000, seen: false });
   const rafRef = useRef<number | null>(null);
   const lastSpawnRef = useRef(0);
 
@@ -35,15 +53,12 @@ const MagicCursor = () => {
     const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
-    // Respect the OS "reduce motion" setting: no particles, and the real
-    // cursor stays visible (hiding it with nothing drawn in its place would
-    // leave the site unusable).
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotion) return;
+    // Reduce motion: no drawn cursor at all, and the real one stays put.
+    // Hiding the pointer with nothing in its place would break the site.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     document.documentElement.classList.add('magic-cursor-active');
 
-    // ---------- Resize handling with DPR for crisp rendering ----------
     let dpr = Math.min(window.devicePixelRatio || 1, 2);
     const resize = () => {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -56,260 +71,256 @@ const MagicCursor = () => {
     resize();
     window.addEventListener('resize', resize);
 
-    // ---------- Color palette: rose gold, crimson, soft blue ----------
+    // ---------- Gold glitter palette ----------
     const PALETTE: Color[] = [
-      { r: 255, g: 193, b: 168 }, // rose gold
-      { r: 255, g: 140, b: 150 }, // soft rose
-      { r: 220, g: 20, b: 60 }, // crimson
-      { r: 180, g: 30, b: 90 }, // deep crimson
-      { r: 140, g: 200, b: 255 }, // soft blue
-      { r: 100, g: 180, b: 255 }, // brighter blue
-      { r: 200, g: 220, b: 255 }, // icy blue
+      { r: 255, g: 245, b: 214 }, // champagne
+      { r: 255, g: 232, b: 150 }, // pale gold
+      { r: 255, g: 214, b: 102 }, // gold
+      { r: 245, g: 197, b: 66 }, // bright gold
+      { r: 224, g: 168, b: 45 }, // amber gold
+      { r: 255, g: 255, b: 238 }, // white sparkle
     ];
 
-    // ---------- Particle factory ----------
+    // ---------- Flecks on the arrow ----------
+    // Scattered once over the blade's box and clipped to the outline when
+    // drawn, so they read as glitter embedded in the gold rather than noise
+    // reshuffling itself every frame.
+    const flecks: Fleck[] = Array.from({ length: 34 }, () => ({
+      x: Math.random() * 12.7,
+      y: Math.random() * 20,
+      r: 0.25 + Math.random() * 0.55,
+      phase: Math.random() * Math.PI * 2,
+      speed: 1.4 + Math.random() * 3.2,
+      star: Math.random() < 0.22,
+    }));
+
     const createParticle = (x: number, y: number, vx: number, vy: number): Particle => {
       const color = PALETTE[(Math.random() * PALETTE.length) | 0];
-      const size = 1.2 + Math.random() * 4.2; // varied size
-      // Swirl direction: perpendicular to mouse velocity + randomness
+      const size = 0.9 + Math.random() * 2.6;
       const speed = Math.hypot(vx, vy) || 1;
       const perpX = -vy / speed;
       const perpY = vx / speed;
       const swirlForce = (Math.random() - 0.5) * 0.9;
-      const isStar = Math.random() < 0.35; // 35% are stars
 
       return {
         x,
         y,
-        vx: vx * 0.18 + perpX * swirlForce * 2.2 + (Math.random() - 0.5) * 0.6,
-        vy: vy * 0.18 + perpY * swirlForce * 2.2 + (Math.random() - 0.5) * 0.6,
-        size,
+        vx: vx * 0.16 + perpX * swirlForce * 2.0 + (Math.random() - 0.5) * 0.7,
+        vy: vy * 0.16 + perpY * swirlForce * 2.0 + (Math.random() - 0.5) * 0.7,
         baseSize: size,
         life: 1,
-        decay: 0.012 + Math.random() * 0.012, // ~0.8s to 1.4s
+        // Shorter than the old trail: glitter that has come off the pointer
+        // should be gone within about half a second, not linger behind it.
+        decay: 0.022 + Math.random() * 0.02,
         color,
         rotation: Math.random() * Math.PI * 2,
-        rotSpeed: (Math.random() - 0.5) * 0.15,
-        isStar,
+        rotSpeed: (Math.random() - 0.5) * 0.18,
+        isStar: Math.random() < 0.4,
         twinkle: Math.random() * Math.PI * 2,
-        twinkleSpeed: 0.1 + Math.random() * 0.15,
-        // Swirl orbital params for organic float
+        twinkleSpeed: 0.12 + Math.random() * 0.18,
         swirlRadius: 0.3 + Math.random() * 1.2,
         swirlAngle: Math.random() * Math.PI * 2,
         swirlSpeed: (Math.random() - 0.5) * 0.08,
       };
     };
 
-    // ---------- Mouse tracking (with velocity for directional swirl) ----------
-    const onMouseMove = (e: MouseEvent) => {
+    const track = (clientX: number, clientY: number) => {
       const m = mouseRef.current;
-      m.prevX = m.x;
-      m.prevY = m.y;
-      m.x = e.clientX;
-      m.y = e.clientY;
+      m.x = clientX;
+      m.y = clientY;
+      m.seen = true;
     };
-
-    // Also support touch for mobile
+    const onMouseMove = (e: MouseEvent) => track(e.clientX, e.clientY);
     const onTouchMove = (e: TouchEvent) => {
-      if (e.touches.length === 0) return;
-      const t = e.touches[0];
-      const m = mouseRef.current;
-      m.prevX = m.x;
-      m.prevY = m.y;
-      m.x = t.clientX;
-      m.y = t.clientY;
+      if (e.touches.length) track(e.touches[0].clientX, e.touches[0].clientY);
+    };
+    const onLeave = () => {
+      mouseRef.current.seen = false;
     };
 
     window.addEventListener('mousemove', onMouseMove, { passive: true });
     window.addEventListener('touchmove', onTouchMove, { passive: true });
+    document.addEventListener('mouseleave', onLeave);
 
-    // ---------- Draw a four-point sparkle/star ----------
-    const drawStar = (
-      context: CanvasRenderingContext2D,
+    const starPath = (
+      g: CanvasRenderingContext2D,
       cx: number,
       cy: number,
       outer: number,
       inner: number,
       rotation: number,
     ) => {
-      context.save();
-      context.translate(cx, cy);
-      context.rotate(rotation);
-      context.beginPath();
+      g.save();
+      g.translate(cx, cy);
+      g.rotate(rotation);
+      g.beginPath();
       for (let i = 0; i < 8; i++) {
         const angle = (Math.PI / 4) * i;
         const r = i % 2 === 0 ? outer : inner;
         const px = Math.cos(angle) * r;
         const py = Math.sin(angle) * r;
-        if (i === 0) context.moveTo(px, py);
-        else context.lineTo(px, py);
+        if (i === 0) g.moveTo(px, py);
+        else g.lineTo(px, py);
       }
-      context.closePath();
-      context.fill();
-      context.restore();
+      g.closePath();
+      g.fill();
+      g.restore();
     };
 
-    // ---------- Main animation loop ----------
+    // ---------- The arrow ----------
+    const drawArrow = (g: CanvasRenderingContext2D, x: number, y: number, time: number) => {
+      g.save();
+      g.translate(x, y);
+      g.scale(ARROW_SCALE, ARROW_SCALE);
+
+      g.beginPath();
+      g.moveTo(ARROW[0][0], ARROW[0][1]);
+      for (let i = 1; i < ARROW.length; i++) g.lineTo(ARROW[i][0], ARROW[i][1]);
+      g.closePath();
+
+      // Soft halo so the gold separates from whatever is behind it.
+      g.shadowColor = 'rgba(190, 140, 20, 0.55)';
+      g.shadowBlur = 9;
+
+      const body = g.createLinearGradient(0, 0, 11, 20);
+      body.addColorStop(0, '#FFEFB0');
+      body.addColorStop(0.42, '#F3C64A');
+      body.addColorStop(1, '#D79B22');
+      g.fillStyle = body;
+      g.fill();
+      g.shadowBlur = 0;
+
+      // A darker rim keeps the shape legible on pale backgrounds, where a
+      // plain gold fill would otherwise wash out.
+      g.lineJoin = 'round';
+      g.lineWidth = 1;
+      g.strokeStyle = 'rgba(122, 80, 10, 0.5)';
+      g.stroke();
+
+      // Glitter, clipped to the blade.
+      g.clip();
+      for (const f of flecks) {
+        const tw = 0.35 + 0.65 * Math.abs(Math.sin(time * 0.001 * f.speed + f.phase));
+        g.fillStyle = `rgba(255, 253, 235, ${(0.9 * tw).toFixed(3)})`;
+        if (f.star) {
+          starPath(g, f.x, f.y, f.r * 2.4, f.r * 0.7, f.phase + time * 0.0004);
+        } else {
+          g.beginPath();
+          g.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+          g.fill();
+        }
+      }
+      g.restore();
+    };
+
     const animate = (time: number) => {
       const m = mouseRef.current;
       const particles = particlesRef.current;
+      const w = canvas.width / dpr;
+      const h = canvas.height / dpr;
 
-      // Spawn particles based on mouse velocity (throttled)
       const dx = m.x - m.prevX;
       const dy = m.y - m.prevY;
       const speed = Math.hypot(dx, dy);
-
-      // prev only advances on a mousemove event, so once the pointer stops
-      // the last delta would stick and the emitter would keep firing at full
-      // tilt forever. Consume it here: with no new event the next frame sees
-      // zero movement, and the trail is only ever drawn by actual motion.
+      // prev only advances on a pointer event, so consume the delta here or a
+      // resting pointer would keep firing glitter at its last velocity.
       m.prevX = m.x;
       m.prevY = m.y;
 
-      // Spawn more particles when moving faster, up to a limit
-      const spawnInterval = speed > 12 ? 0 : speed > 4 ? 16 : 32;
-      if (m.x > 0 && m.y > 0 && speed > 0.5 && time - lastSpawnRef.current > spawnInterval) {
+      // Glitter only comes off the pointer while it is actually moving.
+      const spawnInterval = speed > 12 ? 0 : speed > 4 ? 14 : 28;
+      if (m.seen && speed > 0.5 && time - lastSpawnRef.current > spawnInterval) {
         const count = speed > 25 ? 3 : speed > 10 ? 2 : 1;
         for (let i = 0; i < count; i++) {
-          const spread = speed > 20 ? 8 : 3;
-          const offX = (Math.random() - 0.5) * spread;
-          const offY = (Math.random() - 0.5) * spread;
-          particles.push(createParticle(m.x + offX, m.y + offY, dx, dy));
+          const spread = speed > 20 ? 9 : 4;
+          // Shed from along the blade, not from the very tip.
+          particles.push(
+            createParticle(
+              m.x + 4 + (Math.random() - 0.5) * spread,
+              m.y + 9 + (Math.random() - 0.5) * spread,
+              dx,
+              dy,
+            ),
+          );
         }
         lastSpawnRef.current = time;
       }
 
-      // Fade previous frame (trail effect) — lower alpha = longer trails.
-      // Erased via destination-out rather than painted over with a dark fill:
-      // this canvas covers the whole site in 'screen' blend mode, so a fill
-      // would build up into an opaque sheet and tint every page behind it.
-      // Removing alpha instead gives the same fading trail on a canvas that
-      // stays fully transparent wherever there are no particles.
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.18)';
-      ctx.fillRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+      ctx.clearRect(0, 0, w, h);
 
-      // Use 'lighter' for glow additive blending
+      // Additive inside the canvas so overlapping flecks bloom; the canvas
+      // itself composites normally onto the page, so the gold stays visible
+      // over white cards as well as dark sections.
       ctx.globalCompositeOperation = 'lighter';
 
-      // Update & draw particles
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
 
-        // --- Organic swirl physics ---
         p.swirlAngle += p.swirlSpeed;
-        const swirlX = Math.cos(p.swirlAngle) * p.swirlRadius * 0.15;
-        const swirlY = Math.sin(p.swirlAngle) * p.swirlRadius * 0.15;
+        const sx = Math.cos(p.swirlAngle) * p.swirlRadius * 0.15;
+        const sy = Math.sin(p.swirlAngle) * p.swirlRadius * 0.15;
 
-        // Damping for smooth, glassy motion
-        p.vx *= 0.94;
-        p.vy *= 0.94;
+        p.vx *= 0.93;
+        p.vy *= 0.93;
+        p.vy += 0.02; // glitter falls rather than rises
 
-        // Gentle upward float (like glitter rising)
-        p.vy -= 0.025;
-
-        p.x += p.vx + swirlX;
-        p.y += p.vy + swirlY;
-
-        // Rotation
+        p.x += p.vx + sx;
+        p.y += p.vy + sy;
         p.rotation += p.rotSpeed;
         p.twinkle += p.twinkleSpeed;
 
-        // Life decay
         p.life -= p.decay;
         if (p.life <= 0) {
           particles.splice(i, 1);
           continue;
         }
 
-        // Eased fade: smooth curve so it doesn't pop out
-        const easedLife = p.life * p.life * (3 - 2 * p.life);
-        const alpha = easedLife;
-
-        // Shrink over lifetime
-        const size = p.baseSize * (0.25 + 0.75 * easedLife);
-
-        // Twinkle modulation
-        const twinkleFactor = 0.7 + 0.3 * Math.sin(p.twinkle);
-        const finalAlpha = alpha * twinkleFactor;
-
+        const eased = p.life * p.life * (3 - 2 * p.life);
+        const size = p.baseSize * (0.3 + 0.7 * eased);
+        const a = eased * (0.65 + 0.35 * Math.sin(p.twinkle));
         const { r, g, b } = p.color;
 
-        // Glow layer (soft radial)
-        const glowRadius = size * (p.isStar ? 3.5 : 2.8);
-        const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowRadius);
-        gradient.addColorStop(0, `rgba(${r},${g},${b},${finalAlpha * 0.9})`);
-        gradient.addColorStop(0.4, `rgba(${r},${g},${b},${finalAlpha * 0.35})`);
-        gradient.addColorStop(1, `rgba(${r},${g},${b},0)`);
-
-        ctx.fillStyle = gradient;
+        const glowR = size * (p.isStar ? 3.6 : 2.6);
+        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowR);
+        grad.addColorStop(0, `rgba(${r},${g},${b},${a * 0.85})`);
+        grad.addColorStop(0.4, `rgba(${r},${g},${b},${a * 0.3})`);
+        grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+        ctx.fillStyle = grad;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, glowRadius, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, glowR, 0, Math.PI * 2);
         ctx.fill();
 
-        // Core particle
+        ctx.fillStyle = `rgba(${r},${g},${b},${a})`;
         if (p.isStar) {
-          // Draw a 4-point sparkle
-          ctx.fillStyle = `rgba(${r},${g},${b},${finalAlpha})`;
-          drawStar(ctx, p.x, p.y, size * 1.8, size * 0.5, p.rotation);
-
-          // Bright center dot
-          ctx.fillStyle = `rgba(255,255,255,${finalAlpha * 0.95})`;
+          starPath(ctx, p.x, p.y, size * 1.9, size * 0.5, p.rotation);
+          ctx.fillStyle = `rgba(255,253,230,${a * 0.9})`;
           ctx.beginPath();
-          ctx.arc(p.x, p.y, size * 0.55, 0, Math.PI * 2);
+          ctx.arc(p.x, p.y, size * 0.45, 0, Math.PI * 2);
           ctx.fill();
         } else {
-          // Round glittery dot
-          ctx.fillStyle = `rgba(${r},${g},${b},${finalAlpha})`;
           ctx.beginPath();
           ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
-          ctx.fill();
-
-          // White highlight for sparkle
-          ctx.fillStyle = `rgba(255,255,255,${finalAlpha * 0.8})`;
-          ctx.beginPath();
-          ctx.arc(p.x - size * 0.3, p.y - size * 0.3, size * 0.4, 0, Math.PI * 2);
           ctx.fill();
         }
       }
 
-      // ---------- Persistent pointer core ----------
-      // The trail dies ~1s after the last movement, so without this the
-      // pointer disappears entirely whenever the mouse sits still — you
-      // could not tell what you were about to click. Drawn every frame so
-      // the magic cursor is always where the real one would have been.
-      if (m.x > 0 && m.y > 0) {
-        const coreGlow = ctx.createRadialGradient(m.x, m.y, 0, m.x, m.y, 16);
-        coreGlow.addColorStop(0, 'rgba(200,220,255,0.55)');
-        coreGlow.addColorStop(0.45, 'rgba(140,200,255,0.22)');
-        coreGlow.addColorStop(1, 'rgba(140,200,255,0)');
-        ctx.fillStyle = coreGlow;
-        ctx.beginPath();
-        ctx.arc(m.x, m.y, 16, 0, Math.PI * 2);
-        ctx.fill();
+      if (particles.length > 300) particles.splice(0, particles.length - 300);
 
-        ctx.fillStyle = 'rgba(255,255,255,0.95)';
-        ctx.beginPath();
-        ctx.arc(m.x, m.y, 2.6, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      // Cap particle count to keep performance steady
-      if (particles.length > 380) {
-        particles.splice(0, particles.length - 380);
-      }
+      // The arrow goes on last and opaquely, so the glitter never washes it out.
+      ctx.globalCompositeOperation = 'source-over';
+      if (m.seen) drawArrow(ctx, m.x, m.y, time);
 
       rafRef.current = requestAnimationFrame(animate);
     };
 
     rafRef.current = requestAnimationFrame(animate);
 
-    // ---------- Cleanup ----------
     return () => {
       document.documentElement.classList.remove('magic-cursor-active');
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('touchmove', onTouchMove);
+      document.removeEventListener('mouseleave', onLeave);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       particlesRef.current = [];
     };
@@ -328,7 +339,6 @@ const MagicCursor = () => {
         height: '100%',
         pointerEvents: 'none',
         zIndex: 9999,
-        mixBlendMode: 'screen',
       }}
     />
   );

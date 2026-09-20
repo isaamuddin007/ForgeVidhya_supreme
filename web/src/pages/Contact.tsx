@@ -2,25 +2,12 @@ import {
   Mail,
   MapPin,
   Phone,
-  Twitter,
-  Linkedin,
-  Instagram,
-  Youtube,
-  Github,
-  GraduationCap,
 } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import { Layout } from "@/components/Layout";
 import { FadeIn } from "@/components/ui/primitives";
 import { siteConfig } from "@/lib/site";
 
-const socials = [
-  { Icon: Twitter, href: siteConfig.social.twitter, label: "Twitter" },
-  { Icon: Linkedin, href: siteConfig.social.linkedin, label: "LinkedIn" },
-  { Icon: Instagram, href: siteConfig.social.instagram, label: "Instagram" },
-  { Icon: Youtube, href: siteConfig.social.youtube, label: "YouTube" },
-  { Icon: Github, href: siteConfig.social.github, label: "GitHub" },
-];
 
 export default function Contact() {
   return (
@@ -109,43 +96,6 @@ export default function Contact() {
                 </ul>
               </div>
 
-              <div className="rounded-2xl bg-surface-gradient p-6 shadow-forge">
-                <h2 className="font-display text-lg font-bold text-secondary-foreground">
-                  Follow the forge
-                </h2>
-                <p className="mt-1 text-sm text-secondary-foreground/80">
-                  We post student builds and free tutorials daily.
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {socials.map(({ Icon, href, label }) => (
-                    <a
-                      key={label}
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={label}
-                      className="grid h-10 w-10 place-items-center rounded-lg bg-card/80 text-secondary-foreground backdrop-blur transition-all hover:scale-110 hover:text-foreground hover:shadow-forge"
-                    >
-                      <Icon className="h-5 w-5" />
-                    </a>
-                  ))}
-                </div>
-              </div>
-
-              <div className="rounded-2xl glass-card p-6">
-                <div className="flex items-center gap-3">
-                  <span className="grid h-10 w-10 place-items-center rounded-lg bg-forge-gradient text-white shadow-forge">
-                    <GraduationCap className="h-5 w-5" />
-                  </span>
-                  <p className="text-sm font-medium">
-                    Cohort #4 admissions close soon.
-                  </p>
-                </div>
-                <p className="mt-3 text-xs text-muted-foreground">
-                  The foundational AI Automation track is free, always. Paid
-                  mentor-led tracks have limited seats for real 1:1 attention.
-                </p>
-              </div>
             </div>
           </FadeIn>
 
