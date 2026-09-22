@@ -51,26 +51,27 @@ export function HeroStage() {
           className="font-display text-3xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl"
           {...headlineReveal}
         >
+          {/* A word at a time, not a letter at a time. The display face is a
+              connected script, and an inline-block per character breaks every
+              join between letters — the word is the smallest piece that can
+              move without cutting the handwriting apart. */}
           {words.map((word, wi) => (
-            <span key={word + wi} className="mr-[0.35ch] inline-block">
-              {word.split("").map((ch, ci) => (
-                <motion.span
-                  key={ch + ci}
-                  className="inline-block text-forge-gradient"
-                  variants={{
-                    hidden: { opacity: 0, y: 12, filter: "blur(10px)" },
-                    shown: { opacity: 1, y: 0, filter: "blur(0px)" },
-                  }}
-                  transition={{
-                    duration: 1.1,
-                    ease: [0.22, 1, 0.36, 1],
-                    delay: firstVisit ? 0.4 + (wi * 6 + ci) * 0.045 : 0,
-                  }}
-                >
-                  {ch}
-                </motion.span>
-              ))}
-            </span>
+            <motion.span
+              key={word + wi}
+              className="inline-block text-forge-gradient"
+              variants={{
+                hidden: { opacity: 0, y: 12, filter: "blur(10px)" },
+                shown: { opacity: 1, y: 0, filter: "blur(0px)" },
+              }}
+              transition={{
+                duration: 1.1,
+                ease: [0.22, 1, 0.36, 1],
+                delay: firstVisit ? 0.4 + wi * 0.16 : 0,
+              }}
+            >
+              {word}
+              {wi < words.length - 1 ? "\u00A0" : ""}
+            </motion.span>
           ))}
         </motion.h1>
 

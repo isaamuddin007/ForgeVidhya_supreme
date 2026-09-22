@@ -13,25 +13,26 @@ export const siteConfig = {
   email: "160425733047@mjcollege.ac.in",
   phone: "+91 8008757916",
   /** Single-line postal address. Shown in the footer and on the Contact page. */
-  address: "8-3-165/B/12/2, vikaspuri, Erragadda, Hyderabad, Telangana, 500018",
+  address:
+    "SU Knowledge Hub Foundation, Road No. 3, Banjara Hills, Hyderabad, Telangana, 500073",
   /** Office location — powers the map section (see components/LocationMap). */
   location: {
     /** Address split for multi-line display. */
     lines: [
-      "8-3-165/B/12/2, vikaspuri",
-      "Erragadda, Hyderabad",
-      "Telangana, 500018",
+      "SU Knowledge Hub Foundation",
+      "Road No. 3, Banjara Hills",
+      "Hyderabad, Telangana, 500073",
     ],
     city: "Hyderabad",
     state: "Telangana",
-    postalCode: "500018",
+    postalCode: "500073",
     country: "India",
     /** Mappls place page — opened when the map card is clicked. */
     mapUrl:
-      "https://www.mappls.com/place-Talentstor+Incorporation-Street+Number+1-Venkateswara+Colony-Erragadda-Hyderabad-Telangana-500018-5ung8s?@,,,l,f,f,f,f,f,f,zdata=MTcuNDUzMDkyKzc4LjQzMjIwNCsxNys1dW5nOHMrKzI2MDE0KysrNDIyLTJLNS02NktUed",
+      "https://www.mappls.com/place-SU+Knowledge+Hub+Foundation-Road+Number+3-Venkateshwara+Nagar-Sri+Nagar+Colony-Aurora+Colony-Banjara+Hills-Hyderabad-Telangana-500073-x515aj??@,,,l,f,f,f,f,f,f,zdata=MTcuNDI4NzI2Kzc4LjQ0MjUwNysxNyt4NTE1YWorKzI2MTE1KysrNDIyLTJNSi1KUEZKed",
     /** Coordinates carried in the Mappls link (used for the directions hint). */
-    lat: 17.453092,
-    lng: 78.432204,
+    lat: 17.428726,
+    lng: 78.442507,
   },
   social: {
     twitter: "https://x.com/isaam_mjcetian",
