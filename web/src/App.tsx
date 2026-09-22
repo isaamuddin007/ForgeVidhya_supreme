@@ -19,7 +19,7 @@ import Terms from "@/pages/Terms";
 import AdminDashboard from "@/pages/AdminDashboard";
 import NotFound from "@/pages/NotFound";
 import { SignInGate } from "@/components/SignInGate";
-import RoyalWaterBackground from "@/components/RoyalWaterBackground";
+import GlassSwirlBackground from "@/components/GlassSwirlBackground";
 import MagicCursor from "@/components/MagicCursor";
 import MagicBoxFx from "@/components/MagicBoxFx";
 import { ScrollToHash } from "@/components/SiteSearch";
@@ -33,12 +33,15 @@ const App = () => (
         <SoundProvider>
         <GalleryProvider>
         <TooltipProvider>
-          {/* Mounted outside <Routes> so it survives navigation (each page
-              renders its own Layout, which would remount it). */}
-          <RoyalWaterBackground />
           <MagicCursor />
           <MagicBoxFx />
           <Toaster position="top-center" />
+          {/* The background wraps the site rather than sitting beside it:
+              its stage is z-index 0 and its content slot z-index 1, so a
+              bare sibling would paint over the page. Mounted outside
+              <Routes> so it survives navigation — each page renders its own
+              Layout, which would otherwise remount it. */}
+          <GlassSwirlBackground>
           <BrowserRouter
             future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
           >
@@ -60,6 +63,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
+          </GlassSwirlBackground>
         </TooltipProvider>
         </GalleryProvider>
         </SoundProvider>
