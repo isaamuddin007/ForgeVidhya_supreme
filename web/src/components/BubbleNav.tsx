@@ -47,7 +47,7 @@ export function BubbleNav() {
           type="button"
           onClick={() => go("/")}
           aria-label="forgeVidhya home"
-          className="pointer-events-auto rounded-2xl outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
+          className="pointer-events-auto rounded-full outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
           whileHover={{ scale: 1.08, rotate: -2 }}
           whileTap={{ scale: 0.9 }}
         >
