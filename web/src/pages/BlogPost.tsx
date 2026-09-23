@@ -1,9 +1,5 @@
 import { useParams, Link, Navigate } from "react-router-dom";
-import { motion } from "framer-motion";
 import {
-  Calendar,
-  Clock,
-  User,
   ArrowLeft,
   ArrowRight,
   Twitter,
@@ -13,58 +9,8 @@ import {
 import { SEO } from "@/components/SEO";
 import { Layout } from "@/components/Layout";
 import { FadeIn } from "@/components/ui/primitives";
+import PaperReader from "@/components/PaperReader";
 import { blogPosts, siteConfig } from "@/lib/site";
-
-/**
- * Renders the lightweight markdown-ish body (H2, H3, p, ol/li).
- * Keeps the bundle tiny — no full markdown parser needed for this content.
- */
-function renderBody(content: string) {
-  const blocks = content.trim().split(/\n\n+/);
-  return blocks.map((block, i) => {
-    const trimmed = block.trim();
-    if (trimmed.startsWith("## ")) {
-      return (
-        <h2
-          key={i}
-          className="mt-10 font-display text-2xl font-bold tracking-tight sm:text-3xl"
-        >
-          {trimmed.slice(3)}
-        </h2>
-      );
-    }
-    if (trimmed.startsWith("### ")) {
-      return (
-        <h3
-          key={i}
-          className="mt-8 font-display text-xl font-semibold tracking-tight"
-        >
-          {trimmed.slice(4)}
-        </h3>
-      );
-    }
-    if (/^\d+\.\s/.test(trimmed)) {
-      const items = trimmed.split(/\n/).filter(Boolean);
-      return (
-        <ol key={i} className="mt-4 list-decimal space-y-2 pl-6">
-          {items.map((item, j) => (
-            <li key={j} className="text-base leading-relaxed text-foreground/90">
-              {item.replace(/^\d+\.\s/, "")}
-            </li>
-          ))}
-        </ol>
-      );
-    }
-    return (
-      <p
-        key={i}
-        className="mt-4 text-base leading-relaxed text-foreground/90"
-      >
-        {trimmed}
-      </p>
-    );
-  });
-}
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
@@ -79,6 +25,13 @@ export default function BlogPost() {
   const recs = related.length ? related : fallback;
   const shareUrl = `${siteConfig.url}/blog/${post.slug}`;
 
+  const printed = new Date(post.date).toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  const byline = `${post.category} · ${post.author} · ${printed} · ${post.readTime}`;
+
   return (
     <Layout>
       <SEO
@@ -88,70 +41,41 @@ export default function BlogPost() {
         publishedTime={post.date}
       />
 
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 -z-10 bg-forge-radial" />
-        <div className="absolute inset-0 -z-10 grid-backdrop opacity-50" />
-        <article className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-          <Link
-            to="/blog"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <ArrowLeft className="h-4 w-4" /> All articles
-          </Link>
+      {/*
+        Nothing of the article is set on the screen. The headline, the
+        standfirst, the byline and the whole body are printed onto the sheet
+        below; all that is left out here is the way back to the index.
 
-          <FadeIn>
-            <span className="mt-6 inline-block rounded-full bg-forge-gradient px-3 py-1 text-xs font-semibold text-white shadow-forge">
-              {post.category}
-            </span>
-            <h1 className="mt-5 font-display text-3xl font-bold leading-tight tracking-tight sm:text-4xl md:text-5xl">
-              {post.title}
-            </h1>
-            <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
-              {post.excerpt}
-            </p>
-
-            <div className="mt-6 flex flex-wrap items-center gap-4 border-y border-border/60 py-4 text-sm text-muted-foreground">
-              <span className="flex items-center gap-1.5">
-                <User className="h-4 w-4 text-forge-blue" /> {post.author}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Calendar className="h-4 w-4 text-forge-blue" />
-                {new Date(post.date).toLocaleDateString("en-IN", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Clock className="h-4 w-4 text-forge-blue" /> {post.readTime}
-              </span>
-            </div>
-          </FadeIn>
-        </article>
+        This section is deliberately the first one in <main> and deliberately
+        holds no heading: the page-heading rule in index.css is scoped to
+        `main > section:first-of-type h1, h2`, and were the reader to sit here
+        it would set the masthead in Style Script and brand orange — a colour
+        that is unreadable on near-white paper.
+      */}
+      <section className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+        <Link
+          to="/blog"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ArrowLeft className="h-4 w-4" /> All articles
+        </Link>
       </section>
 
-      {/* Cover */}
-      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        <div
-          className={`relative h-56 overflow-hidden rounded-3xl bg-gradient-to-br ${post.cover} sm:h-72`}
-        >
-          <div className="absolute inset-0 grid-backdrop opacity-30" />
-        </div>
-      </div>
+      {/* The article, printed */}
+      <section className="relative overflow-hidden px-4 pb-16 pt-8 sm:px-6 lg:px-8">
+        <div className="absolute inset-0 -z-10 bg-forge-radial" />
+        <div className="absolute inset-0 -z-10 grid-backdrop opacity-50" />
+        <PaperReader
+          title={post.title}
+          standfirst={post.excerpt}
+          meta={byline}
+          content={post.content}
+        />
+      </section>
 
-      {/* Body */}
-      <section className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          {renderBody(post.content)}
-        </motion.div>
-
-        {/* Share */}
-        <div className="mt-12 flex items-center gap-3 border-t border-border/60 pt-6">
+      {/* Share */}
+      <section className="mx-auto max-w-3xl px-4 pb-12 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-3 border-t border-border/60 pt-6">
           <span className="text-sm font-medium text-muted-foreground">
             Share this article
           </span>
