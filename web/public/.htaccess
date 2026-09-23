@@ -7,11 +7,6 @@
 
 DirectoryIndex index.html
 
-# No directory listings: this is an app, not a file share.
-# (If the host runs with AllowOverride set narrower than All, this single
-# line is what makes Apache answer 500 — remove it and nothing else breaks.)
-Options -Indexes
-
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
