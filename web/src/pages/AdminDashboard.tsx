@@ -5,6 +5,7 @@ import { SEO } from "@/components/SEO";
 import { Layout } from "@/components/Layout";
 import { FadeIn } from "@/components/ui/primitives";
 import { useAuth } from "@/hooks/useAuth";
+import { API_URL } from "@/lib/api";
 
 /**
  * AdminDashboard — the admin-only control panel (route: /admin).
@@ -18,9 +19,6 @@ import { useAuth } from "@/hooks/useAuth";
  * review registered users, and remove a user. Admin accounts can't be deleted.
  */
 
-const API_URL =
-  (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, "") ||
-  "http://localhost:5000";
 
 interface AdminUser {
   id: string;

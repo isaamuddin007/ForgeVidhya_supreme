@@ -33,21 +33,12 @@
     />
     <meta name="twitter:image" content="/icon.png" />
 
-    <!-- Favicon: browsers that support `media` on icon links pick the variant
-         matching the OS colour scheme. /favicon.png stays last as the fallback
-         for browsers that ignore `media` (they take the final matching link). -->
-    <link
-      rel="icon"
-      type="image/png"
-      href="/favicon-light.png"
-      media="(prefers-color-scheme: light)"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      href="/favicon-dark.png"
-      media="(prefers-color-scheme: dark)"
-    />
+    <!-- Favicon. The colour-scheme variants that used to sit here pointed at
+         /favicon-light.png and /favicon-dark.png, and neither file has ever
+         existed: every browser that honours `media` on an icon link asked the
+         server for a missing file, and under the SPA rewrite it was handed the
+         HTML shell in place of an image. Restore the pair only alongside the
+         two artwork files. -->
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/icon.png" />
     <link rel="manifest" href="/site.webmanifest" />

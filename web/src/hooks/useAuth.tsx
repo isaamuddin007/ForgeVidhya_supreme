@@ -6,6 +6,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { API_URL } from "@/lib/api";
 
 /**
  * Auth context — global authentication state, backed by the forgeVidhya API's
@@ -16,11 +17,8 @@ import {
  * decode to hydrate the user. Mobile-number (OTP) sign-in is planned next and
  * will slot in alongside these methods, reusing login(token).
  *
- * Env: VITE_API_URL — backend origin (default http://localhost:5000).
+ * Env: VITE_API_URL — backend origin. See lib/api for how it resolves.
  */
-
-const API_URL =
-  (import.meta.env.VITE_API_URL as string | undefined) || "http://localhost:5000";
 
 const TOKEN_KEY = "forge:token";
 

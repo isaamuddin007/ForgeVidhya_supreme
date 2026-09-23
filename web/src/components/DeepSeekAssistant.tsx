@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Bot, Send, X, Maximize2, Minimize2, Trash2, Copy, Eye } from "lucide-react";
 import { useSound } from "@/components/sound-provider";
 import { cn } from "@/lib/utils";
+import { API_URL } from "@/lib/api";
 
 /**
  * DeepSeekAssistant — a page-aware AI helper that floats on every page.
@@ -19,9 +20,6 @@ import { cn } from "@/lib/utils";
  * see an empty HTML shell).
  */
 
-const API_URL =
-  (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, "") ||
-  "http://localhost:5000";
 const CHAT_ENDPOINT = `${API_URL}/api/deepseek/chat`;
 
 // Light frosted-glass palette.

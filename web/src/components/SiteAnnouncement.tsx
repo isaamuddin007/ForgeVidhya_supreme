@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Megaphone } from "lucide-react";
+import { API_URL, apiEnabled } from "@/lib/api";
 
 /**
  * SiteAnnouncement — read-only banner showing the message the admin published
@@ -12,14 +13,15 @@ import { Megaphone } from "lucide-react";
  * on write, so a stored string can't execute as script.
  */
 
-const API_URL =
-  (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, "") ||
-  "http://localhost:5000";
 
 export function SiteAnnouncement() {
   const [text, setText] = useState("");
 
   useEffect(() => {
+    // No backend configured for this deployment: skip the request entirely
+    // rather than firing it at the visitor's own machine.
+    if (!apiEnabled) return;
+
     let cancelled = false;
     fetch(`${API_URL}/api/content`)
       .then((r) => (r.ok ? r.json() : null))
