@@ -23,6 +23,7 @@ import GlassSwirlBackground from "@/components/GlassSwirlBackground";
 import MagicCursor from "@/components/MagicCursor";
 import MagicBoxFx from "@/components/MagicBoxFx";
 import { ScrollToHash } from "@/components/SiteSearch";
+import { BufferingOverlay } from "@/components/BufferingOverlay";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,7 @@ const App = () => (
           >
             <SignInGate />
             <ScrollToHash />
+            <BufferingOverlay />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
