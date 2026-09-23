@@ -42,22 +42,9 @@ export function BubbleNav() {
         page instead of staying pinned to the top. */}
     <div className="pointer-events-none relative z-[100]">
       <div className="mx-auto flex max-w-7xl items-start justify-between px-4 pt-3 sm:px-6 lg:px-8">
-        {/* left: brand logo */}
-        <motion.button
-          type="button"
-          onClick={() => go("/")}
-          aria-label="forgeVidhya home"
-          className="pointer-events-auto rounded-full outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
-          whileHover={{ scale: 1.08, rotate: -2 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          <img
-            src={theme === "dark" ? "/logo-dark.svg" : "/logo-light.svg"}
-            alt="forgeVidhya"
-            className="h-16 w-auto drop-shadow-md sm:h-20"
-            draggable={false}
-          />
-        </motion.button>
+        {/* left: brand logo — removed. The slot is held open so the controls
+            on the right stay where they were. */}
+        <div className="h-16 sm:h-20" aria-hidden="true" />
 
         {/* right controls: search + mute + theme + mobile toggle */}
         <div className="pointer-events-auto flex items-center gap-2">
