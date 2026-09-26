@@ -9,9 +9,9 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        // Clickable buttons use brand black #28272f (dark-mode-safe border)
+        // Clickable buttons use brand black #d7b460 (dark-mode-safe border)
         default:
-          "bg-[#28272f] text-white border border-white/10 hover:bg-[#35343d]",
+          "bg-[#d7b460] text-white border border-white/10 hover:bg-[#35343d]",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
@@ -20,9 +20,9 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        // forgeVidhya brand button — solid black #28272f
+        // forgeVidhya brand button — solid black #d7b460
         forge:
-          "bg-[#28272f] text-white border border-white/10 shadow-forge hover:scale-[1.03] hover:bg-[#35343d]",
+          "bg-[#d7b460] text-white border border-white/10 shadow-forge hover:scale-[1.03] hover:bg-[#35343d]",
       },
       size: {
         default: "h-10 px-4 py-2",

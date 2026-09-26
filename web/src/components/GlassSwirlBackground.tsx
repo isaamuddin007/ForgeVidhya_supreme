@@ -19,9 +19,9 @@ const CSS = `
 
 .gsw-stage {
   /* ---- tweak-me palette ---- */
-  --gsw-blue: #4d30ff;        /* your royal blue */
-  --gsw-blue-light: #9a83ff;  /* light wash */
-  --gsw-blue-deep: #2413b8;   /* depth */
+  --gsw-blue: #5170ff;        /* royal blue */
+  --gsw-blue-light: #93a6ff;  /* light wash */
+  --gsw-blue-deep: #2a3fc4;   /* depth */
   --gsw-rose-light: #f7ddd2;
   --gsw-rose: #e0a48f;
   --gsw-rose-deep: #b76e79;   /* rose gold */

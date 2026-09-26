@@ -501,7 +501,7 @@ export default function PaperReader({
           display: block;
           margin-top: 0.85rem;
           height: 2px;
-          background: linear-gradient(90deg, #E8721A 0%, #F59E5B 35%, #2BB3E8 70%, transparent 100%);
+          background: linear-gradient(90deg, #a70066 0%, #d7b460 35%, #5170ff 70%, transparent 100%);
           opacity: 0.85;
         }
 

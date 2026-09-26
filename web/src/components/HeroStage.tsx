@@ -89,7 +89,7 @@ export function HeroStage() {
         >
           <Link
             to="/services"
-            className="inline-flex items-center gap-2 rounded-xl bg-[#28272f] px-6 py-3 text-base font-semibold text-white shadow-forge transition-transform hover:scale-[1.03] active:scale-95"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#d7b460] px-6 py-3 text-base font-semibold text-white shadow-forge transition-transform hover:scale-[1.03] active:scale-95"
           >
             Explore programs <ArrowRight className="h-4 w-4" />
           </Link>

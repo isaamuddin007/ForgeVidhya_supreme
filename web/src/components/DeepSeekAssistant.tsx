@@ -25,7 +25,7 @@ const CHAT_ENDPOINT = `${API_URL}/api/deepseek/chat`;
 // Light frosted-glass palette.
 const GLASS_BG = "rgba(255, 255, 255, 0.55)";
 const GLASS_BG_STRONG = "rgba(255, 255, 255, 0.7)";
-const ACCENT = "#2e6dff";
+const ACCENT = "#5170ff";
 const GLASS_BORDER = "rgba(148, 163, 184, 0.32)";
 
 type Role = "user" | "assistant" | "system";
@@ -229,7 +229,7 @@ export function DeepSeekAssistant() {
           setIsOpen((o) => !o);
         }}
         aria-label={isOpen ? "Close AI assistant" : "Open AI assistant"}
-        className="fixed bottom-6 right-6 z-[70] grid h-16 w-16 place-items-center rounded-full outline-none focus-visible:ring-4 focus-visible:ring-[#2e6dff]/30"
+        className="fixed bottom-6 right-6 z-[70] grid h-16 w-16 place-items-center rounded-full outline-none focus-visible:ring-4 focus-visible:ring-[#5170ff]/30"
         style={{
           background: GLASS_BG_STRONG,
           backdropFilter: "blur(20px)",
@@ -383,7 +383,7 @@ export function DeepSeekAssistant() {
                   onKeyDown={onKeyDown}
                   placeholder="Ask about this page…"
                   disabled={isLoading}
-                  className="flex-1 rounded-xl border border-slate-300/60 bg-white/60 px-4 py-2.5 text-sm text-slate-800 outline-none backdrop-blur-sm transition-colors placeholder:text-slate-400 focus:border-[#2e6dff] disabled:opacity-60"
+                  className="flex-1 rounded-xl border border-slate-300/60 bg-white/60 px-4 py-2.5 text-sm text-slate-800 outline-none backdrop-blur-sm transition-colors placeholder:text-slate-400 focus:border-[#5170ff] disabled:opacity-60"
                 />
                 <button
                   type="button"
@@ -443,7 +443,7 @@ function renderInline(text: string): ReactNode[] {
       make: (m) => {
         const href = safeUrl(m[2]);
         return href ? (
-          <a key={key++} href={href} target="_blank" rel="noopener noreferrer" className="font-medium text-[#2e6dff] underline underline-offset-2">
+          <a key={key++} href={href} target="_blank" rel="noopener noreferrer" className="font-medium text-[#5170ff] underline underline-offset-2">
             {m[1]}
           </a>
         ) : (

@@ -135,7 +135,7 @@ export default function AdminDashboard() {
           </p>
           <Link
             to="/"
-            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#28272f] px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-[1.03]"
+            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#d7b460] px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-[1.03]"
           >
             <ArrowLeft className="h-4 w-4" /> Back to site
           </Link>
@@ -219,7 +219,7 @@ export default function AdminDashboard() {
                 type="button"
                 onClick={() => void saveContent()}
                 disabled={saving}
-                className="inline-flex items-center gap-2 rounded-xl bg-[#28272f] px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-[1.03] active:scale-95 disabled:opacity-60"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#d7b460] px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-[1.03] active:scale-95 disabled:opacity-60"
               >
                 {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Megaphone className="h-4 w-4" />}
                 {saving ? "Publishing…" : "Publish"}

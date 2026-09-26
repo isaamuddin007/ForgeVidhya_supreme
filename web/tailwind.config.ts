@@ -48,21 +48,24 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Brand palette — solid EdTech colors:
-        //   blue #2e6dff = interface · orange #fe7e06 = accents · black #28272f = buttons
+        // Brand palette — solid colors:
+        //   royal blue #5170ff = interface · burgundy #a70066 = accents
+        //   · gold #d7b460 = buttons
+        // The keys keep their old names (red, orange, ink) so every call site
+        // stays valid; only the values moved.
         forge: {
-          sky: "#2e6dff",
-          blue: "#2e6dff",
-          red: "#fe7e06",
-          dew: "#2e6dff",
-          mint: "#2e6dff",
-          orange: "#fe7e06",
-          ink: "#28272f",
+          sky: "#5170ff",
+          blue: "#5170ff",
+          red: "#a70066",
+          dew: "#5170ff",
+          mint: "#5170ff",
+          orange: "#a70066",
+          ink: "#d7b460",
         },
         // Brand palette — main surfaces
         surface: {
           cloud: "#ffffff",
-          mist: "#2e6dff",
+          mist: "#5170ff",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
@@ -83,8 +86,8 @@ export default {
       backgroundImage: {
         // Solid brand fills (no color gradients) — kept as class names so
         // existing `bg-forge-gradient` usages become flat brand blue.
-        'forge-gradient': 'linear-gradient(#2e6dff, #2e6dff)',
-        'forge-gradient-soft': 'linear-gradient(#2e6dff, #2e6dff)',
+        'forge-gradient': 'linear-gradient(#5170ff, #5170ff)',
+        'forge-gradient-soft': 'linear-gradient(#5170ff, #5170ff)',
         // Faint single-hue atmosphere glow (subtle depth, not a color gradient)
         'forge-radial': 'radial-gradient(circle at 30% 20%, rgba(46,109,255,0.10), transparent 60%), radial-gradient(circle at 80% 70%, rgba(254,126,6,0.06), transparent 55%)',
         'grid-pattern': 'linear-gradient(rgba(46,109,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(46,109,255,0.06) 1px, transparent 1px)',

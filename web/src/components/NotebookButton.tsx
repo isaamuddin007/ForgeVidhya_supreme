@@ -23,7 +23,7 @@ const NOTEBOOK_URL = "https://notebook.zoho.in";
 
 // Light frosted-glass launcher, parked in the bottom-right corner.
 const GLASS_BG = "rgba(255, 255, 255, 0.7)";
-const ACCENT = "#2e6dff";
+const ACCENT = "#5170ff";
 const GLASS_BORDER = "rgba(148, 163, 184, 0.32)";
 
 export function NotebookButton() {
@@ -44,7 +44,7 @@ export function NotebookButton() {
       onClick={open}
       aria-label="Open Notebook"
       aria-busy={opening}
-      className="group fixed bottom-7 right-7 z-[70] grid h-14 w-14 place-items-center rounded-full outline-none focus-visible:ring-4 focus-visible:ring-[#2e6dff]/30"
+      className="group fixed bottom-7 right-7 z-[70] grid h-14 w-14 place-items-center rounded-full outline-none focus-visible:ring-4 focus-visible:ring-[#5170ff]/30"
       style={{
         background: GLASS_BG,
         backdropFilter: "blur(20px)",

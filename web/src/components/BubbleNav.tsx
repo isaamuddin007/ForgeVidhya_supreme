@@ -51,10 +51,12 @@ export function BubbleNav() {
           whileHover={{ scale: 1.08, rotate: -2 }}
           whileTap={{ scale: 0.9 }}
         >
+          {/* One lockup for both themes: the new brand mark is a single
+              asset, so there is no light/dark pair to switch between. */}
           <img
-            src={theme === "dark" ? "/logo-dark.svg" : "/logo-light.svg"}
-            alt="forgeVidhya"
-            className="h-16 w-auto drop-shadow-md sm:h-20"
+            src="/logo-brand.png"
+            alt="Forge Vidhya — Inspiring the nation's minds"
+            className="h-20 w-auto drop-shadow-md sm:h-24"
             draggable={false}
           />
         </motion.button>

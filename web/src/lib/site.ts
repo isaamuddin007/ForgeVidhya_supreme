@@ -166,8 +166,8 @@ export const programCategories: ProgramCategory[] = [
     title: "AI & Tech",
     icon: "Sparkles",
     blurb: "Build with AI from day one.",
-    from: "#2e6dff",
-    to: "#2e6dff",
+    from: "#5170ff",
+    to: "#5170ff",
     programs: [
       { title: "AI Automation Fundamentals", blurb: "Replace repetitive work with autonomous AI agents.", courseSlug: "ai-automation-fundamentals" },
       { title: "AI Production Engineering", blurb: "Take AI demos from prototype to reliable real-world systems.", courseSlug: "ai-production-engineering" },
@@ -179,8 +179,8 @@ export const programCategories: ProgramCategory[] = [
     title: "Core Engineering",
     icon: "Cog",
     blurb: "Hardware, systems, and the physical world.",
-    from: "#fe7e06",
-    to: "#fe7e06",
+    from: "#a70066",
+    to: "#a70066",
     programs: [
       { title: "Applied AI & Artificial Intelligence", blurb: "Using AI to solve real problems, not just passing exams.", courseSlug: "applied-ai-indian-problems" },
       { title: "Embedded Systems & IoT", blurb: "The nervous system — sensing and reacting to the physical world.", courseSlug: "embedded-systems-iot" },
@@ -194,8 +194,8 @@ export const programCategories: ProgramCategory[] = [
     title: "Non-Tech",
     icon: "Compass",
     blurb: "Real-world skills school never taught you.",
-    from: "#2e6dff",
-    to: "#2e6dff",
+    from: "#5170ff",
+    to: "#5170ff",
     programs: [
       { title: "How to negotiate terms in an interview", blurb: "Ask for what you're worth — and get it.", courseSlug: "negotiate-interview-terms" },
       { title: "How to manage your expenses", blurb: "Make your first income actually last.", courseSlug: "manage-expenses" },

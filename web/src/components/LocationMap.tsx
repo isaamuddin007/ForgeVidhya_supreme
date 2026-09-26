@@ -76,10 +76,10 @@ export function LocationMap({ className }: { className?: string }) {
 
       {/* ---- pin ---- */}
       <span className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2">
-        <span className="relative grid h-12 w-12 place-items-center rounded-full bg-[#fe7e06] text-white shadow-lg ring-4 ring-white/60">
+        <span className="relative grid h-12 w-12 place-items-center rounded-full bg-[#a70066] text-white shadow-lg ring-4 ring-white/60">
           <MapPin className="h-6 w-6" />
           <motion.span
-            className="absolute inset-0 rounded-full border-2 border-[#fe7e06]"
+            className="absolute inset-0 rounded-full border-2 border-[#a70066]"
             animate={{ scale: [1, 1.8, 1], opacity: [0.7, 0, 0.7] }}
             transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
           />
