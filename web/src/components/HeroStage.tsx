@@ -35,6 +35,8 @@ export function HeroStage() {
 
   // The headline keeps its first-visit materialize; the subhead and buttons
   // still wait for it to finish before they drop in.
+  // The wordmark leads, a beat ahead of the headline it sits over.
+  const wordmarkReveal = useReveal(firstVisit ? 0.15 : 0);
   const headlineReveal = useReveal();
   const subheadReveal = useReveal(firstVisit ? 2.4 : 0.1);
   const buttonsReveal = useReveal(firstVisit ? 2.6 : 0.2);
@@ -46,6 +48,18 @@ export function HeroStage() {
       <div className="absolute inset-0 -z-10 grid-backdrop opacity-50" />
 
       <div className="mx-auto flex min-h-[38vh] max-w-4xl flex-col items-center justify-center px-4 pb-10 pt-6 text-center sm:px-6 lg:px-8">
+        {/* The full name, above the main title. Home only — every other page
+            carries the quill on its own in the corner. */}
+        <motion.img
+          src="/logo-wordmark.png"
+          alt="Forge Vidhya — Inspiring the nation's minds"
+          className="mb-6 h-auto w-[min(86vw,460px)] select-none"
+          draggable={false}
+          width={902}
+          height={326}
+          {...wordmarkReveal}
+        />
+
         {/* welcome phrase */}
         <motion.h1
           className="font-display text-3xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl"

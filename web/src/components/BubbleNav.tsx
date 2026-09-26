@@ -51,12 +51,12 @@ export function BubbleNav() {
           whileHover={{ scale: 1.08, rotate: -2 }}
           whileTap={{ scale: 0.9 }}
         >
-          {/* One lockup for both themes: the new brand mark is a single
-              asset, so there is no light/dark pair to switch between. */}
+          {/* The quill alone. The name is not repeated here: it sits above
+              the main title on the home page. One asset, both themes. */}
           <img
-            src="/logo-brand.png"
-            alt="Forge Vidhya — Inspiring the nation's minds"
-            className="h-20 w-auto drop-shadow-md sm:h-24"
+            src="/logo-mark.png"
+            alt="Forge Vidhya"
+            className="h-16 w-auto drop-shadow-md sm:h-20"
             draggable={false}
           />
         </motion.button>
