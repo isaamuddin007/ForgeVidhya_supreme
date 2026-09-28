@@ -42,24 +42,58 @@ export function BubbleNav() {
         page instead of staying pinned to the top. */}
     <div className="pointer-events-none relative z-[100]">
       <div className="mx-auto flex max-w-7xl items-start justify-between px-4 pt-3 sm:px-6 lg:px-8">
-        {/* left: brand logo */}
-        <motion.button
-          type="button"
-          onClick={() => go("/")}
-          aria-label="forgeVidhya home"
-          className="pointer-events-auto rounded-full outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
-          whileHover={{ scale: 1.08, rotate: -2 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          {/* The quill alone. The name is not repeated here: it sits above
-              the main title on the home page. One asset, both themes. */}
+        {/* left: the quill on its white plate, with the name beside it —
+            the arrangement the design calls for. */}
+        <div className="pointer-events-auto flex items-center gap-3">
+          <motion.button
+            type="button"
+            onClick={() => go("/")}
+            aria-label="forgeVidhya home"
+            className="grid place-items-center rounded-xl bg-white/90 p-1.5 shadow-[0_6px_18px_-8px_rgba(40,20,70,0.5)] ring-1 ring-white/70 outline-none backdrop-blur-sm focus-visible:ring-4 focus-visible:ring-primary/40 sm:p-2"
+            whileHover={{ scale: 1.06, rotate: -2 }}
+            whileTap={{ scale: 0.92 }}
+          >
+            <img
+              src="/logo-mark.png"
+              alt="Forge Vidhya"
+              className="h-12 w-auto sm:h-16"
+              draggable={false}
+            />
+          </motion.button>
+
+          <button
+            type="button"
+            onClick={() => go("/")}
+            aria-label="forgeVidhya home"
+            className="hidden outline-none focus-visible:ring-4 focus-visible:ring-primary/40 sm:block"
+          >
+            <img
+              src="/logo-wordmark.png"
+              alt="Forge Vidhya — Inspiring the nation's minds"
+              className="h-auto w-[min(34vw,300px)] select-none"
+              draggable={false}
+              width={837}
+              height={316}
+            />
+          </button>
+        </div>
+
+        {/* the design's national badge, between the name and the controls */}
+        <div className="pointer-events-none hidden items-center gap-2 self-center lg:flex">
           <img
-            src="/logo-mark.png"
-            alt="Forge Vidhya"
-            className="h-16 w-auto drop-shadow-md sm:h-20"
+            src="/emblem-india.png"
+            alt=""
+            className="h-11 w-auto select-none opacity-90"
             draggable={false}
+            width={48}
+            height={74}
           />
-        </motion.button>
+          <span className="text-[0.66rem] font-extrabold uppercase leading-tight tracking-[0.06em] text-[#1a1a1e]">
+            Made proudly
+            <br />
+            <span className="text-primary">for India</span>
+          </span>
+        </div>
 
         {/* right controls: search + mute + theme + mobile toggle */}
         <div className="pointer-events-auto flex items-center gap-2">

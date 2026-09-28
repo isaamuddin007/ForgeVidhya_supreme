@@ -15,12 +15,12 @@ const GradientDefs = () => (
   <svg width="0" height="0" aria-hidden="true" focusable="false" style={{ position: "absolute" }}>
     <defs>
       <linearGradient id="goldStroke" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#FBE9E7" />
-        <stop offset="45%" stopColor="#E8B4B8" />
-        <stop offset="100%" stopColor="#B76E79" />
+        <stop offset="0%" stopColor="#a70066" />
+        <stop offset="45%" stopColor="#c65fae" />
+        <stop offset="100%" stopColor="#a70066" />
       </linearGradient>
       <linearGradient id="homeFill" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#B76E79" stopOpacity="0.35" />
+        <stop offset="0%" stopColor="#a70066" stopOpacity="0.35" />
         <stop offset="100%" stopColor="#8C4A5A" stopOpacity="0.15" />
       </linearGradient>
     </defs>
@@ -41,10 +41,10 @@ const HomeIcon = () => (
       d="M11.5 25 V18 a2.5 2.5 0 0 1 5 0 V25"
       stroke="url(#goldStroke)" strokeWidth="1.4" strokeLinecap="round"
     />
-    <circle cx="14" cy="14.5" r="1" fill="#FBE9E7" />
+    <circle cx="14" cy="14.5" r="1" fill="#a70066" />
     <path d="M5.5 22.5 L7 21" stroke="url(#goldStroke)" strokeWidth="1.2" strokeLinecap="round" />
     <path d="M22.5 22.5 L21 21" stroke="url(#goldStroke)" strokeWidth="1.2" strokeLinecap="round" />
-    <circle cx="14" cy="3" r="1" fill="#FBE9E7" opacity="0.9" />
+    <circle cx="14" cy="3" r="1" fill="#a70066" opacity="0.9" />
   </svg>
 );
 
@@ -56,8 +56,8 @@ const AboutIcon = () => (
       stroke="url(#goldStroke)" strokeWidth="2" strokeLinecap="round" fill="url(#homeFill)"
     />
     <path d="M11 17 L14 18.5 L17 17" stroke="url(#goldStroke)" strokeWidth="1.2" strokeLinecap="round" />
-    <circle cx="14" cy="4.5" r="1" fill="#FBE9E7" />
-    <circle cx="19.5" cy="9.5" r="0.8" fill="#FBE9E7" opacity="0.8" />
+    <circle cx="14" cy="4.5" r="1" fill="#a70066" />
+    <circle cx="19.5" cy="9.5" r="0.8" fill="#a70066" opacity="0.8" />
   </svg>
 );
 
@@ -72,8 +72,8 @@ const ProgramIcon = () => (
       stroke="url(#goldStroke)" strokeWidth="1.6" strokeLinecap="round"
     />
     <path d="M21 19 L21 23.5" stroke="url(#goldStroke)" strokeWidth="1.4" strokeLinecap="round" />
-    <circle cx="21" cy="24.5" r="1.2" fill="#FBE9E7" />
-    <circle cx="14" cy="11" r="1" fill="#FBE9E7" />
+    <circle cx="21" cy="24.5" r="1.2" fill="#a70066" />
+    <circle cx="14" cy="11" r="1" fill="#a70066" />
     <path d="M4 10 L6 9" stroke="url(#goldStroke)" strokeWidth="1" strokeLinecap="round" />
     <path d="M24 10 L22 9" stroke="url(#goldStroke)" strokeWidth="1" strokeLinecap="round" />
   </svg>
@@ -84,13 +84,13 @@ const BlogsIcon = () => (
     <rect x="5" y="4" width="15" height="20" rx="2"
       fill="url(#homeFill)" stroke="url(#goldStroke)" strokeWidth="1.6" />
     <rect x="9" y="7" width="15" height="18" rx="2"
-      fill="#0f172a" fillOpacity="0.85" stroke="url(#goldStroke)" strokeWidth="2" />
+      fill="#f3e8f6" fillOpacity="0.85" stroke="url(#goldStroke)" strokeWidth="2" />
     <path d="M12 12 H21" stroke="url(#goldStroke)" strokeWidth="1.4" strokeLinecap="round" />
     <path d="M12 15.5 H19" stroke="url(#goldStroke)" strokeWidth="1.4" strokeLinecap="round" />
     <path d="M12 19 H20" stroke="url(#goldStroke)" strokeWidth="1.4" strokeLinecap="round" />
     <path d="M19 7 V10.5 L20.5 9.5 L22 10.5 V7"
-      fill="#FBE9E7" fillOpacity="0.9" stroke="url(#goldStroke)" strokeWidth="0.9" />
-    <circle cx="6.5" cy="6.5" r="0.7" fill="#FBE9E7" />
+      fill="#a70066" fillOpacity="0.9" stroke="url(#goldStroke)" strokeWidth="0.9" />
+    <circle cx="6.5" cy="6.5" r="0.7" fill="#a70066" />
   </svg>
 );
 
@@ -100,9 +100,9 @@ const ContactIcon = () => (
       fill="url(#homeFill)" stroke="url(#goldStroke)" strokeWidth="2" />
     <path d="M4 8.5 L14 16 L24 8.5"
       stroke="url(#goldStroke)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    <circle cx="14" cy="17.5" r="2.2" fill="#B76E79" fillOpacity="0.5"
+    <circle cx="14" cy="17.5" r="2.2" fill="#a70066" fillOpacity="0.5"
       stroke="url(#goldStroke)" strokeWidth="1.1" />
-    <circle cx="14" cy="17.5" r="0.7" fill="#FBE9E7" />
+    <circle cx="14" cy="17.5" r="0.7" fill="#a70066" />
     <path d="M5.5 20.5 L8 18" stroke="url(#goldStroke)" strokeWidth="0.9" strokeLinecap="round" />
     <path d="M22.5 20.5 L20 18" stroke="url(#goldStroke)" strokeWidth="0.9" strokeLinecap="round" />
   </svg>
@@ -257,9 +257,9 @@ export default function RoyalNavMenu({
           border-radius: 14px 14px 18px 18px / 14px 14px 22px 22px; /* shield */
           background:
             linear-gradient(180deg,
-              rgba(30, 41, 82, 0.92) 0%,
-              rgba(15, 23, 42, 0.96) 100%);
-          border: 1px solid rgba(232, 180, 184, 0.35);
+              rgba(255, 255, 255, 0.92) 0%,
+              rgba(247, 236, 248, 0.96) 100%);
+          border: 1px solid rgba(198, 95, 174, 0.35);
           box-shadow:
             0 1px 0 rgba(255, 255, 255, 0.1) inset,
             0 -1px 0 rgba(0, 0, 0, 0.5) inset,
@@ -268,9 +268,9 @@ export default function RoyalNavMenu({
           isolation: isolate;
           transition: border-color 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        .rnm-trigger:hover { border-color: rgba(232, 180, 184, 0.7); }
+        .rnm-trigger:hover { border-color: rgba(198, 95, 174, 0.7); }
         .rnm-trigger:focus-visible {
-          outline: 2px solid #FBE9E7;
+          outline: 2px solid #a70066;
           outline-offset: 3px;
         }
 
@@ -279,8 +279,8 @@ export default function RoyalNavMenu({
           inset: -8px;
           border-radius: inherit;
           background: radial-gradient(ellipse at center,
-            rgba(232, 180, 184, 0.45) 0%,
-            rgba(183, 110, 121, 0.2) 50%,
+            rgba(198, 95, 174, 0.45) 0%,
+            rgba(167, 0, 102, 0.2) 50%,
             transparent 78%);
           filter: blur(8px);
           opacity: 0;
@@ -302,8 +302,8 @@ export default function RoyalNavMenu({
           width: 100%;
           height: 2px;
           border-radius: 2px;
-          background: #E8B4B8;
-          box-shadow: 0 0 6px rgba(232, 180, 184, 0.55);
+          background: #c65fae;
+          box-shadow: 0 0 6px rgba(198, 95, 174, 0.55);
           /* Rotation happens about the bar's own centre, so the two outer
              bars meet in the middle rather than swinging off-axis. */
           transform-origin: 50% 50%;
@@ -329,7 +329,7 @@ export default function RoyalNavMenu({
           position: fixed;
           inset: 0;
           z-index: 80;
-          background: rgba(6, 11, 46, 0.4);
+          background: rgba(58, 22, 66, 0.4);
           backdrop-filter: blur(6px);
           -webkit-backdrop-filter: blur(6px);
           opacity: 0;
@@ -353,16 +353,16 @@ export default function RoyalNavMenu({
           border-radius: 1.5rem;
           background:
             linear-gradient(180deg,
-              rgba(30, 41, 82, 0.92) 0%,
-              rgba(15, 23, 42, 0.96) 50%,
-              rgba(10, 15, 35, 0.98) 100%);
-          border: 1px solid rgba(232, 180, 184, 0.28);
+              rgba(255, 255, 255, 0.92) 0%,
+              rgba(247, 236, 248, 0.96) 50%,
+              rgba(238, 226, 244, 0.98) 100%);
+          border: 1px solid rgba(198, 95, 174, 0.28);
           box-shadow:
             0 1px 0 rgba(255, 255, 255, 0.08) inset,
             0 -1px 0 rgba(0, 0, 0, 0.6) inset,
             0 20px 60px rgba(0, 0, 0, 0.55),
             0 0 80px rgba(0, 242, 254, 0.08),
-            0 0 120px rgba(183, 110, 121, 0.1);
+            0 0 120px rgba(167, 0, 102, 0.1);
           backdrop-filter: blur(24px) saturate(160%);
           -webkit-backdrop-filter: blur(24px) saturate(160%);
 
@@ -396,11 +396,11 @@ export default function RoyalNavMenu({
           transform: translateX(-50%);
           pointer-events: none;
           background: linear-gradient(180deg,
-            rgba(251, 233, 231, 0.95) 0%,
-            rgba(232, 180, 184, 0.8) 45%,
-            rgba(183, 110, 121, 0.5) 100%);
+            rgba(167, 0, 102, 0.95) 0%,
+            rgba(198, 95, 174, 0.8) 45%,
+            rgba(167, 0, 102, 0.5) 100%);
           clip-path: polygon(0 0, 100% 0, 50% 100%);
-          filter: drop-shadow(0 2px 5px rgba(183, 110, 121, 0.7));
+          filter: drop-shadow(0 2px 5px rgba(167, 0, 102, 0.7));
         }
 
         /* ============ RAILS ============ */
@@ -411,11 +411,11 @@ export default function RoyalNavMenu({
           background:
             linear-gradient(90deg,
               transparent 0%,
-              rgba(232, 180, 184, 0.35) 15%,
-              rgba(251, 233, 231, 0.9) 50%,
-              rgba(232, 180, 184, 0.35) 85%,
+              rgba(198, 95, 174, 0.35) 15%,
+              rgba(167, 0, 102, 0.9) 50%,
+              rgba(198, 95, 174, 0.35) 85%,
               transparent 100%);
-          filter: drop-shadow(0 0 6px rgba(232, 180, 184, 0.6));
+          filter: drop-shadow(0 0 6px rgba(198, 95, 174, 0.6));
         }
         .rnm-rail::before,
         .rnm-rail::after {
@@ -426,8 +426,8 @@ export default function RoyalNavMenu({
           height: 6px;
           border-radius: 50%;
           transform: translateY(-50%) rotate(45deg);
-          background: radial-gradient(circle, #FBE9E7 0%, #B76E79 60%, transparent 90%);
-          box-shadow: 0 0 8px rgba(251, 233, 231, 0.8);
+          background: radial-gradient(circle, #a70066 0%, #a70066 60%, transparent 90%);
+          box-shadow: 0 0 8px rgba(167, 0, 102, 0.8);
         }
         .rnm-rail::before { left: -8px; }
         .rnm-rail::after  { right: -8px; }
@@ -440,9 +440,9 @@ export default function RoyalNavMenu({
           background-image:
             linear-gradient(90deg,
               transparent 0%,
-              rgba(232, 180, 184, 0.35) 15%,
-              rgba(251, 233, 231, 0.9) 50%,
-              rgba(232, 180, 184, 0.35) 85%,
+              rgba(198, 95, 174, 0.35) 15%,
+              rgba(167, 0, 102, 0.9) 50%,
+              rgba(198, 95, 174, 0.35) 85%,
               transparent 100%),
             linear-gradient(90deg,
               transparent 35%,
@@ -479,7 +479,7 @@ export default function RoyalNavMenu({
           padding: 1.15rem 0.75rem;
           border-radius: 0.9rem;
           text-decoration: none;
-          color: rgba(230, 241, 255, 0.7);
+          color: rgba(131, 52, 146, 0.7);
           font-family: 'Cinzel', 'Playfair Display', serif;
           font-weight: 700;
           font-size: 0.78rem;
@@ -502,7 +502,7 @@ export default function RoyalNavMenu({
             color 0.4s ease;
         }
         .rnm-item:focus-visible {
-          outline: 2px solid #FBE9E7;
+          outline: 2px solid #a70066;
           outline-offset: 2px;
         }
 
@@ -512,9 +512,9 @@ export default function RoyalNavMenu({
           border-radius: inherit;
           background:
             linear-gradient(180deg,
-              rgba(42, 55, 100, 0.55) 0%,
-              rgba(20, 28, 60, 0.65) 100%);
-          border: 1px solid rgba(140, 200, 255, 0.12);
+              rgba(255, 255, 255, 0.72) 0%,
+              rgba(244, 229, 246, 0.82) 100%);
+          border: 1px solid rgba(167, 0, 102, 0.14);
           box-shadow:
             0 1px 0 rgba(255, 255, 255, 0.06) inset,
             0 -1px 0 rgba(0, 0, 0, 0.4) inset;
@@ -530,18 +530,18 @@ export default function RoyalNavMenu({
           opacity: 0.35;
           transition: opacity 0.4s ease, transform 0.4s ease;
         }
-        .nc-tl { top: 5px;    left: 5px;    border-top: 1px solid #E8B4B8; border-left: 1px solid #E8B4B8; }
-        .nc-tr { top: 5px;    right: 5px;   border-top: 1px solid #E8B4B8; border-right: 1px solid #E8B4B8; }
-        .nc-bl { bottom: 5px; left: 5px;    border-bottom: 1px solid #E8B4B8; border-left: 1px solid #E8B4B8; }
-        .nc-br { bottom: 5px; right: 5px;   border-bottom: 1px solid #E8B4B8; border-right: 1px solid #E8B4B8; }
+        .nc-tl { top: 5px;    left: 5px;    border-top: 1px solid #c65fae; border-left: 1px solid #c65fae; }
+        .nc-tr { top: 5px;    right: 5px;   border-top: 1px solid #c65fae; border-right: 1px solid #c65fae; }
+        .nc-bl { bottom: 5px; left: 5px;    border-bottom: 1px solid #c65fae; border-left: 1px solid #c65fae; }
+        .nc-br { bottom: 5px; right: 5px;   border-bottom: 1px solid #c65fae; border-right: 1px solid #c65fae; }
 
         .rnm-item-glow {
           position: absolute;
           inset: -6px;
           border-radius: inherit;
           background: radial-gradient(ellipse at center,
-            rgba(232, 180, 184, 0.35) 0%,
-            rgba(183, 110, 121, 0.15) 45%,
+            rgba(198, 95, 174, 0.35) 0%,
+            rgba(167, 0, 102, 0.15) 45%,
             transparent 75%);
           opacity: 0;
           z-index: -2;
@@ -570,13 +570,13 @@ export default function RoyalNavMenu({
         }
 
         /* ============ HOVER ============ */
-        .rnm-item:hover { color: #FBE9E7; }
+        .rnm-item:hover { color: #a70066; }
         .rnm-item:hover .rnm-item-frame {
-          border-color: rgba(232, 180, 184, 0.4);
+          border-color: rgba(198, 95, 174, 0.4);
           box-shadow:
-            0 1px 0 rgba(255, 255, 255, 0.1) inset,
-            0 -1px 0 rgba(0, 0, 0, 0.4) inset,
-            0 8px 24px rgba(183, 110, 121, 0.25);
+            0 1px 0 rgba(255, 255, 255, 0.9) inset,
+            0 -1px 0 rgba(167, 0, 102, 0.12) inset,
+            0 8px 24px rgba(167, 0, 102, 0.18);
         }
         .rnm-item:hover .rnm-item-glow { opacity: 1; }
         .rnm-item:hover .rnm-corner { opacity: 0.9; transform: scale(1.15); }
@@ -591,35 +591,35 @@ export default function RoyalNavMenu({
         }
 
         /* ============ ACTIVE (jewel) ============ */
-        .rnm-item.is-active { color: #FFF7F0; }
+        .rnm-item.is-active { color: #7a0049; }
         .rnm-item.is-active .rnm-item-frame {
           background:
             linear-gradient(180deg,
-              rgba(232, 180, 184, 0.22) 0%,
-              rgba(183, 110, 121, 0.12) 45%,
-              rgba(15, 23, 42, 0.9) 100%);
+              rgba(198, 95, 174, 0.22) 0%,
+              rgba(167, 0, 102, 0.12) 45%,
+              rgba(247, 236, 248, 0.9) 100%);
           border-color: transparent;
           box-shadow:
             0 1px 0 rgba(255, 255, 255, 0.15) inset,
-            0 0 0 1.5px rgba(251, 233, 231, 0.55),
-            0 0 0 3px rgba(183, 110, 121, 0.35),
-            0 8px 30px rgba(183, 110, 121, 0.5),
-            0 0 60px rgba(232, 180, 184, 0.35);
+            0 0 0 1.5px rgba(167, 0, 102, 0.55),
+            0 0 0 3px rgba(167, 0, 102, 0.35),
+            0 8px 30px rgba(167, 0, 102, 0.5),
+            0 0 60px rgba(198, 95, 174, 0.35);
         }
         .rnm-item.is-active .rnm-item-glow {
           opacity: 1;
           background: radial-gradient(ellipse at center,
             rgba(244, 194, 194, 0.5) 0%,
-            rgba(183, 110, 121, 0.25) 50%,
+            rgba(167, 0, 102, 0.25) 50%,
             transparent 80%);
         }
         .rnm-item.is-active .rnm-corner {
           opacity: 1;
-          border-color: #FBE9E7;
-          filter: drop-shadow(0 0 4px #FBE9E7);
+          border-color: #a70066;
+          filter: drop-shadow(0 0 4px #a70066);
         }
         .rnm-item.is-active .rnm-item-icon {
-          filter: drop-shadow(0 0 6px rgba(251, 233, 231, 0.6));
+          filter: drop-shadow(0 0 6px rgba(167, 0, 102, 0.6));
         }
         .rnm-item.is-active .rnm-item-shine {
           opacity: 1;
@@ -637,7 +637,7 @@ export default function RoyalNavMenu({
           width: 65%;
           height: 8px;
           transform: translateX(-50%);
-          background: radial-gradient(ellipse, rgba(232, 180, 184, 0.55), transparent 70%);
+          background: radial-gradient(ellipse, rgba(198, 95, 174, 0.55), transparent 70%);
           filter: blur(4px);
           pointer-events: none;
         }

@@ -1,120 +1,93 @@
-import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { useReveal } from "@/lib/reveal";
 
-const WELCOME_TEXT = "building for the future of technology";
-const WELCOME_KEY = "ff-welcomed";
-
 /**
- * HeroStage — a clean, compact EdTech hero. On the very first visit a welcome
- * phrase materializes gradually out of thin air. The interactive drone now
- * lives in the bubble-nav cluster (see DroneBubble), so the hero stays tight
- * and content-forward instead of a large empty stage.
+ * HeroStage — the front page, built to the supplied design.
+ *
+ * The two mascots stand at the left, the headline and standfirst sit to the
+ * right of them, and the name has moved out of here into the header beside
+ * the quill, which is where the design puts it.
+ *
+ * The wording is the design's, kept to the letter.
  */
+const TITLE = "Bharat's tech platform building next genration engineers";
+const SUBTITLE =
+  "This isn't you average Edtech platform. we solve, not memorize";
+
 export function HeroStage() {
-  const [firstVisit, setFirstVisit] = useState<boolean>(false);
-  const checked = useRef<boolean>(false);
-
-  useEffect(() => {
-    if (checked.current) return;
-    checked.current = true;
-    try {
-      const seen = localStorage.getItem(WELCOME_KEY);
-      if (!seen) {
-        setFirstVisit(true);
-        localStorage.setItem(WELCOME_KEY, "1");
-      }
-    } catch {
-      // ignore storage errors — just skip the one-time intro
-    }
-  }, []);
-
-  const words = WELCOME_TEXT.split(" ");
-
-  // The headline keeps its first-visit materialize; the subhead and buttons
-  // still wait for it to finish before they drop in.
-  // The wordmark leads, a beat ahead of the headline it sits over.
-  const wordmarkReveal = useReveal(firstVisit ? 0.15 : 0);
-  const headlineReveal = useReveal();
-  const subheadReveal = useReveal(firstVisit ? 2.4 : 0.1);
-  const buttonsReveal = useReveal(firstVisit ? 2.6 : 0.2);
+  const mascotReveal = useReveal(0.05);
+  const titleReveal = useReveal(0.15);
+  const subReveal = useReveal(0.3);
+  const buttonsReveal = useReveal(0.45);
 
   return (
     <section className="relative overflow-hidden">
-      {/* atmosphere */}
-      <div className="absolute inset-0 -z-10 bg-forge-radial" />
-      <div className="absolute inset-0 -z-10 grid-backdrop opacity-50" />
-
-      <div className="mx-auto flex min-h-[38vh] max-w-4xl flex-col items-center justify-center px-4 pb-10 pt-6 text-center sm:px-6 lg:px-8">
-        {/* The full name, above the main title. Home only — every other page
-            carries the quill on its own in the corner. */}
-        <motion.img
-          src="/logo-wordmark.png"
-          alt="Forge Vidhya — Inspiring the nation's minds"
-          className="mb-6 h-auto w-[min(86vw,460px)] select-none"
-          draggable={false}
-          width={902}
-          height={326}
-          {...wordmarkReveal}
-        />
-
-        {/* welcome phrase */}
-        <motion.h1
-          className="font-display text-3xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl"
-          {...headlineReveal}
-        >
-          {/* A word at a time, not a letter at a time. The display face is a
-              connected script, and an inline-block per character breaks every
-              join between letters — the word is the smallest piece that can
-              move without cutting the handwriting apart. */}
-          {words.map((word, wi) => (
-            <motion.span
-              key={word + wi}
-              className="inline-block text-forge-gradient"
-              variants={{
-                hidden: { opacity: 0, y: 12, filter: "blur(10px)" },
-                shown: { opacity: 1, y: 0, filter: "blur(0px)" },
-              }}
-              transition={{
-                duration: 1.1,
-                ease: [0.22, 1, 0.36, 1],
-                delay: firstVisit ? 0.4 + wi * 0.16 : 0,
-              }}
-            >
-              {word}
-              {wi < words.length - 1 ? "\u00A0" : ""}
-            </motion.span>
-          ))}
-        </motion.h1>
-
-        <motion.p
-          className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg"
-          {...subheadReveal}
-        >
-          AI and engineering skills tier-3 colleges skip — built around shipping
-          real things.
-        </motion.p>
-
-        <motion.div
-          className="mt-8 flex flex-wrap items-center justify-center gap-3"
-          {...buttonsReveal}
-        >
-          <Link
-            to="/services"
-            className="inline-flex items-center gap-2 rounded-xl bg-[#d7b460] px-6 py-3 text-base font-semibold text-white shadow-forge transition-transform hover:scale-[1.03] active:scale-95"
-          >
-            Explore programs <ArrowRight className="h-4 w-4" />
-          </Link>
-          <Link
-            to="/contact"
-            className="inline-flex items-center gap-2 rounded-xl border border-primary/40 px-6 py-3 text-base font-semibold text-primary transition-colors hover:bg-primary/5"
-          >
-            Apply now
-          </Link>
+      <div className="mx-auto grid max-w-7xl items-end gap-6 px-4 pb-6 pt-2 sm:px-6 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:gap-10 lg:px-8">
+        {/* the two mascots, standing on the foot of the page */}
+        <motion.div className="order-2 flex justify-center lg:order-1 lg:justify-start" {...mascotReveal}>
+          <img
+            src="/mascots.png"
+            alt="The two forgeVidhya mascots"
+            className="h-auto w-[min(78vw,340px)] select-none drop-shadow-[0_18px_28px_rgba(40,20,70,0.28)] lg:w-full lg:max-w-[380px]"
+            draggable={false}
+            width={332}
+            height={381}
+          />
         </motion.div>
+
+        <div className="order-1 pt-4 text-center lg:order-2 lg:pb-14 lg:text-right">
+          <motion.h1 className="hero-title" {...titleReveal}>
+            {TITLE}
+          </motion.h1>
+
+          <motion.p className="hero-subtitle" {...subReveal}>
+            {SUBTITLE}
+          </motion.p>
+
+          <motion.div
+            className="mt-7 flex flex-wrap items-center justify-center gap-3 lg:justify-end"
+            {...buttonsReveal}
+          >
+            <Link
+              to="/services"
+              className="inline-flex items-center gap-2 rounded-xl bg-[#d7b460] px-6 py-3 text-base font-semibold text-white shadow-forge transition-transform hover:scale-[1.03] active:scale-95"
+            >
+              Explore programs <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2 rounded-xl border border-primary/40 px-6 py-3 text-base font-semibold text-primary transition-colors hover:bg-primary/5"
+            >
+              Apply now
+            </Link>
+          </motion.div>
+        </div>
       </div>
+
+      <style>{`
+        /* The headline and standfirst carry their colours here rather than
+           through a utility class: the design names them exactly, sampled
+           from the artwork as #a60368 and #11103f. */
+        .hero-title {
+          font-family: 'Style Script', 'Segoe Script', 'Brush Script MT', cursive;
+          font-weight: 400;
+          color: #a70066;
+          font-size: clamp(2.1rem, 5.2vw, 4rem);
+          line-height: 1.12;
+          letter-spacing: 0.01em;
+          margin: 0;
+        }
+        .hero-subtitle {
+          font-family: 'Style Script', 'Segoe Script', 'Brush Script MT', cursive;
+          font-weight: 400;
+          color: #11103f;
+          font-size: clamp(1.05rem, 2.1vw, 1.6rem);
+          line-height: 1.35;
+          margin: 0.9rem 0 0;
+        }
+      `}</style>
     </section>
   );
 }

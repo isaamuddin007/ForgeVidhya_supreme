@@ -19,7 +19,7 @@ import Terms from "@/pages/Terms";
 import AdminDashboard from "@/pages/AdminDashboard";
 import NotFound from "@/pages/NotFound";
 import { SignInGate } from "@/components/SignInGate";
-import GlassSwirlBackground from "@/components/GlassSwirlBackground";
+import AuroraBackground from "@/components/AuroraBackground";
 import MagicCursor from "@/components/MagicCursor";
 import MagicBoxFx from "@/components/MagicBoxFx";
 import { ScrollToHash } from "@/components/SiteSearch";
@@ -41,7 +41,7 @@ const App = () => (
               bare sibling would paint over the page. Mounted outside
               <Routes> so it survives navigation — each page renders its own
               Layout, which would otherwise remount it. */}
-          <GlassSwirlBackground>
+          <AuroraBackground>
           <BrowserRouter
             future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
           >
@@ -63,7 +63,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
-          </GlassSwirlBackground>
+          </AuroraBackground>
         </TooltipProvider>
         </GalleryProvider>
         </SoundProvider>
