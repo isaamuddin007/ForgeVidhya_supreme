@@ -35,6 +35,10 @@ export const siteConfig = {
     lng: 78.442507,
   },
   social: {
+    /** The Contact page shows a Discord tile. Put the server invite here and
+     *  the tile becomes a link; left empty it renders without one, rather
+     *  than pointing somewhere invented. */
+    discord: "",
     twitter: "https://x.com/isaam_mjcetian",
     linkedin: "https://www.linkedin.com/in/isaam-uddin-3a7781388",
     instagram: "https://www.instagram.com/isaam.mjcetian/",
