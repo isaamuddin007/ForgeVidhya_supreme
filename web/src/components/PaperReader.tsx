@@ -13,13 +13,31 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from
  * so a sheet never overflows and never breaks mid-paragraph.
  */
 
-/** The artwork is 490 x 688, and the sheet keeps that ratio exactly so the
- *  corner ornaments never stretch. */
-const SHEET_RATIO = 688 / 490;
+/** The artwork is 453 x 641, and the sheet keeps that ratio exactly so the
+ *  ribbon never stretches. */
+const SHEET_RATIO = 641 / 453;
 
-/** Margins as a fraction of the sheet, clear of the corner ornaments. */
-const PAD_X = 0.11;
-const PAD_Y = 0.145;
+/** Margins as a fraction of the sheet, kept clear of the ribbon.
+ *
+ *  The ribbon is a wedge over the top right: measured off the artwork,
+ *  including its soft fade, it reaches 49% of the way down and, at the
+ *  height the first line sits at, its inner edge is 78.9% across. So the
+ *  column has to stop short of that, and the right margin is much the wider
+ *  of the two — the flourish lives in it.
+ *
+ *  It cannot instead be a float the text wraps around. Every block is
+ *  measured once, in a hidden sheet at one fixed width, before the packer
+ *  knows which sheet it will land on; a column that changed width with
+ *  height would measure at one width and render at another, and the sheets
+ *  would overflow. A uniform column is what this paginator can honour.
+ *
+ *  The foot is reclaimed to pay for it: unlike the sheet this replaces,
+ *  which carried ornaments in all four corners, nothing is drawn along the
+ *  bottom, so the text can run closer to it. */
+const PAD_LEFT = 0.11;
+const PAD_RIGHT = 0.26;
+const PAD_TOP = 0.17;
+const PAD_BOTTOM = 0.095;
 
 type Block = { key: string; node: React.ReactNode; heading?: boolean };
 
@@ -117,8 +135,8 @@ export default function PaperReader({
   const blocks = React.useMemo(() => toBlocks(content), [content]);
 
   const sheetH = sheetW * SHEET_RATIO;
-  const contentW = sheetW * (1 - PAD_X * 2);
-  const contentH = sheetH * (1 - PAD_Y * 2);
+  const contentW = sheetW * (1 - PAD_LEFT - PAD_RIGHT);
+  const contentH = sheetH * (1 - PAD_TOP - PAD_BOTTOM);
 
   // Track the sheet's real width so the measuring pass uses the same box the
   // reader will use.
@@ -290,7 +308,9 @@ export default function PaperReader({
           <div
             className="paper-content paper-ink"
             style={{
-              padding: sheetW ? `${sheetH * PAD_Y}px ${sheetW * PAD_X}px` : undefined,
+              padding: sheetW
+                ? `${sheetH * PAD_TOP}px ${sheetW * PAD_RIGHT}px ${sheetH * PAD_BOTTOM}px ${sheetW * PAD_LEFT}px`
+                : undefined,
             }}
           >
             {page === 0 && Masthead}
