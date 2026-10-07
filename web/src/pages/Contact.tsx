@@ -1,4 +1,3 @@
-import { Instagram } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import { Layout } from "@/components/Layout";
 import { siteConfig } from "@/lib/site";
@@ -15,11 +14,56 @@ import { siteConfig } from "@/lib/site";
  * casual marker face and the wrong shape entirely.
  */
 
-/** Lucide carries no Discord mark, so it is drawn here. */
+/**
+ * The two marks, drawn to the artwork rather than borrowed from an icon set.
+ *
+ * Lucide's Instagram is a thin monoline outline and carries no gradient at
+ * all, which is why the old one looked wrong next to the design: the artwork
+ * uses Instagram's own glyph, a filled tile with the camera knocked out in
+ * white. Measured off the artwork at 2016px wide, the tile is 82x82 and the
+ * Clyde 210x160, so they are sized apart here too rather than both at once.
+ */
+
+/** Discord's Clyde, on its own 71x55 grid. evenodd punches the eyes out; the
+ *  two ellipses sit behind so they read as the solid light of the artwork
+ *  wherever the glass behind happens to be darker. */
 function DiscordMark({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
-      <path d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.249a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.036A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028ZM8.02 15.331c-1.182 0-2.157-1.085-2.157-2.419 0-1.333.956-2.418 2.157-2.418 1.21 0 2.176 1.095 2.157 2.418 0 1.334-.956 2.419-2.157 2.419Zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.418 2.157-2.418 1.21 0 2.176 1.095 2.157 2.418 0 1.334-.946 2.419-2.157 2.419Z" />
+    <svg viewBox="0 0 71 55" className={className} aria-hidden="true" focusable="false">
+      <ellipse cx="23.726" cy="30.169" rx="6.4" ry="7.16" fill="#f7f4fc" />
+      <ellipse cx="47.318" cy="30.169" rx="6.4" ry="7.16" fill="#f7f4fc" />
+      <path
+        fill="currentColor"
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M60.1045 4.8978C55.5792 2.8214 50.7265 1.2916 45.6527 0.41542C45.5603 0.39851 45.468 0.440769 45.4204 0.525289C44.7963 1.6353 44.105 3.0834 43.6209 4.2216C38.1637 3.4046 32.7345 3.4046 27.3892 4.2216C26.905 3.0581 26.1886 1.6353 25.5617 0.525289C25.5141 0.443589 25.4218 0.40133 25.3294 0.41542C20.2584 1.2888 15.4057 2.8186 10.8776 4.8978C10.8384 4.9147 10.8048 4.9429 10.7825 4.9795C1.57795 18.7309 -0.943561 32.1443 0.293408 45.3914C0.299005 45.4562 0.335386 45.5182 0.385761 45.5576C6.45866 50.0174 12.3413 52.7249 18.1147 54.5195C18.2071 54.5477 18.305 54.5139 18.3638 54.4378C19.7295 52.5728 20.9469 50.6063 21.9907 48.5383C22.0523 48.4172 21.9935 48.2735 21.8676 48.2256C19.9366 47.4931 18.0979 46.6 16.3292 45.5858C16.1893 45.5041 16.1781 45.304 16.3068 45.2082C16.6791 44.9293 17.0515 44.6391 17.407 44.3461C17.4714 44.2926 17.5609 44.2813 17.6365 44.3151C29.2558 49.6202 41.8354 49.6202 53.3179 44.3151C53.3935 44.2785 53.483 44.2898 53.5502 44.3433C53.9057 44.6363 54.2781 44.9293 54.6532 45.2082C54.7819 45.304 54.7735 45.5041 54.6336 45.5858C52.8649 46.6197 51.0262 47.4931 49.0924 48.2228C48.9665 48.2707 48.9105 48.4172 48.9721 48.5383C50.0383 50.6034 51.2557 52.5699 52.5962 54.435C52.6522 54.5139 52.7529 54.5477 52.8453 54.5195C58.6467 52.7249 64.5293 50.0174 70.6022 45.5576C70.6554 45.5182 70.689 45.459 70.6946 45.3942C72.1752 30.0791 68.2147 16.7757 60.1968 4.9823C60.1772 4.9429 60.1437 4.9147 60.1045 4.8978ZM23.7259 37.3253C20.2276 37.3253 17.3451 34.1136 17.3451 30.1693C17.3451 26.225 20.1717 23.0133 23.7259 23.0133C27.308 23.0133 30.1626 26.2532 30.1066 30.1693C30.1066 34.1136 27.28 37.3253 23.7259 37.3253ZM47.3178 37.3253C43.8196 37.3253 40.9371 34.1136 40.9371 30.1693C40.9371 26.225 43.7636 23.0133 47.3178 23.0133C50.9 23.0133 53.7545 26.2532 53.6986 30.1693C53.6986 34.1136 50.9 37.3253 47.3178 37.3253Z"
+      />
+    </svg>
+  );
+}
+
+/** Instagram's glyph. The gradient is the brand's own, anchored low and left
+ *  so the yellow sits at the bottom corner and the blue at the top — which is
+ *  what reading the artwork's corners gives back: #f9bf6b at the foot,
+ *  #7063cd at the head. */
+function InstagramMark({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} aria-hidden="true" focusable="false">
+      <defs>
+        <radialGradient id="ct-ig" cx="0.3" cy="1.07" r="1.25">
+          <stop offset="0" stopColor="#fdf497" />
+          <stop offset="0.05" stopColor="#fdf497" />
+          <stop offset="0.45" stopColor="#fd5949" />
+          <stop offset="0.6" stopColor="#d6249f" />
+          <stop offset="0.9" stopColor="#285aeb" />
+        </radialGradient>
+      </defs>
+      <rect x="0" y="0" width="48" height="48" rx="12" fill="url(#ct-ig)" />
+      <g fill="none" stroke="#fffaf4" strokeWidth="2.6">
+        <rect x="7.5" y="7.5" width="33" height="33" rx="10.3" />
+        <circle cx="24" cy="24" r="7.3" />
+      </g>
+      <circle cx="32.3" cy="14.3" r="2" fill="#fffaf4" />
     </svg>
   );
 }
@@ -74,7 +118,7 @@ export default function Contact() {
 
             <CommunityRow
               href={social.instagram}
-              icon={<Instagram className="ct-icon ct-icon--insta" />}
+              icon={<InstagramMark className="ct-icon ct-icon--insta" />}
               label="click here"
               labelClass="ct-click"
             />
@@ -192,9 +236,20 @@ export default function Contact() {
         }
 
         /* ---------- community panel ----------
-           Hollow: the border is painted, the middle is left alone so the page
-           shows through, which is what the artwork does. */
+           Hollow: only the border is painted, so the animated glass shows
+           through the middle exactly as it does in the artwork.
+
+           The two-background-layer trick does not work here. It needs an
+           opaque first layer clipped to padding-box to hide the middle, and
+           there is no opaque colour to use — whatever sits behind is moving.
+           A transparent first layer hides nothing, so the gradient simply
+           floods the whole box and the frame comes out solid.
+
+           Masking is what actually leaves a hole: paint the gradient over the
+           whole box, then subtract the content-box from the mask so only the
+           7px rim survives. */
         .ct-panel {
+          position: relative;
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -202,15 +257,27 @@ export default function Contact() {
           min-height: clamp(260px, 36vw, 420px);
           padding: clamp(1.75rem, 4vw, 3rem);
           border-radius: 1.75rem;
-          border: 7px solid transparent;
-          background:
-            linear-gradient(transparent, transparent) padding-box,
-            linear-gradient(135deg,
-              #f3d3cd 0%, #d79a9b 18%, #bd8488 38%,
-              #f0cfca 55%, #b8787e 74%, #e2b3b2 100%) border-box;
-          box-shadow:
-            0 0 26px -4px rgba(189, 132, 136, 0.85),
-            0 0 0 1px rgba(255, 255, 255, 0.45) inset;
+          background: none;
+        }
+        .ct-panel::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          padding: 7px;
+          background: linear-gradient(135deg,
+            #f3d3cd 0%, #d79a9b 18%, #bd8488 38%,
+            #f0cfca 55%, #b8787e 74%, #e2b3b2 100%);
+          -webkit-mask:
+            linear-gradient(#000 0 0) content-box,
+            linear-gradient(#000 0 0);
+                  mask:
+            linear-gradient(#000 0 0) content-box,
+            linear-gradient(#000 0 0);
+          -webkit-mask-composite: xor;
+                  mask-composite: exclude;
+          filter: drop-shadow(0 0 10px rgba(189, 132, 136, 0.75));
+          pointer-events: none;
         }
         .ct-community-row {
           display: flex;
@@ -218,9 +285,24 @@ export default function Contact() {
           gap: clamp(1rem, 2.6vw, 2rem);
           text-decoration: none;
         }
-        .ct-icon { width: clamp(46px, 7.5vw, 96px); height: clamp(46px, 7.5vw, 96px); flex-shrink: 0; }
-        .ct-icon--discord { color: #5865f2; }
-        .ct-icon--insta { color: #c9348c; stroke-width: 1.5; }
+        /* The artwork draws these at two different sizes — 210x160 for the
+           Clyde against 82x82 for the tile — so one shared size was always
+           going to look wrong. Each keeps its own aspect. */
+        .ct-icon { flex-shrink: 0; display: block; }
+        .ct-icon--discord {
+          width: clamp(72px, 11.5vw, 150px);
+          height: auto;
+          /* read off the artwork, which renders the blurple a shade softer
+             than the brand's flat #5865f2 */
+          color: #6b78eb;
+          filter: drop-shadow(0 2px 5px rgba(90, 100, 200, 0.28));
+        }
+        .ct-icon--insta {
+          width: clamp(36px, 4.6vw, 62px);
+          height: clamp(36px, 4.6vw, 62px);
+          border-radius: 25%;
+          filter: drop-shadow(0 2px 5px rgba(160, 60, 120, 0.3));
+        }
 
         .ct-community, .ct-click {
           font-family: 'Playfair Display', Georgia, serif;
