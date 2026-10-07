@@ -39,8 +39,14 @@
          server for a missing file, and under the SPA rewrite it was handed the
          HTML shell in place of an image. Restore the pair only alongside the
          two artwork files. -->
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="apple-touch-icon" href="/icon.png" />
+    <!-- 32px is the size a browser tab actually draws on a standard display,
+         so it is given its own file rather than left to be squeezed out of a
+         larger one. Both tab icons keep the mark's transparency; the two
+         below do not, because iOS composites a transparent home-screen icon
+         onto black and the quill is dark enough to disappear into it. -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
   </head>
 

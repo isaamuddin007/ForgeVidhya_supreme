@@ -57,7 +57,7 @@ DirectoryIndex index.html
   </FilesMatch>
   # Anything still served from the root under a fixed name must be revalidated,
   # or replacing it silently does nothing for anyone who has been here before.
-  <FilesMatch "^(favicon|icon|placeholder)\.(png|svg)$">
+  <FilesMatch "^(favicon|favicon-32|apple-touch-icon|icon|placeholder)\.(png|svg)$">
     Header set Cache-Control "public, max-age=600, must-revalidate"
   </FilesMatch>
 </IfModule>
