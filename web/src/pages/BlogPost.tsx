@@ -25,12 +25,7 @@ export default function BlogPost() {
   const recs = related.length ? related : fallback;
   const shareUrl = `${siteConfig.url}/blog/${post.slug}`;
 
-  const printed = new Date(post.date).toLocaleDateString("en-IN", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-  const byline = `${post.category} · ${post.author} · ${printed} · ${post.readTime}`;
+  const byline = `${post.category} · ${post.author} · ${post.readTime}`;
 
   return (
     <Layout>
@@ -38,7 +33,6 @@ export default function BlogPost() {
         title={post.title}
         description={post.excerpt}
         type="article"
-        publishedTime={post.date}
       />
 
       {/*

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Calendar } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import { Layout } from "@/components/Layout";
 import { blogPosts, blogCategories } from "@/lib/site";
@@ -72,47 +72,18 @@ export default function Blog() {
           tabIndex={0}
         >
           {filtered.map((p) => (
-            <Link key={p.slug} to={`/blog/${p.slug}`} className="bl-card">
-              {/* The frame itself: stroked, never filled, so the middle is
-                  the page. preserveAspectRatio is off so it stretches to
-                  whatever the card turns out to be. */}
-              <svg
-                className="bl-frame"
-                viewBox="0 0 300 380"
-                preserveAspectRatio="none"
-                aria-hidden="true"
-              >
-                <path
-                  className="bl-frame-edge"
-                  d="M26,3 L274,3 L297,26 L297,354 L274,377 L26,377 L3,354 L3,26 Z"
-                />
-                {/* circuit traces, as in the design */}
-                <g className="bl-frame-trace">
-                  <path d="M3,70 L40,70 L52,58 L120,58" />
-                  <path d="M297,112 L262,112 L250,100 L196,100" />
-                  <path d="M3,320 L44,320 L56,332 L128,332" />
-                  <rect x="118" y="54" width="8" height="8" />
-                  <rect x="190" y="96" width="8" height="8" />
-                  <rect x="126" y="328" width="8" height="8" />
-                </g>
-              </svg>
-
-              <span className="bl-cat">{LABELS[p.category] ?? p.category}</span>
-
-              <h2 className="bl-card-title">{p.title}</h2>
-
-              <p className="bl-card-excerpt">{p.excerpt}</p>
-
-              <span className="bl-meta">
-                <span className="bl-meta-date">
-                  <Calendar className="h-3.5 w-3.5" />
-                  {new Date(p.date).toLocaleDateString("en-IN", {
-                    day: "numeric",
-                    month: "short",
-                    year: "numeric",
-                  })}
+            <Link
+              key={p.slug}
+              to={`/blog/${p.slug}`}
+              className="bl-card glass-card card-hover"
+            >
+              <span className={`bl-card-cover bg-gradient-to-br ${p.cover}`} />
+              <span className="bl-card-body">
+                <span className="bl-cat">{LABELS[p.category] ?? p.category}</span>
+                <span className="bl-card-title">{p.title}</span>
+                <span className="bl-read">
+                  Read <ArrowRight className="h-3.5 w-3.5" />
                 </span>
-                <span>{p.readTime}</span>
               </span>
             </Link>
           ))}
@@ -217,94 +188,55 @@ export default function Blog() {
         }
         .bl-rail:focus-visible { outline: 3px solid rgba(183, 110, 121, 0.6); outline-offset: 4px; }
 
-        /* ---------- one post ---------- */
+        /* ---------- one post ----------
+           The treatment from the "Keep reading" cards: a gradient panel at
+           the left, the words at the right. The rose gold comes from the
+           living-box styles in index.css, which .card-hover carries. */
         .bl-card {
-          position: relative;
           flex: 0 0 auto;
-          width: clamp(260px, 78vw, 300px);
-          min-height: 380px;
+          width: clamp(280px, 86vw, 430px);
           scroll-snap-align: start;
           display: flex;
-          flex-direction: column;
-          justify-content: center;
-          gap: 0.7rem;
-          padding: 2.4rem 2rem;
+          overflow: hidden;
+          border-radius: 1rem;
           text-decoration: none;
-          text-align: center;
-          /* hollow: nothing is painted behind the content */
-          background: transparent;
         }
-        .bl-frame {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          pointer-events: none;
+        .bl-card-cover {
+          width: 7rem;
+          flex-shrink: 0;
         }
-        .bl-frame-edge {
-          fill: none;
-          stroke: #b76e79;
-          stroke-width: 2;
-          vector-effect: non-scaling-stroke;
-          filter: drop-shadow(0 0 6px rgba(232, 180, 184, 0.9));
+        .bl-card-body {
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+          padding: 1.25rem;
         }
-        .bl-frame-trace path {
-          fill: none;
-          stroke: #cf8f97;
-          stroke-width: 1.5;
-          vector-effect: non-scaling-stroke;
-        }
-        .bl-frame-trace rect { fill: #e8b4b8; }
-
-        .bl-card:hover .bl-frame-edge,
-        .bl-card:focus-visible .bl-frame-edge {
-          stroke: #a70066;
-          filter: drop-shadow(0 0 11px rgba(232, 180, 184, 1));
-        }
-
         .bl-cat {
-          align-self: center;
-          padding: 0.3rem 0.85rem;
-          border-radius: 999px;
-          border: 1px solid rgba(183, 110, 121, 0.6);
-          background: rgba(255, 255, 255, 0.55);
-          font-size: 0.68rem;
-          font-weight: 800;
+          font-size: 0.7rem;
+          font-weight: 700;
           text-transform: uppercase;
           letter-spacing: 0.08em;
-          color: #8d1256;
+          color: #a70066;
         }
         .bl-card-title {
-          margin: 0.2rem 0 0;
+          margin-top: 0.5rem;
           font-family: 'Sora', system-ui, sans-serif;
-          font-size: 1.05rem;
+          font-size: 1rem;
           font-weight: 700;
-          line-height: 1.32;
+          line-height: 1.35;
           color: #3d1030;
         }
-        .bl-card-excerpt {
-          margin: 0;
-          font-size: 0.83rem;
-          line-height: 1.55;
-          color: #5c2a48;
-          display: -webkit-box;
-          -webkit-line-clamp: 4;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
-        .bl-meta {
-          display: flex;
+        .bl-read {
+          display: inline-flex;
           align-items: center;
-          justify-content: space-between;
-          gap: 0.75rem;
-          margin-top: 0.4rem;
-          padding-top: 0.7rem;
-          border-top: 1px solid rgba(183, 110, 121, 0.35);
-          font-size: 0.72rem;
-          font-weight: 600;
+          gap: 0.3rem;
+          margin-top: 0.85rem;
+          font-size: 0.78rem;
+          font-weight: 700;
           color: #7a3b57;
+          transition: transform 0.25s ease;
         }
-        .bl-meta-date { display: inline-flex; align-items: center; gap: 0.35rem; }
+        .bl-card:hover .bl-read { transform: translateX(4px); }
 
         .bl-empty {
           padding: 3rem 1rem;
