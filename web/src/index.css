@@ -1,7 +1,9 @@
 /* Press Start 2P is the blocky face on "YOUR JOURNEY STARTS HERE"; Fredoka is
-   the rounded one the category titles are set in. Both come from the Programs
-   design. */
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Style+Script&family=Cinzel:wght@400;600;700&family=Press+Start+2P&family=Fredoka:wght@500;600;700&display=swap');
+   the rounded one the category titles are set in; both come from the Programs
+   design. Playfair Display italic is the upright formal script on the Contact
+   page — Style Script was the wrong shape there, being a slanted casual
+   marker face — and Oswald is its condensed label face. */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Style+Script&family=Cinzel:wght@400;600;700&family=Press+Start+2P&family=Fredoka:wght@500;600;700&family=Playfair+Display:ital,wght@1,400;1,500;1,600;1,700&family=Oswald:wght@300;400;500;700&display=swap');
 
 @tailwind base;
 @tailwind components;

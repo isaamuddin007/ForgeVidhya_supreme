@@ -6,12 +6,13 @@ import { siteConfig } from "@/lib/site";
 /**
  * Contact — built to the supplied design.
  *
- * A rose gold panel at the left holding the two community links, the ways to
- * reach the company at the right. Nothing else: the form, the map and the
- * cohort boxes that used to be here are gone.
+ * Colours are sampled from the artwork rather than guessed: the royal blue is
+ * #07009c, the magenta #970766, the labels #0e3360 over values in #011b3a,
+ * and the frame #bd8488.
  *
- * Every detail comes from siteConfig, so the footer and this page can never
- * drift apart.
+ * The lettering is Playfair Display italic — an upright formal script with
+ * high stroke contrast. The first build used Style Script, which is a slanted
+ * casual marker face and the wrong shape entirely.
  */
 
 /** Lucide carries no Discord mark, so it is drawn here. */
@@ -34,15 +35,29 @@ export default function Contact() {
         description={`Reach forgeVidhya by email at ${email}, by phone on ${phone}, or come and find us in Hyderabad.`}
       />
 
-      <section className="ct-stage mx-auto max-w-7xl px-4 pb-24 pt-2 sm:px-6 lg:px-8">
-        <h1 className="ct-title">
-          Contact us
-          <span className="ct-spark" aria-hidden="true" />
-        </h1>
-        <span className="ct-rule" aria-hidden="true" />
+      <section className="ct-stage mx-auto max-w-[1500px] px-4 pb-24 pt-2 sm:px-6 lg:px-8">
+        {/* the name, far behind everything */}
+        <img src="/logo-wordmark.png" alt="" className="ct-watermark" aria-hidden="true" />
+
+        <div className="ct-head">
+          <h1 className="ct-title">Contact us</h1>
+
+          {/* the two hand-drawn strokes under the title */}
+          <svg className="ct-swoosh" viewBox="0 0 420 46" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M8,40 C120,30 250,16 412,5" />
+            <path d="M2,30 C118,21 248,8 398,0" />
+          </svg>
+
+          {/* the four-point star and its two companions */}
+          <svg className="ct-star" viewBox="0 0 120 120" aria-hidden="true">
+            <path className="ct-star-big" d="M62,6 C66,40 76,52 112,58 C76,64 66,76 62,110 C58,76 48,64 12,58 C48,52 58,40 62,6 Z" />
+            <path className="ct-star-sm" d="M24,16 C26,30 30,35 44,38 C30,41 26,46 24,60 C22,46 18,41 4,38 C18,35 22,30 24,16 Z" transform="translate(-14,-10) scale(0.62)" />
+            <path className="ct-star-sm" d="M24,16 C26,30 30,35 44,38 C30,41 26,46 24,60 C22,46 18,41 4,38 C18,35 22,30 24,16 Z" transform="translate(128,34) scale(0.5)" />
+          </svg>
+        </div>
 
         <div className="ct-grid">
-          {/* ---- community panel ---- */}
+          {/* ---- community panel: a hollow rose gold frame ---- */}
           <div className="ct-panel">
             <CommunityRow
               href={social.discord}
@@ -80,7 +95,7 @@ export default function Contact() {
               <div className="ct-row">
                 <dt className="ct-key">Phone</dt>
                 <dd className="ct-val">
-                  <a href={telHref} className="ct-link">{phone}</a>
+                  <a href={telHref} className="ct-link">{phone.replace(/\s+/g, "")}</a>
                 </dd>
               </div>
 
@@ -93,7 +108,12 @@ export default function Contact() {
                     rel="noopener noreferrer"
                     className="ct-link"
                   >
-                    {address}
+                    {siteConfig.location.lines.map((line, i) => (
+                      <span key={line} className="ct-addr-line">
+                        {line}
+                        {i < siteConfig.location.lines.length - 1 ? "," : ""}
+                      </span>
+                    ))}
                   </a>
                 </dd>
               </div>
@@ -105,125 +125,155 @@ export default function Contact() {
       <style>{`
         .ct-stage { position: relative; z-index: 1; }
 
+        .ct-watermark {
+          position: absolute;
+          top: 26%; left: 48%;
+          width: min(86%, 1050px);
+          transform: translateX(-50%) rotate(-7deg);
+          opacity: 0.14;
+          pointer-events: none;
+          user-select: none;
+          z-index: -1;
+        }
+
+        /* ---------- masthead ---------- */
+        .ct-head { position: relative; display: inline-block; padding-right: 5rem; }
+
         /* Two classes: "main > section:first-of-type h1" in index.css is one
            class and three types, and a single class loses to it. */
         .ct-stage .ct-title {
-          position: relative;
-          display: inline-block;
           margin: 0;
-          font-family: 'Style Script', 'Segoe Script', cursive;
-          font-weight: 400;
-          font-size: clamp(2.6rem, 7vw, 5rem);
-          line-height: 1.05;
-          color: #1a1a8c;
+          font-family: 'Playfair Display', Georgia, serif;
+          font-style: italic;
+          font-weight: 500;
+          font-size: clamp(2.8rem, 7.5vw, 6rem);
+          line-height: 1.02;
+          letter-spacing: 0.005em;
+          color: #07009c;
         }
-        .ct-spark {
-          position: absolute;
-          right: -0.42em; top: -0.08em;
-          width: 0.3em; height: 0.3em;
-          background:
-            radial-gradient(circle, #fff 0%, #3b47ff 38%, rgba(59,71,255,0) 72%);
-          border-radius: 50%;
-          box-shadow: 0 0 20px 7px rgba(59, 71, 255, 0.5);
-          animation: ct-spark 3.4s ease-in-out infinite;
-        }
-        @keyframes ct-spark {
-          0%, 100% { opacity: 0.7; transform: scale(0.9); }
-          50%      { opacity: 1;   transform: scale(1.15); }
-        }
-        .ct-rule {
+        .ct-swoosh {
           display: block;
-          width: min(360px, 60%);
-          height: 2px;
-          margin: 0.35rem 0 0 1.5rem;
-          border-radius: 2px;
-          background: linear-gradient(90deg, #1a1a8c 0%, #4b4bd8 60%, transparent 100%);
-          transform: rotate(-1.6deg);
+          width: min(100%, 420px);
+          height: clamp(22px, 3.2vw, 46px);
+          margin-top: 0.1rem;
+          overflow: visible;
+        }
+        .ct-swoosh path {
+          fill: none;
+          stroke: #07009c;
+          stroke-width: 2.2;
+          stroke-linecap: round;
+          vector-effect: non-scaling-stroke;
+        }
+        .ct-star {
+          position: absolute;
+          top: clamp(-2.2rem, -3vw, -1rem);
+          right: 0;
+          width: clamp(54px, 8vw, 104px);
+          height: clamp(54px, 8vw, 104px);
+          overflow: visible;
+        }
+        .ct-star-big { fill: #280cba; }
+        .ct-star-sm  { fill: #3f27d6; }
+        .ct-star { animation: ct-twinkle 3.6s ease-in-out infinite; }
+        @keyframes ct-twinkle {
+          0%, 100% { opacity: 0.8; transform: scale(0.96); }
+          50%      { opacity: 1;   transform: scale(1.05); }
         }
 
         .ct-grid {
           display: grid;
-          gap: clamp(2rem, 5vw, 4rem);
-          margin-top: clamp(2.5rem, 6vw, 4.5rem);
+          gap: clamp(2rem, 5vw, 4.5rem);
+          margin-top: clamp(2.5rem, 6vw, 4rem);
           align-items: center;
         }
-        @media (min-width: 900px) {
-          .ct-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); }
+        @media (min-width: 950px) {
+          .ct-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); }
         }
 
-        /* ---------- community panel ---------- */
+        /* ---------- community panel ----------
+           Hollow: the border is painted, the middle is left alone so the page
+           shows through, which is what the artwork does. */
         .ct-panel {
           display: flex;
           flex-direction: column;
-          gap: clamp(1.5rem, 4vw, 2.75rem);
-          padding: clamp(1.75rem, 4vw, 2.75rem);
-          border-radius: 1.5rem;
-          border: 3px solid transparent;
+          justify-content: center;
+          gap: clamp(1.75rem, 4vw, 3rem);
+          min-height: clamp(260px, 36vw, 420px);
+          padding: clamp(1.75rem, 4vw, 3rem);
+          border-radius: 1.75rem;
+          border: 7px solid transparent;
           background:
-            linear-gradient(rgba(255,255,255,0.28), rgba(255,255,255,0.14)) padding-box,
-            linear-gradient(135deg, #f6d9d3 0%, #b76e79 35%, #e8b4b8 62%, #a4606c 100%) border-box;
+            linear-gradient(transparent, transparent) padding-box,
+            linear-gradient(135deg,
+              #f3d3cd 0%, #d79a9b 18%, #bd8488 38%,
+              #f0cfca 55%, #b8787e 74%, #e2b3b2 100%) border-box;
           box-shadow:
-            0 0 22px -6px rgba(183, 110, 121, 0.75),
-            0 18px 40px -26px rgba(90, 40, 60, 0.8);
+            0 0 26px -4px rgba(189, 132, 136, 0.85),
+            0 0 0 1px rgba(255, 255, 255, 0.45) inset;
         }
         .ct-community-row {
           display: flex;
           align-items: center;
-          gap: clamp(0.9rem, 2.5vw, 1.6rem);
+          gap: clamp(1rem, 2.6vw, 2rem);
           text-decoration: none;
         }
-        .ct-icon { width: clamp(44px, 7vw, 72px); height: clamp(44px, 7vw, 72px); flex-shrink: 0; }
+        .ct-icon { width: clamp(46px, 7.5vw, 96px); height: clamp(46px, 7.5vw, 96px); flex-shrink: 0; }
         .ct-icon--discord { color: #5865f2; }
-        .ct-icon--insta { color: #c9348c; stroke-width: 1.6; }
-        .ct-community {
-          font-family: 'Style Script', 'Segoe Script', cursive;
-          font-size: clamp(1.4rem, 3.4vw, 2.3rem);
-          line-height: 1.15;
-          color: #1a1a8c;
+        .ct-icon--insta { color: #c9348c; stroke-width: 1.5; }
+
+        .ct-community, .ct-click {
+          font-family: 'Playfair Display', Georgia, serif;
+          font-style: italic;
+          font-weight: 500;
+          line-height: 1.18;
         }
-        .ct-click {
-          font-family: 'Style Script', 'Segoe Script', cursive;
-          font-size: clamp(1.4rem, 3.4vw, 2.3rem);
-          color: #c01a74;
-        }
+        .ct-community { font-size: clamp(1.4rem, 3.6vw, 2.9rem); color: #040192; }
+        .ct-click     { font-size: clamp(1.4rem, 3.6vw, 2.9rem); color: #940766; }
         a.ct-community-row:hover .ct-community,
         a.ct-community-row:hover .ct-click { text-decoration: underline; }
 
         /* ---------- reach us ---------- */
         .ct-reach-title {
-          margin: 0 0 clamp(1.25rem, 3vw, 2rem);
-          font-family: 'Style Script', 'Segoe Script', cursive;
-          font-size: clamp(1.9rem, 4.6vw, 3.1rem);
-          color: #c01a74;
+          margin: 0 0 clamp(1.5rem, 3.5vw, 2.5rem);
+          font-family: 'Playfair Display', Georgia, serif;
+          font-style: italic;
+          font-weight: 500;
+          font-size: clamp(2rem, 5vw, 3.9rem);
+          line-height: 1.05;
+          color: #970766;
         }
-        .ct-rows { margin: 0; display: flex; flex-direction: column; gap: clamp(1.1rem, 3vw, 2.1rem); }
+        .ct-rows { margin: 0; display: flex; flex-direction: column; gap: clamp(1.4rem, 3.4vw, 2.6rem); }
         .ct-row {
           display: grid;
-          grid-template-columns: minmax(5.5rem, auto) 1fr;
-          gap: 0.75rem 1.25rem;
+          grid-template-columns: minmax(5rem, auto) 1fr;
+          gap: 0.5rem 1.5rem;
           align-items: start;
         }
         .ct-key {
-          font-family: 'Space Grotesk', 'Sora', system-ui, sans-serif;
-          font-weight: 800;
-          font-size: clamp(0.82rem, 1.9vw, 1.1rem);
-          letter-spacing: 0.02em;
+          font-family: 'Oswald', 'Space Grotesk', system-ui, sans-serif;
+          font-weight: 700;
+          font-size: clamp(1rem, 2.1vw, 1.65rem);
+          letter-spacing: 0.01em;
           text-transform: uppercase;
-          color: #123a6b;
+          color: #0e3360;
+          white-space: nowrap;
         }
         .ct-val {
           margin: 0;
-          font-family: 'Space Grotesk', 'Sora', system-ui, sans-serif;
-          font-size: clamp(0.9rem, 2vw, 1.2rem);
-          line-height: 1.45;
-          color: #14143f;
+          font-family: 'Oswald', 'Space Grotesk', system-ui, sans-serif;
+          font-weight: 300;
+          font-size: clamp(0.95rem, 2vw, 1.6rem);
+          line-height: 1.28;
+          color: #011b3a;
           overflow-wrap: anywhere;
         }
+        .ct-addr-line { display: block; }
         .ct-link { color: inherit; text-decoration: none; }
-        .ct-link:hover { color: #a70066; text-decoration: underline; }
+        .ct-link:hover { color: #970766; text-decoration: underline; }
 
         @media (prefers-reduced-motion: reduce) {
-          .ct-spark { animation: none; }
+          .ct-star { animation: none; }
         }
       `}</style>
     </Layout>
@@ -249,12 +299,7 @@ function CommunityRow({
     </>
   );
   return href ? (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="ct-community-row"
-    >
+    <a href={href} target="_blank" rel="noopener noreferrer" className="ct-community-row">
       {inner}
     </a>
   ) : (
