@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Style+Script&family=Cinzel:wght@400;600;700&display=swap');
+/* Press Start 2P is the blocky face on "YOUR JOURNEY STARTS HERE"; Fredoka is
+   the rounded one the category titles are set in. Both come from the Programs
+   design. */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Style+Script&family=Cinzel:wght@400;600;700&family=Press+Start+2P&family=Fredoka:wght@500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
