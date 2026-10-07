@@ -1,6 +1,4 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
 import { useReveal } from "@/lib/reveal";
 
 /**
@@ -20,7 +18,6 @@ export function HeroStage() {
   const mascotReveal = useReveal(0.05);
   const titleReveal = useReveal(0.15);
   const subReveal = useReveal(0.3);
-  const buttonsReveal = useReveal(0.45);
 
   return (
     <section className="relative overflow-hidden">
@@ -46,23 +43,6 @@ export function HeroStage() {
             {SUBTITLE}
           </motion.p>
 
-          <motion.div
-            className="mt-7 flex flex-wrap items-center justify-center gap-3 lg:justify-end"
-            {...buttonsReveal}
-          >
-            <Link
-              to="/services"
-              className="inline-flex items-center gap-2 rounded-xl bg-[#d7b460] px-6 py-3 text-base font-semibold text-white shadow-forge transition-transform hover:scale-[1.03] active:scale-95"
-            >
-              Explore programs <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 rounded-xl border border-primary/40 px-6 py-3 text-base font-semibold text-primary transition-colors hover:bg-primary/5"
-            >
-              Apply now
-            </Link>
-          </motion.div>
         </div>
       </div>
 

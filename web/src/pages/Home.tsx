@@ -11,12 +11,11 @@ import {
 } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import { Layout } from "@/components/Layout";
-import { LinkButton } from "@/components/ui/button";
 import { FadeIn, Icon, SectionHeading } from "@/components/ui/primitives";
 import { HeroStage } from "@/components/HeroStage";
 import { SiteAnnouncement } from "@/components/SiteAnnouncement";
 import { MagicReveal } from "@/components/MagicReveal";
-import { services, blogPosts, siteConfig } from "@/lib/site";
+import { services, siteConfig } from "@/lib/site";
 import { useRevealStagger } from "@/lib/reveal";
 
 const iconMap: Record<string, typeof Workflow> = {
@@ -27,7 +26,6 @@ const iconMap: Record<string, typeof Workflow> = {
 };
 
 export default function Home() {
-  const latestPosts = blogPosts.slice(0, 3);
   const reveal = useRevealStagger();
 
   return (
@@ -199,53 +197,6 @@ export default function Home() {
               </FadeIn>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ===================== BLOG PREVIEW ===================== */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <FadeIn>
-          <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
-            <SectionHeading
-              center={false}
-              eyebrow="Latest writing"
-              title="Field notes from the forge"
-            />
-            <LinkButton to="/blog" variant="outline" size="sm">
-              All posts <ArrowRight className="h-4 w-4" />
-            </LinkButton>
-          </div>
-        </FadeIn>
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {latestPosts.map((post, i) => (
-            <FadeIn key={post.slug} delay={i * 0.08}>
-              <Link
-                to={`/blog/${post.slug}`}
-                className="group flex h-full flex-col overflow-hidden rounded-2xl glass-card card-hover"
-              >
-                <div
-                  className={`h-40 bg-gradient-to-br ${post.cover} relative`}
-                >
-                  <div className="absolute inset-0 grid-backdrop opacity-30" />
-                  <span className="absolute left-4 top-4 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
-                    {post.category}
-                  </span>
-                </div>
-                <div className="flex flex-1 flex-col p-5">
-                  <h3 className="font-display text-lg font-bold leading-snug group-hover:text-primary">
-                    {post.title}
-                  </h3>
-                  <p className="mt-2 flex-1 text-sm text-muted-foreground line-clamp-3">
-                    {post.excerpt}
-                  </p>
-                  <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
-                    <span>{post.author}</span>
-                    <span>{post.readTime}</span>
-                  </div>
-                </div>
-              </Link>
-            </FadeIn>
-          ))}
         </div>
       </section>
 
