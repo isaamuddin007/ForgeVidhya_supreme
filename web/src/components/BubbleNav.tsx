@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -10,7 +9,6 @@ import {
 import { useTheme } from "@/components/theme-provider";
 import { useSound } from "@/components/sound-provider";
 import { SiteSearch } from "@/components/SiteSearch";
-import { ProgramChooser } from "@/components/ProgramChooser";
 import RoyalNavMenu from "@/components/RoyalNavMenu";
 import { DroneBubble } from "@/components/DroneBubble";
 
@@ -18,23 +16,16 @@ export function BubbleNav() {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
   const { muted, toggleMuted, playBlub } = useSound();
-  const [chooserOpen, setChooserOpen] = useState(false);
 
   const go = (href: string) => {
     playBlub();
     navigate(href);
   };
 
-  // The Programs bubble opens the floating category chooser instead of
-  // navigating; picking a card there routes to the filtered Programs page.
-  const handleBubble = (href: string) => {
-    if (href === "/services") {
-      playBlub();
-      setChooserOpen(true);
-      return;
-    }
-    go(href);
-  };
+  // Every nav item navigates, Programs included. It used to be intercepted
+  // here and answered with a floating chooser of category cards, which meant
+  // the Programs page itself was never reachable from the menu.
+  const handleBubble = (href: string) => go(href);
 
   return (
     <>
@@ -134,7 +125,6 @@ export function BubbleNav() {
       </div>
     </div>
 
-    <ProgramChooser open={chooserOpen} onClose={() => setChooserOpen(false)} />
     </>
   );
 }
