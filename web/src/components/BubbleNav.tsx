@@ -11,6 +11,9 @@ import { useSound } from "@/components/sound-provider";
 import { SiteSearch } from "@/components/SiteSearch";
 import RoyalNavMenu from "@/components/RoyalNavMenu";
 import { DroneBubble } from "@/components/DroneBubble";
+import logoMarkUrl from "@/assets/logo-mark.png";
+import wordmarkUrl from "@/assets/logo-wordmark.png";
+import emblemUrl from "@/assets/emblem-india.png";
 
 export function BubbleNav() {
   const navigate = useNavigate();
@@ -45,7 +48,7 @@ export function BubbleNav() {
             whileTap={{ scale: 0.92 }}
           >
             <img
-              src="/logo-mark.png"
+              src={logoMarkUrl}
               alt="Forge Vidhya"
               className="h-12 w-auto sm:h-16"
               draggable={false}
@@ -59,7 +62,7 @@ export function BubbleNav() {
             className="hidden outline-none focus-visible:ring-4 focus-visible:ring-primary/40 sm:block"
           >
             <img
-              src="/logo-wordmark.png"
+              src={wordmarkUrl}
               alt="Forge Vidhya — Inspiring the nation's minds"
               className="h-auto w-[min(34vw,300px)] select-none"
               draggable={false}
@@ -72,7 +75,7 @@ export function BubbleNav() {
         {/* the design's national badge, between the name and the controls */}
         <div className="pointer-events-none hidden items-center gap-2 self-center lg:flex">
           <img
-            src="/emblem-india.png"
+            src={emblemUrl}
             alt=""
             className="h-11 w-auto select-none opacity-90"
             draggable={false}

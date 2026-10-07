@@ -34,14 +34,32 @@ DirectoryIndex index.html
   </FilesMatch>
 </IfModule>
 
-# Asset filenames carry a content hash, so they can be cached hard.
+# Only /assets/ is cached hard, because only those filenames carry a content
+# hash. The blanket "image/png for 30 days" rule that used to sit here was
+# wrong: it covered the artwork served from the site root — the article sheet,
+# the logos, the mascots — and those keep the SAME filename from build to
+# build. Replacing one changed the bytes on the server but not the URL, so
+# every browser that had already seen it went on showing the old picture for
+# a month and never asked for the new one. The artwork now lives in the
+# bundle and comes out as /assets/<name>-<hash>.png, so changing a picture
+# changes its URL and no cache can hold a stale one.
 <IfModule mod_expires.c>
   ExpiresActive On
-  ExpiresByType text/css                "access plus 1 year"
-  ExpiresByType application/javascript  "access plus 1 year"
-  ExpiresByType font/woff2              "access plus 1 year"
-  ExpiresByType image/png               "access plus 30 days"
-  ExpiresByType image/svg+xml           "access plus 30 days"
+  ExpiresDefault                        "access plus 10 minutes"
+  ExpiresByType image/png               "access plus 10 minutes"
+  ExpiresByType image/svg+xml           "access plus 10 minutes"
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Hashed build output: safe to keep forever.
+  <FilesMatch "-[A-Za-z0-9_-]{8,}\.(js|css|png|jpe?g|svg|webp|woff2?)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  # Anything still served from the root under a fixed name must be revalidated,
+  # or replacing it silently does nothing for anyone who has been here before.
+  <FilesMatch "^(favicon|icon|placeholder)\.(png|svg)$">
+    Header set Cache-Control "public, max-age=600, must-revalidate"
+  </FilesMatch>
 </IfModule>
 
 <IfModule mod_deflate.c>

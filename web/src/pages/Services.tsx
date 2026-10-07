@@ -7,6 +7,7 @@ import { CourseView } from "@/components/CourseView";
 import { Icon } from "@/components/ui/primitives";
 import { programCategories } from "@/lib/site";
 import { getCourse } from "@/lib/courses";
+import wordmarkUrl from "@/assets/logo-wordmark.png";
 
 /**
  * Programs — built to the supplied design.
@@ -134,7 +135,7 @@ export default function Services() {
 
       <section className="pg-stage relative mx-auto min-h-[70vh] max-w-6xl px-4 pb-24 pt-4 sm:px-6 lg:px-8">
         {/* the name, sitting far back behind the type */}
-        <img src="/logo-wordmark.png" alt="" className="pg-watermark" aria-hidden="true" />
+        <img src={wordmarkUrl} alt="" className="pg-watermark" aria-hidden="true" />
 
         <h1 className="pg-heading">Your journey starts here</h1>
 

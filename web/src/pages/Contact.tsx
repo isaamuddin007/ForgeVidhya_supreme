@@ -1,6 +1,7 @@
 import { SEO } from "@/components/SEO";
 import { Layout } from "@/components/Layout";
 import { siteConfig } from "@/lib/site";
+import wordmarkUrl from "@/assets/logo-wordmark.png";
 
 /**
  * Contact — built to the supplied design.
@@ -81,7 +82,7 @@ export default function Contact() {
 
       <section className="ct-stage mx-auto max-w-[1500px] px-4 pb-24 pt-2 sm:px-6 lg:px-8">
         {/* the name, far behind everything */}
-        <img src="/logo-wordmark.png" alt="" className="ct-watermark" aria-hidden="true" />
+        <img src={wordmarkUrl} alt="" className="ct-watermark" aria-hidden="true" />
 
         <div className="ct-head">
           <h1 className="ct-title">Contact us</h1>

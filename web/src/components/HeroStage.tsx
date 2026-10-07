@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useReveal } from "@/lib/reveal";
+import mascotsUrl from "@/assets/mascots.png";
 
 /**
  * HeroStage — the front page, built to the supplied design.
@@ -25,7 +26,7 @@ export function HeroStage() {
         {/* the two mascots, standing on the foot of the page */}
         <motion.div className="order-2 flex justify-center lg:order-1 lg:justify-start" {...mascotReveal}>
           <img
-            src="/mascots.png"
+            src={mascotsUrl}
             alt="The two forgeVidhya mascots"
             className="h-auto w-[min(78vw,340px)] select-none drop-shadow-[0_18px_28px_rgba(40,20,70,0.28)] lg:w-full lg:max-w-[380px]"
             draggable={false}

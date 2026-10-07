@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import sheetUrl from "@/assets/paper-sheet.png";
 
 /**
  * PaperReader — an article printed onto sheets of the house paper.
@@ -377,7 +378,7 @@ export default function PaperReader({
           position: relative;
           width: 100%;
           border-radius: 4px;
-          background-image: url('/paper-sheet.png');
+          background-image: url('${sheetUrl}');
           background-size: 100% 100%;
           background-repeat: no-repeat;
           background-color: #f7f8fa;
